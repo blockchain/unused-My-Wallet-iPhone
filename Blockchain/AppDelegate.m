@@ -46,7 +46,6 @@ AppDelegate * app;
 
 -(NSString*)formatMoney:(uint64_t)value {   
     
-    #ifdef CYDIA
     if (symbolLocal && latestResponse.symbol.conversion) {
         @try {
             NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
@@ -56,7 +55,6 @@ AppDelegate * app;
             NSLog(@"%@", e);
         }
     }
-    #endif
     
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
     
@@ -501,7 +499,7 @@ AppDelegate * app;
 
 }
 
-- (NSDictionary *)parseQueryString:(NSString *)query {
+- (NSMutableDictionary *)parseQueryString:(NSString *)query {
     NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithCapacity:6] autorelease];
     NSArray *pairs = [query componentsSeparatedByString:@"&"];
     
@@ -515,15 +513,32 @@ AppDelegate * app;
     return dict;
 }
 
+-(NSDictionary*)parseURI:(NSString*)urlString {
+    
+    if (![urlString hasPrefix:@"bitcoin:"]) {
+        return [NSDictionary dictionaryWithObject:urlString forKey:@"address"];
+    }
+        
+    NSString * replaced = [[urlString stringByReplacingOccurrencesOfString:@"bitcoin:" withString:@"bitcoin://"] stringByReplacingOccurrencesOfString:@"////" withString:@"//"];
+    
+    NSLog(@"%@", replaced);
+    
+    NSURL * url = [NSURL URLWithString:replaced];
+    
+    NSMutableDictionary *dict = [self parseQueryString:[url query]];
+
+    if ([url host] != NULL)
+        [dict setObject:[url host] forKey:@"address"];
+    
+    return dict;
+}
+
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    NSString * replaced = [[[url absoluteString] stringByReplacingOccurrencesOfString:@"bitcoin:" withString:@"bitcoin://"] stringByReplacingOccurrencesOfString:@"////" withString:@"//"];
-    
-    url = [NSURL URLWithString:replaced];
-    
-    NSDictionary *dict = [self parseQueryString:[url query]];
-    
-    NSString * addr = [url host];
+
+    NSDictionary *dict = [self parseURI:[url absoluteString]];
+        
+    NSString * addr = [dict objectForKey:@"address"];
     NSString * amount = [dict objectForKey:@"amount"];
 
     [self showSendCoins];
@@ -809,11 +824,7 @@ AppDelegate * app;
         [accountViewController viewDidLoad];
     }
     
-#ifdef CYDIA
     [tabViewController setActiveViewController:accountViewController animated:TRUE index:3];
-#else
-    [tabViewController setActiveViewController:accountViewController animated:TRUE index:2];
-#endif
 }
 
 -(NSString*)password {
@@ -830,12 +841,6 @@ AppDelegate * app;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {         
-    
-#ifdef CYDIA
-    tabViewController = cydiaTabViewController;
-#else
-    tabViewController = safeTabViewController;
-#endif
     
     // Override point for customization after application launch.
     _window.backgroundColor = [UIColor whiteColor];

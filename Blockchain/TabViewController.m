@@ -14,16 +14,10 @@
 
 #define PI 3.14159265
 
-#ifdef CYDIA
 CGPoint arrowPositions[4] = {28.0f, 29.0f,
     107.0f, 20.0f,
     190.0f, 19.0f,
     270.0f, 27.0f};
-#else
-CGPoint arrowPositions[4] = {28.0f, 27.0f,
-    152.0f, 17.0f,
-    270.0f, 26.0f};
-#endif
 
 @implementation TabViewcontroller
 

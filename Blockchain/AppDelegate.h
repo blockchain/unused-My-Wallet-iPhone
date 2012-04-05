@@ -69,10 +69,7 @@ typedef enum {
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
     
-    IBOutlet TabViewcontroller * cydiaTabViewController;
-    IBOutlet TabViewcontroller * safeTabViewController;
-
-    TabViewcontroller * tabViewController;
+    IBOutlet TabViewcontroller * tabViewController;
     
     IBOutlet TransactionsViewController * transactionsViewController;
     IBOutlet ReceiveCoinsViewController * receiveViewController;
@@ -132,6 +129,8 @@ typedef enum {
 
 -(void)writeWalletCacheToDisk:(NSString*)payload;
 
+-(NSDictionary*)parseURI:(NSString*)string;
+
 -(void)startTask:(Task)task;
 -(void)finishTask;
 -(void)subscribeWalletAndToKeys;
@@ -151,7 +150,7 @@ typedef enum {
 - (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate;
 
 //Write and read from file
-- (BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName;
+-(BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName;
 -(NSData*)readFromFileName:(NSString *)fileName;
 
 -(NSString*)formatMoney:(uint64_t)value;

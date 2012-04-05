@@ -71,12 +71,11 @@
 @synthesize delegate;
 @synthesize lastWalletSync;
 
--(void)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {
-    [app startTask:TaskSaveWallet];
-    
-    
+-(void)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
     if (!walletIdentifier || !sharedKey || !payload || !captcha)
         return;
+    
+    [app startTask:TaskSaveWallet];
     
     lastWalletSync = time(NULL);
 
@@ -130,12 +129,12 @@
     });
 }
 
--(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {
-    [app startTask:TaskSaveWallet];
-    
+-(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {    
     if (!walletIdentifier || !sharedKey || !payload)
         return;
     
+    [app startTask:TaskSaveWallet];
+
     lastWalletSync = time(NULL);
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
@@ -316,10 +315,10 @@
     
     NSLog(@"Do multi address");
     
-    [app startTask:TaskGetMultiAddr];
-    
     if ([addresses count] == 0)
         return;
+    
+    [app startTask:TaskGetMultiAddr];
         
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
         @try {

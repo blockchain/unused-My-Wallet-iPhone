@@ -64,8 +64,8 @@
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(double)value {
     [self setJSVars];
+   
     [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%f');", toAddress, fromAddress, value]];
-
 }
 
 -(NSString*)generateNewAddress {

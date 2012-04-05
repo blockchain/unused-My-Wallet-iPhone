@@ -109,7 +109,13 @@
 {
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
-        toField.text = sym.data;
+        
+       NSDictionary * dict = [app parseURI:sym.data];
+        
+        
+        toField.text = [dict objectForKey:@"address"];
+        
+        amountField.text = [dict objectForKey:@"amount"];
         
         [view stop];
         

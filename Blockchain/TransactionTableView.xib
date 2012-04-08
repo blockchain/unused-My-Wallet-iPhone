@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUITableViewCell</string>
@@ -114,6 +114,7 @@
 								<string key="NSFrame">{{0, 27}, {320, 1}}</string>
 								<reference key="NSSuperview" ref="513593019"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="255699273"/>
 								<string key="NSReuseIdentifierKey">_NS:196</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -173,6 +174,7 @@
 								<string key="NSFrame">{{91, 36}, {119, 30}}</string>
 								<reference key="NSSuperview" ref="513593019"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="460613436"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -195,7 +197,7 @@
 								<string key="NSFrame">{{187, 137}, {119, 0}}</string>
 								<reference key="NSSuperview" ref="513593019"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="255699273"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -243,6 +245,7 @@
 				<reference key="IBUIBackgroundColor" ref="953254244"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="513593019"/>
+				<string key="IBUIReuseIdentifier">transaction</string>
 				<real value="74" key="IBUIRowHeight"/>
 			</object>
 		</array>
@@ -462,6 +465,6 @@
 			<string key="button_green.png">{97, 29}</string>
 			<string key="payment_received.png">{54, 15}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>

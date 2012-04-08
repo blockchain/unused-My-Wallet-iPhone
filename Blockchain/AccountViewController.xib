@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIWebView</string>
@@ -45,9 +45,8 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45NjU1MDE4NDQ5IDAuOTY1NTAxODQ0OSAwLjk2NTUwMTg0NDkgMAA</bytes>
+							<bytes key="NSRGB">MC45MzIzNDQ1NTU5IDAuOTMyMzQ0NTU1OSAwLjkzMjM0NDU1NTkAA</bytes>
 						</object>
-						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIDataDetectorTypes">1</int>
 						<bool key="IBUIDetectsPhoneNumbers">YES</bool>
@@ -133,8 +132,8 @@
 						<int key="objectID">2</int>
 						<reference key="object" ref="41788510"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="95256250"/>
 							<reference ref="1028116446"/>
+							<reference ref="95256250"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -199,6 +198,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>

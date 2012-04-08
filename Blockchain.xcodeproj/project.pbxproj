@@ -49,6 +49,7 @@
 		9F45F82B1514E35200018AED /* button_grey_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F8291514E35200018AED /* button_grey_large@2x.png */; };
 		9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */; };
 		9F45F82E1514E6C000018AED /* SendForm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F82D1514E6BF00018AED /* SendForm.xib */; };
+		9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */; };
 		9F5F3E57151BED0100128830 /* DataMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E3E151BED0100128830 /* DataMatrix.mm */; };
 		9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E3F151BED0100128830 /* QR_Encode.cpp */; };
 		9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E42151BED0100128830 /* QRCodeEncoderDemoViewController.mm */; };
@@ -178,6 +179,8 @@
 		9F45F8281514E35200018AED /* button_grey_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey_large.png; sourceTree = "<group>"; };
 		9F45F8291514E35200018AED /* button_grey_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_grey_large@2x.png"; sourceTree = "<group>"; };
 		9F45F82D1514E6BF00018AED /* SendForm.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendForm.xib; sourceTree = "<group>"; };
+		9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		9F5F3E3D151BED0100128830 /* DataMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataMatrix.h; sourceTree = "<group>"; };
 		9F5F3E3E151BED0100128830 /* DataMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DataMatrix.mm; sourceTree = "<group>"; };
 		9F5F3E3F151BED0100128830 /* QR_Encode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QR_Encode.cpp; sourceTree = "<group>"; };
@@ -345,6 +348,8 @@
 				9F1831E11516A39500FB3D52 /* NSData+Hex.m */,
 				9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */,
 				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
+				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
+				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
 			);
 			name = categories;
 			sourceTree = "<group>";
@@ -802,6 +807,7 @@
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				9F5F3E5A151BED0100128830 /* QREncoder.mm in Sources */,
 				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
+				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,17 +881,22 @@
 		9FB3638A14B60128004BEA02 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(iOSOpenDevPath)/lib/**",
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -894,17 +905,22 @@
 		9FB3638B14B60128004BEA02 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(iOSOpenDevPath)/lib/**",
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

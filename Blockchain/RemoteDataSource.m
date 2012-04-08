@@ -71,62 +71,54 @@
 @synthesize delegate;
 @synthesize lastWalletSync;
 
--(void)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
+-(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
     if (!walletIdentifier || !sharedKey || !payload || !captcha)
-        return;
-    
-    [app startTask:TaskSaveWallet];
+        return FALSE;
     
     lastWalletSync = time(NULL);
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        
-        @try {
-            NSURL * url = [NSURL URLWithString:[WebROOT stringByAppendingFormat:@"wallet"]];
-            
-            NSHTTPURLResponse * repsonse = NULL;
-            NSError * error = NULL;
-            
-            NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
-        
-            NSLog(@"Payload %@", payload);
-            
-            [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&kaptcha=%@", 
-                                   [walletIdentifier urlencode],
-                                   [sharedKey urlencode],
-                                   [payload urlencode],
-                                   [payload length],
-                                   [payload SHA256],
-                                   [captcha urlencode]
-                                   ] dataUsingEncoding:NSUTF8StringEncoding]];
-            
-            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-            
-            [request setHTTPMethod:@"POST"];
-            
-            NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
-            
-            if (data == NULL || [data length] == 0) {
-                [app standardNotify:@"Error saving new wallet on server."];
-                return;
-            }
-            
-            NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-            
-            if ([repsonse statusCode] == 500) {
-                [app standardNotify:responseString];
-                return;
-            }
-            
-            if (error != NULL || [repsonse statusCode] != 200) {
-                [app standardNotify:[error localizedDescription]];
-                return;
-            }
-            
-        } @finally {
-            [app finishTask];
-        }
-    });
+    NSURL * url = [NSURL URLWithString:[WebROOT stringByAppendingFormat:@"wallet"]];
+    
+    NSHTTPURLResponse * repsonse = NULL;
+    NSError * error = NULL;
+    
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
+
+    NSLog(@"Payload %@", payload);
+    
+    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&kaptcha=%@", 
+                           [walletIdentifier urlencode],
+                           [sharedKey urlencode],
+                           [payload urlencode],
+                           [payload length],
+                           [payload SHA256],
+                           [captcha urlencode]
+                           ] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
+    [request setHTTPMethod:@"POST"];
+    
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
+    
+    if (data == NULL || [data length] == 0) {
+        [app standardNotify:@"Error saving new wallet on server."];
+        return FALSE;
+    }
+    
+    NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    
+    if ([repsonse statusCode] == 500) {
+        [app standardNotify:responseString];
+        return FALSE;
+    }
+    
+    if (error != NULL || [repsonse statusCode] != 200) {
+        [app standardNotify:[error localizedDescription]];
+        return FALSE;
+    }
+    
+    return  TRUE;
 }
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {    
@@ -310,6 +302,40 @@
 
     return res;
 }
+
+-(NSDictionary*)resolveAlias:(NSString*)alias {    
+
+        NSMutableString * string = [NSMutableString stringWithFormat:@"%@wallet/resolve-alias?guid=%@", WebROOT, [alias urlencode]];
+        
+        NSURL * url = [NSURL URLWithString:string];
+        
+        NSHTTPURLResponse * repsonse = NULL;
+        NSError * error = NULL;
+        
+        NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&repsonse error:&error];
+        
+        if (data == NULL || [data length] == 0) {
+            [app standardNotify:@"Error Resolving Alias"];
+            return nil;
+        }
+        
+        NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        
+        if ([repsonse statusCode] == 500) {
+            [app standardNotify:responseString];
+            return nil;
+        }
+        
+        if (error != NULL || [repsonse statusCode] != 200) {
+            [app standardNotify:[error localizedDescription]];
+            return nil;
+        }
+        
+    JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
+    
+    return [json objectWithData:data];
+}
+
 
 -(void)multiAddr:(NSString*)walletIdentifier addresses:(NSArray*)addresses {
     

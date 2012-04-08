@@ -32,19 +32,15 @@
 		</dict>
 	</array>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
+	<string>1.6</string>
 	<key>CFBundleVersion</key>
-	<string>1.4</string>
+	<string>1.6</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UIStatusBarStyle</key>

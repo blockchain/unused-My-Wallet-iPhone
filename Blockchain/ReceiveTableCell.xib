@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -44,7 +44,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 11}, {148, 21}}</string>
 								<reference key="NSSuperview" ref="1066442506"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="587059123"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -78,7 +77,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 36}, {311, 21}}</string>
 								<reference key="NSSuperview" ref="1066442506"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -108,7 +106,6 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{176, 11}, {73, 21}}</string>
 								<reference key="NSSuperview" ref="1066442506"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="969597717"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -139,7 +136,6 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{257, 12}, {80, 21}}</string>
 								<reference key="NSSuperview" ref="1066442506"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="660053784"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -162,7 +158,6 @@
 						</array>
 						<string key="NSFrameSize">{357, 68}</string>
 						<reference key="NSSuperview" ref="898793411"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="331963926"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -178,11 +173,11 @@
 				</array>
 				<string key="NSFrameSize">{357, 69}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1066442506"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="1066442506"/>
+				<string key="IBUIReuseIdentifier">receive</string>
 				<real value="69" key="IBUIRowHeight"/>
 			</object>
 		</array>
@@ -290,42 +285,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">10</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">ReceiveTableCell</string>
-					<string key="superclassName">UITableViewCell</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addressLabel">UILabel</string>
-						<string key="balanceLabel">UILabel</string>
-						<string key="labelLabel">UILabel</string>
-						<string key="watchLabel">UILabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addressLabel">
-							<string key="name">addressLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="balanceLabel">
-							<string key="name">balanceLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="labelLabel">
-							<string key="name">labelLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="watchLabel">
-							<string key="name">watchLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ReceiveTableCell.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
@@ -334,6 +294,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>

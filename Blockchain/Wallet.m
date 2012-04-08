@@ -175,7 +175,7 @@
     if ([super init]) {
         _webView = [[UIWebView alloc] init];
         
-        [_webView.scrollView setScrollEnabled:FALSE];
+        //[_webView.scrollView setScrollEnabled:FALSE];
         
         _webView.delegate = self;
         

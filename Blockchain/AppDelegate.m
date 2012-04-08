@@ -25,6 +25,7 @@
 #import "Transaction.h"
 #import "Input.h"
 #import "Output.h"
+#import "UIDevice+Hardware.h"
 
 AppDelegate * app;
 
@@ -175,13 +176,22 @@ AppDelegate * app;
 
 -(NSData*)readFromFileName:(NSString *)fileName  {
         
-    NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	
     // the path to write file
-    NSString * appFile = [documentsDirectory stringByAppendingPathComponent:fileName];
+    NSString * documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
         
-    if ([[NSFileManager defaultManager] fileExistsAtPath:appFile]) {
-        return [[[NSData alloc] initWithContentsOfFile:appFile] autorelease];
+    
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES 
+                                                   attributes:nil 
+                                                        error:NULL];
+    }
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:documentPath]) {
+        return [[[NSData alloc] initWithContentsOfFile:documentPath] autorelease];
     }
 
     return NULL;
@@ -189,12 +199,32 @@ AppDelegate * app;
 
 - (BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName 
 {   
-    NSString *documentsDirectory = [NSHomeDirectory()  stringByAppendingPathComponent:@"Documents"];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	
     // the path to write file
-    NSString *appFile = [documentsDirectory stringByAppendingPathComponent:fileName];
+    NSString *documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
     
-    return [data writeToFile:appFile atomically:YES];
+    
+    NSLog(@"Write to bytes %d file %@", [data length], documentPath);
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES 
+                                                   attributes:nil 
+                                                        error:NULL];
+    }
+    
+    NSError * error = nil;
+    
+    [data writeToFile:documentPath options:0 error:&error];
+    
+    if (error) {
+        NSLog(@"Error writing file %@", error);
+        
+        return FALSE;
+    }
+    
+    return TRUE;
 }
 
 - (void)standardNotify:(NSString*)message
@@ -242,7 +272,8 @@ AppDelegate * app;
             
     [webSocket send:msg];
 
-    [self subscribeWalletAndToKeys];
+    if ([self guid])
+        [self subscribeWalletAndToKeys];
 }
 
 -(void)webSocketOnClose:(WebSocket*)_webSocket {
@@ -611,6 +642,13 @@ AppDelegate * app;
     }
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+{
+    [aTextField resignFirstResponder];
+    
+    return YES;
+}
+
 -(BOOL)getSecondPasswordBlocking {
     
     if (!wallet.doubleEncryption)
@@ -668,6 +706,14 @@ AppDelegate * app;
     NSString * guid = [components objectAtIndex:0];
     NSString * sharedKey = [components objectAtIndex:1];
     NSString * password = [components objectAtIndex:2];
+    
+    
+    [self setAccountData:guid sharedKey:sharedKey password:password];
+}
+
+
+
+-(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
 
     if ([guid length] != 36) {
         [app standardNotify:@"Invalid GUID"];
@@ -695,7 +741,7 @@ AppDelegate * app;
     //Fetch the wallet data
     [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:nil];
     
-    
+    [app closeModal];
 }
 
 -(void)didDismissModal {
@@ -704,8 +750,31 @@ AppDelegate * app;
     self.readerView = nil;
 }
 
+-(BOOL)isZBarSupported {
+    NSUInteger platformType = [[UIDevice currentDevice] platformType];
+    
+    if (platformType ==  UIDeviceiPhoneSimulator || platformType ==  UIDeviceiPhoneSimulatoriPhone  || platformType ==  UIDeviceiPhoneSimulatoriPhone || platformType ==  UIDevice1GiPhone || platformType ==  UIDevice3GiPhone || platformType ==  UIDevice1GiPod || platformType ==  UIDevice2GiPod || ![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
+-(IBAction)manualPairClicked:(id)sender {
+    
+    NSDictionary * data = [dataSource resolveAlias:manualIdentifier.text];
+    
+    if (data == nil)
+        return;
+    
+    [self setAccountData:[data objectForKey:@"guid"]  sharedKey:[data objectForKey:@"sharedKey"] password:manualPAssword.text];
+}
+
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
 {
+    
+    printf("Did read\n");
+    
     // do something useful with results
     for(ZBarSymbol *sym in syms) {        
         [self parseAccountQRCodeData:sym.data];
@@ -721,15 +790,20 @@ AppDelegate * app;
 }
 
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
-    self.readerView = [[ZBarReaderView new] autorelease];
     
-    [app showModal:readerView];
+    if ([self isZBarSupported]) {
+        self.readerView = [[ZBarReaderView new] autorelease];
+        
+        [app showModal:readerView];
 
-    self.modalDelegate = self;
-    
-    [readerView start];
-    
-    [readerView setReaderDelegate:self];
+        self.modalDelegate = self;
+        
+        [readerView start];
+        
+        [readerView setReaderDelegate:self];
+    } else {
+        [self showModal:manualView];
+    }
 }
 
 -(void)forgetWallet {
@@ -857,6 +931,9 @@ AppDelegate * app;
     webSocket.delegate = self;
     [webSocket connect:WebSocketURL];
     
+    
+    NSLog(@"Saved GUID: %@", [self guid]);
+    
     if (![self guid] || ![self password]) {
         [self showWelcome];
     } else {
@@ -868,6 +945,11 @@ AppDelegate * app;
             
             wallet.delegate = self;
         } else {
+            
+            NSLog(@"Null wallet cache");
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
+
             [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
         }
         

@@ -36,7 +36,7 @@
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
 //Some features disabled to pass review process
-#define CYDIA
+///#define CYDIA
 
 @class TransactionsViewController, RemoteDataSource, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
 
@@ -83,6 +83,11 @@ typedef enum {
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     
+    IBOutlet UIView * manualView;
+    IBOutlet UITextField * manualIdentifier;
+    IBOutlet UITextField * manualSharedKey;
+    IBOutlet UITextField * manualPAssword;
+
     WebViewController * webViewController;
     
     int webScoketFailures;
@@ -101,6 +106,9 @@ typedef enum {
 @property (retain, strong) IBOutlet UIView * modalView;
 @property (retain, strong) IBOutlet UIView * modalContentView;
 @property (retain, strong) id modalDelegate;
+
+
+-(IBAction)manualPairClicked:(id)sender;
 
 -(void)didGenerateNewWallet:(Wallet*)wallet password:(NSString*)password;
 

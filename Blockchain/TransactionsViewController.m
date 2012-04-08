@@ -25,6 +25,10 @@
     
 	TransactionTableCell * cell = (TransactionTableCell*)[tableView dequeueReusableCellWithIdentifier:@"transaction"];
 
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"TransactionTableView" owner:nil options:nil] objectAtIndex:0];
+    }
+    
     cell.transaction = transaction;
     
     [cell seLatestBlock:data.latestBlock];
@@ -123,8 +127,6 @@
 -(void)viewDidLoad {
     NSLog(@"Did load");
     
-    [tableView registerNib:[UINib nibWithNibName:@"TransactionTableView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"transaction"];
-
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

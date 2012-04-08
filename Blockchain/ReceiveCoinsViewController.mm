@@ -108,8 +108,6 @@
 #ifndef CYDIA 
     [depositButton setHidden:TRUE];
 #endif
-    
-    [tableView registerNib:[UINib nibWithNibName:@"ReceiveTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"receive"];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -247,16 +245,20 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    if ([wallet.keys count] == 0) {
-        [self.view addSubview:noaddressesView];
+    if ([[wallet.keys allKeys] count] == 0) {
+        [noaddressesView setHidden:FALSE];
     } else {
-        [noaddressesView removeFromSuperview];
+        [noaddressesView setHidden:TRUE];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ReceiveTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
-
+    
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveTableCell" owner:nil options:nil] objectAtIndex:0];
+    }
+    
     Key * key =  [self getKey:indexPath];
     
     if ([key label])

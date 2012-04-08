@@ -61,9 +61,13 @@
     if (addr) {
         [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", addr] title:@"Success" delegate:nil];
         
-        [app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] catpcha:captchaTextField.text];
-        
-        [app didGenerateNewWallet:wallet password:passwordTextField.text];
+        if ([app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] catpcha:captchaTextField.text]) {
+            [app didGenerateNewWallet:wallet password:passwordTextField.text];
+            
+            [app closeModal];
+        } else {
+            [self refreshCaptcha];
+        }
         
     } else {
         [app standardNotify:@"Error generating bitcoin address"];
@@ -71,8 +75,6 @@
     
     [app finishTask];
     
-    [app closeModal];
-
     self.wallet = nil;
 }
 
@@ -93,10 +95,11 @@
     }
     
     [app startTask:TaskGeneratingWallet];
-    
+
     self.wallet = [[[Wallet alloc] initWithPassword:passwordTextField.text] autorelease];
     
     wallet.delegate = self;
+
 }
 
 @end

@@ -48,11 +48,11 @@
         [webView stopLoading];
     
 #ifdef CYDIA
-        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone&cydia=true", WebROOT, app.wallet.guid, app.wallet.sharedKey];
+        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone&cydia=true", WebROOT, [app guid], [app sharedKey]];
 #else
-        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, app.wallet.guid, app.wallet.sharedKey];
+        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
 #endif
-        
+    
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:requestString]]];
 
 }

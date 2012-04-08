@@ -70,7 +70,9 @@
 @property(nonatomic, strong) id<RemoteDataSourceDelagate> delegate;
 @property(nonatomic, assign) double lastWalletSync;
 
--(void)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha;
+-(NSDictionary*)resolveAlias:(NSString*)alias;
+
+-(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha;
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)apiKey payload:(NSString*)payload;
 

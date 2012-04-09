@@ -121,7 +121,13 @@
     return  TRUE;
 }
 
--(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {    
+
+
+-(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {
+    [self saveWallet:walletIdentifier sharedKey:sharedKey payload:payload];
+}
+
+-(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error {    
     if (!walletIdentifier || !sharedKey || !payload)
         return;
     
@@ -140,43 +146,63 @@
             NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
             
             [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=update&length=%d&checksum=%@", 
-                                  [walletIdentifier urlencode],
-                                  [sharedKey urlencode],
-                                  [payload urlencode],
-                                  [payload length],
-                                  [payload SHA256]
-                                  ] dataUsingEncoding:NSUTF8StringEncoding]];
+                                   [walletIdentifier urlencode],
+                                   [sharedKey urlencode],
+                                   [payload urlencode],
+                                   [payload length],
+                                   [payload SHA256]
+                                   ] dataUsingEncoding:NSUTF8StringEncoding]];
             
             [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-
+            
             [request setHTTPMethod:@"POST"];
-             
-             NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
-             
-             if (data == NULL || [data length] == 0) {
-                 [app standardNotify:@"Error saving wallet to server. Please check your internet connection."];
-                 return;
-             }
-             
-             NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-             
-             if ([repsonse statusCode] == 500) {
-                 [app standardNotify:responseString];
-                 return;
-             }
-             
-             if (error != NULL || [repsonse statusCode] != 200) {
-                 [app standardNotify:[error localizedDescription]];
-                 return;
-             }
+            
+            NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
+            
+            if (data == NULL || [data length] == 0) {
+                [app standardNotify:@"Error saving wallet to server. Please check your internet connection."];
+                
+                if (_error)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _error();
+                });
+                
+                return;
+            }
+            
+            NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            
+            if ([repsonse statusCode] == 500) {
+                [app standardNotify:responseString];
+
+                if (_error)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _error();
+                });
+
+                return;
+            }
+            
+            if (error != NULL || [repsonse statusCode] != 200) {
+                [app standardNotify:[error localizedDescription]];
+                
+                if (_error)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _error();
+                });
+                
+                return;
+            }
             
             dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (success)
+                    success();
                 
                 //Save Cached copy
                 [app writeWalletCacheToDisk:payload];
             });  
 
-        
          } @finally {
              [app finishTask];
          }

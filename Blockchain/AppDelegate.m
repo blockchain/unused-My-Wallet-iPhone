@@ -640,6 +640,8 @@ AppDelegate * app;
         
         [app closeModal];
     }
+    
+    secondPasswordTextField.text = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
@@ -661,6 +663,8 @@ AppDelegate * app;
         [app showModal:secondPasswordView];
     });
     
+    usleep(20000);
+
     while (app.modalView) {
         usleep(20000);
     }

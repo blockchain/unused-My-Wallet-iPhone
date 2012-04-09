@@ -68,7 +68,11 @@
     [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%f');", toAddress, fromAddress, value]];
 }
 
--(NSString*)generateNewAddress {
+-(void)removeAddress:(NSString*)address {
+    [self.keys removeObjectForKey:address];
+}
+
+-(Key*)generateNewKey {
     [self setJSVars];
     
     NSArray * components = [[_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", sharedKey]] componentsSeparatedByString:@"|"];
@@ -81,12 +85,11 @@
         
         [self.keys setObject:key forKey:key.addr];
 
-        return key.addr;
+        return key;
     }
     
     return nil;
 }
-
 
 -(NSString*)jsonString {
     NSMutableDictionary * root = [NSMutableDictionary dictionary];
@@ -163,7 +166,7 @@
         self.addressBook = [NSMutableDictionary dictionary];
         
         //Generate the fist Address
-        [self generateNewAddress];
+        [self generateNewKey];
         
         [self loadJS];
     }

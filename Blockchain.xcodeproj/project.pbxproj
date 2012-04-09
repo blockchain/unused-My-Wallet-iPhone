@@ -886,7 +886,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -896,7 +896,6 @@
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
-				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -910,7 +909,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -920,7 +919,6 @@
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
-				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

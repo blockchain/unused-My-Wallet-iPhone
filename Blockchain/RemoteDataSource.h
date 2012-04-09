@@ -74,6 +74,8 @@
 
 -(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha;
 
+-(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error;
+
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)apiKey payload:(NSString*)payload;
 
 -(void)multiAddr:(NSString*)walletIdentifier addresses:(NSArray*)addresses;

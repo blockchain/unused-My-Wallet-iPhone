@@ -31,11 +31,7 @@
     [super dealloc];
 }
 
--(void)setWallet:(Wallet *)_wallet {
-    [wallet release];
-    wallet = _wallet;
-    [wallet retain];
-    
+-(void)reload {
     if ([wallet.keys count] == 0) {
         [self.view addSubview:noaddressesView];
     } else {
@@ -45,7 +41,7 @@
     NSMutableArray * _activeKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
     NSMutableArray * _archivedKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
     NSMutableArray * _otherKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
-
+    
     for (Key * key in [[wallet keys] allValues]) {
         if ([key tag] == 0)
             [_activeKeys addObject:key];
@@ -59,8 +55,17 @@
     self.activeKeys = [_activeKeys sortedArrayUsingSelector:@selector(compare:)];
     self.archivedKeys = [_archivedKeys sortedArrayUsingSelector:@selector(compare:)];
     self.otherKeys = [_otherKeys sortedArrayUsingSelector:@selector(compare:)];
-
+    
     [tableView reloadData];
+
+}
+
+-(void)setWallet:(Wallet *)_wallet {
+    [wallet release];
+    wallet = _wallet;
+    [wallet retain];
+    
+    [self reload];
 }
 
 
@@ -68,20 +73,25 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
         if ([app getSecondPasswordBlocking]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSString * addr =  [wallet generateNewAddress];
+                Key * key =  [wallet generateNewKey];
                 
-                if (addr)
-                    [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", addr] title:@"Success" delegate:nil];
-                else
+                if (key == nil) {
                     [app standardNotify:@"Error generating bitcoin address"];
+                    return;
+                }
                 
-                self.wallet = wallet;
-                
-                [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
-                
-                [app.dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
-                                
-                [app subscribeWalletAndToKeys];
+                [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] success:^ {
+                    [self reload];
+                    
+                    [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
+                        
+                    [app.dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+                    
+                    [app subscribeWalletAndToKeys];
+                } error:^{ 
+                    [wallet removeAddress:key.addr];
+
+                }];
             });
         } else {
             [app standardNotify:@"Cannot Generate new address without the second password"];

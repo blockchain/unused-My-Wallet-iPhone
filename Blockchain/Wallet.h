@@ -56,6 +56,8 @@
 
 + (NSString *)generateUUID;
 
+-(void)removeAddress:(NSString*)address;
+
 -(id)initWithPassword:(NSString*)password; //Create a new Wallet
 
 -(void)loadData:(NSData*)data password:(NSString*)password;
@@ -64,7 +66,7 @@
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(double)value;
 
--(NSString*)generateNewAddress;
+-(Key*)generateNewKey;
 
 -(NSString*)labelForAddress:(NSString*)address;
 

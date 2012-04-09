@@ -28,6 +28,7 @@
 
 @implementation Wallet
 
+@synthesize encrypted_payload;
 @synthesize guid;
 @synthesize sharedKey;
 @synthesize doubleEncryption;
@@ -36,6 +37,7 @@
 @synthesize dPasswordHash;
 @synthesize addressBook;
 @synthesize secondPassword;
+@synthesize password;
 
 + (NSString *)generateUUID 
 {
@@ -150,16 +152,13 @@
     [_webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
 }
 
--(id)initWithPassword:(NSString*)password {
+-(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
         _webView = [[UIWebView alloc] init];
-        
-        [_webView.scrollView setScrollEnabled:FALSE];
-        
+                
         _webView.delegate = self;
         
-        _password = [password retain];
-        
+        self.password = fpassword;        
         self.guid = [Wallet generateUUID];
         self.sharedKey = [Wallet generateUUID];
         self.keys = [NSMutableDictionary dictionary];
@@ -173,17 +172,15 @@
     return  self;
 }
 
--(id)initWithData:(NSData*)payload password:(NSString*)password {
+-(id)initWithData:(NSData*)payload password:(NSString*)fpassword {
     
     if ([super init]) {
         _webView = [[UIWebView alloc] init];
         
-        //[_webView.scrollView setScrollEnabled:FALSE];
-        
         _webView.delegate = self;
         
-        _password = [password retain];
-        _encrypted_payload = [payload retain];
+        self.password = fpassword;
+        self.encrypted_payload = payload;
         
         [self loadJS];
     }
@@ -236,7 +233,7 @@
 
 
 -(NSString*)encryptedString {
-    NSString * encryptedFunction = [NSString stringWithFormat:@"encrypt('%@', '%@');", [self jsonString], _password];
+    NSString * encryptedFunction = [NSString stringWithFormat:@"encrypt('%@', '%@');", [self jsonString], self.password];
 
    return  [_webView stringByEvaluatingJavaScriptFromString:encryptedFunction];
 }
@@ -244,16 +241,28 @@
 -(void)decrypt {
         self.secondPassword = nil;
     
-        if (_encrypted_payload == nil) {
+        if (self.encrypted_payload == nil) {
             NSLog(@"encrypted payload is nil");
+            return;
         }
     
-        NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", [[[NSString alloc] initWithData:_encrypted_payload encoding:NSUTF8StringEncoding] autorelease], _password];
+        NSString * payload = [[[NSString alloc] initWithData:self.encrypted_payload encoding:NSUTF8StringEncoding] autorelease];
+    
+        NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
+    
+        NSLog(@"%@", payload);
+    
         
         NSString * walletJSON = [_webView stringByEvaluatingJavaScriptFromString:decryptFunction];
         
         if (walletJSON == NULL || [walletJSON length] == 0) {
+            
+            if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
+                [delegate walletFailedToDecrypt:self];
+            
             NSLog(@"Wallet data is null");
+                
+            return;
         }
         
         JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
@@ -290,37 +299,41 @@
         [delegate walletDidLoad:self];
 
 }
--(void)loadData:(NSData*)payload password:(NSString*)password {
-    [_encrypted_payload release];
-    _encrypted_payload = [payload retain];
-    
-    [_password release];
-    _password = [password retain];
+-(void)loadData:(NSData*)payload password:(NSString*)fpassword {
+    self.encrypted_payload = payload;
+    self.password = fpassword;
  
     [self decrypt];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {    
-    if (_encrypted_payload) {
+    if (self.encrypted_payload) {
         [self decrypt];
         
-        [_encrypted_payload release];
-        _encrypted_payload = nil;
+        self.encrypted_payload = nil;
     }
     
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
 }
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"Did fail");
 }
 
 -(void)dealloc {
+    [_webView stopLoading];
+    _webView.delegate = nil;
+    
+    [encrypted_payload release];
     [secondPassword release];
     [dPasswordHash release];
     [_encrypted_payload release];
     [_password release];
     [_webView release];
+    
+    _webView = nil;
+    
     [super dealloc];
 }
 @end

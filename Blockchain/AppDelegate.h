@@ -83,6 +83,9 @@ typedef enum {
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     
+    IBOutlet UIView * mainPasswordView;
+    IBOutlet UITextField * mainPasswordTextField;
+
     IBOutlet UIView * manualView;
     IBOutlet UITextField * manualIdentifier;
     IBOutlet UITextField * manualSharedKey;
@@ -184,6 +187,7 @@ typedef enum {
 -(IBAction)loginClicked:(id)sender; 
 -(IBAction)scanAccountQRCodeclicked:(id)sender;
 -(IBAction)secondPasswordClicked:(id)sender;
+-(IBAction)mainPasswordClicked:(id)sender;
 
 @end
 

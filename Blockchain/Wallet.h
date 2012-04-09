@@ -34,6 +34,7 @@
 @protocol WalletDelegate <NSObject>
 @optional
 -(void)walletDidLoad:(Wallet*)wallet;
+-(void)walletFailedToDecrypt:(Wallet*)wallet;
 -(void)walletJSReady;
 -(void)didSubmitTransaction;
 @end
@@ -53,6 +54,8 @@
 @property(nonatomic, strong) NSMutableDictionary * keys;
 @property(nonatomic, strong) NSMutableDictionary * addressBook;
 @property(nonatomic, strong) NSString * secondPassword;
+@property(nonatomic, strong) NSData * encrypted_payload;
+@property(nonatomic, strong) NSString * password;
 
 + (NSString *)generateUUID;
 

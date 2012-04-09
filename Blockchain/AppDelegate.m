@@ -425,21 +425,54 @@ AppDelegate * app;
     transactionsViewController.data = response;
 }
 
--(void)didGetWalletData:(NSData *)data  {
-    self.wallet = [[[Wallet alloc] initWithData:data password:[self password]] autorelease];
+-(void)walletFailedToDecrypt:(Wallet*)wallet {    
     
-    wallet.delegate = self;
+    //Clear the password and refetch the wallet data
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+    
+    //Cleare the checksum cache incase it has
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
+
+    [self showModal:mainPasswordView];
+    
+    [mainPasswordTextField becomeFirstResponder];
+}
+
+-(IBAction)mainPasswordClicked:(id)sender {
+    
+    if ([mainPasswordTextField.text length] < 10) {
+        [app standardNotify:@"Passowrd must be 10 or more characters in length"];
+        return;
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:mainPasswordTextField.text forKey:@"password"];
+
+    [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    
+    [app closeModal];
+}
+
+-(void)didGetWalletData:(NSData *)data  {
+    if ([self password]) {
+        self.wallet = [[[Wallet alloc] initWithData:data password:[self password]] autorelease];
+
+        wallet.delegate = self;
+    } else {
+        [self showModal:mainPasswordView];
+        
+        [mainPasswordTextField becomeFirstResponder];
+    }
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
+    NSLog(@"Foreground");
     
     if ([reachability currentReachabilityStatus] != NotReachable) {        
         //If not connected to websocket recall multiaddr
         if ([webSocket readyState] == ReadyStateClosed || [webSocket readyState] == ReadyStateClosing) {
             [webSocket connect:WebSocketURL];
-            
             
             printf("%f\n", time(NULL) - dataSource.lastWalletSync);
             
@@ -498,9 +531,6 @@ AppDelegate * app;
         }
     }
 }
-
-
-
 
 -(void)pushWebViewController:(NSString*)url {
     if (webViewController == nil) {
@@ -938,8 +968,16 @@ AppDelegate * app;
     
     NSLog(@"Saved GUID: %@", [self guid]);
     
-    if (![self guid] || ![self password]) {
+    if (![self guid] || ![self sharedKey]) {
+       
         [self showWelcome];
+    
+    } else if (![self password]) {
+      
+        [self showModal:mainPasswordView];
+        
+        [mainPasswordTextField becomeFirstResponder];
+        
     } else {
         
         //Restore the wallet cache
@@ -953,9 +991,9 @@ AppDelegate * app;
             NSLog(@"Null wallet cache");
             
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
-
-            [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
         }
+        
+        [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
         
         //Restore the transactions cache
         NSData * multiAddrCache = [app readFromFileName:MultiaddrCacheFile];

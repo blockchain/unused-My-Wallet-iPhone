@@ -160,11 +160,11 @@
     return 0;
 }
 
--(void)didDismissModal {
-    self.readerView = nil;
-    
+-(void)didDismissModal {    
     [readerView stop];
-    
+
+    self.readerView = nil;
+
     [wallet cancelTxSigning];
 }
 

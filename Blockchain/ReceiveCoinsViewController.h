@@ -21,9 +21,8 @@
 #import <UIKit/UIKit.h>
 #import "Wallet.h"
 
-@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
     IBOutlet UITableView * tableView;
-    IBOutlet UIView * qrCodeModalView;
     IBOutlet UIImageView * qrCodeImageView;
     IBOutlet UIButton * archiveUnarchiveButton;
     IBOutlet UIView * tableFooterView;
@@ -35,6 +34,15 @@
     IBOutlet UIView * labelAddressView;
     IBOutlet UITextField * labelTextField;
     IBOutlet UILabel * labelAddressLabel;
+    IBOutlet UIView * requestCoinsView;
+    
+    IBOutlet UIView * optionsModalView;
+    IBOutlet UILabel * optionsTitleLabel;
+    IBOutlet UILabel * optionsAddressLabel;
+    IBOutlet UITextField * requestAmountTextField;
+    
+    IBOutlet UIView * amountKeyoboardAccessoryView;
+    IBOutlet UILabel * currencyConversionLabel;
 }
 
 @property(nonatomic, strong) NSArray * activeKeys;
@@ -46,8 +54,16 @@
 -(IBAction)labelAddressClicked:(id)sender;
 -(IBAction)archiveAddressClicked:(id)sender;
 -(IBAction)generateNewAddressClicked:(id)sender;
--(IBAction)qrCodeImageClicked:(id)sender;
+-(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
 -(IBAction)depositClicked:(id)sender;
+-(IBAction)requestPaymentClicked:(id)sender;
+
+
+//Shared
+-(IBAction)shareByEmailClicked:(id)sender;
+-(IBAction)shareByTwitter:(id)sender;
+-(IBAction)shareByFacebook:(id)sender;
+-(IBAction)shareByGooglePlus:(id)sender;
 
 @end

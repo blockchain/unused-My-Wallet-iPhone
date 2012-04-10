@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "Output.h"
 #import "Input.h"
+#import "NSDate+Extensions.h"
 
 @implementation TransactionTableCell
 
@@ -28,8 +29,13 @@
 -(void)reload {   
         
     float y = 36;
-
-    [hashButton setTitle:transaction.hash forState:UIControlStateNormal];
+ 
+    if (transaction->time > 0)  {
+        [hashButton setHidden:FALSE];
+        [hashButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction->time] shortHandDateWithTime] forState:UIControlStateNormal];
+    } else {
+        [hashButton setHidden:TRUE];
+    }
     
     [btcButton setTitle:[app formatMoney:transaction->result] forState:UIControlStateNormal];
         

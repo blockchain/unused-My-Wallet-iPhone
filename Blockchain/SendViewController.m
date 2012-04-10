@@ -21,10 +21,15 @@
 @synthesize readerView;
 
 -(void)dealloc {
+    [amountKeyoboardAccessoryView release];
+    [currencyConversionLabel release];
     [readerView release];
     [toField release];
     [wallet release];
     [fromField release];
+    [labelAddressView release];
+    [labelAddressLabel release];
+    [labelAddressTextField release];
     [super dealloc];
 }
 
@@ -51,6 +56,57 @@
     [fromField setIndex:0];
 }
 
+
+-(IBAction)labelAddressClicked:(id)sender {
+    NSString * to = toField.text;
+    
+    [wallet addToAddressBook:to label:labelAddressTextField.text];
+    
+    [app closeModal];
+    
+    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
+    
+    [self reallyDoPayment];
+}
+
+-(void)reallyDoPayment {
+    NSString * to = toField.text;
+    NSString * from = @"";
+    if ([fromField index] > 0) {
+        from = [[fromAddress objectAtIndex:[fromField index]-1] addr];
+    }
+    
+    double value = [amountField.text doubleValue];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+        if ([app getSecondPasswordBlocking]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [wallet sendPaymentTo:to from:from value:value];
+                
+                [app showModal:[wallet webView]];
+                
+                app.modalDelegate = self;
+            });
+        } else {
+            [app standardNotify:@"Cannot send payment without the second password"];
+        }
+    });
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {    
+    NSString * to = toField.text;
+
+    if (buttonIndex == 0) {
+        [self reallyDoPayment];
+    } else if (buttonIndex == 1) {
+        labelAddressLabel.text = to;
+        
+        [app showModal:labelAddressView];
+        
+        [labelAddressTextField becomeFirstResponder];
+    }
+}
+
 -(IBAction)reviewPaymentClicked:(id)sender {
     
     NSString * to = toField.text;
@@ -59,10 +115,10 @@
         [app standardNotify:@"You must enter a destination address"];
         return;
     }
-
-    NSString * from = @"";
-    if ([fromField index] > 0) {
-        from = [[fromAddress objectAtIndex:[fromField index]-1] addr];
+    
+    if (![wallet isValidAddress:to]) {
+        [app standardNotify:@"Invalid to bitcoin address"];
+        return;
     }
     
     double value = [amountField.text doubleValue];
@@ -81,28 +137,37 @@
         return;
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        if ([app getSecondPasswordBlocking]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [wallet sendPaymentTo:to from:from value:value];
-                
-                [app showModal:[wallet webView]];
-                
-                app.modalDelegate = self;
-            });
-        } else {
-            [app standardNotify:@"Cannot send payment without the second password"];
-        }
-    });
-    
+    if ([[wallet.addressBook objectForKey:to] length] == 0 && [[wallet keys] objectForKey:to] == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?" 
+                                                        message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", to]
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"No" 
+                                              otherButtonTitles:@"Yes", nil];
+        alert.delegate = self;
+        
+        [alert show];
+        [alert release];
+    } else {
+        [self reallyDoPayment];
+    }
 }
 
+-(void)doCurrencyConversion {
+    uint64_t amount = SATOSHI;
+    if ([amountField.text length] > 0)
+        amount = [amountField.text doubleValue] * SATOSHI;
+    
+    currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+
+}
 -(void)setToAddress:(NSString*)string {
     toField.text = string;
 }
 
 -(void)setAmount:(NSString*)amount {
     amountField.text = amount;
+    
+    [self doCurrencyConversion];
 }
 
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
@@ -128,7 +193,15 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self doCurrencyConversion];
+    
 	[app.tabViewController responderMayHaveChanged];
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+    
+    return TRUE;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
@@ -150,7 +223,11 @@
 }
 
 -(void)viewDidLoad {
+    [super viewDidLoad];
+    
     fromField.valueFont = [UIFont systemFontOfSize:14];
+    
+    amountField.inputAccessoryView = amountKeyoboardAccessoryView;
 }
 
 -(NSUInteger)countForValueField:(MultiValueField*)valueField {

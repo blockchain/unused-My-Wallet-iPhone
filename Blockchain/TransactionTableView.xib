@@ -62,18 +62,18 @@
 									</object>
 									<object class="IBUIButton" id="378760186">
 										<reference key="NSNextResponder" ref="1006274079"/>
-										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{119, 1}, {201, 26}}</string>
+										<int key="NSvFlags">289</int>
+										<string key="NSFrame">{{173, 1}, {136, 26}}</string>
 										<reference key="NSSuperview" ref="1006274079"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="680543456"/>
 										<string key="NSReuseIdentifierKey">_NS:225</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentHorizontalAlignment">2</int>
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<int key="IBUILineBreakMode">4</int>
-										<string key="IBUINormalTitle">e13696aaacd45ba1cd3b326af28f20b38233b6c3c7a4e60f29001282e9fa0a3e</string>
+										<string key="IBUINormalTitle">12/03/2012</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC4wOTgxNTIyMTU2IDAuMTU2MjU0OTUxNSAwLjI2NTMwNjEyMjQAA</bytes>
@@ -86,13 +86,13 @@
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC41AA</bytes>
 										</object>
-										<object class="IBUIFontDescription" key="IBUIFontDescription" id="1066815071">
+										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<int key="type">1</int>
-											<double key="pointSize">12</double>
+											<double key="pointSize">13</double>
 										</object>
-										<object class="NSFont" key="IBUIFont" id="555752407">
+										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Helvetica</string>
-											<double key="NSSize">12</double>
+											<double key="NSSize">13</double>
 											<int key="NSfFlags">16</int>
 										</object>
 									</object>
@@ -165,8 +165,15 @@
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">button_green.png</string>
 								</object>
-								<reference key="IBUIFontDescription" ref="1066815071"/>
-								<reference key="IBUIFont" ref="555752407"/>
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="1066815071">
+									<int key="type">1</int>
+									<double key="pointSize">12</double>
+								</object>
+								<object class="NSFont" key="IBUIFont" id="50029685">
+									<string key="NSName">Helvetica</string>
+									<double key="NSSize">12</double>
+									<int key="NSfFlags">16</int>
+								</object>
 							</object>
 							<object class="IBUIButton" id="255699273">
 								<reference key="NSNextResponder" ref="513593019"/>
@@ -189,7 +196,7 @@
 									<string key="NSResourceName">button_blue.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="1066815071"/>
-								<reference key="IBUIFont" ref="555752407"/>
+								<reference key="IBUIFont" ref="50029685"/>
 							</object>
 							<object class="IBUIButton" id="48324518">
 								<reference key="NSNextResponder" ref="513593019"/>
@@ -197,7 +204,6 @@
 								<string key="NSFrame">{{187, 137}, {119, 0}}</string>
 								<reference key="NSSuperview" ref="513593019"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -390,7 +396,7 @@
 				<string key="2.CustomClassName">TransactionTableCell</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="3.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="3.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

@@ -124,7 +124,7 @@
 
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {
-    [self saveWallet:walletIdentifier sharedKey:sharedKey payload:payload];
+    [self saveWallet:walletIdentifier sharedKey:sharedKey payload:payload success:NULL error:NULL];
 }
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error {    

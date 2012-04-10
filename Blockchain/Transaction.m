@@ -35,7 +35,7 @@
     transaction->size = [[transactionDict objectForKey:@"size"] intValue];
     transaction->tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
     transaction->result = [[transactionDict objectForKey:@"result"] longLongValue];
-    
+    transaction->time =[[transactionDict objectForKey:@"time"] longLongValue];
     transaction->block_height = [[transactionDict objectForKey:@"block_height"] intValue];
     
     

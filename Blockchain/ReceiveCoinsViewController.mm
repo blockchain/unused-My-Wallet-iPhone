@@ -11,6 +11,7 @@
 #import "QREncoder.h"
 #import "ReceiveTableCell.h"
 #import "Address.h"
+#import "AddThis.h"
 
 @implementation ReceiveCoinsViewController
 
@@ -20,14 +21,20 @@
 @synthesize otherKeys;
 
 -(void)dealloc {
+    [currencyConversionLabel release];
+    [amountKeyoboardAccessoryView release];
+    [optionsTitleLabel release];
     [depositButton release];
     [archiveUnarchiveButton release];
-    [qrCodeModalView release];
+    [optionsModalView release];
+    [requestCoinsView release];
     [qrCodeImageView release];
     [otherKeys release];
+    [optionsAddressLabel release];
     [activeKeys release];
     [archivedKeys release];
     [tableView release];
+    [requestAmountTextField release];
     [super dealloc];
 }
 
@@ -114,7 +121,8 @@
 }
 
 -(void)viewDidLoad {
-    
+    [super viewDidLoad];
+
 #ifndef CYDIA 
     [depositButton setHidden:TRUE];
 #endif
@@ -178,7 +186,7 @@
     [app closeModal];
 }
 
--(IBAction)qrCodeImageClicked:(id)sender {
+-(IBAction)copyAddressClicked:(id)sender {
     Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
     
     [app standardNotify:[NSString stringWithFormat:@"%@ copied to clipboard", key.addr]  title:@"Success" delegate:nil];
@@ -186,10 +194,116 @@
     [UIPasteboard generalPasteboard].string = key.addr;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	[app.tabViewController responderMayHaveChanged];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+{
+    [aTextField resignFirstResponder];
+    return YES;
+}
+
+
+-(NSString*)uriURL {
+    
+    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
+    
+    double amount = [requestAmountTextField.text doubleValue];
+    
+    return [NSString stringWithFormat:@"bitcoin://%@?amount=%.8f", key.addr, amount];
+}
+
+-(NSString*)blockchainUriURL {
+    
+    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
+    
+    double amount = [requestAmountTextField.text doubleValue];
+    
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", key.addr, amount];
+}
+
+
+
+
+-(void)setQR {
+    DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
+    
+    UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
+    
+    qrCodeImageView.image = image;
+
+    uint64_t amount = SATOSHI;
+    if ([requestAmountTextField.text length] > 0)
+        amount = [requestAmountTextField.text doubleValue] * SATOSHI;
+    
+    currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+    
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
+    
+    return TRUE;
+}
+
+-(IBAction)shareByTwitter:(id)sender {
+    
+    NSLog(@"Twitter");
+    
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+}
+
+-(IBAction)shareByFacebook:(id)sender {
+    NSLog(@"Facebook");
+
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+}
+-(IBAction)shareByGooglePlus:(id)sender {
+    NSLog(@"Google");
+
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+}
+
+-(IBAction)shareByEmailClicked:(id)sender {
+    NSLog(@"Email");
+
+    [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
+}
+
+-(IBAction)requestPaymentClicked:(id)sender {
+    [self setQR];
+    
+    requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
+    
+    //configure addthis -- (this step is optional)
+	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+    
+    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
+    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
+    
+	//Facebook connect settings
+	//CHANGE THIS FACEBOOK API KEY TO YOUR OWN!!
+	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
+	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
+	
+	//CHANGE THIS TWITTER API KEYS TO YOUR OWN!!
+	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
+        
+    [app showModal:requestCoinsView];
+}
+
 -(IBAction)labelAddressClicked:(id)sender {
     Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
 
-    labelAddressLabel.text = key.addr;
+    if (key.label)
+        labelAddressLabel.text = key.label;
+    else
+        labelAddressLabel.text = key.addr;
 
     [app showModal:labelAddressView];
     
@@ -218,18 +332,19 @@
     
     Key * key =  [self getKey:indexPath];
     
-    DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[key addr]];
-    
-    UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
-    
-    qrCodeImageView.image = image;
-    
     if (key.tag == 2)
         [archiveUnarchiveButton setTitle:@"Unarchive" forState:UIControlStateNormal];
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:qrCodeModalView];
+    [app showModal:optionsModalView];
+    
+    if (key.label)
+        optionsTitleLabel.text = key.label;
+    else
+        optionsTitleLabel.text = @"Bitcoin Address";
+        
+    optionsAddressLabel.text = key.addr;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

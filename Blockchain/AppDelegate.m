@@ -26,6 +26,7 @@
 #import "Input.h"
 #import "Output.h"
 #import "UIDevice+Hardware.h"
+#import "UncaughtExceptionHandler.h"
 
 AppDelegate * app;
 
@@ -45,9 +46,8 @@ AppDelegate * app;
     return dataSource;
 }
 
--(NSString*)formatMoney:(uint64_t)value {   
-    
-    if (symbolLocal && latestResponse.symbol.conversion) {
+-(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {   
+    if (fsymbolLocal && latestResponse.symbol.conversion) {
         @try {
             NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
             
@@ -60,6 +60,10 @@ AppDelegate * app;
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
     
     return [[btcFromatter stringFromNumber:number] stringByAppendingString:@" BTC"];
+}
+
+-(NSString*)formatMoney:(uint64_t)value {   
+    return [self formatMoney:value localCurrency:symbolLocal];
 }
 
 -(id)init {
@@ -596,7 +600,8 @@ AppDelegate * app;
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-
+    [app closeModal];
+    
     NSDictionary *dict = [self parseURI:[url absoluteString]];
         
     NSString * addr = [dict objectForKey:@"address"];
@@ -691,9 +696,11 @@ AppDelegate * app;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [app showModal:secondPasswordView];
+        
+        [secondPasswordTextField becomeFirstResponder];
     });
     
-    usleep(20000);
+    usleep(50000);
 
     while (app.modalView) {
         usleep(20000);
@@ -947,8 +954,18 @@ AppDelegate * app;
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
 }
 
+-(IBAction)modalBackgroundClicked:(id)sender {
+    [modalView endEditing:FALSE];
+}
+
+- (void)installUncaughtExceptionHandler
+{
+	InstallUncaughtExceptionHandler();
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {         
+    [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     // Override point for customization after application launch.
     _window.backgroundColor = [UIColor whiteColor];
@@ -965,9 +982,7 @@ AppDelegate * app;
     webSocket.delegate = self;
     [webSocket connect:WebSocketURL];
     
-    
-    NSLog(@"Saved GUID: %@", [self guid]);
-    
+
     if (![self guid] || ![self sharedKey]) {
        
         [self showWelcome];

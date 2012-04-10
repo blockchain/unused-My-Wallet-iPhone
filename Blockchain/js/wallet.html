@@ -551,6 +551,14 @@ function getAllAddresses() {
 	}
 	return array;
 }
+    
+function parseAddress(addrstring) {
+    try {
+       return new Bitcoin.Address(addrstring).toString();
+    } catch (e) {
+        return null;
+    }
+}
 
 //show the progress modal
 //Get unspent outputs

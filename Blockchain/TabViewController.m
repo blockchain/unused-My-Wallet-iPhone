@@ -72,7 +72,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     printf("reponder y : %f\n", responder.frame.origin.y);
     
 
-    offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 5.0f;
+    offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 29.0f;
 	
     printf("y: %f\n", offset.y);
            

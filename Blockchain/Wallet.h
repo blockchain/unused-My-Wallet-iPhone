@@ -73,6 +73,10 @@
 
 -(NSString*)labelForAddress:(NSString*)address;
 
+-(void)addToAddressBook:(NSString*)address label:(NSString*)label;
+
+-(BOOL)isValidAddress:(NSString*)string;
+
 -(UIWebView*)webView;
 
 -(NSString*)jsonString;

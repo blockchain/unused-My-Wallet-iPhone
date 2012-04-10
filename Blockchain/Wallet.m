@@ -231,6 +231,15 @@
     NSLog(@"Start load");
 }
 
+-(void)addToAddressBook:(NSString*)address label:(NSString*)label {
+    [addressBook setObject:label forKey:address];
+}
+
+-(BOOL)isValidAddress:(NSString*)string {
+    NSString * result = [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
+    
+    return ([result length] > 0);
+}
 
 -(NSString*)encryptedString {
     NSString * encryptedFunction = [NSString stringWithFormat:@"encrypt('%@', '%@');", [self jsonString], self.password];
@@ -250,9 +259,6 @@
     
         NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
     
-        NSLog(@"%@", payload);
-    
-        
         NSString * walletJSON = [_webView stringByEvaluatingJavaScriptFromString:decryptFunction];
         
         if (walletJSON == NULL || [walletJSON length] == 0) {

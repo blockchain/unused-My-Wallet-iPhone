@@ -125,7 +125,7 @@
 }
 
 -(void)viewDidLoad {
-    NSLog(@"Did load");
+    [super viewDidLoad];
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }

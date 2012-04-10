@@ -36,7 +36,7 @@
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
 //Some features disabled to pass review process
-///#define CYDIA
+#define CYDIA
 
 @class TransactionsViewController, RemoteDataSource, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
 
@@ -165,6 +165,7 @@ typedef enum {
 -(NSData*)readFromFileName:(NSString *)fileName;
 
 -(NSString*)formatMoney:(uint64_t)value;
+-(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;
 
 -(BOOL)getSecondPasswordBlocking;
   
@@ -178,6 +179,7 @@ typedef enum {
 
 -(void)didSubmitTransaction;
 
+-(IBAction)modalBackgroundClicked:(id)sender;
 -(IBAction)receiveCoinClicked:(UIButton *)sender;
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;

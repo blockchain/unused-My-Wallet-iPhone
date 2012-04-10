@@ -1432,7 +1432,7 @@
 					<object class="IBUILabel" id="401372084">
 						<reference key="NSNextResponder" ref="724238403"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 48}, {280, 75}}</string>
+						<string key="NSFrame">{{20, 45}, {280, 75}}</string>
 						<reference key="NSSuperview" ref="724238403"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="539023141"/>
@@ -1454,7 +1454,7 @@
 					<object class="IBUILabel" id="539023141">
 						<reference key="NSNextResponder" ref="724238403"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 136}, {76, 21}}</string>
+						<string key="NSFrame">{{20, 128}, {76, 21}}</string>
 						<reference key="NSSuperview" ref="724238403"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="482321663"/>
@@ -1476,7 +1476,7 @@
 					<object class="IBUITextField" id="482321663">
 						<reference key="NSNextResponder" ref="724238403"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{104, 131}, {196, 31}}</string>
+						<string key="NSFrame">{{104, 123}, {196, 31}}</string>
 						<reference key="NSSuperview" ref="724238403"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1007302481"/>
@@ -1507,7 +1507,7 @@
 					<object class="IBUIButton" id="1007302481">
 						<reference key="NSNextResponder" ref="724238403"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{146, 170}, {154, 32}}</string>
+						<string key="NSFrame">{{146, 162}, {154, 32}}</string>
 						<reference key="NSSuperview" ref="724238403"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -3266,6 +3266,7 @@
 							<string>logoutClicked:</string>
 							<string>mainPasswordClicked:</string>
 							<string>manualPairClicked:</string>
+							<string>modalBackgroundClicked:</string>
 							<string>receiveCoinClicked:</string>
 							<string>scanAccountQRCodeclicked:</string>
 							<string>secondPasswordClicked:</string>
@@ -3277,6 +3278,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>UIButton</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -3299,6 +3301,7 @@
 							<string>logoutClicked:</string>
 							<string>mainPasswordClicked:</string>
 							<string>manualPairClicked:</string>
+							<string>modalBackgroundClicked:</string>
 							<string>receiveCoinClicked:</string>
 							<string>scanAccountQRCodeclicked:</string>
 							<string>secondPasswordClicked:</string>
@@ -3330,6 +3333,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">manualPairClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">modalBackgroundClicked:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -3687,14 +3694,24 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>archiveAddressClicked:</string>
+							<string>copyAddressClicked:</string>
 							<string>depositClicked:</string>
 							<string>generateNewAddressClicked:</string>
 							<string>labelAddressClicked:</string>
 							<string>labelSaveClicked:</string>
-							<string>qrCodeImageClicked:</string>
+							<string>requestPaymentClicked:</string>
+							<string>shareByEmailClicked:</string>
+							<string>shareByFacebook:</string>
+							<string>shareByGooglePlus:</string>
+							<string>shareByTwitter:</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -3708,16 +3725,25 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>archiveAddressClicked:</string>
+							<string>copyAddressClicked:</string>
 							<string>depositClicked:</string>
 							<string>generateNewAddressClicked:</string>
 							<string>labelAddressClicked:</string>
 							<string>labelSaveClicked:</string>
-							<string>qrCodeImageClicked:</string>
+							<string>requestPaymentClicked:</string>
+							<string>shareByEmailClicked:</string>
+							<string>shareByFacebook:</string>
+							<string>shareByGooglePlus:</string>
+							<string>shareByTwitter:</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">archiveAddressClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">copyAddressClicked:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -3737,7 +3763,23 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">qrCodeImageClicked:</string>
+								<string key="name">requestPaymentClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">shareByEmailClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">shareByFacebook:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">shareByGooglePlus:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">shareByTwitter:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -3746,27 +3788,39 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>amountKeyoboardAccessoryView</string>
 							<string>archiveUnarchiveButton</string>
+							<string>currencyConversionLabel</string>
 							<string>depositButton</string>
 							<string>labelAddressLabel</string>
 							<string>labelAddressView</string>
 							<string>labelTextField</string>
 							<string>noaddressesView</string>
+							<string>optionsAddressLabel</string>
+							<string>optionsModalView</string>
+							<string>optionsTitleLabel</string>
 							<string>qrCodeImageView</string>
-							<string>qrCodeModalView</string>
+							<string>requestAmountTextField</string>
+							<string>requestCoinsView</string>
 							<string>tableFooterView</string>
 							<string>tableView</string>
 							<string>wallet</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
 							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UITextField</string>
 							<string>UIView</string>
+							<string>UILabel</string>
+							<string>UIView</string>
+							<string>UILabel</string>
 							<string>UIImageView</string>
+							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIView</string>
 							<string>UITableView</string>
@@ -3777,14 +3831,20 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>amountKeyoboardAccessoryView</string>
 							<string>archiveUnarchiveButton</string>
+							<string>currencyConversionLabel</string>
 							<string>depositButton</string>
 							<string>labelAddressLabel</string>
 							<string>labelAddressView</string>
 							<string>labelTextField</string>
 							<string>noaddressesView</string>
+							<string>optionsAddressLabel</string>
+							<string>optionsModalView</string>
+							<string>optionsTitleLabel</string>
 							<string>qrCodeImageView</string>
-							<string>qrCodeModalView</string>
+							<string>requestAmountTextField</string>
+							<string>requestCoinsView</string>
 							<string>tableFooterView</string>
 							<string>tableView</string>
 							<string>wallet</string>
@@ -3792,8 +3852,16 @@
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
+								<string key="name">amountKeyoboardAccessoryView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">archiveUnarchiveButton</string>
 								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">currencyConversionLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">depositButton</string>
@@ -3816,11 +3884,27 @@
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">optionsAddressLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">optionsModalView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">optionsTitleLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">qrCodeImageView</string>
 								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">qrCodeModalView</string>
+								<string key="name">requestAmountTextField</string>
+								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">requestCoinsView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -3889,12 +3973,16 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>amountField</string>
+							<string>amountKeyoboardAccessoryView</string>
+							<string>currencyConversionLabel</string>
 							<string>fromField</string>
 							<string>toField</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UITextField</string>
+							<string>UIView</string>
+							<string>UILabel</string>
 							<string>MultiValueField</string>
 							<string>UITextField</string>
 						</object>
@@ -3904,6 +3992,8 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>amountField</string>
+							<string>amountKeyoboardAccessoryView</string>
+							<string>currencyConversionLabel</string>
 							<string>fromField</string>
 							<string>toField</string>
 						</object>
@@ -3912,6 +4002,14 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">amountField</string>
 								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">amountKeyoboardAccessoryView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">currencyConversionLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">fromField</string>

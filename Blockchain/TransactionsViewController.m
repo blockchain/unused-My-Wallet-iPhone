@@ -78,15 +78,19 @@
         baseHeight += [inputs count] * 22;
     }
     
+    if (!isfinite(baseHeight)) {        
+        return 85.0f;
+    }
+    
     return baseHeight;
 }
 
--(void)setData:(MulitAddressResponse *)_data {
-    [data release];
-    data = _data;
-    [data retain];
-    
-    if ([data n_transactions] == 0) {
+-(UITableView*)tableView {
+    return tableView;
+}
+
+-(void)setText {
+    if ([data.transactions count] == 0) {
         [self.view addSubview:noTransactionsView];
     } else {
         [noTransactionsView removeFromSuperview];
@@ -95,7 +99,15 @@
     [transactionCountLabel setText:[NSString stringWithFormat:@"%d Transactions", data.n_transactions]];
     
     [finalBalanceLabel setText:[app formatMoney:data.final_balance]];
+}
 
+-(void)setData:(MulitAddressResponse *)_data {
+    [data release];
+    data = _data;
+    [data retain];
+    
+    [self setText];
+    
     [tableView reloadData];
 }
 

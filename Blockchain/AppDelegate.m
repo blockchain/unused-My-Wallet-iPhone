@@ -87,7 +87,9 @@ AppDelegate * app;
 -(void)toggleSymbol {
     symbolLocal = !symbolLocal;
     
-    transactionsViewController.data = latestResponse;
+    [transactionsViewController setText];
+    
+    [[transactionsViewController tableView] reloadData];
 }
 
 -(void)showBusy {
@@ -112,6 +114,12 @@ AppDelegate * app;
 
                 [busyLabel setText:@"saving wallet"];
 
+                break;
+            case TaskLoadUnconfirmed:
+                [self showBusy];
+                
+                [busyLabel setText:@"loading unconfirmed"];
+                
                 break;
             case TaskGetWallet:
                 if (wallet == NULL) {
@@ -272,12 +280,18 @@ AppDelegate * app;
     
     [self setStatus];
     
-    NSString * msg = @"{\"op\":\"blocks_sub\"}";
-            
+    NSString * msg = nil;
+    if (isRegistered) {
+        msg = @"{\"op\":\"blocks_sub\"}";
+                
+        if ([self guid])
+            [self subscribeWalletAndToKeys];
+    } else {
+         msg = @"{\"op\":\"unconfirmed_sub\"}";
+    }
+    
     [webSocket send:msg];
 
-    if ([self guid])
-        [self subscribeWalletAndToKeys];
 }
 
 -(void)webSocketOnClose:(WebSocket*)_webSocket {
@@ -319,7 +333,7 @@ AppDelegate * app;
         
         NSDictionary * block = [document objectForKey:@"x"];
         
-        LatestBlock * latest = [[LatestBlock alloc] init];
+        LatestBlock * latest = [[[LatestBlock alloc] init] autorelease];
       
         latest.height =  [[block objectForKey:@"height"] intValue];
         latest.hash = [block objectForKey:@"hash"];
@@ -329,14 +343,10 @@ AppDelegate * app;
         [latestResponse setLatestBlock:latest];
         
         transactionsViewController.data = latestResponse;
-        
-        [latest release];
-    } else if ([op isEqualToString:@"utx"]) {
-        NSLog(@"New Transaction");
-        
+    } else if ([op isEqualToString:@"utx"]) {        
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
-        Transaction * transaction = [[Transaction fromJSONDict:[document objectForKey:@"x"]] autorelease];
+        Transaction * transaction = [Transaction fromJSONDict:[document objectForKey:@"x"]];
         
         if (transaction == NULL)
             return;
@@ -355,18 +365,26 @@ AppDelegate * app;
         }
         
         for (Output * output in transaction.outputs) {
-            if ([wallet.keys objectForKey:output.addr]) {
+            if (wallet == nil || [wallet.keys objectForKey:output.addr]) {
                 result += output.value;
                 latestResponse.final_balance += output.value;
                 latestResponse.total_received += output.value;
             }
         }
+        
+        latestResponse.n_transactions++;
     
         transaction->result = result;
+                
+        [[transactionsViewController tableView] beginUpdates];
         
         [latestResponse.transactions insertObject:transaction atIndex:0];
         
-        transactionsViewController.data = latestResponse;
+        [[transactionsViewController tableView] reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+        
+        [[transactionsViewController tableView] endUpdates];
+        
+        [transactionsViewController setText];
         
         [self playBeepSound];
     } else if ([op isEqualToString:@"on_change"]) {
@@ -424,9 +442,11 @@ AppDelegate * app;
 
 -(void)didGetMultiAddr:(MulitAddressResponse *)response {
         
-    self.latestResponse = response;
+    if (isRegistered) {
+        self.latestResponse = response;
     
-    transactionsViewController.data = response;
+        transactionsViewController.data = response;
+    }
 }
 
 -(void)walletFailedToDecrypt:(Wallet*)wallet {    
@@ -456,6 +476,13 @@ AppDelegate * app;
     [app closeModal];
 }
 
+-(IBAction)refreshClicked:(id)sender {
+    if (time(NULL) - dataSource.lastWalletSync > 5.0f) {
+        //Fetch the wallet data
+        [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    }
+}
+
 -(void)didGetWalletData:(NSData *)data  {
     if ([self password]) {
         self.wallet = [[[Wallet alloc] initWithData:data password:[self password]] autorelease];
@@ -468,10 +495,23 @@ AppDelegate * app;
     }
 }
 
+-(void)didGetUnconfirmedTransactions:(MulitAddressResponse*)response {
+    
+    if (!isRegistered) {
+        self.latestResponse = response;
+
+        transactionsViewController.data = response;
+    }
+}
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
     NSLog(@"Foreground");
+   
+    if (isRegistered && (![self guid] || ![self sharedKey])) {
+        [app showWelcome];
+        return;
+    }
     
     if ([reachability currentReachabilityStatus] != NotReachable) {        
         //If not connected to websocket recall multiaddr
@@ -480,9 +520,16 @@ AppDelegate * app;
             
             printf("%f\n", time(NULL) - dataSource.lastWalletSync);
             
-            if (time(NULL) - dataSource.lastWalletSync > MULTI_ADDR_TIME) {
-                //Fetch the wallet data
-                [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+            if (!isRegistered) {
+                [self registerDevice];
+                
+                [dataSource getUnconfirmedTransactions];
+                
+            } else {
+                if (time(NULL) - dataSource.lastWalletSync > MULTI_ADDR_TIME) {
+                    //Fetch the wallet data
+                    [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+                }
             }
         }
     }
@@ -522,16 +569,18 @@ AppDelegate * app;
 //Called by Reachability whenever status changes.
 - (void) reachabilityChanged: (NSNotification* )note
 {	
-    if ([reachability currentReachabilityStatus] != NotReachable) {
-        
-        //Reconnect to the websocket
-        if (([webSocket readyState] == ReadyStateClosed || [webSocket readyState] == ReadyStateClosing)) {
-            [webSocket connect:WebSocketURL];
-        }
-        
-        if (time(NULL) - dataSource.lastWalletSync > MULTI_ADDR_TIME) {
-            //Fetch the wallet data
-            [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    if (isRegistered) {
+        if ([reachability currentReachabilityStatus] != NotReachable) {
+            
+            //Reconnect to the websocket
+            if (([webSocket readyState] == ReadyStateClosed || [webSocket readyState] == ReadyStateClosing)) {
+                [webSocket connect:WebSocketURL];
+            }
+            
+            if (time(NULL) - dataSource.lastWalletSync > MULTI_ADDR_TIME) {
+                //Fetch the wallet data
+                [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+            }
         }
     }
 }
@@ -600,6 +649,10 @@ AppDelegate * app;
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
+    
+    if (!isRegistered)
+        return FALSE;
+    
     [app closeModal];
     
     NSDictionary *dict = [self parseURI:[url absoluteString]];
@@ -684,6 +737,43 @@ AppDelegate * app;
     [aTextField resignFirstResponder];
     
     return YES;
+}
+
+-(void)registerDevice {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+        
+        NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@register_device?device=%@", WebROOT, [[UIDevice currentDevice] uniqueIdentifier]]];
+        
+        NSURLResponse * response = nil;
+        NSError * error = nil;
+        
+        NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&response error:&error];
+        
+        NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([responseString isEqualToString:@"TRUE"]) {
+                [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"registered"];
+                
+                [tabViewController.view removeFromSuperview];
+                
+                tabViewController = oldTabViewController;
+                
+                isRegistered =  TRUE;
+                                
+                [webSocket disconnect];
+                
+                [_window insertSubview:tabViewController.view atIndex:0];
+                
+                [tabViewController setActiveViewController:transactionsViewController];
+                
+                transactionsViewController.data = nil;
+                
+                [app showWelcome];
+            }
+        });
+    });
 }
 
 -(BOOL)getSecondPasswordBlocking {
@@ -865,6 +955,9 @@ AppDelegate * app;
 }
 
 -(void)showWelcome {
+    if (!isRegistered)
+        return;
+    
     if (wallet) {
         [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
     } else {
@@ -982,9 +1075,25 @@ AppDelegate * app;
     webSocket.delegate = self;
     [webSocket connect:WebSocketURL];
     
-
-    if (![self guid] || ![self sharedKey]) {
-       
+#ifdef CYDIA
+    isRegistered = TRUE;
+#else
+    isRegistered = [[NSUserDefaults standardUserDefaults] boolForKey:@"registered"];
+#endif
+    
+    if (isRegistered) {
+        tabViewController = oldTabViewController;
+    } else {
+        tabViewController = newTabViewController;
+        
+        [self registerDevice];
+    }
+    
+    if (!isRegistered) {
+        
+        [dataSource getUnconfirmedTransactions];
+        
+    } else if (![self guid] || ![self sharedKey]) {        
         [self showWelcome];
     
     } else if (![self password]) {
@@ -1002,9 +1111,6 @@ AppDelegate * app;
             
             wallet.delegate = self;
         } else {
-            
-            NSLog(@"Null wallet cache");
-            
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
         }
         
@@ -1017,7 +1123,7 @@ AppDelegate * app;
             transactionsViewController.data = latestResponse;
         }
     }
-               
+
     [_window insertSubview:tabViewController.view atIndex:0];
     
     [tabViewController setActiveViewController:transactionsViewController];

@@ -32,4 +32,7 @@
 
 @property(nonatomic, retain)  MulitAddressResponse * data;
 
+-(void)setText;
+-(UITableView*)tableView;
+
 @end

@@ -40,7 +40,6 @@
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate> {
-    UIWebView * _webView;
     NSString * _password;
     NSData * _encrypted_payload;
     NSDictionary * dictionary;
@@ -56,6 +55,7 @@
 @property(nonatomic, strong) NSString * secondPassword;
 @property(nonatomic, strong) NSData * encrypted_payload;
 @property(nonatomic, strong) NSString * password;
+@property(nonatomic, strong)  UIWebView * webView;
 
 + (NSString *)generateUUID;
 
@@ -76,8 +76,6 @@
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label;
 
 -(BOOL)isValidAddress:(NSString*)string;
-
--(UIWebView*)webView;
 
 -(NSString*)jsonString;
 

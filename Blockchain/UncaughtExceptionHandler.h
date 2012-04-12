@@ -19,6 +19,8 @@
 	BOOL dismissed;
 }
 
++ (void)logException:(NSException*)exception;
+
 @end
 
 void SignalHandler(int signal);

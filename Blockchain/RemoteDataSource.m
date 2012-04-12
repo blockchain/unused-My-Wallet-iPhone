@@ -302,11 +302,23 @@
     
     NSDictionary * wallet = [top objectForKey:@"wallet"];
     
-    res.n_transactions = [[wallet objectForKey:@"n_tx"] intValue];
+    NSString * n_tx = [wallet objectForKey:@"n_tx"];
+    if (n_tx)
+        res.n_transactions = [n_tx intValue];
+    else
+        res.n_transactions = [res.transactions count];
+
     res.total_sent = [[wallet objectForKey:@"total_sent"] longLongValue];
     res.total_received = [[wallet objectForKey:@"total_received"] longLongValue];
-    res.final_balance = [[wallet objectForKey:@"final_balance"] longLongValue];
     
+    NSString * final_balance = [wallet objectForKey:@"final_balance"];
+    if (final_balance) {
+        res.final_balance = [[wallet objectForKey:@"final_balance"] longLongValue];
+    } else {
+        for (Transaction * tx in res.transactions) {
+            res.final_balance += tx->result;
+        }
+    }
     
     NSDictionary * infoDict = [top objectForKey:@"info"];
     NSDictionary * blockDict = [infoDict objectForKey:@"latest_block"];
@@ -328,6 +340,8 @@
 
     return res;
 }
+
+
 
 -(NSDictionary*)resolveAlias:(NSString*)alias {    
 
@@ -360,6 +374,51 @@
     JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
     
     return [json objectWithData:data];
+}
+
+
+-(void)getUnconfirmedTransactions {
+    
+    [app startTask:TaskLoadUnconfirmed];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+        @try {
+            NSMutableString * string = [NSMutableString stringWithFormat:@"%@unconfirmed-transactions?format=json", WebROOT];
+          
+            NSURL * url = [NSURL URLWithString:string];
+            
+            NSHTTPURLResponse * repsonse = NULL;
+            NSError * error = NULL;
+            
+            NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&repsonse error:&error];
+            
+            if (data == NULL || [data length] == 0) {
+                [app standardNotify:@"Error getting pending trasactions from server"];
+                return;
+            }
+            
+            NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            
+            if ([repsonse statusCode] == 500) {
+                [app standardNotify:responseString];
+                return;
+            }
+            
+            if (error != NULL || [repsonse statusCode] != 200) {
+                [app standardNotify:[error localizedDescription]];
+                return;
+            }
+                    
+            MulitAddressResponse * res = [self parseMultiAddr:data];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [delegate didGetUnconfirmedTransactions:res];
+            });    
+        } @finally {
+            [app finishTask];
+        }
+    });
+
 }
 
 

@@ -50,6 +50,8 @@
 		9F45F82B1514E35200018AED /* button_grey_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F8291514E35200018AED /* button_grey_large@2x.png */; };
 		9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */; };
 		9F45F82E1514E6C000018AED /* SendForm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F82D1514E6BF00018AED /* SendForm.xib */; };
+		9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F48B3651534C78F00305059 /* 78-stopwatch.png */; };
+		9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */; };
 		9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */; };
 		9F5F3E57151BED0100128830 /* DataMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E3E151BED0100128830 /* DataMatrix.mm */; };
 		9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E3F151BED0100128830 /* QR_Encode.cpp */; };
@@ -59,6 +61,8 @@
 		9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F61B89D151519EF0083C57A /* AddressBookView.m */; };
 		9F61B8A0151532A30083C57A /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F61B89F151532A20083C57A /* ReceiveCoins.xib */; };
 		9F6C86131534689D0086C200 /* NSDate+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C8612153468610086C200 /* NSDate+Extensions.m */; };
+		9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6FA3511536E7EB005BA19C /* 01-refresh.png */; };
+		9F6FA3541536E7EB005BA19C /* 01-refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */; };
 		9F7480B11513E98700BC4292 /* power-orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7480AC1513E98700BC4292 /* power-orange.png */; };
 		9F7480B21513E98700BC4292 /* power-orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7480AD1513E98700BC4292 /* power-orange@2x.png */; };
 		9F7480B31513E98700BC4292 /* power-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7480AE1513E98700BC4292 /* power-red@2x.png */; };
@@ -99,7 +103,6 @@
 		9F765F4714BC8AEF00048EFB /* RemoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */; };
 		9F765F4A14BC8C0D00048EFB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4914BC8C0D00048EFB /* JSONKit.m */; };
 		9F7DCC8B153451B2000CBFC8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCC8A153451B2000CBFC8 /* CoreData.framework */; };
-		9F7DCCCE15345203000CBFC8 /* ATResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCC8E15345203000CBFC8 /* ATResources.bundle */; };
 		9F7DCCCF15345203000CBFC8 /* libAddThis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCC8F15345203000CBFC8 /* libAddThis.a */; };
 		9F7DCCD015345203000CBFC8 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F7DCC9315345203000CBFC8 /* Facebook.m */; };
 		9F7DCCD115345203000CBFC8 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCC9515345203000CBFC8 /* FBDialog.bundle */; };
@@ -146,6 +149,7 @@
 		9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9FB3637E14B60128004BEA02 /* InfoPlist.strings */; };
 		9FB3638214B60128004BEA02 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638114B60128004BEA02 /* main.m */; };
 		9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638514B60128004BEA02 /* AppDelegate.m */; };
+		9FC4EA36153504DD0092A073 /* _ATResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9FC4EA35153504DD0092A073 /* _ATResources.bundle */; };
 		9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */; };
 		9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D1A151494BF00ECDFBE /* SendViewController.m */; };
 		9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D1D151494D600ECDFBE /* AccountViewController.m */; };
@@ -219,6 +223,8 @@
 		9F45F8281514E35200018AED /* button_grey_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey_large.png; sourceTree = "<group>"; };
 		9F45F8291514E35200018AED /* button_grey_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_grey_large@2x.png"; sourceTree = "<group>"; };
 		9F45F82D1514E6BF00018AED /* SendForm.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendForm.xib; sourceTree = "<group>"; };
+		9F48B3651534C78F00305059 /* 78-stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch.png"; sourceTree = "<group>"; };
+		9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch@2x.png"; sourceTree = "<group>"; };
 		9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
 		9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		9F5F3E3D151BED0100128830 /* DataMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataMatrix.h; sourceTree = "<group>"; };
@@ -237,6 +243,8 @@
 		9F61B89F151532A20083C57A /* ReceiveCoins.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiveCoins.xib; sourceTree = "<group>"; };
 		9F6C8611153468610086C200 /* NSDate+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extensions.h"; sourceTree = "<group>"; };
 		9F6C8612153468610086C200 /* NSDate+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Extensions.m"; sourceTree = "<group>"; };
+		9F6FA3511536E7EB005BA19C /* 01-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh.png"; sourceTree = "<group>"; };
+		9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh@2x.png"; sourceTree = "<group>"; };
 		9F7480AC1513E98700BC4292 /* power-orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-orange.png"; sourceTree = "<group>"; };
 		9F7480AD1513E98700BC4292 /* power-orange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-orange@2x.png"; sourceTree = "<group>"; };
 		9F7480AE1513E98700BC4292 /* power-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-red@2x.png"; sourceTree = "<group>"; };
@@ -290,7 +298,6 @@
 		9F765F4914BC8C0D00048EFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		9F7DCC8A153451B2000CBFC8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9F7DCC8D15345203000CBFC8 /* AddThis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddThis.h; sourceTree = "<group>"; };
-		9F7DCC8E15345203000CBFC8 /* ATResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ATResources.bundle; sourceTree = "<group>"; };
 		9F7DCC8F15345203000CBFC8 /* libAddThis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAddThis.a; sourceTree = "<group>"; };
 		9F7DCC9215345203000CBFC8 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		9F7DCC9315345203000CBFC8 /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
@@ -371,6 +378,7 @@
 		9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blockchain-Prefix.pch"; sourceTree = "<group>"; };
 		9FB3638414B60128004BEA02 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9FB3638514B60128004BEA02 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9FC4EA35153504DD0092A073 /* _ATResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = _ATResources.bundle; sourceTree = "<group>"; };
 		9FCA4D141514949500ECDFBE /* ReceiveCoinsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiveCoinsViewController.h; sourceTree = "<group>"; };
 		9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReceiveCoinsViewController.mm; sourceTree = "<group>"; };
 		9FCA4D19151494BF00ECDFBE /* SendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendViewController.h; sourceTree = "<group>"; };
@@ -507,6 +515,10 @@
 		9F765EDC14BBBEC400048EFB /* images */ = {
 			isa = PBXGroup;
 			children = (
+				9F6FA3511536E7EB005BA19C /* 01-refresh.png */,
+				9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */,
+				9F48B3651534C78F00305059 /* 78-stopwatch.png */,
+				9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */,
 				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
 				9F7DCCEF153452A8000CBFC8 /* fbButton.png */,
 				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
@@ -594,7 +606,7 @@
 			isa = PBXGroup;
 			children = (
 				9F7DCC8D15345203000CBFC8 /* AddThis.h */,
-				9F7DCC8E15345203000CBFC8 /* ATResources.bundle */,
+				9FC4EA35153504DD0092A073 /* _ATResources.bundle */,
 				9F7DCC8F15345203000CBFC8 /* libAddThis.a */,
 				9F7DCC9015345203000CBFC8 /* ThirdPartyLibs */,
 			);
@@ -1010,13 +1022,17 @@
 				9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
 				9F1831FE1517912900FB3D52 /* ding.wav in Resources */,
-				9F7DCCCE15345203000CBFC8 /* ATResources.bundle in Resources */,
 				9F7DCCD115345203000CBFC8 /* FBDialog.bundle in Resources */,
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
 				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
+				9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */,
+				9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */,
+				9FC4EA36153504DD0092A073 /* _ATResources.bundle in Resources */,
+				9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */,
+				9F6FA3541536E7EB005BA19C /* 01-refresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1114,6 +1130,7 @@
 					armv6,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1143,6 +1160,7 @@
 					armv6,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1166,7 +1184,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -1178,7 +1196,6 @@
 					"\"$(SRCROOT)/AddThis\"",
 				);
 				PRODUCT_NAME = Blockchain;
-				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1192,7 +1209,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -1204,7 +1221,6 @@
 					"\"$(SRCROOT)/AddThis\"",
 				);
 				PRODUCT_NAME = Blockchain;
-				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

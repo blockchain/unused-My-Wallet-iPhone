@@ -44,6 +44,7 @@ typedef enum {
     TaskGetMultiAddr,
     TaskGetWallet,
     TaskSaveWallet,
+    TaskLoadUnconfirmed,
     TaskGeneratingWallet,
     TaskLoadExternalURL
 } Task;
@@ -57,8 +58,6 @@ typedef enum {
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
-
-    BOOL symbolLocal;
     
     NSNumberFormatter * btcFromatter;
     
@@ -70,7 +69,9 @@ typedef enum {
     IBOutlet UIButton * powerButton;
     
     IBOutlet TabViewcontroller * tabViewController;
-    
+    IBOutlet TabViewcontroller * newTabViewController;
+    IBOutlet TabViewcontroller * oldTabViewController;
+
     IBOutlet TransactionsViewController * transactionsViewController;
     IBOutlet ReceiveCoinsViewController * receiveViewController;
     IBOutlet SendViewController * sendViewController;
@@ -96,6 +97,11 @@ typedef enum {
     int webScoketFailures;
         
     int tasks;
+    
+    @public
+    
+    BOOL symbolLocal;
+    BOOL isRegistered;
 }
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
@@ -190,6 +196,7 @@ typedef enum {
 -(IBAction)scanAccountQRCodeclicked:(id)sender;
 -(IBAction)secondPasswordClicked:(id)sender;
 -(IBAction)mainPasswordClicked:(id)sender;
+-(IBAction)refreshClicked:(id)sender;
 
 @end
 

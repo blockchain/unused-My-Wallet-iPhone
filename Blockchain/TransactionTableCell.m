@@ -23,11 +23,15 @@
 
 
 -(IBAction)transactionHashClicked:(UIButton *)button {
-    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction->hash]];
+    if (app->isRegistered)
+        [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction->hash]];
 }
 
 -(void)reload {   
         
+    if (transaction == NULL)
+        return;
+    
     float y = 36;
  
     if (transaction->time > 0)  {
@@ -56,7 +60,9 @@
             [btcButton setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
         }
         
-        NSArray * inputs = [transaction inputsNotFromWallet:app.wallet];
+        NSArray * inputs = nil;
+        if (app.wallet)
+            inputs = [transaction inputsNotFromWallet:app.wallet];
         
         if ([inputs count] == 0)
             inputs = transaction.inputs;
@@ -128,6 +134,8 @@
 
 -(IBAction)btcbuttonclicked:(id)sender {
     [app toggleSymbol];
+    
+    
 }
 
 -(void)seLatestBlock:(LatestBlock*)block {

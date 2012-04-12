@@ -61,6 +61,7 @@
 
 @protocol RemoteDataSourceDelagate <NSObject>
 -(void)didGetMultiAddr:(MulitAddressResponse*)response;
+-(void)didGetUnconfirmedTransactions:(MulitAddressResponse*)response;
 -(void)didGetWalletData:(NSData*)data;
 -(void)walletDataNotModified;
 @end
@@ -81,6 +82,8 @@
 -(void)multiAddr:(NSString*)walletIdentifier addresses:(NSArray*)addresses;
 
 -(void)getWallet:(NSString*)walletIdentifier sharedKey:(NSString*)apiKey checksum:(NSString*)checksum;
+
+-(void)getUnconfirmedTransactions;
 
 -(MulitAddressResponse*)parseMultiAddr:(NSData*)data;
 

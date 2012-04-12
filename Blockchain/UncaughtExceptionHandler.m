@@ -53,14 +53,13 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 	 return backtrace;
 }
 
-- (void)alertView:(UIAlertView *)anAlertView clickedButtonAtIndex:(NSInteger)anIndex
-{
+- (void)alertView:(UIAlertView *)anAlertView clickedButtonAtIndex:(NSInteger)anIndex {
 	if (anIndex == 0) {
 		dismissed = YES;
 	}
 }
 
-- (NSString *)osVersionBuild {
++ (NSString *)osVersionBuild {
     int mib[2] = {CTL_KERN, KERN_OSVERSION};
     u_int namelen = sizeof(mib) / sizeof(mib[0]);
     size_t bufferSize = 0;
@@ -80,9 +79,8 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     return osBuildVersion;   
 }
 
-- (void)logException:(NSException*)exception
++ (void)logException:(NSException*)exception
 {
-    
     NSString * store = @"App Store";
     
     #ifdef CYDIA
@@ -99,11 +97,15 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     NSError * error = NULL;
     
    [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&repsonse error:&error];
+    
+    NSLog(@"Did Log %@ %@", url, message);
 }
 
 - (void)handleException:(NSException *)exception
 {
-	[self logException:exception];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+        [UncaughtExceptionHandler logException:exception];
+    });
 	
 	UIAlertView *alert =
 		[[[UIAlertView alloc]

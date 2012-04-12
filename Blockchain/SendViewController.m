@@ -13,6 +13,7 @@
 #import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "TabViewController.h"
+#import "UncaughtExceptionHandler.h"
 
 @implementation SendViewController
 
@@ -108,7 +109,6 @@
 }
 
 -(IBAction)reviewPaymentClicked:(id)sender {
-    
     NSString * to = toField.text;
     
     if ([to length] == 0) {
@@ -120,7 +120,7 @@
         [app standardNotify:@"Invalid to bitcoin address"];
         return;
     }
-    
+            
     double value = [amountField.text doubleValue];
     if (value <= 0) {
         [app standardNotify:@"You must enter a value greter than zero"];

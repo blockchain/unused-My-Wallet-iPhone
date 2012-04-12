@@ -38,6 +38,7 @@
 @synthesize addressBook;
 @synthesize secondPassword;
 @synthesize password;
+@synthesize webView;
 
 + (NSString *)generateUUID 
 {
@@ -48,26 +49,26 @@
 }
 
 -(void)cancelTxSigning {
-    [_webView stringByEvaluatingJavaScriptFromString:@"txCancelled = true;"];
+    [webView stringByEvaluatingJavaScriptFromString:@"txCancelled = true;"];
 }
 
 -(void)setJSVars {
-    [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"double_encryption = %s;", doubleEncryption ? "true" : "false"]];
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"double_encryption = %s;", doubleEncryption ? "true" : "false"]];
     
     if (self.secondPassword)
-        [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = '%@';", self.secondPassword]];
+        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = '%@';", self.secondPassword]];
     else
-        [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = null"]];
+        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = null"]];
 
-    [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sharedKey = '%@'", sharedKey]];
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sharedKey = '%@'", sharedKey]];
 
-    [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
 }
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(double)value {
     [self setJSVars];
    
-    [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%f');", toAddress, fromAddress, value]];
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%f');", toAddress, fromAddress, value]];
 }
 
 -(void)removeAddress:(NSString*)address {
@@ -77,7 +78,7 @@
 -(Key*)generateNewKey {
     [self setJSVars];
     
-    NSArray * components = [[_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", sharedKey]] componentsSeparatedByString:@"|"];
+    NSArray * components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", sharedKey]] componentsSeparatedByString:@"|"];
 
     if ([components count] == 2) {
         
@@ -143,20 +144,20 @@
     
     NSString* htmlString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     
-    [_webView loadHTMLString:htmlString baseURL:[[NSBundle mainBundle] resourceURL]];
+    [webView loadHTMLString:htmlString baseURL:[[NSBundle mainBundle] resourceURL]];
     
-    for(UIView *wview in [[[_webView subviews] objectAtIndex:0] subviews]) { 
+    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
     }   
     
-    [_webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
+    [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
 }
 
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
-        _webView = [[UIWebView alloc] init];
+        self.webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
                 
-        _webView.delegate = self;
+        webView.delegate = self;
         
         self.password = fpassword;        
         self.guid = [Wallet generateUUID];
@@ -175,9 +176,9 @@
 -(id)initWithData:(NSData*)payload password:(NSString*)fpassword {
     
     if ([super init]) {
-        _webView = [[UIWebView alloc] init];
+        self.webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
         
-        _webView.delegate = self;
+        webView.delegate = self;
         
         self.password = fpassword;
         self.encrypted_payload = payload;
@@ -208,10 +209,6 @@
     return YES;
 }
 
--(UIWebView*)webView {
-    return _webView;
-}
-
 -(NSString*)labelForAddress:(NSString*)address {
     NSString * addressbookLabel = [addressBook objectForKey:address];
 
@@ -236,7 +233,7 @@
 }
 
 -(BOOL)isValidAddress:(NSString*)string {
-    NSString * result = [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
+    NSString * result = [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
     
     return ([result length] > 0);
 }
@@ -244,7 +241,7 @@
 -(NSString*)encryptedString {
     NSString * encryptedFunction = [NSString stringWithFormat:@"encrypt('%@', '%@');", [self jsonString], self.password];
 
-   return  [_webView stringByEvaluatingJavaScriptFromString:encryptedFunction];
+   return  [webView stringByEvaluatingJavaScriptFromString:encryptedFunction];
 }
 
 -(void)decrypt {
@@ -259,7 +256,7 @@
     
         NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
     
-        NSString * walletJSON = [_webView stringByEvaluatingJavaScriptFromString:decryptFunction];
+        NSString * walletJSON = [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
         
         if (walletJSON == NULL || [walletJSON length] == 0) {
             
@@ -328,17 +325,18 @@
 }
 
 -(void)dealloc {
-    [_webView stopLoading];
-    _webView.delegate = nil;
+    [webView stopLoading];
+    webView.delegate = nil;
+    
     
     [encrypted_payload release];
     [secondPassword release];
     [dPasswordHash release];
     [_encrypted_payload release];
     [_password release];
-    [_webView release];
+    [webView release];
     
-    _webView = nil;
+    webView = nil;
     
     [super dealloc];
 }

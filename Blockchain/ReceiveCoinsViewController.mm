@@ -120,14 +120,6 @@
     }
 }
 
--(void)viewDidLoad {
-    [super viewDidLoad];
-
-#ifndef CYDIA 
-    [depositButton setHidden:TRUE];
-#endif
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 0) {
         return 88.0f;
@@ -223,9 +215,6 @@
     return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", key.addr, amount];
 }
 
-
-
-
 -(void)setQR {
     DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
     
@@ -248,26 +237,17 @@
 }
 
 -(IBAction)shareByTwitter:(id)sender {
-    
-    NSLog(@"Twitter");
-    
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 
 -(IBAction)shareByFacebook:(id)sender {
-    NSLog(@"Facebook");
-
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 -(IBAction)shareByGooglePlus:(id)sender {
-    NSLog(@"Google");
-
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin at address"];
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 
 -(IBAction)shareByEmailClicked:(id)sender {
-    NSLog(@"Email");
-
     [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
 }
 
@@ -285,11 +265,9 @@
     [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
     
 	//Facebook connect settings
-	//CHANGE THIS FACEBOOK API KEY TO YOUR OWN!!
 	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
 	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
 	
-	//CHANGE THIS TWITTER API KEYS TO YOUR OWN!!
 	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
 	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
 	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
@@ -375,6 +353,11 @@
     } else {
         [noaddressesView setHidden:TRUE];
     }
+    
+    if (!app->isRegistered)
+        [depositButton setHidden:TRUE];
+    else
+        [depositButton setHidden:FALSE];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

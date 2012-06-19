@@ -150,6 +150,24 @@
     return self;
 }
 
+-(Key*)parsePrivateKey:(NSString*)key {
+    [self setJSVars];
+    
+    NSArray * components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parsePrivateKey('%@');", key]] componentsSeparatedByString:@"|"];
+    
+    if ([components count] == 2) {
+        
+        Key * key = [[[Key alloc] init] autorelease];
+        key.addr = [components objectAtIndex:0];
+        key.priv = [components objectAtIndex:1];
+        
+        [self addKey:key];
+                
+        return key;
+    }
+    
+    return nil;
+}
 
 - (BOOL)webView:(UIWebView *)webView2  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
     

@@ -364,6 +364,16 @@ AppDelegate * app;
         latest.blockIndex = [[block objectForKey:@"blockIndex"] intValue];
         latest.time = [[block objectForKey:@"time"] longLongValue];
         
+        for (NSNumber * number in [block objectForKey:@"txIndexes"]) {
+           unsigned int txIndex = [number unsignedIntValue];
+            for (Transaction * tx in latestResponse.transactions) {
+                 if (tx->tx_index == txIndex) {
+                      tx->block_height = latest.height;
+                      continue;
+                 }
+            }
+        }
+
         [latestResponse setLatestBlock:latest];
         
         transactionsViewController.data = latestResponse;
@@ -902,15 +912,14 @@ AppDelegate * app;
 -(void)parseAccountQRCodeData:(NSString*)data {
     NSArray * components = [data componentsSeparatedByString:@"|"];
     
-    if ([components count] != 3) {
+    if ([components count] != 3 || [data length] < 36+36+3) {
         [app standardNotify:@"Invalid QR Code String"];
         return;
     }
     
-    NSString * guid = [components objectAtIndex:0];
-    NSString * sharedKey = [components objectAtIndex:1];
-    NSString * password = [components objectAtIndex:2];
-    
+    NSString * guid = [data substringWithRange:NSMakeRange(0, 36)];
+    NSString * sharedKey = [data substringWithRange:NSMakeRange(37, 36)];
+    NSString * password = [data substringWithRange:NSMakeRange(74, [data length]-74)];    
     
     [self setAccountData:guid sharedKey:sharedKey password:password];
 }

@@ -15,12 +15,15 @@
 
 @implementation ReceiveCoinsViewController
 
+@synthesize readerView;
 @synthesize wallet;
 @synthesize activeKeys;
 @synthesize archivedKeys;
 @synthesize otherKeys;
+@synthesize depositButton;
 
 -(void)dealloc {
+    
     [currencyConversionLabel release];
     [amountKeyoboardAccessoryView release];
     [optionsTitleLabel release];
@@ -35,7 +38,98 @@
     [archivedKeys release];
     [tableView release];
     [requestAmountTextField release];
+    [firstSectionFooterView release];
     [super dealloc];
+}
+
+
+- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
+{
+    // do something useful with results
+    for(ZBarSymbol *sym in syms) {
+        NSString * privateKey = sym.data;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+            if ([app getSecondPasswordBlocking]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    Key * key =  [wallet parsePrivateKey:privateKey];
+                    
+                    if (key == nil) {
+                        [app standardNotify:@"Error importing private key"];
+                        return;
+                    }
+                    
+                    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] success:^ {
+                        [self reload];
+                        
+                        [app standardNotify:[NSString stringWithFormat:@"Added bitcoin address %@", key.addr] title:@"Success" delegate:nil];
+                        
+                        [app.dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+                        
+                        [app subscribeWalletAndToKeys];
+                    } error:^{ 
+                        [wallet removeAddress:key.addr];
+                        
+                    }];
+                });
+            } else {
+                [app standardNotify:@"Cannot Generate new address without the second password"];
+            }
+        });
+    }
+    
+    [app closeModal];
+    
+    [readerView stop];
+    
+    self.readerView = nil;
+}
+
+-(IBAction)scanKeyClicked:(id)sender {
+    [self initQRCodeView];
+}
+
+-(void)initQRCodeView {
+    self.readerView = [[ZBarReaderView new] autorelease];
+    
+    [readerView start];
+    
+    [readerView setReaderDelegate:self];
+    
+    [app showModal:readerView];
+    
+    app.modalDelegate = self;
+}
+
+-(void)didDismissModal {    
+    [readerView stop];
+    
+    self.readerView = nil;
+    
+    [wallet cancelTxSigning];
+}
+
+
+-(void)viewDidLoad {
+#ifdef CYDIA
+    
+    NSLog(@"Add it");
+    
+    //button_green.png
+    
+    self.depositButton = [[[UIButton alloc] initWithFrame:CGRectMake(64, 20, 131, 30)] autorelease];
+    
+    [depositButton setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
+    
+    [depositButton setTitle:[NSString stringWithFormat:@"%@stant%@", @"In", @" Deposit"] forState:UIControlStateNormal];
+    
+    [depositButton addTarget:self action:@selector(depositClicked:) forControlEvents:UIControlEventTouchDown];
+    
+    [depositButton setFont:[UIFont boldSystemFontOfSize:15.0f]];
+    
+    [firstSectionFooterView addSubview:depositButton];
+#endif
+    
 }
 
 -(void)reload {
@@ -126,7 +220,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 0) {
-        return 88.0f;
+        return firstSectionFooterView.frame.size.height;
+    } else if (section == 1) {
+        return secondSectionFooterView.frame.size.height;
     }
     
     return 0.0f;
@@ -135,7 +231,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (section == 0) {
-        return tableFooterView;
+        return firstSectionFooterView;
+    } else if (section == 1) {
+        return secondSectionFooterView;
     }
     
     return nil;

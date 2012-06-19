@@ -247,6 +247,92 @@ try {
             return null;
         }
     }
+    
+    
+    function parseMiniKey(miniKey) {
+        var check = Crypto.SHA256(miniKey + '?');
+        
+        switch(check.slice(0,2)) {
+            case '00':
+            var decodedKey = Crypto.SHA256(miniKey, {asBytes: true}); 
+            return decodedKey;
+            break;
+            case '01':
+            var x          = Crypto.util.hexToBytes(check.slice(2,4))[0];
+            var count      = Math.round(Math.pow(2, (x / 4)));
+            var decodedKey = Crypto.PBKDF2(miniKey, 'Satoshi Nakamoto', 32, { iterations: count, asBytes: true});
+            return decodedKey;
+            break;
+            default:
+            console.log('invalid key');
+            break;
+        }    
+    };
+    
+    function detectPrivateKeyFormat(key) {
+        // 51 characters base58, always starts with a '5'
+        if (/^5[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{50}$/.test(key))
+        return 'sipa';
+        
+        if (/^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}$/.test(key))
+        return 'base58';
+        
+        if (/^[A-Fa-f0-9]{64}$/.test(key))
+        return 'hex';
+        
+        if (/^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+\/]{44}$/.test(key))
+        return 'base64';
+        
+        
+        if (/^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{21}$/.test(key) ||
+            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{25}$/.test(key) ||
+            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{29}$/.test(key) ||
+            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{30}$/.test(key) ||
+            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{31}$/.test(key)) {
+            
+            var testBytes = Crypto.SHA256(key + "?", { asBytes: true });
+            
+            if (testBytes[0] === 0x00 || testBytes[0] === 0x01)
+            return 'mini';
+        }
+        
+        throw 'Unknown Key Format';
+    }
+    
+    function privateKeyStringToKey(value, format) {
+        var key_bytes = null;
+        
+        if (format == 'base58') {
+            key_bytes = Bitcoin.Base58.decode(value);
+        } else if (format == 'base64') {
+            key_bytes = Crypto.util.base64ToBytes(value);
+        } else if (format == 'hex') {
+            key_bytes = Crypto.util.hexToBytes(value);			
+        } else if (format == 'mini') {
+            key_bytes = parseMiniKey(value);			
+        } else if (format == 'sipa') {
+            var tbytes = Bitcoin.Base58.decode(value);
+            tbytes.shift();
+            key_bytes = tbytes.slice(0, tbytes.length - 4);
+        } else {
+            throw 'Unsupported Key Format';
+        }	
+        
+        if (key_bytes.length != 32) 
+        throw 'Result not 32 bytes in length';
+        
+        return new Bitcoin.ECKey(key_bytes);
+    }
+    
+    function parsePrivateKey(keyString) {
+        try {
+            var key = privateKeyStringToKey(keyString, detectPrivateKeyFormat(keyString));
+            
+            return key.getBitcoinAddress().toString() + '|' + encodePK(key.priv);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     function formatBTC(value) {
         

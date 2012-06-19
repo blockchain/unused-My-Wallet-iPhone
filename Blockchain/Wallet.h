@@ -59,7 +59,9 @@
 -(NSDictionary*)addressBook;
 -(NSString*)dPasswordHash;
 
-+ (NSString *)generateUUID;
+-(Key*)parsePrivateKey:(NSString*)key;
+
++(NSString *)generateUUID;
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address;
 

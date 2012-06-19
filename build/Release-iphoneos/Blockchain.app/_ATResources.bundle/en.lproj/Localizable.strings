@@ -1,0 +1,51 @@
+/* 
+   Localizable.strings
+   AddThisApp
+
+   Created by Jithin Roy on 02/09/10.
+   Copyright 2010 __MyCompanyName__. All rights reserved.
+ */
+
+
+"Share" = "Share";
+"More . . ." = "More . . .";
+"Edit" = "Edit";
+"Cancel" = "Cancel";
+"Find a service" = "Find a service";
+"Success" = "Success";
+"Close" = "Close";
+
+// Error messages
+
+"Error" = "Error";
+"An internal error occured" = "An internal error occured";
+"Network error" = "Network error";
+"AddThis could not connect to the network. Please check your connection" = "AddThis could not connect to the network. Please check your connection";
+
+//	Native email
+"The device is not configured for sending email" = "The device is not configured for sending email";
+
+//	Tumblr
+"Uploading data to tumblr . . ." = "Uploading data to tumblr . . .";
+
+//	Twitter sharing
+
+"Connecting to twitpic . . ." = "Connecting to twitpic . . .";
+"Sending to twitter . . ." =  "Sending to twitter . . .";
+
+"Message is too long" = "Message is too long";
+"The message to be shared should not be more than 140 characters in length" = "The message to be shared should not be more than 140 characters in length";
+
+"Message is empty" = "Message is empty";
+"Enter your message in the text box" = "Enter your message in the text box";
+
+// OAuth
+
+"Connecting . . ." = "Connecting . . ."; 
+"Authenticating . . ." = "Authenticating . . .";
+
+"Couldnot authenticate to the service. Please check your credentials" = "Couldnot authenticate to the service. Please check your credentials";
+"Authentication Failed" ="Authentication Failed";
+
+"Email" = "Email";
+"Password" = "Password";

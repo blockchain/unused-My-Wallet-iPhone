@@ -39,32 +39,37 @@
 }
 
 -(void)reload {
-    if ([wallet.keys count] == 0) {
+    NSArray * keys = [[wallet keys] allValues];
+
+    self.activeKeys  = nil;
+    self.archivedKeys  = nil;
+    self.otherKeys  = nil;
+
+    if ([keys count] == 0) {
         [self.view addSubview:noaddressesView];
     } else {
         [noaddressesView removeFromSuperview];
+        
+        NSMutableArray * _activeKeys = [NSMutableArray arrayWithCapacity:[keys count]];
+        NSMutableArray * _archivedKeys = [NSMutableArray arrayWithCapacity:[keys count]];
+        NSMutableArray * _otherKeys = [NSMutableArray arrayWithCapacity:[keys count]];
+        
+        for (Key * key in keys) {
+            if ([key tag] == 0)
+                [_activeKeys addObject:key];
+            else if ([key tag] == 2)
+                [_archivedKeys addObject:key];
+            else
+                [_otherKeys addObject:key];
+        }
+        
+        
+        self.activeKeys = [_activeKeys sortedArrayUsingSelector:@selector(compare:)];
+        self.archivedKeys = [_archivedKeys sortedArrayUsingSelector:@selector(compare:)];
+        self.otherKeys = [_otherKeys sortedArrayUsingSelector:@selector(compare:)];
     }
-    
-    NSMutableArray * _activeKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
-    NSMutableArray * _archivedKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
-    NSMutableArray * _otherKeys = [NSMutableArray arrayWithCapacity:[wallet.keys count]];
-    
-    for (Key * key in [[wallet keys] allValues]) {
-        if ([key tag] == 0)
-            [_activeKeys addObject:key];
-        else if ([key tag] == 2)
-            [_archivedKeys addObject:key];
-        else
-            [_otherKeys addObject:key];
-    }
-    
-    
-    self.activeKeys = [_activeKeys sortedArrayUsingSelector:@selector(compare:)];
-    self.archivedKeys = [_archivedKeys sortedArrayUsingSelector:@selector(compare:)];
-    self.otherKeys = [_otherKeys sortedArrayUsingSelector:@selector(compare:)];
     
     [tableView reloadData];
-
 }
 
 -(void)setWallet:(Wallet *)_wallet {
@@ -74,7 +79,6 @@
     
     [self reload];
 }
-
 
 -(IBAction)generateNewAddressClicked:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
@@ -92,7 +96,7 @@
                     
                     [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
                         
-                    [app.dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+                    [app.dataSource multiAddr:wallet.guid addresses:[wallet activeAddresses]];
                     
                     [app subscribeWalletAndToKeys];
                 } error:^{ 
@@ -163,15 +167,16 @@
 -(IBAction)labelSaveClicked:(id)sender {
     Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
     
+    labelTextField.text = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([labelTextField.text length] == 0 || [labelTextField.text length] > 255) {
         [app standardNotify:@"You must enter a label"];
         return;
     }
     
-    key.label = labelTextField.text;
-    
-    [tableView reloadData];
+    [wallet setLabel: labelTextField.text ForAddress:key.addr];
+        
+    [self reload];
     
     [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
 
@@ -295,9 +300,9 @@
     Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
 
     if (key.tag == 2)
-        key.tag = 0;
+        [wallet unArchiveAddress:key.addr];
     else
-        key.tag = 2;
+        [wallet archiveAddress:key.addr];
     
     self.wallet = wallet;
     
@@ -354,10 +359,12 @@
         [noaddressesView setHidden:TRUE];
     }
     
-    if (!app->isRegistered)
-        [depositButton setHidden:TRUE];
-    else
-        [depositButton setHidden:FALSE];
+#ifdef CYDIA
+    [depositButton setHidden:FALSE];
+#else
+    [depositButton setHidden:TRUE];
+#endif
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

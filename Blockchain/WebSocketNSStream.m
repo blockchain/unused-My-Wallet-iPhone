@@ -94,13 +94,14 @@
     request = [[NSString alloc] initWithFormat:
                           @"GET %@ HTTP/1.1\r\n"
                           "Upgrade: WebSocket\r\n"
-                          "Sec-WebSocket-Protocol: piukv1\r\n"
                           "Connection: Upgrade\r\n"
                           "Host: %@\r\n"
                           "Origin: %@\r\n"
                           "\r\n",
                           [url path], [url host], [url absoluteURL]];
         
+    NSLog(@"%@", request);
+    
     [inStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
                        forMode:NSDefaultRunLoopMode];
     [outStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
@@ -203,6 +204,8 @@
                                         
                     len = [inStream read:buffer maxLength:BUFFER_LEN];
                     if (len > 0)  {
+                        printf("%s\n", buffer);
+                        
                         if (!receivedResponse && strstr((const char*)buffer,  "HTTP/1.1 101 Web Socket Protocol Handshake")) {
                             receivedUpgradeResponse = YES;
                           

@@ -128,8 +128,10 @@
 }
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error {    
-    if (!walletIdentifier || !sharedKey || !payload)
+    if (!walletIdentifier || !sharedKey || !payload || [payload length] == 0) {
+        [app standardNotify:@"Error saving new wallet on server."];
         return;
+    }
     
     [app startTask:TaskSaveWallet];
 

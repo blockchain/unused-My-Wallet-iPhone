@@ -80,16 +80,24 @@
     double value = [amountField.text doubleValue];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        if ([app getSecondPasswordBlocking]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [wallet sendPaymentTo:to from:from value:value];
-                
-                [app showModal:[wallet webView]];
-                
-                app.modalDelegate = self;
-            });
-        } else {
-            [app standardNotify:@"Cannot send payment without the second password"];
+        @try {
+            if ([app getSecondPasswordBlocking]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    @try {
+                        [wallet sendPaymentTo:to from:from value:value];
+                        
+                        [app showModal:[wallet webView]];
+                        
+                        app.modalDelegate = self;
+                    } @catch (NSException * e) {
+                        [UncaughtExceptionHandler logException:e];
+                    }
+                });
+            } else {
+                [app standardNotify:@"Cannot send payment without the second password"];
+            }
+        } @catch (NSException * e) {
+            [UncaughtExceptionHandler logException:e];
         }
     });
 }
@@ -127,13 +135,10 @@
         return;
     }
     
-    int countPriv = 0;
-    for (Key * key in [wallet.keys allKeys]) {
-        ++countPriv;
-    }
+    int countPriv = [[wallet activeAddresses] count];
     
     if (countPriv == 0) {
-        [app standardNotify:@"You have no bitcoin addresses available for sending"];
+        [app standardNotify:@"You have no active bitcoin addresses available for sending"];
         return;
     }
     

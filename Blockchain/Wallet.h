@@ -40,24 +40,32 @@
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate> {
-    NSString * _password;
-    NSData * _encrypted_payload;
-    NSDictionary * dictionary;
+    NSDictionary * document;
 }
 
 @property(nonatomic, strong) id<WalletDelegate> delegate;
-@property(nonatomic, strong) NSString * guid;
-@property(nonatomic, strong) NSString * sharedKey;
-@property(nonatomic, strong) NSString * dPasswordHash;
-@property(nonatomic, assign) BOOL doubleEncryption;
-@property(nonatomic, strong) NSMutableDictionary * keys;
-@property(nonatomic, strong) NSMutableDictionary * addressBook;
-@property(nonatomic, strong) NSString * secondPassword;
-@property(nonatomic, strong) NSData * encrypted_payload;
-@property(nonatomic, strong) NSString * password;
-@property(nonatomic, strong)  UIWebView * webView;
+@property(nonatomic, retain) NSString * secondPassword;
+@property(nonatomic, retain) NSData * encrypted_payload;
+@property(nonatomic, retain) NSString * password;
+@property(nonatomic, strong) UIWebView * webView;
+@property(nonatomic, strong) NSDictionary * document;
+
+-(NSString*)guid;
+-(void)setGuid:(NSString *)guid;
+-(NSString*)sharedKey;
+-(void)setSharedKey:(NSString *)sharedKey;
+-(BOOL)doubleEncryption;
+-(NSDictionary*)keys;
+-(NSDictionary*)addressBook;
+-(NSString*)dPasswordHash;
 
 + (NSString *)generateUUID;
+
+-(void)setLabel:(NSString*)label ForAddress:(NSString*)address;
+
+-(void)archiveAddress:(NSString*)address;
+
+-(void)unArchiveAddress:(NSString*)address;
 
 -(void)removeAddress:(NSString*)address;
 
@@ -82,5 +90,9 @@
 -(NSString*)encryptedString;
 
 -(void)cancelTxSigning;
+
+-(void)addKey:(Key*)key;
+
+-(NSArray*)activeAddresses;
 
 @end

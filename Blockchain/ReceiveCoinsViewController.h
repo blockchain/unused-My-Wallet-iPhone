@@ -51,6 +51,8 @@
 
 @property(nonatomic, strong) IBOutlet Wallet * wallet;
 
+-(void)reload;
+
 -(IBAction)labelAddressClicked:(id)sender;
 -(IBAction)archiveAddressClicked:(id)sender;
 -(IBAction)generateNewAddressClicked:(id)sender;

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		848B499115907E85009D49BB /* README in Resources */ = {isa = PBXBuildFile; fileRef = 848B498E15907E85009D49BB /* README */; };
+		848B499215907E85009D49BB /* WebSocketUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848B499015907E85009D49BB /* WebSocketUIView.m */; };
+		848B499A1590C94E009D49BB /* aes.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 848B49981590C7D1009D49BB /* aes.min.js */; };
+		848B499B1590C94E009D49BB /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 848B49961590C7A7009D49BB /* jquery.min.js */; };
+		848B499C1590C94E009D49BB /* bitcoinjs.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 848B49941590C75F009D49BB /* bitcoinjs.min.js */; };
+		848B499F1590D86C009D49BB /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = 848B499D1590D79C009D49BB /* signer.js */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
 		9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA115134C2C00CD945D /* button_red@2x.png */; };
 		9F0CBAA615134D3200CD945D /* button_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA415134D3200CD945D /* button_grey.png */; };
@@ -170,6 +176,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		848B498E15907E85009D49BB /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		848B498F15907E85009D49BB /* WebSocketUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketUIView.h; sourceTree = "<group>"; };
+		848B499015907E85009D49BB /* WebSocketUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketUIView.m; sourceTree = "<group>"; };
+		848B49941590C75F009D49BB /* bitcoinjs.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bitcoinjs.min.js; sourceTree = "<group>"; };
+		848B49961590C7A7009D49BB /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.min.js; sourceTree = "<group>"; };
+		848B49981590C7D1009D49BB /* aes.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = aes.min.js; sourceTree = "<group>"; };
+		848B499D1590D79C009D49BB /* signer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = signer.js; sourceTree = "<group>"; };
 		9F0CBAA015134C2C00CD945D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		9F0CBAA115134C2C00CD945D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red@2x.png"; sourceTree = "<group>"; };
 		9F0CBAA415134D3200CD945D /* button_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey.png; sourceTree = "<group>"; };
@@ -251,10 +264,10 @@
 		9F7480AF1513E98700BC4292 /* power-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-white.png"; sourceTree = "<group>"; };
 		9F7480B01513E98700BC4292 /* power-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-white@2x.png"; sourceTree = "<group>"; };
 		9F7480B61513E9F100BC4292 /* power-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power-red.png"; sourceTree = "<group>"; };
-		9F7480BB1513FC9700BC4292 /* WebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebSocket.h; sourceTree = "<group>"; };
-		9F7480BC1513FC9700BC4292 /* WebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebSocket.m; sourceTree = "<group>"; };
-		9F7480BD1513FC9700BC4292 /* WebSocketNSStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebSocketNSStream.h; sourceTree = "<group>"; };
-		9F7480BE1513FC9700BC4292 /* WebSocketNSStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebSocketNSStream.m; sourceTree = "<group>"; };
+		9F7480BB1513FC9700BC4292 /* WebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WebSocket.h; path = ../WebSocket.h; sourceTree = "<group>"; };
+		9F7480BC1513FC9700BC4292 /* WebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WebSocket.m; path = ../WebSocket.m; sourceTree = "<group>"; };
+		9F7480BD1513FC9700BC4292 /* WebSocketNSStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WebSocketNSStream.h; path = ../WebSocketNSStream.h; sourceTree = "<group>"; };
+		9F7480BE1513FC9700BC4292 /* WebSocketNSStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WebSocketNSStream.m; path = ../WebSocketNSStream.m; sourceTree = "<group>"; };
 		9F7480C11514006C00BC4292 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		9F7480C21514006C00BC4292 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		9F7480C71514021000BC4292 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -449,9 +462,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		848B498D15907E85009D49BB /* iOS-WebSockets */ = {
+			isa = PBXGroup;
+			children = (
+				9F7480BB1513FC9700BC4292 /* WebSocket.h */,
+				9F7480BC1513FC9700BC4292 /* WebSocket.m */,
+				9F7480BD1513FC9700BC4292 /* WebSocketNSStream.h */,
+				9F7480BE1513FC9700BC4292 /* WebSocketNSStream.m */,
+				848B498E15907E85009D49BB /* README */,
+				848B498F15907E85009D49BB /* WebSocketUIView.h */,
+				848B499015907E85009D49BB /* WebSocketUIView.m */,
+			);
+			path = "iOS-WebSockets";
+			sourceTree = "<group>";
+		};
 		9F0CBAAB15135DF200CD945D /* js */ = {
 			isa = PBXGroup;
 			children = (
+				848B499D1590D79C009D49BB /* signer.js */,
+				848B49981590C7D1009D49BB /* aes.min.js */,
+				848B49961590C7A7009D49BB /* jquery.min.js */,
+				848B49941590C75F009D49BB /* bitcoinjs.min.js */,
 				9F0CBAAD15135DF200CD945D /* wallet.html */,
 			);
 			path = js;
@@ -504,10 +535,6 @@
 		9F7480BA1513FC8C00BC4292 /* Websocket */ = {
 			isa = PBXGroup;
 			children = (
-				9F7480BB1513FC9700BC4292 /* WebSocket.h */,
-				9F7480BC1513FC9700BC4292 /* WebSocket.m */,
-				9F7480BD1513FC9700BC4292 /* WebSocketNSStream.h */,
-				9F7480BE1513FC9700BC4292 /* WebSocketNSStream.m */,
 			);
 			name = Websocket;
 			sourceTree = "<group>";
@@ -767,6 +794,7 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
+				848B498D15907E85009D49BB /* iOS-WebSockets */,
 				9F7480E115140EA500BC4292 /* TabViewController.h */,
 				9F7480E215140EA500BC4292 /* TabViewController.m */,
 				9F7480C11514006C00BC4292 /* Reachability.h */,
@@ -949,6 +977,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				848B499F1590D86C009D49BB /* signer.js in Resources */,
+				848B499A1590C94E009D49BB /* aes.min.js in Resources */,
+				848B499B1590C94E009D49BB /* jquery.min.js in Resources */,
+				848B499C1590C94E009D49BB /* bitcoinjs.min.js in Resources */,
 				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
 				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
 				9F765EDF14BBBEC400048EFB /* footer.png in Resources */,
@@ -1033,6 +1065,7 @@
 				9FC4EA36153504DD0092A073 /* _ATResources.bundle in Resources */,
 				9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */,
 				9F6FA3541536E7EB005BA19C /* 01-refresh@2x.png in Resources */,
+				848B499115907E85009D49BB /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1104,6 +1137,7 @@
 				9F7DCCE715345203000CBFC8 /* OAServiceTicket.m in Sources */,
 				9F7DCCE815345203000CBFC8 /* OAToken.m in Sources */,
 				9F7DCCE915345203000CBFC8 /* Reachability.m in Sources */,
+				848B499215907E85009D49BB /* WebSocketUIView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1184,7 +1218,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -1196,6 +1230,7 @@
 					"\"$(SRCROOT)/AddThis\"",
 				);
 				PRODUCT_NAME = Blockchain;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1209,7 +1244,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
@@ -1221,6 +1256,7 @@
 					"\"$(SRCROOT)/AddThis\"",
 				);
 				PRODUCT_NAME = Blockchain;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -1,0 +1,65 @@
+
+NSStream implementation of websocket
+
+UIwebView implementation of websocket (Recommended)
+
+----- Unminified Javascript -----
+
+<html>
+<body>
+<script language='javascript' type='text/javascript'>
+    
+    var websocket;
+    var messages = [];
+
+    function getLastMessage() {
+        var last_receive = window.last_receive;
+        window.last_receive = null;
+        return last_receive;
+    }
+    
+    function close() {
+        messages = [];
+        
+        if (websocket) {
+            websocket.close();
+            websocket = null;
+        }
+    }
+    
+    var process = function() {
+        if (messages.length > 0) {
+            if (!window || window.last_receive) 
+                return;
+        
+            var msg = messages[0];
+                        
+            messages.splice(0);
+            
+            window.last_receive = msg[1];
+            window.location = msg[0]; 
+        }
+        
+        setTimeout(process, 250);
+    };
+    
+    setTimeout(process, 250);
+
+    function connect(url) {
+        if (websocket)
+            close(); 
+	
+        try {
+            websocket = new WebSocket(url);
+            websocket.onopen = function(evt) { messages.push(['onopen://', evt.data]); };
+            websocket.onclose = function(evt) {   messages.push(['onclose://', evt.data]); };
+            websocket.onmessage = function(evt) { messages.push(['onreceive://', evt.data]); };
+            websocket.onerror = function(evt) { messages.push(['onerror://', evt.data]); };
+        } catch (e) {
+            messages.push(['onerror://', e.toString()]);
+        }
+    };
+    
+</script>
+</body>
+</html>

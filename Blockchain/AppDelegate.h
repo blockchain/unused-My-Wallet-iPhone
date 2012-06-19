@@ -36,7 +36,7 @@
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
 //Some features disabled to pass review process
-#define CYDIA
+//#define CYDIA
 
 @class TransactionsViewController, RemoteDataSource, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
 

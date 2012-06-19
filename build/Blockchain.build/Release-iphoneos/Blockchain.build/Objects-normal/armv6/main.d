@@ -1,0 +1,18 @@
+dependencies: /Users/admin/Sites/blockchain.info/iphone/Blockchain/main.m \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/AppDelegate.h \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/Wallet.h \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/RemoteDataSource.h \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/WebSocket.h \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/Reachability.h \
+  /Users/admin/Sites/blockchain.info/iphone/Blockchain/TabViewController.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarSDK.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/zbar.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarSymbol.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarImage.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarImageScanner.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarReaderView.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarReaderViewController.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarReaderController.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarCaptureReader.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarHelpController.h \
+  /Users/admin/Sites/blockchain.info/iphone/ZBarSDK/Headers/ZBarSDK/ZBarCameraSimulator.h

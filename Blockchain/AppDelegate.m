@@ -12,6 +12,7 @@
 #import "RemoteDataSource.h"
 #import "Wallet.h"
 #import "UIFadeView.h"
+#import "WebSocketUIView.h"
 #import "WebSocketNSStream.h"
 #import "TabViewController.h"
 #import "ReceiveCoinsViewController.h"
@@ -49,17 +50,36 @@ AppDelegate * app;
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {   
     if (fsymbolLocal && latestResponse.symbol.conversion) {
         @try {
+            BOOL negative = false;
+
             NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
             
-            return [latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
+            if ([number compare:[NSNumber numberWithInt:0]] < 0) {
+                number = [number decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
+                negative = TRUE;
+            }
+            
+            if (negative)
+                return [@"-" stringByAppendingString:[latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
+            else
+                return [latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
+            
         } @catch (NSException * e) {
             NSLog(@"%@", e);
         }
     }
     
+    
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
     
-    return [[btcFromatter stringFromNumber:number] stringByAppendingString:@" BTC"];
+    NSString * string = [btcFromatter stringFromNumber:number];
+    
+    if ([string length] >= 8) {
+        string = [string substringToIndex:8];
+    }
+    
+    
+    return [string stringByAppendingString:@" BTC"];
 }
 
 -(NSString*)formatMoney:(uint64_t)value {   
@@ -71,6 +91,9 @@ AppDelegate * app;
          
         btcFromatter = [[NSNumberFormatter alloc] init];  
     
+        [btcFromatter setMaximumSignificantDigits:5];
+        [btcFromatter setMaximumFractionDigits:5];
+        
         [btcFromatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         app = self;
@@ -193,8 +216,6 @@ AppDelegate * app;
     // the path to write file
     NSString * documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
         
-    
-    
     if (![[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
         [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
                                   withIntermediateDirectories:YES 
@@ -273,6 +294,10 @@ AppDelegate * app;
     [webSocket send:msg];
 }
 
+-(void)disconnect {    
+    [webSocket disconnect];
+}
+
 -(void)webSocketOnOpen:(WebSocket*)_webSocket {
     NSLog(@"Websocket on open");
     
@@ -289,12 +314,13 @@ AppDelegate * app;
     } else {
          msg = @"{\"op\":\"unconfirmed_sub\"}";
     }
-    
+        
     [webSocket send:msg];
 
 }
 
 -(void)webSocketOnClose:(WebSocket*)_webSocket {
+    
     NSLog(@"Websocket on close");
         
     [self setStatus];
@@ -318,9 +344,7 @@ AppDelegate * app;
     }
 }
 
--(void)webSocket:(WebSocket*)webSocket onReceive:(NSData*)data {
-    NSLog(@"Websocket on data");
-    
+-(void)webSocket:(WebSocket*)webSocket onReceive:(NSData*)data {    
     JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
     
     NSDictionary * document = [json objectWithData:data];
@@ -415,33 +439,39 @@ AppDelegate * app;
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [dataSource multiAddr:_wallet.guid addresses:[_wallet.keys allKeys]];
+    [dataSource multiAddr:_wallet.guid addresses:[_wallet activeAddresses]];
 
     receiveViewController.wallet = _wallet;
     sendViewController.wallet = _wallet;
     
     //Disconnect and it will reconnect automatically
-    [webSocket disconnect];
+    [self disconnect];
 }
 
 -(void)walletDidLoad:(Wallet *)_wallet {      
-    
-    [self subscribeWalletAndToKeys];
-    
+    NSLog(@"walletDidLoad");
+
     _tempLastKeyCount = [_wallet.keys count];
     
     receiveViewController.wallet = _wallet;
     sendViewController.wallet = _wallet;
         
-    [dataSource multiAddr:_wallet.guid addresses:[_wallet.keys allKeys]];
+    [dataSource multiAddr:_wallet.guid addresses:[_wallet activeAddresses]];
+    
+    
+    //Connect to websocket
+    self.webSocket = [[[WebSocketUIView alloc] init] autorelease];
+    webSocket.delegate = self;
+    [webSocket connect:WebSocketURL];
+    
 }
 
 -(void)walletDataNotModified {    
-    [dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+    [dataSource multiAddr:wallet.guid addresses:[wallet activeAddresses]];
 }
 
 -(void)didGetMultiAddr:(MulitAddressResponse *)response {
-        
+            
     if (isRegistered) {
         self.latestResponse = response;
     
@@ -449,7 +479,9 @@ AppDelegate * app;
     }
 }
 
--(void)walletFailedToDecrypt:(Wallet*)wallet {    
+-(void)walletFailedToDecrypt:(Wallet*)_wallet {    
+    
+    _wallet.password = nil;
     
     //Clear the password and refetch the wallet data
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
@@ -464,6 +496,8 @@ AppDelegate * app;
 
 -(IBAction)mainPasswordClicked:(id)sender {
     
+    mainPasswordTextField.text = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     if ([mainPasswordTextField.text length] < 10) {
         [app standardNotify:@"Passowrd must be 10 or more characters in length"];
         return;
@@ -471,15 +505,28 @@ AppDelegate * app;
     
     [[NSUserDefaults standardUserDefaults] setObject:mainPasswordTextField.text forKey:@"password"];
 
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
+    
     [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    
+    mainPasswordTextField.text = nil;
     
     [app closeModal];
 }
 
 -(IBAction)refreshClicked:(id)sender {
-    if (time(NULL) - dataSource.lastWalletSync > 5.0f) {
-        //Fetch the wallet data
-        [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    if (![self guid] || ![self sharedKey]) {
+        [app showWelcome];
+        return;
+    }
+    
+    if (wallet.password) {
+        if (time(NULL) - dataSource.lastWalletSync > 5.0f) {
+            //Fetch the wallet data
+            [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+        }
+    } else {
+        [self walletFailedToDecrypt:wallet];
     }
 }
 
@@ -501,16 +548,27 @@ AppDelegate * app;
         self.latestResponse = response;
 
         transactionsViewController.data = response;
+        
+        NSLog(@"didGetUnconfirmedTransactions:");
+               
+        //Connect to websocket
+        self.webSocket = [[[WebSocketUIView alloc] init] autorelease];
+        webSocket.delegate = self;
+        [webSocket connect:WebSocketURL];
     }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    
-    NSLog(@"Foreground");
-   
-    if (isRegistered && (![self guid] || ![self sharedKey])) {
-        [app showWelcome];
-        return;
+       
+    if (isRegistered) {
+        if (![self guid] || ![self sharedKey]) {
+            [app showWelcome];
+            return;
+        }
+        
+        if (!wallet.password) {
+            [self walletFailedToDecrypt:wallet];
+        }
     }
     
     if ([reachability currentReachabilityStatus] != NotReachable) {        
@@ -672,7 +730,7 @@ AppDelegate * app;
 -(void)didSubmitTransaction {
     [app closeModal];
     
-    [dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+    [dataSource multiAddr:wallet.guid addresses:[wallet activeAddresses]];
 }
 
 -(void)checkStatus {
@@ -681,7 +739,7 @@ AppDelegate * app;
             [webSocket connect:WebSocketURL];
             
             if (wallet) {
-                [dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
+                [dataSource multiAddr:wallet.guid addresses:[wallet activeAddresses]];
             }
         }
     }
@@ -761,8 +819,8 @@ AppDelegate * app;
                 tabViewController = oldTabViewController;
                 
                 isRegistered =  TRUE;
-                                
-                [webSocket disconnect];
+    
+                [self disconnect];
                 
                 [_window insertSubview:tabViewController.view atIndex:0];
                 
@@ -778,52 +836,67 @@ AppDelegate * app;
 
 -(BOOL)getSecondPasswordBlocking {
     
-    if (!wallet.doubleEncryption)
-        return YES;
-    
-    if (wallet.secondPassword)
-        return YES;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [app showModal:secondPasswordView];
+    @try {
+        if (!wallet.doubleEncryption)
+            return YES;
         
-        [secondPasswordTextField becomeFirstResponder];
-    });
-    
-    usleep(50000);
+        if (wallet.secondPassword)
+            return YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @try {
+                [app showModal:secondPasswordView];
+            
+                [secondPasswordTextField becomeFirstResponder];
+            } @catch (NSException * e) {
+                [UncaughtExceptionHandler logException:e];
+            }
+        });
+        
+        usleep(50000);
 
-    while (app.modalView) {
-        usleep(20000);
+        while (app.modalView) {
+            usleep(20000);
+        }
+        
+        if (wallet.secondPassword)
+            return TRUE;
+        
+        return FALSE;
+    } @catch (NSException * e) {
+        [UncaughtExceptionHandler logException:e];
     }
-    
-    if (wallet.secondPassword)
-        return TRUE;
-    
-    return FALSE;
 }
 
 -(void)showModal:(UIView*)contentView {
-    
-    if (modalView) {
-        [self closeModal];
-    }
-    
-    [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
-    
-    [modalContentView addSubview:contentView];
-    
-    contentView.frame = CGRectMake(0, 0, modalContentView.frame.size.width, modalContentView.frame.size.height);
-    
-    [_window addSubview:modalView];
+     @try {
+        if (modalView) {
+            [self closeModal];
+        }
+        
+        [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
+        
+        [modalContentView addSubview:contentView];
+        
+        contentView.frame = CGRectMake(0, 0, modalContentView.frame.size.width, modalContentView.frame.size.height);
+        
+        [_window addSubview:modalView];
     [_window endEditing:TRUE];
+     } @catch (NSException * e) {
+         [UncaughtExceptionHandler logException:e];
+     }
     
-    CATransition *animation = [CATransition animation]; 
-    [animation setDuration:0.6f]; 
-    [animation setType:kCATransitionFade]; 
-    
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-    
-    [[_window layer] addAnimation:animation forKey:@"ShowModal"]; 
+    @try {
+        CATransition *animation = [CATransition animation]; 
+        [animation setDuration:0.6f]; 
+        [animation setType:kCATransitionFade]; 
+        
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+        
+        [[_window layer] addAnimation:animation forKey:@"ShowModal"]; 
+    } @catch (NSException * e) {
+        NSLog(@"%@", e);
+    }
 }
 
 -(void)parseAccountQRCodeData:(NSString*)data {
@@ -901,12 +974,9 @@ AppDelegate * app;
     [self setAccountData:[data objectForKey:@"guid"]  sharedKey:[data objectForKey:@"sharedKey"] password:manualPAssword.text];
 }
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
-{
+- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
     
-    printf("Did read\n");
-    
-    // do something useful with results
+    // do something uselful with results
     for(ZBarSymbol *sym in syms) {        
         [self parseAccountQRCodeData:sym.data];
         
@@ -937,17 +1007,29 @@ AppDelegate * app;
     }
 }
 
--(void)forgetWallet {
-    NSLog(@"Forget");
+-(void)logout {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
     
-    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
+
+    self.wallet = nil;
+    self.latestResponse = nil;
+    [transactionsViewController setData:nil];
+    [receiveViewController setWallet:nil];
+}
+
+-(void)forgetWallet {            
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] synchronize];   
     
-    
+    [[NSFileManager defaultManager] removeItemAtPath:WalletCachefile error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
+
     self.wallet = nil;
     self.latestResponse = nil;
     [transactionsViewController setData:nil];
@@ -958,7 +1040,9 @@ AppDelegate * app;
     if (!isRegistered)
         return;
     
-    if (wallet) {
+    if ([self password]) {
+        [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
+    } else if ([self guid] || [self sharedKey]) {
         [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
     } else {
         [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
@@ -980,13 +1064,14 @@ AppDelegate * app;
 
 -(IBAction)loginClicked:(id)sender {
     
-    if (wallet) {
-    
+    if ([self password]) {
+        [self logout];
+        
+        [app closeModal];
+    } else if ([self guid] || [self sharedKey]) {
         [self forgetWallet];
         
         [app closeModal];
-        
-        return;
     } else {
         [app showModal:pairingInstructionsView];
     }
@@ -1070,15 +1155,15 @@ AppDelegate * app;
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
     [reachability startNotifer];
     
-    //Connect to websocket
-    self.webSocket = [[[WebSocketNSStream alloc] init] autorelease];
-    webSocket.delegate = self;
-    [webSocket connect:WebSocketURL];
-    
 #ifdef CYDIA
     isRegistered = TRUE;
 #else
-    isRegistered = [[NSUserDefaults standardUserDefaults] boolForKey:@"registered"];
+    NSString *filePath = @"/Applications/Cydia.app";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        isRegistered = TRUE;
+    } else {
+        isRegistered = [[NSUserDefaults standardUserDefaults] boolForKey:@"registered"];
+    }
 #endif
     
     if (isRegistered) {
@@ -1144,7 +1229,7 @@ AppDelegate * app;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     wallet.secondPassword  = nil;
     
-    [webSocket disconnect];
+    [self disconnect];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

@@ -32,7 +32,6 @@
 	id<MultiValueFieldDataSource> source;
 	UITextAlignment valueAlignment;
 	int nfields;
-	NSTimeInterval lastValueChange;
 }
 
 @property(nonatomic, retain) IBOutlet id<MultiValueFieldDataSource> source;
@@ -50,7 +49,7 @@
 -(IBAction)nextValue:(id)sender;
 -(IBAction)previousValue:(id)sender;
 
--(void)selectIndex:(int)findex animated:(BOOL)animated;
+-(void)selectIndex:(int)findex transition:(NSString*)transition;
 -(void)selectFirstValueMatchingString:(NSString*)string;
 -(void)reload;
 

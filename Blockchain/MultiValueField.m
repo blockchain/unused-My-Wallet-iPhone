@@ -30,7 +30,7 @@
 	for (int ii = 0; ii < [source countForValueField:self]; ++ii) {
 		NSString *value = [source titleForValueField:self atIndex:ii];
 		if ([value isEqualToString:string]) {
-			[self selectIndex:ii animated:NO];
+			[self selectIndex:ii transition:@""];
 			return;
 		}
 	}
@@ -63,7 +63,7 @@
 -(void)reload {	    
     nfields = [source countForValueField:self];
     
-    [self selectIndex:0 animated:FALSE];
+    [self selectIndex:0 transition:@""];
 }
 
 
@@ -86,10 +86,8 @@
 -(NSString*)currentValue {
 	return [source titleForValueField:self atIndex:index];
 }
-
--(void)selectIndex:(int)findex animated:(BOOL)animated {
-    int oldIndex = index;
     
+-(void)selectIndex:(int)findex transition:(NSString*)transition {    
 	if (findex >= nfields)
 		index = 0; //Wrap around when we reach the end
 	else if (findex < 0)
@@ -113,17 +111,11 @@
 
     self.currentLabel = new;
     
-    if (animated) {
+    if ([transition isEqualToString:kCATransitionFromLeft] || [transition isEqualToString:kCATransitionFromRight]) {
         CATransition *animation = [CATransition animation]; 
         [animation setDuration:0.3f]; 
-        
-        [animation setType:kCATransitionPush]; 
-        
-        if (oldIndex > index && index != 0)
-            [animation setSubtype:kCATransitionFromRight];
-        else
-            [animation setSubtype:kCATransitionFromLeft];
-
+        [animation setType:kCATransitionPush];
+        [animation setSubtype:transition];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
         
         [currentLabel.layer addAnimation:animation forKey:@"ShowModal"]; 
@@ -139,22 +131,17 @@
 }
 
 -(void)previousValue {
-    [self selectIndex:index-1 animated:YES];
+    [self selectIndex:index-1 transition:kCATransitionFromLeft];
 	
 	if ([source respondsToSelector:@selector(valueFieldDidChange:)])
 		[[self source] valueFieldDidChange:self];
 }
 
--(void)nextValue {
-	
-	BOOL animated = YES;
-	
-    [self selectIndex:index+1 animated:animated];
+-(void)nextValue {	
+    [self selectIndex:index+1 transition:kCATransitionFromRight];
     
 	if ([source respondsToSelector:@selector(valueFieldDidChange:)])
 		[[self source] valueFieldDidChange:self];
-	
-	lastValueChange = [[NSDate date] timeIntervalSince1970];
 }
 
 @end

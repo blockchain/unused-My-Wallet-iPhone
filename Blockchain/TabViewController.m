@@ -13,6 +13,7 @@
 #import "UIView+FirstResponder.h"
 
 #define PI 3.14159265
+#define TAB_CHANGE_DURATION 0.4f
 
 CGPoint arrowPositions[4] = {28.0f, 29.0f,
     107.0f, 20.0f,
@@ -88,7 +89,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 -(void)setSelectedIndex:(int)nindex {
 	desiredIndex = nindex;
 		
-	arrowStepDuration = 0.6f / abs(desiredIndex - selectedIndex);
+	arrowStepDuration = TAB_CHANGE_DURATION / abs(desiredIndex - selectedIndex);
 	
 	[self moveArrow];
 }
@@ -176,7 +177,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     
     if (animated) {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.6f]; 
+        [animation setDuration:TAB_CHANGE_DURATION];
         [animation setType:kCATransitionPush]; 
         
         if (index > selectedIndex)

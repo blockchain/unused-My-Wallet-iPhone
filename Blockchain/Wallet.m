@@ -60,10 +60,10 @@
     [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
 }
 
--(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(double)value {
+-(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value {
     [self setJSVars];
    
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%f');", toAddress, fromAddress, value]];
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%@');", toAddress, fromAddress, value]];
 }
 
 

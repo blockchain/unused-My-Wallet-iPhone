@@ -77,7 +77,7 @@
 
 -(id)initWithData:(NSData*)string password:(NSString*)password; //Restore wallet from base64 data
 
--(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(double)value;
+-(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value;
 
 -(Key*)generateNewKey;
 

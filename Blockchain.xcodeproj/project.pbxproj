@@ -173,6 +173,8 @@
 		9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF851514EDF500E92C90 /* modal_background_large.png */; };
 		9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */; };
 		9FDAEF8A1514EE0000E92C90 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF891514EE0000E92C90 /* ModalView.xib */; };
+		A2954A0F1729772F0062341C /* KeychainItemWrapper+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2954A0E1729772F0062341C /* KeychainItemWrapper+Extensions.m */; };
+		A2C9612D17295AFA0026BEF6 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C9612C17295AFA0026BEF6 /* KeychainItemWrapper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -434,6 +436,11 @@
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
 		9FDAEF891514EE0000E92C90 /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
+		A2954A0D172976E10062341C /* KeychainItemWrapper+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KeychainItemWrapper+Extensions.h"; sourceTree = "<group>"; };
+		A2954A0E1729772F0062341C /* KeychainItemWrapper+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KeychainItemWrapper+Extensions.m"; sourceTree = "<group>"; };
+		A2C9612B17295AFA0026BEF6 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		A2C9612C17295AFA0026BEF6 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
+		A2C9612E17296BD00026BEF6 /* Blockchain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Blockchain.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,6 +510,8 @@
 				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
 				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
 				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
+				A2954A0D172976E10062341C /* KeychainItemWrapper+Extensions.h */,
+				A2954A0E1729772F0062341C /* KeychainItemWrapper+Extensions.m */,
 			);
 			name = categories;
 			sourceTree = "<group>";
@@ -830,6 +839,8 @@
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,
 				9FB3638514B60128004BEA02 /* AppDelegate.m */,
 				9FB3637C14B60128004BEA02 /* Supporting Files */,
+				A2C9612B17295AFA0026BEF6 /* KeychainItemWrapper.h */,
+				A2C9612C17295AFA0026BEF6 /* KeychainItemWrapper.m */,
 			);
 			path = Blockchain;
 			sourceTree = "<group>";
@@ -842,6 +853,7 @@
 				9F7480D21514030800BC4292 /* alert-received.wav */,
 				9FB15B2614B60172009858ED /* MainWindow.xib */,
 				9FB3637D14B60128004BEA02 /* Blockchain-Info.plist */,
+				A2C9612E17296BD00026BEF6 /* Blockchain.entitlements */,
 				9FB3637E14B60128004BEA02 /* InfoPlist.strings */,
 				9FB3638114B60128004BEA02 /* main.m */,
 				9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */,
@@ -1138,6 +1150,8 @@
 				9F7DCCE815345203000CBFC8 /* OAToken.m in Sources */,
 				9F7DCCE915345203000CBFC8 /* Reachability.m in Sources */,
 				848B499215907E85009D49BB /* WebSocketUIView.m in Sources */,
+				A2C9612D17295AFA0026BEF6 /* KeychainItemWrapper.m in Sources */,
+				A2954A0F1729772F0062341C /* KeychainItemWrapper+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,6 +1232,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_ENTITLEMENTS = Blockchain/Blockchain.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
@@ -1244,6 +1259,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_ENTITLEMENTS = Blockchain/Blockchain.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";

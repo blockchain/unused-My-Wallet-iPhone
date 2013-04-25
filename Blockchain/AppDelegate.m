@@ -28,8 +28,16 @@
 #import "Output.h"
 #import "UIDevice+Hardware.h"
 #import "UncaughtExceptionHandler.h"
+#import "KeychainItemWrapper.h"
+#import "KeychainItemWrapper+Extensions.h"
 
 AppDelegate * app;
+
+@interface AppDelegate ()
+
+@property KeychainItemWrapper *keychainItem;
+
+@end
 
 @implementation AppDelegate
 
@@ -42,6 +50,7 @@ AppDelegate * app;
 @synthesize latestResponse;
 @synthesize modalDelegate;
 @synthesize readerView;
+@synthesize keychainItem=_keychainItem;
 
 -(RemoteDataSource*)dataSource {
     return dataSource;
@@ -260,6 +269,34 @@ AppDelegate * app;
     return TRUE;
 }
 
+- (BOOL)deleteFileWithName:(NSString *)fileName
+{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	
+    // the path to the file
+    NSString *documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
+    
+    
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
+        NSError * error = nil;
+        
+        [[NSFileManager defaultManager] removeItemAtPath:documentPath error:&error];
+        
+        if (error) {
+            NSLog(@"Error writing file %@", error);
+            
+            return FALSE;
+        }
+
+        
+    } else {
+        NSLog(@"Can't delete file %@ because it doesn't exist", documentPath);
+    }
+        
+    return TRUE;
+}
+
 - (void)standardNotify:(NSString*)message
 {
 	[self standardNotify:message title:@"Error" delegate:nil];	
@@ -443,11 +480,9 @@ AppDelegate * app;
 
     self.wallet = _wallet;
     
-    [[NSUserDefaults standardUserDefaults] setObject:wallet.guid forKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] setObject:wallet.sharedKey forKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.keychainItem setObject:wallet.guid forKey:kSecAttrAccount];
+    [self.keychainItem setObject:wallet.sharedKey forKey:kSecAttrLabel];
+    [self.keychainItem setObject:wallet.password forKey:kSecValueData];
     
     [dataSource multiAddr:_wallet.guid addresses:[_wallet activeAddresses]];
 
@@ -493,8 +528,8 @@ AppDelegate * app;
     
     _wallet.password = nil;
     
-    //Clear the password and refetch the wallet data
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+    //Clear the password and refetch the wallet data    
+    [self.keychainItem setObject:nil forKey:kSecValueData];
     
     //Cleare the checksum cache incase it has
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
@@ -512,8 +547,8 @@ AppDelegate * app;
         [app standardNotify:@"Passowrd must be 10 or more characters in length"];
         return;
     }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:mainPasswordTextField.text forKey:@"password"];
+
+    [self.keychainItem setObject:mainPasswordTextField.text forKey:kSecValueData];
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
     
@@ -942,13 +977,11 @@ AppDelegate * app;
         [app standardNotify:@"Password should be 10 characters in length or more"];
         return;
     }
+        
+    [self.keychainItem setObject:guid forKey:kSecAttrAccount];
+    [self.keychainItem setObject:sharedKey forKey:kSecAttrLabel];
+    [self.keychainItem setObject:password forKey:kSecValueData];
     
-    [[NSUserDefaults standardUserDefaults] setObject:guid forKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] setObject:sharedKey forKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     NSLog(@"Fetch Wallet");
     
     //Fetch the wallet data
@@ -1016,11 +1049,9 @@ AppDelegate * app;
     }
 }
 
--(void)logout {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+-(void)logout {    
+    [self.keychainItem setObject:nil forKey:kSecValueData];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
 
     self.wallet = nil;
@@ -1030,14 +1061,10 @@ AppDelegate * app;
 }
 
 -(void)forgetWallet {            
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+    [self.keychainItem resetKeychainItem];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];   
-    
-    [[NSFileManager defaultManager] removeItemAtPath:WalletCachefile error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
+    [app deleteFileWithName:WalletCachefile];
+    [app deleteFileWithName:MultiaddrCacheFile];
 
     self.wallet = nil;
     self.latestResponse = nil;
@@ -1130,15 +1157,30 @@ AppDelegate * app;
 }
 
 -(NSString*)password {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+    NSString *result = [self.keychainItem objectForKey:kSecValueData];
+    if (result == nil || [result isEqualToString:@""]) {
+        return nil;
+    } else {
+        return result;
+    }
 }
 
 -(NSString*)guid {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
+    NSString *result = [self.keychainItem objectForKey:kSecAttrAccount];
+    if (result == nil || [result isEqualToString:@""]) {
+        return nil;
+    } else {
+        return result;
+    }
 }
 
 -(NSString*)sharedKey {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    NSString *result = [self.keychainItem objectForKey:kSecAttrLabel];
+    if (result == nil || [result isEqualToString:@""]) {
+        return nil;
+    } else {
+        return result;
+    }
 }
 
 -(IBAction)modalBackgroundClicked:(id)sender {
@@ -1151,7 +1193,32 @@ AppDelegate * app;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{         
+{
+    NSString *accesGroup = [NSString stringWithFormat:@"%@.com.rainydayapps.Blockchain", [KeychainItemWrapper bundleSeedID]];
+    self.keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Wallet" accessGroup:accesGroup];
+    
+    // Previous versions did not use the Keychain, so we need to clean up:
+    if([[NSUserDefaults standardUserDefaults] valueForKey:@"guid"]) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [app deleteFileWithName:WalletCachefile];
+        [app deleteFileWithName:MultiaddrCacheFile];
+    
+        [self.keychainItem resetKeychainItem];
+
+    
+        self.wallet = nil;
+        self.latestResponse = nil;
+        [transactionsViewController setData:nil];
+        [receiveViewController setWallet:nil];
+
+    
+    }
+    
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     // Override point for customization after application launch.
@@ -1159,7 +1226,7 @@ AppDelegate * app;
     
     [_window makeKeyAndVisible];
     
-    //Netowrk status updates
+    //Network status updates
     self.reachability = [Reachability reachabilityForInternetConnection];
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
     [reachability startNotifer];
@@ -1255,6 +1322,7 @@ AppDelegate * app;
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    [self.keychainItem release];
 }
 
 @end

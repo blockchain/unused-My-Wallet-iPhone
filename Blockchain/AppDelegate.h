@@ -169,6 +169,7 @@ typedef enum {
 //Write and read from file
 -(BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName;
 -(NSData*)readFromFileName:(NSString *)fileName;
+- (BOOL)deleteFileWithName:(NSString *)fileName;
 
 -(NSString*)formatMoney:(uint64_t)value;
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;

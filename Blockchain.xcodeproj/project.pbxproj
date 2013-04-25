@@ -1237,7 +1237,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(iOSOpenDevPath)/lib/**",
 					"\"$(SRCROOT)/ZBarSDK\"",
@@ -1264,7 +1264,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(iOSOpenDevPath)/lib/**",
 					"\"$(SRCROOT)/ZBarSDK\"",

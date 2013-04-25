@@ -258,7 +258,8 @@ AppDelegate * app;
     
     NSError * error = nil;
     
-    [data writeToFile:documentPath options:0 error:&error];
+    // Warning: be careful if you ever introduce background tasks
+    [data writeToFile:documentPath options:NSFileProtectionComplete error:&error];
     
     if (error) {
         NSLog(@"Error writing file %@", error);
@@ -1050,9 +1051,10 @@ AppDelegate * app;
 }
 
 -(void)logout {    
-    [self.keychainItem setObject:nil forKey:kSecValueData];
+    [self.keychainItem resetKeychainItem];
     
-    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
+    [app deleteFileWithName:WalletCachefile];
+    [app deleteFileWithName:MultiaddrCacheFile];
 
     self.wallet = nil;
     self.latestResponse = nil;

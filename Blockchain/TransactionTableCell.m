@@ -146,7 +146,7 @@
         [confirmationsButton setHidden:FALSE];
 
         [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:[NSString stringWithFormat:@"Unconfirmed", confirmations] forState:UIControlStateNormal];
+        [confirmationsButton setTitle:[NSString stringWithFormat:@"%d Unconfirmed", confirmations] forState:UIControlStateNormal];
         
        
     } else if (confirmations < 100) { 

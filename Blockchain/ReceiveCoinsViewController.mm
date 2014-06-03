@@ -11,7 +11,6 @@
 #import "QREncoder.h"
 #import "ReceiveTableCell.h"
 #import "Address.h"
-#import "AddThis.h"
 
 @implementation ReceiveCoinsViewController
 
@@ -340,18 +339,22 @@
 }
 
 -(IBAction)shareByTwitter:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+#warning reimplement this
+//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 
 -(IBAction)shareByFacebook:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+#warning reimplement this
+//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 -(IBAction)shareByGooglePlus:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+#warning reimplement this
+//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
 }
 
 -(IBAction)shareByEmailClicked:(id)sender {
-    [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
+#warning reimplement this
+//  [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
 }
 
 -(IBAction)requestPaymentClicked:(id)sender {
@@ -360,21 +363,22 @@
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     
     //configure addthis -- (this step is optional)
-	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+#warning re-implement sharing
+//	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+//	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+//	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
     
-    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
-    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
+//    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
+//    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
     
 	//Facebook connect settings
-	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
-	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
-	
-	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
-	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
-	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
-        
+//	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
+//	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
+//	
+//	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+//	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+//	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
+    
     [app showModal:requestCoinsView];
 }
 

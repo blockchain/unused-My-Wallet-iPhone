@@ -30,7 +30,7 @@
 
 	int index;
 	id<MultiValueFieldDataSource> source;
-	UITextAlignment valueAlignment;
+	NSTextAlignment valueAlignment;
 	int nfields;
 	NSTimeInterval lastValueChange;
 }
@@ -39,7 +39,7 @@
 @property(nonatomic, assign) int index;
 @property(nonatomic, retain) UIColor * valueColor;
 @property(nonatomic, retain) UIFont * valueFont;
-@property(nonatomic, assign) UITextAlignment valueAlignment;
+@property(nonatomic, assign) NSTextAlignment valueAlignment;
 @property(nonatomic, retain) UILabel * currentLabel;
 
 -(int)nfields;

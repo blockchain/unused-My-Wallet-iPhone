@@ -1222,6 +1222,8 @@ AppDelegate * app;
     
     [tabViewController setActiveViewController:transactionsViewController];
 
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
     [self performSelector:@selector(checkStatus) withObject:nil afterDelay:120.0f];
     
     return YES;

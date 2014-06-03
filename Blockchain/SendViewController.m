@@ -233,6 +233,10 @@
     fromField.valueFont = [UIFont systemFontOfSize:14];
     
     amountField.inputAccessoryView = amountKeyoboardAccessoryView;
+
+    // Hack for screensize
+    UIWindow *w = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);
 }
 
 -(NSUInteger)countForValueField:(MultiValueField*)valueField {

@@ -124,11 +124,14 @@
     
     [depositButton addTarget:self action:@selector(depositClicked:) forControlEvents:UIControlEventTouchDown];
     
-    [depositButton setFont:[UIFont boldSystemFontOfSize:15.0f]];
+    [depositButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
     
     [firstSectionFooterView addSubview:depositButton];
 #endif
-    
+
+    // Hack for screensize
+    UIWindow *w = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);    
 }
 
 -(void)reload {

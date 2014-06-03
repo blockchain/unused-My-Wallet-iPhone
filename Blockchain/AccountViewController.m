@@ -64,7 +64,11 @@
     //Remove Shadow
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
-    }   
+    }
+    // Hack for screensize
+
+    UIWindow *w = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);
 }
 
 @end

@@ -140,6 +140,8 @@
     [super viewDidLoad];
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(void)dealloc {

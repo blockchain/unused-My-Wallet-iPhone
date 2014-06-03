@@ -99,7 +99,6 @@
 		9F765EF514BBC2CF00048EFB /* divider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EF414BBC2CF00048EFB /* divider@2x.png */; };
 		9F765F2A14BC467900048EFB /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765F2814BC467900048EFB /* arrow_down.png */; };
 		9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765F2914BC467900048EFB /* arrow_down@2x.png */; };
-		9F765F2E14BC5CB100048EFB /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765F2C14BC5CB100048EFB /* header.png */; };
 		9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765F2D14BC5CB100048EFB /* header@2x.png */; };
 		9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3114BC622E00048EFB /* TransactionsViewController.m */; };
 		9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */; };
@@ -186,8 +185,8 @@
 		9F1831F81517884C00FB3D52 /* button_red_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red_large@2x.png"; sourceTree = "<group>"; };
 		9F1831FB1517912800FB3D52 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		9F1831FC1517912800FB3D52 /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
-		9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
-		9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = Blockchain/UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = Blockchain/UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		9F2D934114C04C9D0053F0FF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		9F2D934214C04C9D0053F0FF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		9F2D934814C05DD00053F0FF /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
@@ -241,8 +240,8 @@
 		9F7480BC1513FC9700BC4292 /* WebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WebSocket.m; path = ../WebSocket.m; sourceTree = "<group>"; };
 		9F7480BD1513FC9700BC4292 /* WebSocketNSStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WebSocketNSStream.h; path = ../WebSocketNSStream.h; sourceTree = "<group>"; };
 		9F7480BE1513FC9700BC4292 /* WebSocketNSStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WebSocketNSStream.m; path = ../WebSocketNSStream.m; sourceTree = "<group>"; };
-		9F7480C11514006C00BC4292 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		9F7480C21514006C00BC4292 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		9F7480C11514006C00BC4292 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Blockchain/Reachability.h; sourceTree = "<group>"; };
+		9F7480C21514006C00BC4292 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Blockchain/Reachability.m; sourceTree = "<group>"; };
 		9F7480C71514021000BC4292 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9F7480C91514021A00BC4292 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		9F7480D21514030800BC4292 /* alert-received.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "alert-received.wav"; sourceTree = "<group>"; };
@@ -266,7 +265,6 @@
 		9F765EF414BBC2CF00048EFB /* divider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "divider@2x.png"; sourceTree = "<group>"; };
 		9F765F2814BC467900048EFB /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
 		9F765F2914BC467900048EFB /* arrow_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_down@2x.png"; sourceTree = "<group>"; };
-		9F765F2C14BC5CB100048EFB /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header.png; sourceTree = "<group>"; };
 		9F765F2D14BC5CB100048EFB /* header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header@2x.png"; sourceTree = "<group>"; };
 		9F765F3014BC622E00048EFB /* TransactionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsViewController.h; sourceTree = "<group>"; };
 		9F765F3114BC622E00048EFB /* TransactionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsViewController.m; sourceTree = "<group>"; };
@@ -280,8 +278,8 @@
 		9F765F4214BC7C6D00048EFB /* Output.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Output.m; sourceTree = "<group>"; };
 		9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDataSource.h; sourceTree = "<group>"; };
 		9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDataSource.m; sourceTree = "<group>"; };
-		9F765F4814BC8C0D00048EFB /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		9F765F4914BC8C0D00048EFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		9F765F4814BC8C0D00048EFB /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Blockchain/JSONKit.h; sourceTree = "<group>"; };
+		9F765F4914BC8C0D00048EFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Blockchain/JSONKit.m; sourceTree = "<group>"; };
 		9F7DCC8A153451B2000CBFC8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9F7DCCEA15345213000CBFC8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		9F7DCCEC15345245000CBFC8 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -349,7 +347,7 @@
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
 		9FDAEF891514EE0000E92C90 /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
-		C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,7 +389,7 @@
 			path = "iOS-WebSockets";
 			sourceTree = "<group>";
 		};
-		9F0CBAAB15135DF200CD945D /* js */ = {
+		9F0CBAAB15135DF200CD945D /* JavaScript */ = {
 			isa = PBXGroup;
 			children = (
 				848B499D1590D79C009D49BB /* signer.js */,
@@ -400,10 +398,11 @@
 				848B49941590C75F009D49BB /* bitcoinjs.min.js */,
 				9F0CBAAD15135DF200CD945D /* wallet.html */,
 			);
+			name = JavaScript;
 			path = js;
 			sourceTree = "<group>";
 		};
-		9F1831F315176F2200FB3D52 /* categories */ = {
+		9F1831F315176F2200FB3D52 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
 				9F6C8611153468610086C200 /* NSDate+Extensions.h */,
@@ -419,7 +418,7 @@
 				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
 				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
 			);
-			name = categories;
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		9F5F3E1E151BED0100128830 /* QR-Code-Encoder */ = {
@@ -447,121 +446,104 @@
 			path = QRCodeEncoderObjectiveCAtGithub;
 			sourceTree = "<group>";
 		};
-		9F7480BA1513FC8C00BC4292 /* Websocket */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Websocket;
-			sourceTree = "<group>";
-		};
-		9F765EDC14BBBEC400048EFB /* images */ = {
+		9F765EDC14BBBEC400048EFB /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				9F6FA3511536E7EB005BA19C /* 01-refresh.png */,
 				9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */,
-				9F48B3651534C78F00305059 /* 78-stopwatch.png */,
-				9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */,
-				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
-				9F7DCCEF153452A8000CBFC8 /* fbButton.png */,
-				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
-				9F7DCCF1153452A8000CBFC8 /* myspaceButton.png */,
-				9F7DCCF2153452A8000CBFC8 /* twitterButton.png */,
-				9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */,
-				9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */,
-				9FCA4D2B15149D6B00ECDFBE /* 23-circle-south.png */,
-				9FCA4D2C15149D6B00ECDFBE /* 23-circle-south@2x.png */,
-				9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */,
-				9FCA4D2915149D0800ECDFBE /* 27-circle-north.png */,
-				9F7480D8151405B700BC4292 /* payment_received@2x.png */,
-				9F7480D6151404E200BC4292 /* payment_moved@2x.png */,
-				9F7480AC1513E98700BC4292 /* power-orange.png */,
-				9F7480AD1513E98700BC4292 /* power-orange@2x.png */,
-				9F7480AE1513E98700BC4292 /* power-red@2x.png */,
-				9F7480AF1513E98700BC4292 /* power-white.png */,
-				9F7480B01513E98700BC4292 /* power-white@2x.png */,
-				9F0CBACF1513BF9D00CD945D /* busy-background.png */,
-				9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */,
-				9F0CBAB215138AE100CD945D /* payment_moved.png */,
-				9F0CBAA415134D3200CD945D /* button_grey.png */,
-				9F0CBAA515134D3200CD945D /* button_grey@2x.png */,
-				9F1831F71517884C00FB3D52 /* button_red_large.png */,
-				9F1831F81517884C00FB3D52 /* button_red_large@2x.png */,
-				9F0CBAA015134C2C00CD945D /* button_red.png */,
-				9F0CBAA115134C2C00CD945D /* button_red@2x.png */,
-				9F2D935914C081EF0053F0FF /* button_blue.png */,
-				9F2D935A14C081EF0053F0FF /* button_blue@2x.png */,
-				9F2D935514C080610053F0FF /* button_green.png */,
-				9F7480DC151405D200BC4292 /* payment_sent@2x.png */,
-				9F2D935614C080610053F0FF /* button_green@2x.png */,
-				9F2D934F14C07B2D0053F0FF /* funds_moved.png */,
-				9F2D935014C07B2D0053F0FF /* payment_received.png */,
-				9F2D935114C07B2D0053F0FF /* payment_sent.png */,
-				9F2D934114C04C9D0053F0FF /* Icon.png */,
-				9F2D934214C04C9D0053F0FF /* Icon@2x.png */,
-				9F765F2C14BC5CB100048EFB /* header.png */,
-				9F7480B61513E9F100BC4292 /* power-red.png */,
-				9F765F2D14BC5CB100048EFB /* header@2x.png */,
-				9F765F2814BC467900048EFB /* arrow_down.png */,
-				9F765F2914BC467900048EFB /* arrow_down@2x.png */,
-				9F765EF414BBC2CF00048EFB /* divider@2x.png */,
-				9F765EF214BBC2C800048EFB /* divider.png */,
 				9F765EE414BBC00000048EFB /* 119-piggy-bank.png */,
 				9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */,
 				9F765EE614BBC00000048EFB /* 145-persondot.png */,
 				9F765EE714BBC00000048EFB /* 145-persondot@2x.png */,
 				9F45F81E1514D8C300018AED /* 21-circle-east.png */,
 				9F45F81F1514D8C300018AED /* 21-circle-east@2x.png */,
-				9F45F8281514E35200018AED /* button_grey_large.png */,
-				9F45F8291514E35200018AED /* button_grey_large@2x.png */,
-				9F765EDD14BBBEC400048EFB /* footer.png */,
-				9F765EDE14BBBEC400048EFB /* footer@2x.png */,
-				9F17401F1514FAAE00CF1186 /* close-container.png */,
-				9F1740201514FAAE00CF1186 /* close-container@2x.png */,
-				9FCA4D351514A15700ECDFBE /* Default@2x.png */,
-				9FCA4D321514A0DC00ECDFBE /* Default.png */,
+				9FCA4D2B15149D6B00ECDFBE /* 23-circle-south.png */,
+				9FCA4D2C15149D6B00ECDFBE /* 23-circle-south@2x.png */,
+				9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */,
+				9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */,
+				9FCA4D2915149D0800ECDFBE /* 27-circle-north.png */,
+				9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */,
 				9F1740241514FAB800CF1186 /* 31-circle-x.png */,
 				9F1740251514FAB800CF1186 /* 31-circle-x@2x.png */,
+				9F48B3651534C78F00305059 /* 78-stopwatch.png */,
+				9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */,
+				9F765F2814BC467900048EFB /* arrow_down.png */,
+				9F765F2914BC467900048EFB /* arrow_down@2x.png */,
+				9F0CBACF1513BF9D00CD945D /* busy-background.png */,
+				9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */,
+				9F2D935914C081EF0053F0FF /* button_blue.png */,
+				9F2D935A14C081EF0053F0FF /* button_blue@2x.png */,
+				9F2D935514C080610053F0FF /* button_green.png */,
+				9F2D935614C080610053F0FF /* button_green@2x.png */,
+				9F0CBAA415134D3200CD945D /* button_grey.png */,
+				9F0CBAA515134D3200CD945D /* button_grey@2x.png */,
+				9F45F8281514E35200018AED /* button_grey_large.png */,
+				9F45F8291514E35200018AED /* button_grey_large@2x.png */,
+				9F0CBAA015134C2C00CD945D /* button_red.png */,
+				9F0CBAA115134C2C00CD945D /* button_red@2x.png */,
+				9F1831F71517884C00FB3D52 /* button_red_large.png */,
+				9F1831F81517884C00FB3D52 /* button_red_large@2x.png */,
 				9F91B60115161E1F00ACB32D /* circle.png */,
 				9F91B60215161E1F00ACB32D /* circle@2x.png */,
+				9F17401F1514FAAE00CF1186 /* close-container.png */,
+				9F1740201514FAAE00CF1186 /* close-container@2x.png */,
+				C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */,
+				9FCA4D321514A0DC00ECDFBE /* Default.png */,
+				9FCA4D351514A15700ECDFBE /* Default@2x.png */,
+				9F765EF214BBC2C800048EFB /* divider.png */,
+				9F765EF414BBC2CF00048EFB /* divider@2x.png */,
+				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
+				9F7DCCEF153452A8000CBFC8 /* fbButton.png */,
+				9F765EDD14BBBEC400048EFB /* footer.png */,
+				9F765EDE14BBBEC400048EFB /* footer@2x.png */,
+				9F2D934F14C07B2D0053F0FF /* funds_moved.png */,
+				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
+				9F765F2D14BC5CB100048EFB /* header@2x.png */,
+				9F2D934114C04C9D0053F0FF /* Icon.png */,
+				9F2D934214C04C9D0053F0FF /* Icon@2x.png */,
 				9FDAEF851514EDF500E92C90 /* modal_background_large.png */,
 				9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */,
+				9F7DCCF1153452A8000CBFC8 /* myspaceButton.png */,
+				9F0CBAB215138AE100CD945D /* payment_moved.png */,
+				9F7480D6151404E200BC4292 /* payment_moved@2x.png */,
+				9F2D935014C07B2D0053F0FF /* payment_received.png */,
+				9F7480D8151405B700BC4292 /* payment_received@2x.png */,
+				9F2D935114C07B2D0053F0FF /* payment_sent.png */,
+				9F7480DC151405D200BC4292 /* payment_sent@2x.png */,
+				9F7480AC1513E98700BC4292 /* power-orange.png */,
+				9F7480AD1513E98700BC4292 /* power-orange@2x.png */,
+				9F7480B61513E9F100BC4292 /* power-red.png */,
+				9F7480AE1513E98700BC4292 /* power-red@2x.png */,
+				9F7480AF1513E98700BC4292 /* power-white.png */,
+				9F7480B01513E98700BC4292 /* power-white@2x.png */,
+				9F7DCCF2153452A8000CBFC8 /* twitterButton.png */,
 			);
+			name = Images;
 			path = images;
 			sourceTree = "<group>";
 		};
-		9F765F3A14BC7C3100048EFB /* beans */ = {
+		9F765F3A14BC7C3100048EFB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9F765F3B14BC7C4F00048EFB /* Transaction.h */,
-				9F765F3C14BC7C4F00048EFB /* Transaction.m */,
+				9F0CBAA8151351F400CD945D /* Wallet.h */,
+				9F0CBAA9151351F400CD945D /* Wallet.m */,
+				9F2D934814C05DD00053F0FF /* Address.h */,
+				9F2D934914C05DD00053F0FF /* Address.m */,
 				9F765F3E14BC7C5E00048EFB /* Input.h */,
 				9F765F3F14BC7C5E00048EFB /* Input.m */,
 				9F765F4114BC7C6D00048EFB /* Output.h */,
 				9F765F4214BC7C6D00048EFB /* Output.m */,
-				9F2D934814C05DD00053F0FF /* Address.h */,
-				9F2D934914C05DD00053F0FF /* Address.m */,
+				9F765F3B14BC7C4F00048EFB /* Transaction.h */,
+				9F765F3C14BC7C4F00048EFB /* Transaction.m */,
 			);
-			name = beans;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		9FB3636614B60128004BEA02 = {
 			isa = PBXGroup;
 			children = (
-				C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */,
-				9F7DCCEC15345245000CBFC8 /* MessageUI.framework */,
-				9F7DCCEA15345213000CBFC8 /* Security.framework */,
-				9F7DCC8A153451B2000CBFC8 /* CoreData.framework */,
-				9F5F3E1E151BED0100128830 /* QR-Code-Encoder */,
-				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
-				9F749E041514F20200B3A8B8 /* CoreVideo.framework */,
-				9F749E021514F1F900B3A8B8 /* CoreMedia.framework */,
-				9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */,
-				9FDAEF5E1514EB5200E92C90 /* ZBarSDK */,
-				9FCA4D1F15149AA600ECDFBE /* QuartzCore.framework */,
-				9F7480D41514041A00BC4292 /* AudioToolbox.framework */,
-				9F7480C91514021A00BC4292 /* CFNetwork.framework */,
-				9F7480C71514021000BC4292 /* SystemConfiguration.framework */,
 				9FB3637B14B60128004BEA02 /* Blockchain */,
+				C9D4B2AE193E020D00EDA9EA /* Third Party */,
 				9FB3637414B60128004BEA02 /* Frameworks */,
 				9FB3637214B60128004BEA02 /* Products */,
 			);
@@ -578,6 +560,16 @@
 		9FB3637414B60128004BEA02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9F7DCCEC15345245000CBFC8 /* MessageUI.framework */,
+				9F7DCCEA15345213000CBFC8 /* Security.framework */,
+				9F7DCC8A153451B2000CBFC8 /* CoreData.framework */,
+				9F749E041514F20200B3A8B8 /* CoreVideo.framework */,
+				9F749E021514F1F900B3A8B8 /* CoreMedia.framework */,
+				9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */,
+				9FCA4D1F15149AA600ECDFBE /* QuartzCore.framework */,
+				9F7480D41514041A00BC4292 /* AudioToolbox.framework */,
+				9F7480C91514021A00BC4292 /* CFNetwork.framework */,
+				9F7480C71514021000BC4292 /* SystemConfiguration.framework */,
 				9FB3637514B60128004BEA02 /* UIKit.framework */,
 				9FB3637714B60128004BEA02 /* Foundation.framework */,
 				9FB3637914B60128004BEA02 /* CoreGraphics.framework */,
@@ -588,41 +580,19 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
-				848B498D15907E85009D49BB /* iOS-WebSockets */,
-				9F7480E115140EA500BC4292 /* TabViewController.h */,
-				9F7480E215140EA500BC4292 /* TabViewController.m */,
-				9F7480C11514006C00BC4292 /* Reachability.h */,
-				9F7480C21514006C00BC4292 /* Reachability.m */,
-				9F7480BA1513FC8C00BC4292 /* Websocket */,
-				9F0CBAAB15135DF200CD945D /* js */,
-				9F765F3A14BC7C3100048EFB /* beans */,
-				9F765EDC14BBBEC400048EFB /* images */,
-				9F1831F315176F2200FB3D52 /* categories */,
-				9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */,
-				9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */,
-				9F765F4814BC8C0D00048EFB /* JSONKit.h */,
-				9F765F4914BC8C0D00048EFB /* JSONKit.m */,
-				9F0CBAA8151351F400CD945D /* Wallet.h */,
-				9F0CBAA9151351F400CD945D /* Wallet.m */,
-				9F0CBAD61513CA2600CD945D /* UIFadeView.h */,
-				9F0CBAD71513CA2600CD945D /* UIFadeView.m */,
-				9F765F3714BC7BAC00048EFB /* TransactionTableCell.h */,
-				9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */,
-				9F45F81C1514D81700018AED /* UIButtonPressAndHold.h */,
-				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
-				9F45F8191514D7D600018AED /* MultiValueField.h */,
-				9F45F81A1514D7D600018AED /* MultiValueField.m */,
-				9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */,
-				9F1831ED151744EB00FB3D52 /* ReceiveTableCell.m */,
-				9F61B89C151519EF0083C57A /* AddressBookView.h */,
-				9F61B89D151519EF0083C57A /* AddressBookView.m */,
-				9F91B605151666EB00ACB32D /* NewAccountView.h */,
-				9F91B606151666EB00ACB32D /* NewAccountView.m */,
-				9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */,
-				9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */,
-				9FCA4D18151494A300ECDFBE /* View Controllers */,
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,
 				9FB3638514B60128004BEA02 /* AppDelegate.m */,
+				9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */,
+				9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */,
+				9F7480E115140EA500BC4292 /* TabViewController.h */,
+				9F7480E215140EA500BC4292 /* TabViewController.m */,
+				848B498D15907E85009D49BB /* iOS-WebSockets */,
+				9F1831F315176F2200FB3D52 /* Categories */,
+				9F0CBAAB15135DF200CD945D /* JavaScript */,
+				9F765F3A14BC7C3100048EFB /* Models */,
+				C9D4B2B2193E032200EDA9EA /* Views */,
+				9FCA4D18151494A300ECDFBE /* View Controllers */,
+				C9D4B2AF193E023C00EDA9EA /* Resources */,
 				9FB3637C14B60128004BEA02 /* Supporting Files */,
 			);
 			path = Blockchain;
@@ -631,22 +601,10 @@
 		9FB3637C14B60128004BEA02 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9F1831FB1517912800FB3D52 /* beep.wav */,
-				9F1831FC1517912800FB3D52 /* ding.wav */,
-				9F7480D21514030800BC4292 /* alert-received.wav */,
-				9FB15B2614B60172009858ED /* MainWindow.xib */,
 				9FB3637D14B60128004BEA02 /* Blockchain-Info.plist */,
 				9FB3637E14B60128004BEA02 /* InfoPlist.strings */,
 				9FB3638114B60128004BEA02 /* main.m */,
 				9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */,
-				9F61B89F151532A20083C57A /* ReceiveCoins.xib */,
-				9F61B899151519690083C57A /* AddressBookView.xib */,
-				9F1831F115175BD900FB3D52 /* AccountViewController.xib */,
-				9F2D934D14C0792D0053F0FF /* TransactionTableView.xib */,
-				9FDAEF891514EE0000E92C90 /* ModalView.xib */,
-				9F1831EF151744FC00FB3D52 /* ReceiveTableCell.xib */,
-				9F45F82D1514E6BF00018AED /* SendForm.xib */,
-				9FCA4D3A1514A86500ECDFBE /* WebView.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -654,14 +612,14 @@
 		9FCA4D18151494A300ECDFBE /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9FCA4D141514949500ECDFBE /* ReceiveCoinsViewController.h */,
-				9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */,
-				9F765F3014BC622E00048EFB /* TransactionsViewController.h */,
-				9F765F3114BC622E00048EFB /* TransactionsViewController.m */,
-				9FCA4D19151494BF00ECDFBE /* SendViewController.h */,
-				9FCA4D1A151494BF00ECDFBE /* SendViewController.m */,
 				9FCA4D1C151494D600ECDFBE /* AccountViewController.h */,
 				9FCA4D1D151494D600ECDFBE /* AccountViewController.m */,
+				9FCA4D141514949500ECDFBE /* ReceiveCoinsViewController.h */,
+				9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */,
+				9FCA4D19151494BF00ECDFBE /* SendViewController.h */,
+				9FCA4D1A151494BF00ECDFBE /* SendViewController.m */,
+				9F765F3014BC622E00048EFB /* TransactionsViewController.h */,
+				9F765F3114BC622E00048EFB /* TransactionsViewController.m */,
 				9FCA4D371514A83400ECDFBE /* WebViewController.h */,
 				9FCA4D381514A83400ECDFBE /* WebViewController.m */,
 			);
@@ -718,6 +676,79 @@
 				9FDAEF6A1514EB5200E92C90 /* Window.h */,
 			);
 			path = zbar;
+			sourceTree = "<group>";
+		};
+		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {
+			isa = PBXGroup;
+			children = (
+				9F765F4814BC8C0D00048EFB /* JSONKit.h */,
+				9F765F4914BC8C0D00048EFB /* JSONKit.m */,
+				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
+				9F5F3E1E151BED0100128830 /* QR-Code-Encoder */,
+				9F7480C11514006C00BC4292 /* Reachability.h */,
+				9F7480C21514006C00BC4292 /* Reachability.m */,
+				9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */,
+				9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */,
+				9FDAEF5E1514EB5200E92C90 /* ZBarSDK */,
+			);
+			name = "Third Party";
+			sourceTree = "<group>";
+		};
+		C9D4B2AF193E023C00EDA9EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9F765EDC14BBBEC400048EFB /* Images */,
+				C9D4B2B0193E024700EDA9EA /* Sounds */,
+				C9D4B2B1193E026500EDA9EA /* Xibs */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C9D4B2B0193E024700EDA9EA /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				9F1831FB1517912800FB3D52 /* beep.wav */,
+				9F1831FC1517912800FB3D52 /* ding.wav */,
+				9F7480D21514030800BC4292 /* alert-received.wav */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		C9D4B2B1193E026500EDA9EA /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				9F1831F115175BD900FB3D52 /* AccountViewController.xib */,
+				9F61B899151519690083C57A /* AddressBookView.xib */,
+				9FB15B2614B60172009858ED /* MainWindow.xib */,
+				9FDAEF891514EE0000E92C90 /* ModalView.xib */,
+				9F61B89F151532A20083C57A /* ReceiveCoins.xib */,
+				9F1831EF151744FC00FB3D52 /* ReceiveTableCell.xib */,
+				9F45F82D1514E6BF00018AED /* SendForm.xib */,
+				9F2D934D14C0792D0053F0FF /* TransactionTableView.xib */,
+				9FCA4D3A1514A86500ECDFBE /* WebView.xib */,
+			);
+			name = Xibs;
+			sourceTree = "<group>";
+		};
+		C9D4B2B2193E032200EDA9EA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9F45F8191514D7D600018AED /* MultiValueField.h */,
+				9F45F81A1514D7D600018AED /* MultiValueField.m */,
+				9F61B89C151519EF0083C57A /* AddressBookView.h */,
+				9F61B89D151519EF0083C57A /* AddressBookView.m */,
+				9F91B605151666EB00ACB32D /* NewAccountView.h */,
+				9F91B606151666EB00ACB32D /* NewAccountView.m */,
+				9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */,
+				9F1831ED151744EB00FB3D52 /* ReceiveTableCell.m */,
+				9F765F3714BC7BAC00048EFB /* TransactionTableCell.h */,
+				9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */,
+				9F45F81C1514D81700018AED /* UIButtonPressAndHold.h */,
+				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
+				9F0CBAD61513CA2600CD945D /* UIFadeView.h */,
+				9F0CBAD71513CA2600CD945D /* UIFadeView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -787,7 +818,6 @@
 				9F765EF514BBC2CF00048EFB /* divider@2x.png in Resources */,
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
-				9F765F2E14BC5CB100048EFB /* header.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
 				9F2D934314C04C9D0053F0FF /* Icon.png in Resources */,
 				9F2D934414C04C9D0053F0FF /* Icon@2x.png in Resources */,
@@ -1005,10 +1035,8 @@
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
-					"$(iOSOpenDevPath)/lib/**",
-					"\"$(SRCROOT)/ZBarSDK\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/AddThis\"",
+					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
 				PROVISIONING_PROFILE = "";
@@ -1030,10 +1058,8 @@
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
-					"$(iOSOpenDevPath)/lib/**",
-					"\"$(SRCROOT)/ZBarSDK\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/AddThis\"",
+					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = Blockchain;
 				PROVISIONING_PROFILE = "";

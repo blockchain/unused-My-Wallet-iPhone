@@ -70,8 +70,8 @@
 -(Key*)generateNewKey {
     [self setJSVars];
     
-    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", [self sharedKey]]] componentsSeparatedByString:@"|"];
-//    NSArray *components = [webView stringByEvaluatingJavaScriptFromString:@"generateNewAddressAndKey();"];
+//    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", [self sharedKey]]] componentsSeparatedByString:@"|"];
+    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:@"generateNewAddressAndKey();"] componentsSeparatedByString:@"|"];
 
     if ([components count] == 2) {
         

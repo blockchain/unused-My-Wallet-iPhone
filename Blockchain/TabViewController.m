@@ -195,6 +195,9 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
         [whiteDownArrow setHidden:FALSE];
     }
 
+    // Hide arrow for now.
+    [whiteDownArrow setHidden:TRUE];
+    
     [self setSelectedIndex:index];
 
 }
@@ -268,6 +271,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	nextButton.frame = CGRectMake(nextButton.frame.origin.x, nextButton.frame.origin.y-10.0f, nextButton.frame.size.width, nextButton.frame.size.height);
 	[UIView commitAnimations];
 	
+#warning where is submitClicked:?
 	if ([self submitButtonEnabled]) {
 		if ([activeViewController respondsToSelector:@selector(submitClicked:)])
 			[(id)activeViewController performSelector:@selector(submitClicked:) withObject:sender];		

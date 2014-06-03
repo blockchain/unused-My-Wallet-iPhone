@@ -39,7 +39,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder {
     
 	if (self = [super initWithCoder:aDecoder]) {
-		valueAlignment = UITextAlignmentCenter;
+		valueAlignment = NSTextAlignmentCenter;
 		valueFont = [[UIFont systemFontOfSize:14.0f] retain];
 		valueColor = [[UIColor blackColor] retain];
 	}

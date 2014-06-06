@@ -449,6 +449,7 @@
 		9F765EDC14BBBEC400048EFB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C9B66D141941FCB30057E662 /* Identity */,
 				9F6FA3511536E7EB005BA19C /* 01-refresh.png */,
 				9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */,
 				9F765EE414BBC00000048EFB /* 119-piggy-bank.png */,
@@ -487,9 +488,6 @@
 				9F91B60215161E1F00ACB32D /* circle@2x.png */,
 				9F17401F1514FAAE00CF1186 /* close-container.png */,
 				9F1740201514FAAE00CF1186 /* close-container@2x.png */,
-				C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */,
-				9FCA4D321514A0DC00ECDFBE /* Default.png */,
-				9FCA4D351514A15700ECDFBE /* Default@2x.png */,
 				9F765EF214BBC2C800048EFB /* divider.png */,
 				9F765EF414BBC2CF00048EFB /* divider@2x.png */,
 				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
@@ -498,9 +496,6 @@
 				9F765EDE14BBBEC400048EFB /* footer@2x.png */,
 				9F2D934F14C07B2D0053F0FF /* funds_moved.png */,
 				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
-				9F765F2D14BC5CB100048EFB /* header@2x.png */,
-				9F2D934114C04C9D0053F0FF /* Icon.png */,
-				9F2D934214C04C9D0053F0FF /* Icon@2x.png */,
 				9FDAEF851514EDF500E92C90 /* modal_background_large.png */,
 				9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */,
 				9F7DCCF1153452A8000CBFC8 /* myspaceButton.png */,
@@ -676,6 +671,19 @@
 				9FDAEF6A1514EB5200E92C90 /* Window.h */,
 			);
 			path = zbar;
+			sourceTree = "<group>";
+		};
+		C9B66D141941FCB30057E662 /* Identity */ = {
+			isa = PBXGroup;
+			children = (
+				C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */,
+				9FCA4D321514A0DC00ECDFBE /* Default.png */,
+				9FCA4D351514A15700ECDFBE /* Default@2x.png */,
+				9F765F2D14BC5CB100048EFB /* header@2x.png */,
+				9F2D934114C04C9D0053F0FF /* Icon.png */,
+				9F2D934214C04C9D0053F0FF /* Icon@2x.png */,
+			);
+			name = Identity;
 			sourceTree = "<group>";
 		};
 		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {

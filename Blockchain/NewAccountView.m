@@ -89,10 +89,10 @@
         return;
     }
     
-    if ([captchaTextField.text length] == 0) {
-        [app standardNotify:@"You must enter the captcha code"];
-        return;
-    }
+//    if ([captchaTextField.text length] == 0) {
+//        [app standardNotify:@"You must enter the captcha code"];
+//        return;
+//    }
     
     [app startTask:TaskGeneratingWallet];
 

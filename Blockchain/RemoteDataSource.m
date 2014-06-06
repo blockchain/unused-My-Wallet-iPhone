@@ -72,7 +72,8 @@
 @synthesize lastWalletSync;
 
 -(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
-    if (!walletIdentifier || !sharedKey || !payload || !captcha)
+//    if (!walletIdentifier || !sharedKey || !payload || !captcha)
+    if (!walletIdentifier || !sharedKey || !payload)
         return FALSE;
     
     lastWalletSync = time(NULL);
@@ -84,15 +85,17 @@
     
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
 
+    NSLog(@"URL %@", [url absoluteString]);
     NSLog(@"Payload %@", payload);
     
-    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&kaptcha=%@", 
+//    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&kaptcha=%@",
+    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@kaptcha=12345",
                            [walletIdentifier urlencode],
                            [sharedKey urlencode],
                            [payload urlencode],
                            [payload length],
-                           [payload SHA256],
-                           [captcha urlencode]
+                           [payload SHA256]
+//                           [captcha urlencode]
                            ] dataUsingEncoding:NSUTF8StringEncoding]];
     
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
@@ -108,6 +111,7 @@
     
     NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     
+    // getting this because captcha is wrong
     if ([repsonse statusCode] == 500) {
         [app standardNotify:responseString];
         return FALSE;

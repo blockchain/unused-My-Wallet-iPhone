@@ -19,4 +19,4 @@ profile
 
 Pods/
 Podfile.lock
-Blockchain/private.h
+Blockchain/APIDefines.h

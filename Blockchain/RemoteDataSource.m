@@ -85,7 +85,7 @@
     
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
 
-    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@api_code=%@",
+    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&api_code=%@",
                            [walletIdentifier urlencode],
                            [sharedKey urlencode],
                            [payload urlencode],
@@ -96,13 +96,11 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     [request setHTTPMethod:@"POST"];
 
-    NSLog(@"URL %@", [url absoluteString]);
-    NSLog(@"Payload %@", payload);
-    
-    NSString *body = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
-    NSLog(@"HTTP Body %@", body);
+//    NSLog(@"URL %@", [url absoluteString]);
+//    NSLog(@"Payload %@", payload);
+//    NSString *body = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
+//    NSLog(@"HTTP Body %@", body);
 
-    
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
     
     if (data == NULL || [data length] == 0) {
@@ -352,7 +350,7 @@
 
 -(NSDictionary*)resolveAlias:(NSString*)alias {    
 
-        NSMutableString * string = [NSMutableString stringWithFormat:@"%@wallet/resolve-alias?guid=%@", WebROOT, [alias urlencode]];
+        NSMutableString * string = [NSMutableString stringWithFormat:@"%@wallet/resolve-alias?guid=%@&format=json", WebROOT, [alias urlencode]];
         
         NSURL * url = [NSURL URLWithString:string];
         
@@ -379,6 +377,8 @@
         }
         
     JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
+    
+    NSLog(@"resolved id/alias: %@", [json objectWithData:data]);
     
     return [json objectWithData:data];
 }

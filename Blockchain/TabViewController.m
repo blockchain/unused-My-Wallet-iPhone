@@ -24,6 +24,13 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 @synthesize oldViewController;
 @synthesize activeViewController; 
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if( (self = [super initWithCoder:aDecoder]) ) {
+		defaultPin = 1234;
+	}
+	return self;
+}
+
 -(void)moveArrow {
 	
 	if (desiredIndex == selectedIndex)
@@ -154,8 +161,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	if (nviewcontroller == activeViewController)
 		return;
     
-    NSLog(@"Set activ %d", index);
-    		
 	originalOffset = CGPointZero;
 	
 	self.oldViewController = activeViewController;

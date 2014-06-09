@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface TabViewcontroller : UIViewController {
+@interface TabViewcontroller : UIViewController  {
 	IBOutlet UIView * header;
 	IBOutlet UIView * footer;
 	IBOutlet UIView * contentView;
@@ -23,6 +22,7 @@
 	UIViewController * oldViewController;
 	int selectedIndex;
 	int desiredIndex;
+    int defaultPin;
 	double arrowStepDuration;
 	CGPoint originalOffset;
 }

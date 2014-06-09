@@ -27,6 +27,7 @@
 #import "Reachability.h"
 #import "TabViewController.h"
 #import "ZBarSDK.h"
+#import "PEPinEntryController.h"
 
 #define SATOSHI 100000000
 #define MultiaddrCacheFile @"multiaddr.cache"
@@ -49,7 +50,7 @@ typedef enum {
     TaskLoadExternalURL
 } Task;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RemoteDataSourceDelagate, WalletDelegate, WebSocketDelegate, ZBarReaderViewDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, RemoteDataSourceDelagate, WalletDelegate, WebSocketDelegate, ZBarReaderViewDelegate,PEPinEntryControllerDelegate> {
     RemoteDataSource * dataSource;
     Wallet * wallet;
     WebSocket * webSocket;
@@ -95,7 +96,7 @@ typedef enum {
     WebViewController * webViewController;
     
     int webScoketFailures;
-        
+    int myPin;    
     int tasks;
     
     @public
@@ -118,6 +119,7 @@ typedef enum {
 
 
 -(IBAction)manualPairClicked:(id)sender;
+-(IBAction)changePinClicked:(id)sender;
 
 -(void)didGenerateNewWallet:(Wallet*)wallet password:(NSString*)password;
 

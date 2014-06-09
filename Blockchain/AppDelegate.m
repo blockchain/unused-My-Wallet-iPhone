@@ -569,7 +569,7 @@ AppDelegate * app;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-       
+    
     if (isRegistered) {
         if (![self guid] || ![self sharedKey]) {
             [app showWelcome];
@@ -879,19 +879,19 @@ AppDelegate * app;
 }
 
 -(void)showModal:(UIView*)contentView {
-     @try {
+
+    @try {
         if (modalView) {
+            NSLog(@"closing modal..already visible");
             [self closeModal];
         }
         
         [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
-        
         [modalContentView addSubview:contentView];
         
         contentView.frame = CGRectMake(0, 0, modalContentView.frame.size.width, modalContentView.frame.size.height);
-        
-        [_window addSubview:modalView];
-    [_window endEditing:TRUE];
+        [_window.rootViewController.view addSubview:modalView];
+        [_window.rootViewController.view endEditing:TRUE];
      } @catch (NSException * e) {
          [UncaughtExceptionHandler logException:e];
      }
@@ -899,11 +899,9 @@ AppDelegate * app;
     @try {
         CATransition *animation = [CATransition animation]; 
         [animation setDuration:0.3f];
-        [animation setType:kCATransitionFade]; 
-        
+        [animation setType:kCATransitionFade];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-        
-        [[_window layer] addAnimation:animation forKey:@"ShowModal"]; 
+        [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
     } @catch (NSException * e) {
         NSLog(@"%@", e);
     }
@@ -975,10 +973,13 @@ AppDelegate * app;
 
 -(IBAction)manualPairClicked:(id)sender {
     
-    NSDictionary * data = [dataSource resolveAlias:manualIdentifier.text];
+    NSDictionary *data = [dataSource resolveAlias:manualIdentifier.text];
     
     if (data == nil)
+    {
+        NSLog(@"failed to resolveAlias");
         return;
+    }
     
     [self setAccountData:[data objectForKey:@"guid"]  sharedKey:[data objectForKey:@"sharedKey"] password:manualPAssword.text];
 }
@@ -1045,6 +1046,46 @@ AppDelegate * app;
     [receiveViewController setWallet:nil];
 }
 
+#pragma mark - Pin Entry
+
+- (BOOL)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin
+{
+    NSNumber *pinObj = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
+
+	if(pinObj && pin == [pinObj intValue])
+    {
+		if(c.verifyOnly == YES)
+        {
+			[tabViewController dismissViewControllerAnimated:YES completion:^{
+            }];
+		}
+        
+		return YES;
+	}
+    else
+    {
+		return NO;
+	}
+}
+
+- (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)pin
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:pin] forKey:@"pin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"Saved new pin");
+
+	// Update your info to new pin code
+	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
+{
+	NSLog(@"Pin change cancelled!");
+	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 -(void)showWelcome {
     if (!isRegistered)
         return;
@@ -1058,6 +1099,15 @@ AppDelegate * app;
     }
     
     [app showModal:welcomeView];
+}
+
+#pragma mark - Actions
+
+-(IBAction)changePinClicked:(id)sender {
+    PEPinEntryController *c = [PEPinEntryController pinChangeController];
+    c.pinDelegate = self;
+    c.navigationBarHidden = YES;
+    [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
 -(IBAction)logoutClicked:(id)sender {
@@ -1102,19 +1152,6 @@ AppDelegate * app;
     [tabViewController setActiveViewController:transactionsViewController animated:TRUE index:0];
 }
 
--(void)showSendCoins {
-    
-    if (!sendViewController) {
-        sendViewController = [[SendViewController alloc] initWithNibName:@"SendForm" bundle:[NSBundle mainBundle]];
-        
-        [sendViewController viewDidLoad];
-    }
-    
-    sendViewController.wallet = wallet;
-    
-    [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
-}
-
 -(IBAction)sendCoinsClicked:(UIButton *)sender {
     [self showSendCoins];
 }
@@ -1128,6 +1165,21 @@ AppDelegate * app;
     
     [tabViewController setActiveViewController:accountViewController animated:TRUE index:3];
 }
+
+
+-(void)showSendCoins {
+    
+    if (!sendViewController) {
+        sendViewController = [[SendViewController alloc] initWithNibName:@"SendForm" bundle:[NSBundle mainBundle]];
+        
+        [sendViewController viewDidLoad];
+    }
+    
+    sendViewController.wallet = wallet;
+    
+    [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
+}
+
 
 -(NSString*)password {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
@@ -1183,10 +1235,13 @@ AppDelegate * app;
         [self registerDevice];
     }
     
+    [_window setRootViewController:tabViewController];
+    [_window insertSubview:tabViewController.view atIndex:0];
+    
     if (!isRegistered) {
         
         [dataSource getUnconfirmedTransactions];
-        
+
     } else if (![self guid] || ![self sharedKey]) {        
         [self showWelcome];
     
@@ -1218,10 +1273,9 @@ AppDelegate * app;
         }
     }
 
-    [_window insertSubview:tabViewController.view atIndex:0];
-    
     [tabViewController setActiveViewController:transactionsViewController];
 
+#warning fix this
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
     [self performSelector:@selector(checkStatus) withObject:nil afterDelay:120.0f];
@@ -1245,9 +1299,7 @@ AppDelegate * app;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     */
+    [self showPinModal];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1257,6 +1309,32 @@ AppDelegate * app;
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+- (void)showPinModal
+{
+    // if pin exists - verify
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            PEPinEntryController *c = [PEPinEntryController pinVerifyController];
+            c.navigationBarHidden = YES;
+            c.pinDelegate = self;
+            
+            [_window.rootViewController presentViewController:c animated:YES completion:nil];
+        });
+    }
+    // no pin - create
+    else
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            PEPinEntryController *c = [PEPinEntryController pinCreateController];
+            c.navigationBarHidden = YES;
+            c.pinDelegate = self;
+
+            [_window.rootViewController presentViewController:c animated:YES completion:nil];
+        });
+    }
 }
 
 @end

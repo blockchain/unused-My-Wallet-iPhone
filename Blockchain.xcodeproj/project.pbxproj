@@ -144,6 +144,22 @@
 		9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF851514EDF500E92C90 /* modal_background_large.png */; };
 		9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */; };
 		9FDAEF8A1514EE0000E92C90 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF891514EE0000E92C90 /* ModalView.xib */; };
+		C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE91681945D8F600FD516D /* PENumpadView.m */; };
+		C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE916A1945D8F600FD516D /* PEPinEntryController.m */; };
+		C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE916C1945D8F600FD516D /* PEViewController.m */; };
+		C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9BE916D1945D8F600FD516D /* PEViewController.xib */; };
+		C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE916F1945D8F600FD516D /* PEKeyboard-1-done.png */; };
+		C9BE91801945D8F600FD516D /* PEKeyboard-1-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91701945D8F600FD516D /* PEKeyboard-1-dot.png */; };
+		C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91711945D8F600FD516D /* PEKeyboard-1-edit.png */; };
+		C9BE91821945D8F600FD516D /* PEKeyboard-1-next.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91721945D8F600FD516D /* PEKeyboard-1-next.png */; };
+		C9BE91831945D8F600FD516D /* PEKeyboard-1.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91731945D8F600FD516D /* PEKeyboard-1.png */; };
+		C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91741945D8F600FD516D /* PEKeyboard-2-done.png */; };
+		C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91751945D8F600FD516D /* PEKeyboard-2-dot.png */; };
+		C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91761945D8F600FD516D /* PEKeyboard-2-edit.png */; };
+		C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91771945D8F600FD516D /* PEKeyboard-2-next.png */; };
+		C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91781945D8F600FD516D /* PEKeyboard-2.png */; };
+		C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91791945D8F600FD516D /* PEPin-off.png */; };
+		C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE917A1945D8F600FD516D /* PEPin-on.png */; };
 		C9D4B2AD193DE17800EDA9EA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -347,7 +363,26 @@
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
 		9FDAEF891514EE0000E92C90 /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
-		C9BE91631945BBF700FD516D /* APIDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIDefines.h; sourceTree = "<group>"; };
+		C9BE91641945C41300FD516D /* APIDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIDefines.h; sourceTree = "<group>"; };
+		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
+		C9BE91681945D8F600FD516D /* PENumpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENumpadView.m; sourceTree = "<group>"; };
+		C9BE91691945D8F600FD516D /* PEPinEntryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PEPinEntryController.h; sourceTree = "<group>"; };
+		C9BE916A1945D8F600FD516D /* PEPinEntryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PEPinEntryController.m; sourceTree = "<group>"; };
+		C9BE916B1945D8F600FD516D /* PEViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PEViewController.h; sourceTree = "<group>"; };
+		C9BE916C1945D8F600FD516D /* PEViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PEViewController.m; sourceTree = "<group>"; };
+		C9BE916D1945D8F600FD516D /* PEViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PEViewController.xib; sourceTree = "<group>"; };
+		C9BE916F1945D8F600FD516D /* PEKeyboard-1-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-1-done.png"; sourceTree = "<group>"; };
+		C9BE91701945D8F600FD516D /* PEKeyboard-1-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-1-dot.png"; sourceTree = "<group>"; };
+		C9BE91711945D8F600FD516D /* PEKeyboard-1-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-1-edit.png"; sourceTree = "<group>"; };
+		C9BE91721945D8F600FD516D /* PEKeyboard-1-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-1-next.png"; sourceTree = "<group>"; };
+		C9BE91731945D8F600FD516D /* PEKeyboard-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-1.png"; sourceTree = "<group>"; };
+		C9BE91741945D8F600FD516D /* PEKeyboard-2-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2-done.png"; sourceTree = "<group>"; };
+		C9BE91751945D8F600FD516D /* PEKeyboard-2-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2-dot.png"; sourceTree = "<group>"; };
+		C9BE91761945D8F600FD516D /* PEKeyboard-2-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2-edit.png"; sourceTree = "<group>"; };
+		C9BE91771945D8F600FD516D /* PEKeyboard-2-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2-next.png"; sourceTree = "<group>"; };
+		C9BE91781945D8F600FD516D /* PEKeyboard-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2.png"; sourceTree = "<group>"; };
+		C9BE91791945D8F600FD516D /* PEPin-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-off.png"; sourceTree = "<group>"; };
+		C9BE917A1945D8F600FD516D /* PEPin-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-on.png"; sourceTree = "<group>"; };
 		C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -538,7 +573,6 @@
 		9FB3636614B60128004BEA02 = {
 			isa = PBXGroup;
 			children = (
-				C9BE91631945BBF700FD516D /* APIDefines.h */,
 				9FB3637B14B60128004BEA02 /* Blockchain */,
 				C9D4B2AE193E020D00EDA9EA /* Third Party */,
 				9FB3637414B60128004BEA02 /* Frameworks */,
@@ -577,6 +611,7 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
+				C9BE91641945C41300FD516D /* APIDefines.h */,
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,
 				9FB3638514B60128004BEA02 /* AppDelegate.m */,
 				9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */,
@@ -688,12 +723,55 @@
 			name = Identity;
 			sourceTree = "<group>";
 		};
+		C9BE91651945D8F600FD516D /* PinEntry */ = {
+			isa = PBXGroup;
+			children = (
+				C9BE91661945D8F600FD516D /* Classes */,
+				C9BE916E1945D8F600FD516D /* Resources */,
+			);
+			path = PinEntry;
+			sourceTree = "<group>";
+		};
+		C9BE91661945D8F600FD516D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C9BE91671945D8F600FD516D /* PENumpadView.h */,
+				C9BE91681945D8F600FD516D /* PENumpadView.m */,
+				C9BE91691945D8F600FD516D /* PEPinEntryController.h */,
+				C9BE916A1945D8F600FD516D /* PEPinEntryController.m */,
+				C9BE916B1945D8F600FD516D /* PEViewController.h */,
+				C9BE916C1945D8F600FD516D /* PEViewController.m */,
+				C9BE916D1945D8F600FD516D /* PEViewController.xib */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		C9BE916E1945D8F600FD516D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C9BE916F1945D8F600FD516D /* PEKeyboard-1-done.png */,
+				C9BE91701945D8F600FD516D /* PEKeyboard-1-dot.png */,
+				C9BE91711945D8F600FD516D /* PEKeyboard-1-edit.png */,
+				C9BE91721945D8F600FD516D /* PEKeyboard-1-next.png */,
+				C9BE91731945D8F600FD516D /* PEKeyboard-1.png */,
+				C9BE91741945D8F600FD516D /* PEKeyboard-2-done.png */,
+				C9BE91751945D8F600FD516D /* PEKeyboard-2-dot.png */,
+				C9BE91761945D8F600FD516D /* PEKeyboard-2-edit.png */,
+				C9BE91771945D8F600FD516D /* PEKeyboard-2-next.png */,
+				C9BE91781945D8F600FD516D /* PEKeyboard-2.png */,
+				C9BE91791945D8F600FD516D /* PEPin-off.png */,
+				C9BE917A1945D8F600FD516D /* PEPin-on.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
 				9F765F4814BC8C0D00048EFB /* JSONKit.h */,
 				9F765F4914BC8C0D00048EFB /* JSONKit.m */,
 				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
+				C9BE91651945D8F600FD516D /* PinEntry */,
 				9F5F3E1E151BED0100128830 /* QR-Code-Encoder */,
 				9F7480C11514006C00BC4292 /* Reachability.h */,
 				9F7480C21514006C00BC4292 /* Reachability.m */,
@@ -812,6 +890,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				848B499F1590D86C009D49BB /* signer.js in Resources */,
 				848B499A1590C94E009D49BB /* aes.min.js in Resources */,
 				848B499B1590C94E009D49BB /* jquery.min.js in Resources */,
@@ -821,11 +900,14 @@
 				9F765EDF14BBBEC400048EFB /* footer.png in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				9F765EEC14BBC00000048EFB /* 119-piggy-bank.png in Resources */,
+				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
 				9F765EEE14BBC00000048EFB /* 145-persondot.png in Resources */,
+				C9BE91831945D8F600FD516D /* PEKeyboard-1.png in Resources */,
 				9F765EEF14BBC00000048EFB /* 145-persondot@2x.png in Resources */,
 				9F765EF314BBC2C800048EFB /* divider.png in Resources */,
 				9F765EF514BBC2CF00048EFB /* divider@2x.png in Resources */,
+				C9BE91801945D8F600FD516D /* PEKeyboard-1-dot.png in Resources */,
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
@@ -834,8 +916,10 @@
 				9F2D934E14C0792D0053F0FF /* TransactionTableView.xib in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
 				9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */,
+				C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */,
 				9F2D935414C07B2D0053F0FF /* payment_sent.png in Resources */,
 				9F2D935714C080610053F0FF /* button_green.png in Resources */,
+				C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */,
 				9F2D935814C080610053F0FF /* button_green@2x.png in Resources */,
 				9F2D935B14C081EF0053F0FF /* button_blue.png in Resources */,
 				9F2D935C14C081EF0053F0FF /* button_blue@2x.png in Resources */,
@@ -844,11 +928,14 @@
 				9F0CBAA615134D3200CD945D /* button_grey.png in Resources */,
 				9F0CBAA715134D3200CD945D /* button_grey@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet.html in Resources */,
+				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
 				9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */,
 				9F0CBAD11513BF9D00CD945D /* busy-background.png in Resources */,
 				9F0CBAD21513BF9D00CD945D /* busy-background@2x.png in Resources */,
 				9F7480B11513E98700BC4292 /* power-orange.png in Resources */,
+				C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */,
 				9F7480B21513E98700BC4292 /* power-orange@2x.png in Resources */,
+				C9BE91821945D8F600FD516D /* PEKeyboard-1-next.png in Resources */,
 				9F7480B31513E98700BC4292 /* power-red@2x.png in Resources */,
 				9F7480B41513E98700BC4292 /* power-white.png in Resources */,
 				9F7480B51513E98700BC4292 /* power-white@2x.png in Resources */,
@@ -862,10 +949,12 @@
 				9FCA4D2F15149D6B00ECDFBE /* 23-circle-south@2x.png in Resources */,
 				9FCA4D3015149D6B00ECDFBE /* 27-circle-north@2x.png in Resources */,
 				9FCA4D341514A0DC00ECDFBE /* Default.png in Resources */,
+				C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */,
 				9FCA4D361514A15700ECDFBE /* Default@2x.png in Resources */,
 				9FCA4D3B1514A86500ECDFBE /* WebView.xib in Resources */,
 				9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */,
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,
+				C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */,
 				9F45F8201514D8C300018AED /* 21-circle-east.png in Resources */,
 				9F45F8211514D8C300018AED /* 21-circle-east@2x.png in Resources */,
 				9F45F82A1514E35200018AED /* button_grey_large.png in Resources */,
@@ -878,6 +967,7 @@
 				9F1740221514FAAE00CF1186 /* close-container@2x.png in Resources */,
 				9F1740261514FAB800CF1186 /* 31-circle-x.png in Resources */,
 				9F1740271514FAB800CF1186 /* 31-circle-x@2x.png in Resources */,
+				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
 				9F61B89B151519690083C57A /* AddressBookView.xib in Resources */,
 				9F61B8A0151532A30083C57A /* ReceiveCoins.xib in Resources */,
 				9F91B60315161E1F00ACB32D /* circle.png in Resources */,
@@ -886,6 +976,7 @@
 				9F1831F215175BD900FB3D52 /* AccountViewController.xib in Resources */,
 				9F1831F91517884C00FB3D52 /* button_red_large.png in Resources */,
 				9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */,
+				C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
 				9F1831FE1517912900FB3D52 /* ding.wav in Resources */,
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
@@ -918,7 +1009,9 @@
 				9F7480BF1513FE1300BC4292 /* WebSocketNSStream.m in Sources */,
 				9FB3638214B60128004BEA02 /* main.m in Sources */,
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
+				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
+				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
@@ -943,6 +1036,7 @@
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				9F5F3E5A151BED0100128830 /* QREncoder.mm in Sources */,
 				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
+				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
 				848B499215907E85009D49BB /* WebSocketUIView.m in Sources */,

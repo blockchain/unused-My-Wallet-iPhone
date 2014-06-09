@@ -38,8 +38,6 @@
 		9F1831FD1517912900FB3D52 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831FB1517912800FB3D52 /* beep.wav */; };
 		9F1831FE1517912900FB3D52 /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831FC1517912800FB3D52 /* ding.wav */; };
 		9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */; };
-		9F2D934314C04C9D0053F0FF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934114C04C9D0053F0FF /* Icon.png */; };
-		9F2D934414C04C9D0053F0FF /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934214C04C9D0053F0FF /* Icon@2x.png */; };
 		9F2D934A14C05DD00053F0FF /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D934914C05DD00053F0FF /* Address.m */; };
 		9F2D934E14C0792D0053F0FF /* TransactionTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934D14C0792D0053F0FF /* TransactionTableView.xib */; };
 		9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934F14C07B2D0053F0FF /* funds_moved.png */; };
@@ -135,8 +133,6 @@
 		9FCA4D2E15149D6B00ECDFBE /* 23-circle-south.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D2B15149D6B00ECDFBE /* 23-circle-south.png */; };
 		9FCA4D2F15149D6B00ECDFBE /* 23-circle-south@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D2C15149D6B00ECDFBE /* 23-circle-south@2x.png */; };
 		9FCA4D3015149D6B00ECDFBE /* 27-circle-north@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */; };
-		9FCA4D341514A0DC00ECDFBE /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D321514A0DC00ECDFBE /* Default.png */; };
-		9FCA4D361514A15700ECDFBE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D351514A15700ECDFBE /* Default@2x.png */; };
 		9FCA4D391514A83400ECDFBE /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D381514A83400ECDFBE /* WebViewController.m */; };
 		9FCA4D3B1514A86500ECDFBE /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3A1514A86500ECDFBE /* WebView.xib */; };
 		9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */; };
@@ -160,7 +156,7 @@
 		C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91781945D8F600FD516D /* PEKeyboard-2.png */; };
 		C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91791945D8F600FD516D /* PEPin-off.png */; };
 		C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE917A1945D8F600FD516D /* PEPin-on.png */; };
-		C9D4B2AD193DE17800EDA9EA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */; };
+		C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9BE918B1945F5FC00FD516D /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -203,8 +199,6 @@
 		9F1831FC1517912800FB3D52 /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
 		9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = Blockchain/UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = Blockchain/UncaughtExceptionHandler.m; sourceTree = "<group>"; };
-		9F2D934114C04C9D0053F0FF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		9F2D934214C04C9D0053F0FF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		9F2D934814C05DD00053F0FF /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		9F2D934914C05DD00053F0FF /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		9F2D934D14C0792D0053F0FF /* TransactionTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionTableView.xib; sourceTree = "<group>"; };
@@ -332,8 +326,6 @@
 		9FCA4D2B15149D6B00ECDFBE /* 23-circle-south.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23-circle-south.png"; sourceTree = "<group>"; };
 		9FCA4D2C15149D6B00ECDFBE /* 23-circle-south@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23-circle-south@2x.png"; sourceTree = "<group>"; };
 		9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "27-circle-north@2x.png"; sourceTree = "<group>"; };
-		9FCA4D321514A0DC00ECDFBE /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		9FCA4D351514A15700ECDFBE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9FCA4D371514A83400ECDFBE /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		9FCA4D381514A83400ECDFBE /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		9FCA4D3A1514A86500ECDFBE /* WebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
@@ -383,7 +375,7 @@
 		C9BE91781945D8F600FD516D /* PEKeyboard-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-2.png"; sourceTree = "<group>"; };
 		C9BE91791945D8F600FD516D /* PEPin-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-off.png"; sourceTree = "<group>"; };
 		C9BE917A1945D8F600FD516D /* PEPin-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-on.png"; sourceTree = "<group>"; };
-		C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
+		C9BE918B1945F5FC00FD516D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -713,12 +705,8 @@
 		C9B66D141941FCB30057E662 /* Identity */ = {
 			isa = PBXGroup;
 			children = (
-				C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */,
-				9FCA4D321514A0DC00ECDFBE /* Default.png */,
-				9FCA4D351514A15700ECDFBE /* Default@2x.png */,
+				C9BE918B1945F5FC00FD516D /* Images.xcassets */,
 				9F765F2D14BC5CB100048EFB /* header@2x.png */,
-				9F2D934114C04C9D0053F0FF /* Icon.png */,
-				9F2D934214C04C9D0053F0FF /* Icon@2x.png */,
 			);
 			name = Identity;
 			sourceTree = "<group>";
@@ -911,9 +899,8 @@
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
-				9F2D934314C04C9D0053F0FF /* Icon.png in Resources */,
-				9F2D934414C04C9D0053F0FF /* Icon@2x.png in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionTableView.xib in Resources */,
+				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
 				9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */,
 				C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */,
@@ -948,9 +935,7 @@
 				9FCA4D2E15149D6B00ECDFBE /* 23-circle-south.png in Resources */,
 				9FCA4D2F15149D6B00ECDFBE /* 23-circle-south@2x.png in Resources */,
 				9FCA4D3015149D6B00ECDFBE /* 27-circle-north@2x.png in Resources */,
-				9FCA4D341514A0DC00ECDFBE /* Default.png in Resources */,
 				C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */,
-				9FCA4D361514A15700ECDFBE /* Default@2x.png in Resources */,
 				9FCA4D3B1514A86500ECDFBE /* WebView.xib in Resources */,
 				9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */,
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,
@@ -984,7 +969,6 @@
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
 				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
-				C9D4B2AD193DE17800EDA9EA /* Default-568h@2x.png in Resources */,
 				9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */,
 				9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */,
 				9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */,
@@ -1131,6 +1115,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1154,6 +1140,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

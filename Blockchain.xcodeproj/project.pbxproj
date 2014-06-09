@@ -347,6 +347,7 @@
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
 		9FDAEF891514EE0000E92C90 /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
+		C9BE91631945BBF700FD516D /* APIDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIDefines.h; sourceTree = "<group>"; };
 		C9D4B2AC193DE17800EDA9EA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -537,6 +538,7 @@
 		9FB3636614B60128004BEA02 = {
 			isa = PBXGroup;
 			children = (
+				C9BE91631945BBF700FD516D /* APIDefines.h */,
 				9FB3637B14B60128004BEA02 /* Blockchain */,
 				C9D4B2AE193E020D00EDA9EA /* Third Party */,
 				9FB3637414B60128004BEA02 /* Frameworks */,

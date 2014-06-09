@@ -88,7 +88,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 -(void)setSelectedIndex:(int)nindex {
 	desiredIndex = nindex;
 		
-	arrowStepDuration = 0.6f / abs(desiredIndex - selectedIndex);
+	arrowStepDuration = 0.3f / abs(desiredIndex - selectedIndex);
 	
 	[self moveArrow];
 }
@@ -176,13 +176,13 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     
     if (animated) {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.6f]; 
+        [animation setDuration:0.3f];
         [animation setType:kCATransitionPush]; 
         
         if (index > selectedIndex)
-            [animation setSubtype:kCATransitionFromLeft]; 
+            [animation setSubtype:kCATransitionFromRight];
         else
-            [animation setSubtype:kCATransitionFromRight]; 
+            [animation setSubtype:kCATransitionFromLeft];
 
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         

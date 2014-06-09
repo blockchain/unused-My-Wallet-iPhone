@@ -31,7 +31,7 @@
 #define SATOSHI 100000000
 #define MultiaddrCacheFile @"multiaddr.cache"
 #define WalletCachefile @"wallet.aes.json"
-#define WebSocketURL @"ws://api.blockchain.info:8335/inv"
+#define WebSocketURL @"wss://ws.blockchain.info/inv"
 #define WebROOT @"https://blockchain.info/"
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 

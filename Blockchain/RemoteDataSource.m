@@ -16,6 +16,7 @@
 #import "Wallet.h"
 #import "NSString+SHA256.h"
 #import "NSString+URLEncode.h"
+#import "APIDefines.h"
 
 @implementation CurrencySymbol
 @synthesize code;
@@ -72,7 +73,6 @@
 @synthesize lastWalletSync;
 
 -(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
-//    if (!walletIdentifier || !sharedKey || !payload || !captcha)
     if (!walletIdentifier || !sharedKey || !payload)
         return FALSE;
     
@@ -85,24 +85,25 @@
     
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
 
-    NSLog(@"URL %@", [url absoluteString]);
-    NSLog(@"Payload %@", payload);
-    
-//    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@&kaptcha=%@",
-    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@kaptcha=12345",
+    [request setHTTPBody:[[NSString stringWithFormat:@"guid=%@&sharedKey=%@&payload=%@&method=insert&length=%d&checksum=%@api_code=%@",
                            [walletIdentifier urlencode],
                            [sharedKey urlencode],
                            [payload urlencode],
                            [payload length],
-                           [payload SHA256]
-//                           [captcha urlencode]
+                           [payload SHA256],
+                           API_CODE
                            ] dataUsingEncoding:NSUTF8StringEncoding]];
-    
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    
     [request setHTTPMethod:@"POST"];
+
+    NSLog(@"URL %@", [url absoluteString]);
+    NSLog(@"Payload %@", payload);
     
-    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
+    NSString *body = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
+    NSLog(@"HTTP Body %@", body);
+
+    
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&repsonse error:&error];
     
     if (data == NULL || [data length] == 0) {
         [app standardNotify:@"Error saving new wallet on server."];

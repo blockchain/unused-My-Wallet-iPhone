@@ -59,7 +59,8 @@
     Key * key = [wallet generateNewKey];
     
     if (key) {
-        [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
+//        [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
+        NSLog(@"Generated new bitcoin address %@", key.addr);
         
         if ([app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] catpcha:captchaTextField.text]) {
             [app didGenerateNewWallet:wallet password:passwordTextField.text];

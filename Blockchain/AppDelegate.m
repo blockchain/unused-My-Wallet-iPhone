@@ -771,7 +771,7 @@ AppDelegate * app;
     [modalContentView removeFromSuperview]; 
 
     CATransition *animation = [CATransition animation]; 
-    [animation setDuration:0.6f]; 
+    [animation setDuration:0.3f];
     [animation setType:kCATransitionFade]; 
         
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
@@ -898,7 +898,7 @@ AppDelegate * app;
     
     @try {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.6f]; 
+        [animation setDuration:0.3f];
         [animation setType:kCATransitionFade]; 
         
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];

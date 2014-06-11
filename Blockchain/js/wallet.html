@@ -46,8 +46,10 @@ body {
 try {
     ${jquery.min.js}
     ${bitcoinjs.min.js}
-    ${aes.min.js}
     ${signer.js}
+    ${shared.minjs}
+    ${bootstrap.min.js}
+    ${blockchainapi.min.js}
     
     var root = 'https://blockchain.info/';
     var pbkdf2_iterations = 10; //Not ideal, but limitations of using javascript
@@ -361,7 +363,10 @@ try {
 
     //Changed padding to CBC iso10126 9th March 2012 & iterations to pbkdf2_iterations
     function encrypt(data, password) {
-        return Crypto.AES.encrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
+        
+        return MyWallet.encryptWallet(data,password);
+        
+//        return Crypto.AES.encrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
     }
 
     //When the ecryption format changes it can produce data which appears to decrypt fine but actually didn't

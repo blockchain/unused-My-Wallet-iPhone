@@ -982,6 +982,8 @@ AppDelegate * app;
     }
     
     Wallet *w = [[[Wallet alloc] init] autorelease];
+//    NSLog(@"data");
+    
     [w loadData:[data[@"payload"] dataUsingEncoding:NSUTF8StringEncoding] password:manualPAssword.text];
 
     NSLog(@"decrypting");

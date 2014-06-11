@@ -95,18 +95,32 @@
 -(void)loadJS {
     
     NSError * error = nil;
-
-    NSString * aesJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"aes" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * bitcoinJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
+#warning clean this up -- load directly from js.
+    NSString * bitcoinJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * blockchainJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * bootstrapJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * jqueryJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * signerJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * sharedJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    
+    NSLog(@"js path: %@", bitcoinJS);
+    NSLog(@"js path: %@", blockchainJS);
+    NSLog(@"js path: %@", bootstrapJS);
+    NSLog(@"js path: %@", jqueryJS);
+    NSLog(@"js path: %@", signerJS);
+    NSLog(@"js path: %@", sharedJS);
+    NSLog(@"js path: %@", walletJS);
 
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer.js}" withString:signerJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${aes.min.js}" withString:aesJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs.min.js}" withString:bitcoinJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs.js}" withString:bitcoinJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi.min.js}" withString:blockchainJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${shared.min.js}" withString:sharedJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${jquery.min.js}" withString:jqueryJS];
-        
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer.js}" withString:signerJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet.js}" withString:walletJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bootstrap.min.js}" withString:bootstrapJS];
+    
     [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
         
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
@@ -413,6 +427,8 @@
     NSLog(@"payload: %@", payload);
     
     NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
+
+    // Evaluate
     NSString * walletJSON = [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
 
     if (!walletJSON || [walletJSON length] == 0) {

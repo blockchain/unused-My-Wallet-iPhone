@@ -350,14 +350,14 @@
 
 -(NSDictionary*)resolveAlias:(NSString*)alias {    
 
-        NSMutableString * string = [NSMutableString stringWithFormat:@"%@wallet/resolve-alias?guid=%@&format=json", WebROOT, [alias urlencode]];
+        NSMutableString * string = [NSMutableString stringWithFormat:@"%@wallet/%@?format=json", WebROOT, [alias urlencode]];
         
         NSURL * url = [NSURL URLWithString:string];
         
-        NSHTTPURLResponse * repsonse = NULL;
+        NSHTTPURLResponse * response = NULL;
         NSError * error = NULL;
         
-        NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&repsonse error:&error];
+        NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&response error:&error];
         
         if (data == NULL || [data length] == 0) {
             [app standardNotify:@"Error Resolving Alias"];
@@ -366,16 +366,16 @@
         
         NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
         
-        if ([repsonse statusCode] == 500) {
+        if ([response statusCode] == 500) {
             [app standardNotify:responseString];
             return nil;
         }
         
-        if (error != NULL || [repsonse statusCode] != 200) {
+        if (error != NULL || [response statusCode] != 200) {
             [app standardNotify:[error localizedDescription]];
             return nil;
         }
-        
+    
     JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
     
     NSLog(@"resolved id/alias: %@", [json objectWithData:data]);

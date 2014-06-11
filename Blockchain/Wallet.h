@@ -50,6 +50,8 @@
 @property(nonatomic, strong) UIWebView * webView;
 @property(nonatomic, strong) NSDictionary * document;
 
+-(void)decrypt;
+
 -(NSString*)guid;
 -(void)setGuid:(NSString *)guid;
 -(NSString*)sharedKey;

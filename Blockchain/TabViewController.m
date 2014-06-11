@@ -69,15 +69,12 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 -(void)responderMayHaveChanged {
         
 	UIView * responder = [app.window findFirstResponder];
-
-    
     NSLog(@"Responder %@", responder);
     
     CGPoint offset = contentView.frame.origin;
 
     printf("keyboard height : %f\n", keyboardRect.size.height);
     printf("reponder y : %f\n", responder.frame.origin.y);
-    
 
     offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 29.0f;
 	
@@ -89,7 +86,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
         contentView.frame = CGRectMake(contentView.frame.origin.x, offset.y,  contentView.frame.size.width,  contentView.frame.size.height);
         [UIView commitAnimations];
     }
-	
 }
 
 -(void)setSelectedIndex:(int)nindex {

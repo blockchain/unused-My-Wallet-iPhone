@@ -981,7 +981,17 @@ AppDelegate * app;
         return;
     }
     
-    [self setAccountData:[data objectForKey:@"guid"]  sharedKey:[data objectForKey:@"sharedKey"] password:manualPAssword.text];
+    Wallet *w = [[[Wallet alloc] init] autorelease];
+    [w loadData:[data[@"payload"] dataUsingEncoding:NSUTF8StringEncoding] password:manualPAssword.text];
+
+    NSLog(@"decrypting");
+    [w decrypt];
+    
+    NSLog(@"wallet: %@", wallet.document);
+    
+    NSString *sharedKey = nil;
+    
+    [self setAccountData:[data objectForKey:@"guid"]  sharedKey:sharedKey password:manualPAssword.text];
 }
 
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
@@ -1236,7 +1246,7 @@ AppDelegate * app;
     }
     
     [_window setRootViewController:tabViewController];
-    [_window insertSubview:tabViewController.view atIndex:0];
+//    [_window insertSubview:tabViewController.view atIndex:0];
     
     if (!isRegistered) {
         

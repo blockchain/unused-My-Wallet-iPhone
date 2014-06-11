@@ -410,16 +410,17 @@
 
     NSString * payload = [[[NSString alloc] initWithData:self.encrypted_payload encoding:NSUTF8StringEncoding] autorelease];
 
+    NSLog(@"payload: %@", payload);
+    
     NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
-
     NSString * walletJSON = [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
 
-    if (walletJSON == NULL || [walletJSON length] == 0) {
+    if (!walletJSON || [walletJSON length] == 0) {
         
         if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
             [delegate walletFailedToDecrypt:self];
         
-        NSLog(@"Wallet data is null");
+        NSLog(@"Failed to decrypt wallet data");
             
         return;
     }

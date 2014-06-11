@@ -105,13 +105,13 @@
     NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
-    NSLog(@"js path: %@", bitcoinJS);
-    NSLog(@"js path: %@", blockchainJS);
-    NSLog(@"js path: %@", bootstrapJS);
-    NSLog(@"js path: %@", jqueryJS);
-    NSLog(@"js path: %@", signerJS);
-    NSLog(@"js path: %@", sharedJS);
-    NSLog(@"js path: %@", walletJS);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"]);
+    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"]);
 
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs.js}" withString:bitcoinJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi.min.js}" withString:blockchainJS];

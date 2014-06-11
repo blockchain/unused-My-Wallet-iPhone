@@ -982,9 +982,9 @@ AppDelegate * app;
     }
     
     NSLog(@"decrypting");
-    Wallet *w = [[[Wallet alloc] initWithData:[data[@"payload"] dataUsingEncoding:NSUTF8StringEncoding] password:manualPAssword.text] autorelease];
+    self.wallet = [[[Wallet alloc] initWithData:[data[@"payload"] dataUsingEncoding:NSUTF8StringEncoding] password:manualPAssword.text] autorelease];
 
-    NSLog(@"wallet: %@", w.document);
+    NSLog(@"wallet: %@", self.wallet.document);
     
     NSString *sharedKey = nil;
     

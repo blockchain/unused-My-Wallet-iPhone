@@ -113,13 +113,13 @@
 //    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"]);
 //    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"]);
 
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs.js}" withString:bitcoinJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi.min.js}" withString:blockchainJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${shared.min.js}" withString:sharedJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${jquery.min.js}" withString:jqueryJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer.js}" withString:signerJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet.js}" withString:walletJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bootstrap.min.js}" withString:bootstrapJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs}" withString:bitcoinJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi}" withString:blockchainJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bootstrap}" withString:bootstrapJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${jquery}" withString:jqueryJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer}" withString:signerJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${shared}" withString:sharedJS];
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet}" withString:walletJS];
     
     [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
         
@@ -466,7 +466,13 @@
     NSLog(@"Start load");
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"did fail");
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
     if (self.encrypted_payload) {
         [self decrypt];
         
@@ -475,10 +481,6 @@
     
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"Did fail %@", error);
 }
 
 -(void)dealloc {

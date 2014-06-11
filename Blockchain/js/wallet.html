@@ -372,46 +372,51 @@ try {
     //When the ecryption format changes it can produce data which appears to decrypt fine but actually didn't
     //So we call success(data) and if it returns true the data was formatted correctly
     function decrypt(data, password) {
-
-        //iso10126 with 10 iterations
-        try {
-            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
-
-            if (decoded != null && decoded.length > 0) {			
-                return decoded;
-            };
-        } catch (e) { 
-            console.log(e);
-        }
-
-        //OBC iso7816 padding with one iteration
-        try {
-            //Othwise try the old default settings
-            var decoded = Crypto.AES.decrypt(data, password, {iterations : 1});
-        
-            if (decoded != null && decoded.length > 0) {			
-                return decoded;
-            }; 
-        } catch (e) { 
-            console.log(e);
-        }
-        
-        //iso10126 padding with one iteration
-        try {
-            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : 1 });
-
-            if (decoded != null && decoded.length > 0) {			
-                return decoded;
-            };
-        } catch (e) { 
-            console.log(e);
-        }
-
-        if (error != null) 
-            error();
-        
-        return null;
+        console.log("test");
+        return MyWallet.decryptWallet(data,password, function (){ console.log("success")},  function (){ console.log("failure")});
     }
+
+
+//        //iso10126 with 10 iterations
+//        try {
+//            
+//            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
+//
+//            if (decoded != null && decoded.length > 0) {            
+//                return decoded;
+//            };
+//        } catch (e) { 
+//            console.log(e);
+//        }
+//
+//        //OBC iso7816 padding with one iteration
+//        try {
+//            //Othwise try the old default settings
+//            var decoded = Crypto.AES.decrypt(data, password, {iterations : 1});
+//        
+//            if (decoded != null && decoded.length > 0) {			
+//                return decoded;
+//            }; 
+//        } catch (e) { 
+//            console.log(e);
+//        }
+
+//        //iso10126 padding with one iteration
+//        try {
+//            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : 1 });
+//
+//            if (decoded != null && decoded.length > 0) {			
+//                return decoded;
+//            };
+//        } catch (e) { 
+//            console.log(e);
+//        }
+//
+//        if (error != null) 
+//            error();
+//        
+//        return null;
+//    }
 
     function generateNewAddressAndKey() {
         try {

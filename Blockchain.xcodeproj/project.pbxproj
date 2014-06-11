@@ -136,13 +136,13 @@
 		9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF851514EDF500E92C90 /* modal_background_large.png */; };
 		9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */; };
 		9FDAEF8A1514EE0000E92C90 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF891514EE0000E92C90 /* ModalView.xib */; };
-		C9B22956194892F70022A0D2 /* bitcoinjs.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B22952194892F70022A0D2 /* bitcoinjs.js */; };
-		C9B22957194892F70022A0D2 /* blockchainapi.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B22953194892F70022A0D2 /* blockchainapi.js */; };
-		C9B22958194892F70022A0D2 /* shared.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B22954194892F70022A0D2 /* shared.js */; };
-		C9B22959194892F70022A0D2 /* signer.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B22955194892F70022A0D2 /* signer.js */; };
-		C9B2295D194893420022A0D2 /* bootstrap.min.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B2295A194893420022A0D2 /* bootstrap.min.js */; };
-		C9B2295E194893420022A0D2 /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B2295B194893420022A0D2 /* jquery.min.js */; };
-		C9B2295F194893420022A0D2 /* wallet.js in Sources */ = {isa = PBXBuildFile; fileRef = C9B2295C194893420022A0D2 /* wallet.js */; };
+		C974BDA819489A840094898B /* bitcoinjs.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22952194892F70022A0D2 /* bitcoinjs.js */; };
+		C974BDA919489A840094898B /* blockchainapi.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22953194892F70022A0D2 /* blockchainapi.js */; };
+		C974BDAA19489A840094898B /* bootstrap.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295A194893420022A0D2 /* bootstrap.min.js */; };
+		C974BDAB19489A840094898B /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295B194893420022A0D2 /* jquery.min.js */; };
+		C974BDAC19489A840094898B /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22954194892F70022A0D2 /* shared.js */; };
+		C974BDAD19489A840094898B /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22955194892F70022A0D2 /* signer.js */; };
+		C974BDAE19489A840094898B /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295C194893420022A0D2 /* wallet.js */; };
 		C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE91681945D8F600FD516D /* PENumpadView.m */; };
 		C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE916A1945D8F600FD516D /* PEPinEntryController.m */; };
 		C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE916C1945D8F600FD516D /* PEViewController.m */; };
@@ -432,8 +432,8 @@
 				C9B2295B194893420022A0D2 /* jquery.min.js */,
 				C9B22954194892F70022A0D2 /* shared.js */,
 				C9B22955194892F70022A0D2 /* signer.js */,
-				9F0CBAAD15135DF200CD945D /* wallet.html */,
 				C9B2295C194893420022A0D2 /* wallet.js */,
+				9F0CBAAD15135DF200CD945D /* wallet.html */,
 			);
 			name = JavaScript;
 			path = js;
@@ -887,6 +887,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C974BDA819489A840094898B /* bitcoinjs.js in Resources */,
+				C974BDA919489A840094898B /* blockchainapi.js in Resources */,
+				C974BDAA19489A840094898B /* bootstrap.min.js in Resources */,
+				C974BDAB19489A840094898B /* jquery.min.js in Resources */,
+				C974BDAC19489A840094898B /* shared.js in Resources */,
+				C974BDAD19489A840094898B /* signer.js in Resources */,
+				C974BDAE19489A840094898B /* wallet.js in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
 				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
@@ -995,7 +1002,6 @@
 				9F7480E315140EF200BC4292 /* TabViewController.m in Sources */,
 				9F7480C6151401F300BC4292 /* Reachability.m in Sources */,
 				9F7480C01513FE1600BC4292 /* WebSocket.m in Sources */,
-				C9B22956194892F70022A0D2 /* bitcoinjs.js in Sources */,
 				9F7480BF1513FE1300BC4292 /* WebSocketNSStream.m in Sources */,
 				9FB3638214B60128004BEA02 /* main.m in Sources */,
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
@@ -1007,16 +1013,13 @@
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
 				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
 				9F765F4714BC8AEF00048EFB /* RemoteDataSource.m in Sources */,
-				C9B22959194892F70022A0D2 /* signer.js in Sources */,
 				9F765F4A14BC8C0D00048EFB /* JSONKit.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* UIFadeView.m in Sources */,
-				C9B22958194892F70022A0D2 /* shared.js in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
 				9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */,
 				9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */,
-				C9B2295D194893420022A0D2 /* bootstrap.min.js in Sources */,
 				9FCA4D391514A83400ECDFBE /* WebViewController.m in Sources */,
 				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
@@ -1029,11 +1032,8 @@
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				9F5F3E5A151BED0100128830 /* QREncoder.mm in Sources */,
 				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
-				C9B22957194892F70022A0D2 /* blockchainapi.js in Sources */,
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
-				C9B2295E194893420022A0D2 /* jquery.min.js in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
-				C9B2295F194893420022A0D2 /* wallet.js in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
 				848B499215907E85009D49BB /* WebSocketUIView.m in Sources */,
 			);

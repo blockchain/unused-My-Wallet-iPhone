@@ -105,13 +105,13 @@
     NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"]);
-    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"min.js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"min.js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"]);
+//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"]);
 
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs.js}" withString:bitcoinJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi.min.js}" withString:blockchainJS];
@@ -159,6 +159,7 @@
         self.password = fpassword;
         self.encrypted_payload = payload;
         
+        // Load the JS. Proceed in the webviewDidLoad callback
         [self loadJS];
     }
     
@@ -184,23 +185,7 @@
     return nil;
 }
 
-- (BOOL)webView:(UIWebView *)webView2  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
-    
-    NSString *requestString = [[[request URL] absoluteString] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-    
-    NSLog(@"Request URL %@", [request URL]);
 
-    if ([requestString hasPrefix:@"log://"]) {        
-        NSLog(@"UIWebView console: %@", [webView2 stringByEvaluatingJavaScriptFromString:@"getMsg();"]);
-        return NO;
-    } else if ([requestString hasPrefix:@"did-submit-tx://"]) {
-        if ([delegate respondsToSelector:@selector(didSubmitTransaction)])
-            [delegate didSubmitTransaction];
-    }
-
-    
-    return YES;
-}
 
 -(NSString*)labelForAddress:(NSString*)address {
     NSString * addressbookLabel = [[self addressBook] objectForKey:address];
@@ -217,9 +202,6 @@
 }
 
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"Start load");
-}
 
 -(BOOL)isValidAddress:(NSString*)string {
     NSString * result = [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
@@ -461,7 +443,30 @@
     [self decrypt];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {    
+
+#pragma mark WebView Delegate Methods
+- (BOOL)webView:(UIWebView *)webView2 shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
+    
+    NSString *requestString = [[[request URL] absoluteString] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+    
+    NSLog(@"Request URL %@", [request URL]);
+    
+    if ([requestString hasPrefix:@"log://"]) {
+        NSLog(@"UIWebView console: %@", [webView2 stringByEvaluatingJavaScriptFromString:@"getMsg();"]);
+        return NO;
+    } else if ([requestString hasPrefix:@"did-submit-tx://"]) {
+        if ([delegate respondsToSelector:@selector(didSubmitTransaction)])
+        [delegate didSubmitTransaction];
+    }
+    
+    return YES;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    NSLog(@"Start load");
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
     if (self.encrypted_payload) {
         [self decrypt];
         

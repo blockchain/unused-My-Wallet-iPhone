@@ -103,16 +103,9 @@
     NSString * signerJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * sharedJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * bridgeJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bridge" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"min.js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"min.js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"]);
-//    NSLog(@"js path: %@", [[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"]);
-
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs}" withString:bitcoinJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi}" withString:blockchainJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bootstrap}" withString:bootstrapJS];
@@ -120,21 +113,22 @@
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer}" withString:signerJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${shared}" withString:sharedJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet}" withString:walletJS];
-    
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bridge}" withString:bridgeJS];
+
     [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
         
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
-    }   
-    
+    }
+            
     [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
 }
 
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
-        self.webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
+        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
                 
-        webView.delegate = self;
+        [webView setJSDelegate:self];
         
         self.password = fpassword;        
         self.document = [NSMutableDictionary dictionary];
@@ -152,9 +146,9 @@
 -(id)initWithData:(NSData*)payload password:(NSString*)fpassword {
     
     if ([super init]) {
-        self.webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
+        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
         
-        webView.delegate = self;
+        [webView setJSDelegate:self];
         
         self.password = fpassword;
         self.encrypted_payload = payload;
@@ -396,6 +390,30 @@
     [document setValue:addressBookArray forKey:@"address_book"];
 }
 
+-(void)log:(NSString*)message {
+    NSLog(@"console.log: %@", message);
+}
+
+-(void)didFailToDecryptWallet:(NSString*)message {
+    
+    NSLog(@"Failed To Decrypt Wallet: %@", message);
+    
+    if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
+        [delegate walletFailedToDecrypt:self];
+    
+}
+
+-(void)didDecryptWallet:(NSString*)walletJSON {
+    NSLog(@"didDecryptWallet:");
+
+    if (walletJSON) {
+        self.document = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)walletJSON, kCFPropertyListMutableContainers);
+    }
+    
+    if ([delegate respondsToSelector:@selector(walletDidLoad:)])
+        [delegate walletDidLoad:self];
+}
+
 -(void)decrypt {
     self.secondPassword = nil;
 
@@ -405,35 +423,11 @@
     }
 
     NSString * payload = [[[NSString alloc] initWithData:self.encrypted_payload encoding:NSUTF8StringEncoding] autorelease];
-
-    NSLog(@"payload: %@", payload);
     
     NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
 
     // Evaluate
-    NSString * walletJSON = [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
-
-    if (!walletJSON || [walletJSON length] == 0) {
-        
-        if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
-            [delegate walletFailedToDecrypt:self];
-        
-        NSLog(@"Failed to decrypt wallet data");
-            
-        return;
-    }
-
-    JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
-    
-    NSDictionary * immutable_document = [json objectWithUTF8String:(const unsigned char*)[walletJSON UTF8String] length:[walletJSON length]];
-             
-    if (immutable_document) {
-        self.document = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)immutable_document, kCFPropertyListMutableContainers);
-    }
-    
-    if ([delegate respondsToSelector:@selector(walletDidLoad:)])
-        [delegate walletDidLoad:self];
-
+   [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
 }
 
 -(void)loadData:(NSData*)payload password:(NSString*)fpassword {
@@ -484,14 +478,68 @@
 }
 
 -(void)dealloc {
-    [webView stopLoading];
-    webView.delegate = nil;
-
     [self.password release];
     [self.document release];
     
-    webView = nil;
+    self.webView = nil;
     
     [super dealloc];
+}
+
+- (NSString*)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary
+{
+    NSString * function = (NSString*)[dictionary objectForKey:@"function"];
+    
+    if (function != nil) {
+        SEL selector = NSSelectorFromString(function);
+        if ([self respondsToSelector:selector]) {
+            
+            NSMethodSignature *sig = [self methodSignatureForSelector:selector];
+            if (!sig)
+                return nil;
+            
+            NSInvocation* invo = [NSInvocation invocationWithMethodSignature:sig];
+            [invo setTarget:self];
+            [invo setSelector:selector];
+            
+            
+            if ([sig numberOfArguments] > 2) {
+                id arg1 = [dictionary objectForKey:@"arg1"];
+                if (arg1 != nil)
+                    [invo setArgument:&arg1 atIndex:2];
+            }
+            
+            if ([sig numberOfArguments] > 3) {
+                id arg2 = [dictionary objectForKey:@"arg2"];
+                if (arg2 != nil)
+                    [invo setArgument:&arg2 atIndex:3];
+            }
+            
+            if ([sig numberOfArguments] > 4) {
+                id arg3 = [dictionary objectForKey:@"arg3"];
+                if (arg3 != nil)
+                    [invo setArgument:&arg3 atIndex:4];
+            }
+            
+            if ([sig numberOfArguments] > 5) {
+                id arg4 = [dictionary objectForKey:@"arg4"];
+                if (arg4 != nil)
+                    [invo setArgument:&arg4 atIndex:5];
+            }
+            
+            [invo invoke];
+            if (sig.methodReturnLength) {
+                id anObject;
+                [invo getReturnValue:&anObject];
+                return anObject;
+            }
+            
+            return nil;
+        } else {
+            return nil;
+        }
+    }
+    
+    return nil;
 }
 @end

@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "JSBridgeWebView.h"
 
 @interface Key : NSObject {
     int tag;
@@ -39,7 +40,7 @@
 -(void)didSubmitTransaction;
 @end
 
-@interface Wallet : NSObject <UIWebViewDelegate> {
+@interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {
     NSDictionary * document;
 }
 
@@ -47,7 +48,7 @@
 @property(nonatomic, retain) NSString * secondPassword;
 @property(nonatomic, retain) NSData * encrypted_payload;
 @property(nonatomic, retain) NSString * password;
-@property(nonatomic, strong) UIWebView * webView;
+@property(nonatomic, strong) JSBridgeWebView * webView;
 @property(nonatomic, strong) NSDictionary * document;
 
 -(NSString*)guid;

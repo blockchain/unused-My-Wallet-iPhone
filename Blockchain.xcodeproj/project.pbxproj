@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
+		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		848B499115907E85009D49BB /* README in Resources */ = {isa = PBXBuildFile; fileRef = 848B498E15907E85009D49BB /* README */; };
 		848B499215907E85009D49BB /* WebSocketUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848B499015907E85009D49BB /* WebSocketUIView.m */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
@@ -163,6 +165,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
+		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
+		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
 		848B498E15907E85009D49BB /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		848B498F15907E85009D49BB /* WebSocketUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketUIView.h; sourceTree = "<group>"; };
 		848B499015907E85009D49BB /* WebSocketUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketUIView.m; sourceTree = "<group>"; };
@@ -426,6 +431,7 @@
 		9F0CBAAB15135DF200CD945D /* JavaScript */ = {
 			isa = PBXGroup;
 			children = (
+				844BC7AF1949BD710024160B /* bridge.js */,
 				C9B22952194892F70022A0D2 /* bitcoinjs.js */,
 				C9B22953194892F70022A0D2 /* blockchainapi.js */,
 				C9B2295A194893420022A0D2 /* bootstrap.min.js */,
@@ -612,6 +618,8 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
+				844BC7AC1949BB620024160B /* JSBridgeWebView.h */,
+				844BC7AD1949BB620024160B /* JSBridgeWebView.m */,
 				C9BE91641945C41300FD516D /* APIDefines.h */,
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,
 				9FB3638514B60128004BEA02 /* AppDelegate.m */,
@@ -864,6 +872,11 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Qkos Services Ltd";
+				TargetAttributes = {
+					9FB3637014B60128004BEA02 = {
+						DevelopmentTeam = NZ6PH75U7K;
+					};
+				};
 			};
 			buildConfigurationList = 9FB3636B14B60128004BEA02 /* Build configuration list for PBXProject "Blockchain" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -887,6 +900,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				C974BDA819489A840094898B /* bitcoinjs.js in Resources */,
 				C974BDA919489A840094898B /* blockchainapi.js in Resources */,
 				C974BDAA19489A840094898B /* bootstrap.min.js in Resources */,
@@ -1003,6 +1017,7 @@
 				9F7480C6151401F300BC4292 /* Reachability.m in Sources */,
 				9F7480C01513FE1600BC4292 /* WebSocket.m in Sources */,
 				9F7480BF1513FE1300BC4292 /* WebSocketNSStream.m in Sources */,
+				844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */,
 				9FB3638214B60128004BEA02 /* main.m in Sources */,
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
@@ -1131,6 +1146,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
@@ -1156,6 +1172,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;

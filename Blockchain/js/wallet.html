@@ -1,38 +1,6 @@
 <html>
 <head>
     
-<script type="text/javascript">
-    function exceptionToString(err) {
-        var vDebug = "";
-        for (var prop in err)  {
-            vDebug += "property: "+ prop+ " value: ["+ err[prop]+ "] - ";
-        }
-        return "Exception: " + vDebug + " toString(): value: [" + err.toString() + "]";
-    }
-    
-    var msg = [];
-    
-    //console
-    console = new Object();
-    console.log = function(log) {        
-        msg.push(exceptionToString(log));
-        
-        window.location = "log://";
-    }
-    
-    console.debug = console.log;
-    console.info = console.log;
-    console.warn = console.log;
-    console.error = console.log;
-    
-    function getMsg() {
-        var tmsg = msg.join(' ');
-         msg = [];
-        return tmsg;
-    }
-    
-</script>
-    
 <style type="text/css">
 body {
     word-wrap: break-word;
@@ -52,382 +20,154 @@ try {
     ${blockchainapi}
     ${signer}
     ${wallet}
+    ${bridge}
+
+    console.log = function(message) {
+        device.execute("log:", message);
+    }
+
+    isExtension = true;
+    APP_NAME = 'javascript_iphone_app';
+    root = "https://blockchain.info/";
     
-    var root = 'https://blockchain.info/';
-    var pbkdf2_iterations = 10; //Not ideal, but limitations of using javascript
-    var dpassword;
-    var sharedKey;
-    var double_encryption;
-    var addresses = [];
-    var pending_tx;
+    $(document).ready(function() {
+        MyWallet.logout = function() {}
+    });
+  
+    MyWallet.addEventListener(function (event) {
+        device.execute(event);
+    });
     
-    function cancel() {        
-        pending_tx.cancel();
-    }
-    function makeNotice(type, name, message) {
-        $('#status').text(''+message);
-    }
-
-    function encryptPK(base58) {			
-        if (double_encryption) {
-            if (dpassword == null)
-                throw 'Cannot encrypt private key without a password';
-
-            return encrypt(base58, sharedKey + dpassword);
-        } else {
-            return base58;
+    function exceptionToString(err) {
+        var vDebug = "";
+        for (var prop in err) {
+            vDebug += "property: " + prop + " value: [" + err[prop] + "] - ";
         }
-
-        return null;
+        return "Exception: " + vDebug + " toString(): value: [" + err.toString() + "]";
     }
 
-    function encodePK(priv) {
-        var base58 = Bitcoin.Base58.encode(priv);
-        return encryptPK(base58);
+    MyStore.put = function (key, value) {}
+
+    MyStore.get = function (key, callback) {
+        callback()
     }
 
-    function isBase58(str) {
-        for (var i = 0; i < str.length; ++i) {
-            if (str[i] < 0 || str[i] > 58) {
-                return false;
-            }
+    MyWallet.parsePairingCode = function (raw_code) {
+        
+        var success = function (pairing_code) {
+            device.execute("didParsePairingCode:", pairing_code);
         }
-        return true;
-    }
-
-    function decryptPK(priv) {
-        if (double_encryption) {
-            if (dpassword == null)
-                throw 'Cannot decrypt private key without a password';
-
-            return decrypt(priv, sharedKey + dpassword, function(decrypted) {
-                return isBase58(decrypted);
-            });
-        } else {
-            return priv;
+        
+        var error = function (message) {
+            device.execute("errorParsingPairingCode:", message);
         }
-
-        return null;
-    }
-
-    function decodePK(priv) {
-        var decrypted = decryptPK(priv);
-        if (decrypted != null) {
-            return Bitcoin.Base58.decode(decrypted);
-        }
-        return null;
-    }
-
-    function parseWalletJSON(str) {
         
         try {
-            var obj = $.parseJSON(str);
-            
-            for (var i = 0; i < obj.keys.length; ++i) {		
-                addresses[obj.keys[i].addr] = {addr : obj.keys[i].addr, priv : obj.keys[i].priv, tag : obj.keys[i].tag};
+            if (raw_code == null || raw_code.length == 0) {
+                throw "Invalid Pairing QR Code";
             }
             
+            if (raw_code[0] != '1') {
+                throw "Invalid Pairing Version Code " + raw_code[0];
+            }
+            
+            var components = raw_code.split("|");
+            
+            if (components.length < 3) {
+                throw "Invalid Pairing QR Code. Not enough components.";
+            }
+            
+            var guid = components[1];
+            if (guid.length != 36) {
+                throw "Invalid Pairing QR Code. GUID wrong length.";
+            }
+            
+            var encrypted_data = components[2];
+            
+            $.ajax({
+                   type: "POST",
+                   url: root + 'wallet',
+                   data: {
+                       format: 'plain',
+                       method: 'pairing-encryption-password',
+                       guid: guid
+                   },
+                   success: function (encryption_phrase) {
+                       var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                                                        return decrypted != null;
+                                                        }, function () {
+                                                        error('Decryption Error');
+                                                        });
+                       
+                       if (decrypted != null) {
+                       var components2 = decrypted.split("|");
+                       
+                       success({
+                               version: raw_code[0],
+                               guid: guid,
+                               sharedKey: components2[0],
+                               password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                               });
+                       }
+                   },
+                   error: function (res) {
+                    error(res.responseText);
+                   }
+                   });
         } catch (e) {
-            console.log(e);
+            error('Error ' + e);
         }
     }
-    
 
-    function sendTx(_toAddress, _fromAddress, _value) {
-        $('#submit-button').hide();
-        $('#summary').html('Sending ' + parseFloat(_value) + ' BTC to <br /> ' + _toAddress);
-        
-        var fromAddresses = null;
-        var toAddress = null;
-        var value = 0;
-
-        try {
-            try {
-                toAddress = new Bitcoin.Address(_toAddress);
-            } catch (e) {
-                apiResolveFirstbits(_toAddress, function(addr) {
-                    sendTx(addr, _fromAddress, _value);
-                }, function() {
-                    makeNotice('error', 'misc-error', 'Invalid To Address ' + _toAddress);
-                });
-                return;
-            }
-            
-            if (_fromAddress != null && _fromAddress.length > 0) {
-                try {
-                    fromAddresses = [_fromAddress];
-                } catch (e) {
-                    makeNotice('error', 'misc-error', 'Invalid From Address ' + _fromAddress);
-                    return;
-                }
-            } else {
-                fromAddresses = getActiveAddresses();
-            }
-            
-            try {
-                value = Bitcoin.Util.parseValue(_value);
-            } catch (e) {
-                makeNotice('error', 'misc-error', 'Invalid Send Value');
-                return;
-            }
-            
-            pending_tx = initNewTx();
-            
-            pending_tx.from_addresses = fromAddresses;
-            pending_tx.to_addresses = [{address: toAddress, value : value}];
-            
-            var listener = {
-                on_error : function(e) {
-                    clearTimeout(this.dot_timer);
-                },
-                on_success : function() {
-                    document.location = 'did-submit-tx://';
-                },
-                on_begin_signing : function() {
-                    var self = this;
-                    
-                    self.txt = 'Signing Inputs. This can take a few minutes.<br />';
-                    $('#status').html(self.txt);
-                    
-                    var func = function() {
-                        if (self.is_cancelled || self.has_pushed || self.is_ready)
-                          return;
-                        
-                        self.txt += '.';
-                        $('#status').html(self.txt);
-                        
-                        setTimeout(func, 350);
-                    };
-                    
-                    self.dot_timer = setTimeout(func, 350);
-                },
-                on_sign_progress : function(i) {
-                   this.txt + i + ' done ';
-                },
-                on_finish_signing : function() {                    
-                    clearTimeout(this.dot_timer);
-                    
-                    $('#status').text('Finished Signing');
-                }
-            };
-            
-            pending_tx.addListener(listener);
-        
-            pending_tx.start();
-        } catch (e) {
-            console.log(e);
-        }
-    }
-    
-    function setLoadingText(txt) {
-        makeNotice('notice', 'misc-notice', txt);
-    }
-
-    function getActiveAddresses() {
-        var array = [];
-        for (var key in addresses) {
-            var addr = addresses[key];
-            //Don't include archived addresses
-            if (addr.tag == 2)
-                continue;
-
-            array.push(addr.addr);
-        }
-        return array;
-    }
-
-    function getAllAddresses() {
-        var array = [];
-        for (var key in addresses) {		
-            array.push(key);
-        }
-        return array;
-    }
-        
     function parseAddress(addrstring) {
         try {
-           return new Bitcoin.Address(addrstring).toString();
+            return new Bitcoin.Address(addrstring).toString();
         } catch (e) {
             return null;
         }
     }
-    
-    
+
+
     function parseMiniKey(miniKey) {
         var check = Crypto.SHA256(miniKey + '?');
         
-        switch(check.slice(0,2)) {
+        switch (check.slice(0, 2)) {
             case '00':
-            var decodedKey = Crypto.SHA256(miniKey, {asBytes: true}); 
-            return decodedKey;
-            break;
-            case '01':
-            var x          = Crypto.util.hexToBytes(check.slice(2,4))[0];
-            var count      = Math.round(Math.pow(2, (x / 4)));
-            var decodedKey = Crypto.PBKDF2(miniKey, 'Satoshi Nakamoto', 32, { iterations: count, asBytes: true});
-            return decodedKey;
-            break;
-            default:
-            console.log('invalid key');
-            break;
-        }    
+            var decodedKey = Crypto.SHA256(miniKey, {
+                                           asBytes: true
+                                           });
+                                           return decodedKey;
+                                           break;
+                                           case '01':
+                                           var x = Crypto.util.hexToBytes(check.slice(2, 4))[0];
+                                           var count = Math.round(Math.pow(2, (x / 4)));
+                                           var decodedKey = Crypto.PBKDF2(miniKey, 'Satoshi Nakamoto', 32, {
+                                                                          iterations: count,
+                                                                          asBytes: true
+                                                                          });
+                                                                          return decodedKey;
+                                                                          break;
+                                                                          default:
+                                                                          console.log('invalid key');
+                                                                          break;
+        }
     };
-    
-    function detectPrivateKeyFormat(key) {
-        // 51 characters base58, always starts with a '5'
-        if (/^5[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{50}$/.test(key))
-        return 'sipa';
-        
-        if (/^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}$/.test(key))
-        return 'base58';
-        
-        if (/^[A-Fa-f0-9]{64}$/.test(key))
-        return 'hex';
-        
-        if (/^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=+\/]{44}$/.test(key))
-        return 'base64';
-        
-        
-        if (/^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{21}$/.test(key) ||
-            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{25}$/.test(key) ||
-            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{29}$/.test(key) ||
-            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{30}$/.test(key) ||
-            /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{31}$/.test(key)) {
-            
-            var testBytes = Crypto.SHA256(key + "?", { asBytes: true });
-            
-            if (testBytes[0] === 0x00 || testBytes[0] === 0x01)
-            return 'mini';
-        }
-        
-        throw 'Unknown Key Format';
-    }
-    
-    function privateKeyStringToKey(value, format) {
-        var key_bytes = null;
-        
-        if (format == 'base58') {
-            key_bytes = Bitcoin.Base58.decode(value);
-        } else if (format == 'base64') {
-            key_bytes = Crypto.util.base64ToBytes(value);
-        } else if (format == 'hex') {
-            key_bytes = Crypto.util.hexToBytes(value);			
-        } else if (format == 'mini') {
-            key_bytes = parseMiniKey(value);			
-        } else if (format == 'sipa') {
-            var tbytes = Bitcoin.Base58.decode(value);
-            tbytes.shift();
-            key_bytes = tbytes.slice(0, tbytes.length - 4);
-        } else {
-            throw 'Unsupported Key Format';
-        }	
-        
-        if (key_bytes.length != 32) 
-        throw 'Result not 32 bytes in length';
-        
-        return new Bitcoin.ECKey(key_bytes);
-    }
-    
-    function parsePrivateKey(keyString) {
-        try {
-            var key = privateKeyStringToKey(keyString, detectPrivateKeyFormat(keyString));
-            
-            return key.getBitcoinAddress().toString() + '|' + encodePK(key.priv);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    function formatBTC(value) {
-        
-        if (value == null)
-            return '';
-        
-        var neg = '';
-        if (value < 0) {
-            value = -value;
-            neg = '-';
-        }
-        
-        value = ''+value;
-        
-        var integerPart = value.length > 8 ? value.substr(0, value.length-8) : '0';
-        var decimalPart = value.length > 8 ? value.substr(value.length-8) : value;
-        
-        if (decimalPart != null) {
-            while (decimalPart.length < 8) decimalPart = "0"+decimalPart;
-            decimalPart = decimalPart.replace(/0*$/, '');
-            while (decimalPart.length < 2) decimalPart += "0";
-        }
-        
-        return neg + integerPart+"."+decimalPart;
-    }
 
     //Changed padding to CBC iso10126 9th March 2012 & iterations to pbkdf2_iterations
     function encrypt(data, password) {
-        
-        return MyWallet.encryptWallet(data,password);
-        
-//        return Crypto.AES.encrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
+        return MyWallet.encryptWallet(data, password);
     }
 
     //When the ecryption format changes it can produce data which appears to decrypt fine but actually didn't
     //So we call success(data) and if it returns true the data was formatted correctly
     function decrypt(data, password) {
-        return MyWallet.decryptWallet(data,password, function (){ console.log("success")},  function (){ console.log("failure")});
+        return MyWallet.decryptWallet(data, password, function (wallet_obj) {
+             device.execute("didDecryptWallet:", wallet_obj);
+          }, function (message) {
+             device.execute("didFailToDecryptWallet:", message);
+        });
     }
 
-
-//        //iso10126 with 10 iterations
-//        try {
-//            
-//            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations });
-//
-//            if (decoded != null && decoded.length > 0) {            
-//                return decoded;
-//            };
-//        } catch (e) { 
-//            console.log(e);
-//        }
-//
-//        //OBC iso7816 padding with one iteration
-//        try {
-//            //Othwise try the old default settings
-//            var decoded = Crypto.AES.decrypt(data, password, {iterations : 1});
-//        
-//            if (decoded != null && decoded.length > 0) {			
-//                return decoded;
-//            }; 
-//        } catch (e) { 
-//            console.log(e);
-//        }
-
-//        //iso10126 padding with one iteration
-//        try {
-//            var decoded = Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : 1 });
-//
-//            if (decoded != null && decoded.length > 0) {			
-//                return decoded;
-//            };
-//        } catch (e) { 
-//            console.log(e);
-//        }
-//
-//        if (error != null) 
-//            error();
-//        
-//        return null;
-//    }
-
-    function generateNewAddressAndKey() {
-        try {
-            var key = new Bitcoin.ECKey(false);
-
-            return key.getBitcoinAddress().toString() + '|' + encodePK(key.priv);
-        } catch (e) {
-            console.log(e);
-        }
-    }
 } catch (e) {
     console.log(e);
 }

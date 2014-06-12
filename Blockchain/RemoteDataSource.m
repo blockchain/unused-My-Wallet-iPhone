@@ -377,9 +377,7 @@
         }
     
     JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
-    
-    NSLog(@"resolved id/alias: %@", [json objectWithData:data]);
-    
+        
     return [json objectWithData:data];
 }
 

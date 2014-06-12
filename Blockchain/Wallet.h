@@ -51,6 +51,7 @@
 @property(nonatomic, strong) JSBridgeWebView * webView;
 @property(nonatomic, strong) NSDictionary * document;
 
+
 -(NSString*)guid;
 -(void)setGuid:(NSString *)guid;
 -(NSString*)sharedKey;
@@ -59,6 +60,7 @@
 -(NSDictionary*)keys;
 -(NSDictionary*)addressBook;
 -(NSString*)dPasswordHash;
+-(id)initWithEncryptedQRString:(NSString*)encryptedQRString;
 
 -(Key*)parsePrivateKey:(NSString*)key;
 

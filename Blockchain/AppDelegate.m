@@ -461,6 +461,8 @@ AppDelegate * app;
 -(void)walletDidLoad:(Wallet *)_wallet {      
     NSLog(@"walletDidLoad");
 
+    [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
+    
     _tempLastKeyCount = [_wallet.keys count];
     
     receiveViewController.wallet = _wallet;
@@ -882,7 +884,7 @@ AppDelegate * app;
 
     @try {
         if (modalView) {
-            NSLog(@"closing modal..already visible");
+//            NSLog(@"closing modal..already visible");
             [self closeModal];
         }
         
@@ -907,20 +909,10 @@ AppDelegate * app;
     }
 }
 
--(void)parseAccountQRCodeData:(NSString*)data {
-    NSArray * components = [data componentsSeparatedByString:@"|"];
-    
-    if ([components count] != 3 || [data length] < 36+36+3) {
-        [app standardNotify:@"Invalid QR Code String"];
-        return;
-    }
-    
-    NSString * guid = [data substringWithRange:NSMakeRange(0, 36)];
-    NSString * sharedKey = [data substringWithRange:NSMakeRange(37, 36)];
-    NSString * password = [data substringWithRange:NSMakeRange(74, [data length]-74)];    
-    
-    [self setAccountData:guid sharedKey:sharedKey password:password];
+-(void)parseAccountQRCodeData:(NSString*)qrString {
+
 }
+
 
 
 
@@ -947,11 +939,6 @@ AppDelegate * app;
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    NSLog(@"Fetch Wallet");
-    
-    //Fetch the wallet data
-    [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:nil];
-    
     [app closeModal];
 }
 
@@ -981,21 +968,20 @@ AppDelegate * app;
         return;
     }
     
-    NSLog(@"decrypting");
+    NSLog(@"calling decrypt");
     self.wallet = [[[Wallet alloc] initWithData:[data[@"payload"] dataUsingEncoding:NSUTF8StringEncoding] password:manualPAssword.text] autorelease];
-
-    NSLog(@"wallet: %@", self.wallet.document);
-    
-    NSString *sharedKey = nil;
-    
-    [self setAccountData:[data objectForKey:@"guid"]  sharedKey:sharedKey password:manualPAssword.text];
+    self.wallet.delegate = app;
 }
 
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {        
-        [self parseAccountQRCodeData:sym.data];
+        self.wallet = [[Wallet alloc] initWithEncryptedQRString:sym.data];
+
+        NSLog(@"self.wallet: %@", self.wallet);
+
+//        [self setAccountData:guid sharedKey:sharedKey password:password];
         
         [readerView stop];
         

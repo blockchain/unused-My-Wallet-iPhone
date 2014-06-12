@@ -8,6 +8,7 @@
 
 #import "Wallet.h"
 #import "JSONKit.h"
+#import "AppDelegate.h"
 
 @implementation Key
 @synthesize addr;
@@ -123,6 +124,36 @@
             
     [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
 }
+
+-(id)initWithEncryptedQRString:(NSString*)encryptedQRString {
+
+    if ([super init]) {
+        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        [webView setJSDelegate:self];
+        
+        self.document = [NSMutableDictionary dictionary];
+        [self loadJS];
+
+        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode('%@');", encryptedQRString]];
+    }
+
+    return  self;
+}
+
+
+
+- (void)didParsePairingCode:(NSDictionary *)dict
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app setAccountData:dict[@"guid"] sharedKey:dict[@"sharedKey"] password:dict[@"password"]];
+    [app.dataSource getWallet:dict[@"guid"] sharedKey:dict[@"sharedKey"] checksum:nil];
+}
+
+- (void)errorParsingPairingCode:(NSString *)message
+{
+    NSLog(@"error message: %@", message);
+}
+
 
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {

@@ -120,6 +120,7 @@ typedef enum {
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;
+-(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 
 -(void)didGenerateNewWallet:(Wallet*)wallet password:(NSString*)password;
 

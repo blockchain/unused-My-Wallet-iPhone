@@ -69,17 +69,17 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 -(void)responderMayHaveChanged {
         
 	UIView * responder = [app.window findFirstResponder];
-    NSLog(@"Responder %@", responder);
+//    NSLog(@"Responder %@", responder);
     
     CGPoint offset = contentView.frame.origin;
 
-    printf("keyboard height : %f\n", keyboardRect.size.height);
-    printf("reponder y : %f\n", responder.frame.origin.y);
+//    printf("keyboard height : %f\n", keyboardRect.size.height);
+//    printf("reponder y : %f\n", responder.frame.origin.y);
 
     offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 29.0f;
 	
-    printf("y: %f\n", offset.y);
-           
+//    printf("y: %f\n", offset.y);
+    
     if (offset.y < 0) {
         [UIView beginAnimations:@"MoveUp" context:nil];
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];

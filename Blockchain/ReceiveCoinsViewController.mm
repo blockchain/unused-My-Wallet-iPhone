@@ -428,7 +428,7 @@
     ReceiveTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
     if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveTableCell" owner:nil options:nil] objectAtIndex:0];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
     }
     
     Key * key =  [self getKey:indexPath];

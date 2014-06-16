@@ -26,7 +26,7 @@
 	TransactionTableCell * cell = (TransactionTableCell*)[tableView dequeueReusableCellWithIdentifier:@"transaction"];
 
     if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"TransactionTableView" owner:nil options:nil] objectAtIndex:0];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"TransactionCell" owner:nil options:nil] objectAtIndex:0];
     }
     
     cell.transaction = transaction;

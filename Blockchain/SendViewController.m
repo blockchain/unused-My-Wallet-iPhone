@@ -180,11 +180,8 @@
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
         
-       NSDictionary * dict = [app parseURI:sym.data];
-        
-        
+        NSDictionary * dict = [app parseURI:sym.data];
         toField.text = [dict objectForKey:@"address"];
-        
         amountField.text = [dict objectForKey:@"amount"];
         
         [view stop];
@@ -200,12 +197,6 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [self doCurrencyConversion];
     
-    // scroll up scrollview
-    
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
-    [self.scrollView scrollRectToVisible:amountField.frame animated:YES];
-
-#warning come back and finish this
 	[app.tabViewController responderMayHaveChanged];
 }
 

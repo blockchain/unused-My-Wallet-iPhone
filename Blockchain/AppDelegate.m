@@ -1154,7 +1154,7 @@ AppDelegate * app;
 -(void)showSendCoins {
     
     if (!sendViewController) {
-        sendViewController = [[SendViewController alloc] initWithNibName:@"SendForm" bundle:[NSBundle mainBundle]];
+        sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
         
         [sendViewController viewDidLoad];
     }

@@ -72,7 +72,7 @@
 @synthesize delegate;
 @synthesize lastWalletSync;
 
--(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha {    
+-(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload {
     if (!walletIdentifier || !sharedKey || !payload)
         return FALSE;
     
@@ -110,7 +110,6 @@
     
     NSString * responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     
-    // getting this because captcha is wrong
     if ([repsonse statusCode] == 500) {
         [app standardNotify:responseString];
         return FALSE;

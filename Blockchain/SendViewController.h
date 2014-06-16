@@ -33,7 +33,7 @@
    
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
-    
+
     IBOutlet UIView * labelAddressView;
     IBOutlet UILabel * labelAddressLabel;
     IBOutlet UITextField * labelAddressTextField;
@@ -42,6 +42,8 @@
 @property(nonatomic, strong) Wallet * wallet;
 @property(nonatomic, strong) NSMutableArray * fromAddress;
 @property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, strong) IBOutlet UIScrollView * scrollView;
+
 
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;

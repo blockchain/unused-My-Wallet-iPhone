@@ -49,8 +49,6 @@
 
 }
 
-@property(nonatomic, strong) IBOutlet UIButton * depositButton;
-
 @property(nonatomic, strong) NSArray * activeKeys;
 @property(nonatomic, strong) NSArray * archivedKeys;
 @property(nonatomic, strong) NSArray * otherKeys;
@@ -66,7 +64,6 @@
 -(IBAction)generateNewAddressClicked:(id)sender;
 -(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
--(IBAction)depositClicked:(id)sender;
 -(IBAction)requestPaymentClicked:(id)sender;
 
 

@@ -91,7 +91,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 -(void)setSelectedIndex:(int)nindex {
 	desiredIndex = nindex;
 		
-	arrowStepDuration = 0.3f / abs(desiredIndex - selectedIndex);
+	arrowStepDuration = ANIMATION_DURATION / abs(desiredIndex - selectedIndex);
 	
 	[self moveArrow];
 }
@@ -117,6 +117,8 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	 selector:@selector(keyboardWillHide:)
 	 name:UIKeyboardWillHideNotification
 	 object:nil];
+    
+    // [self.view setBackgroundColor:[UIColor greenColor]];
 }
 
 -(void)setActiveViewController:(UIViewController *)nviewcontroller {
@@ -177,7 +179,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     
     if (animated) {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.3f];
+        [animation setDuration:ANIMATION_DURATION];
         [animation setType:kCATransitionPush]; 
         
         if (index > selectedIndex)

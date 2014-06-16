@@ -54,7 +54,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" id="290" userLabel="contentView">
-                        <rect key="frame" x="0.0" y="51" width="320" height="392"/>
+                        <rect key="frame" x="0.0" y="65" width="320" height="361"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="0.44705882349999998" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                     </view>
@@ -136,15 +136,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </imageView>
                     <view opaque="NO" contentMode="scaleToFill" id="284">
-                        <rect key="frame" x="0.0" y="406" width="320" height="74"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <rect key="frame" x="0.0" y="426" width="320" height="57"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="arrow_down.png" id="176">
-                                <rect key="frame" x="31" y="8" width="15" height="8"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="172">
-                                <rect key="frame" x="20" y="31" width="36" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="172" userLabel="Transactions">
+                                <rect key="frame" x="20" y="14" width="36" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="119-piggy-bank.png">
@@ -158,8 +154,8 @@
                                     <action selector="transactionsClicked:" destination="3" eventType="touchUpInside" id="306"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="173">
-                                <rect key="frame" x="100" y="28" width="35" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="173" userLabel="Receive">
+                                <rect key="frame" x="100" y="11" width="35" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="23-circle-south.png">
@@ -173,8 +169,8 @@
                                     <action selector="receiveCoinClicked:" destination="3" eventType="touchUpInside" id="308"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="174">
-                                <rect key="frame" x="183" y="28" width="35" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="174" userLabel="Send">
+                                <rect key="frame" x="183" y="11" width="35" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="27-circle-north.png">
@@ -188,8 +184,8 @@
                                     <action selector="sendCoinsClicked:" destination="3" eventType="touchUpInside" id="288"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="175">
-                                <rect key="frame" x="259" y="29" width="31" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="175" userLabel="Account">
+                                <rect key="frame" x="259" y="12" width="31" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="145-persondot.png">
@@ -204,7 +200,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.10588235294117647" green="0.54117647058823526" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
@@ -219,7 +215,6 @@
                 <outlet property="contentView" destination="290" id="291"/>
                 <outlet property="footer" destination="132" id="276"/>
                 <outlet property="header" destination="226" id="275"/>
-                <outlet property="whiteDownArrow" destination="176" id="278"/>
             </connections>
         </viewController>
         <viewController id="636" customClass="TabViewcontroller">
@@ -405,7 +400,7 @@
                 <outlet property="transactionCountLabel" destination="567" id="568"/>
             </connections>
         </viewController>
-        <view contentMode="scaleToFill" id="351">
+        <view contentMode="scaleToFill" id="351" userLabel="New Tabbar? ">
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -554,22 +549,6 @@
                         <outlet property="delegate" destination="355" id="439"/>
                     </connections>
                 </textField>
-                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Captcha:" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="402">
-                    <rect key="frame" x="9" y="210" width="76" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" id="403">
-                    <rect key="frame" x="93" y="205" width="207" height="31"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="alert"/>
-                    <connections>
-                        <outlet property="delegate" destination="355" id="440"/>
-                    </connections>
-                </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="398">
                     <rect key="frame" x="83" y="154" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -584,10 +563,6 @@
                         <action selector="createAccountClicked:" destination="355" eventType="touchUpInside" id="431"/>
                     </connections>
                 </button>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" id="400">
-                    <rect key="frame" x="93" y="143" width="207" height="54"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                </imageView>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" id="436">
                     <rect key="frame" x="186" y="160" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -596,14 +571,12 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="activity" destination="436" id="437"/>
-                <outlet property="captchaImage" destination="400" id="430"/>
-                <outlet property="captchaTextField" destination="403" id="453"/>
                 <outlet property="createButton" destination="398" id="441"/>
                 <outlet property="password2TextField" destination="397" id="452"/>
                 <outlet property="passwordTextField" destination="395" id="451"/>
             </connections>
         </view>
-        <view contentMode="scaleToFill" id="375">
+        <view contentMode="scaleToFill" id="375" userLabel="Welcome Back">
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -678,7 +651,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
-        <view contentMode="scaleToFill" id="463">
+        <view contentMode="scaleToFill" id="463" userLabel="Password Required">
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -741,7 +714,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
-        <view contentMode="scaleToFill" id="585">
+        <view contentMode="scaleToFill" id="585" userLabel="Manual Pair">
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -804,7 +777,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
-        <view contentMode="scaleToFill" id="623">
+        <view contentMode="scaleToFill" id="623" userLabel="Decryption Error">
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -875,7 +848,6 @@
         <image name="23-circle-south.png" width="28" height="28"/>
         <image name="27-circle-north.png" width="28" height="28"/>
         <image name="78-stopwatch.png" width="22" height="26"/>
-        <image name="arrow_down.png" width="15" height="8"/>
         <image name="busy-background.png" width="45" height="43"/>
         <image name="button_blue.png" width="154" height="32"/>
         <image name="circle.png" width="28" height="28"/>

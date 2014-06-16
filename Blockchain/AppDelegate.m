@@ -352,9 +352,7 @@ AppDelegate * app;
     NSString * op = [document objectForKey:@"op"];
     
     if ([op isEqualToString:@"block"]) {
-        
-        [self playDingSound];
-        
+                
         NSDictionary * block = [document objectForKey:@"x"];
         
         LatestBlock * latest = [[[LatestBlock alloc] init] autorelease];
@@ -467,7 +465,8 @@ AppDelegate * app;
     
     receiveViewController.wallet = _wallet;
     sendViewController.wallet = _wallet;
-        
+    [accountViewController loadWebView];
+    
     [dataSource multiAddr:_wallet.guid addresses:[_wallet activeAddresses]];
     
     
@@ -590,17 +589,17 @@ AppDelegate * app;
             
             printf("%f\n", time(NULL) - dataSource.lastWalletSync);
             
-            if (!isRegistered) {
-                [self registerDevice];
-                
-                [dataSource getUnconfirmedTransactions];
-                
-            } else {
+//            if (!isRegistered) {
+//                [self registerDevice];
+//                
+//                [dataSource getUnconfirmedTransactions];
+//                
+//            } else {
                 if (time(NULL) - dataSource.lastWalletSync > MULTI_ADDR_TIME) {
                     //Fetch the wallet data
                     [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
                 }
-            }
+//            }
         }
     }
 }
@@ -612,15 +611,6 @@ AppDelegate * app;
 	}
 	
 	AudioServicesPlaySystemSound(beepSoundID);		
-}
-
--(void)playDingSound {
-    
-	if (dingSoundID == 0) {
-		AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource:@"ding" ofType:@"wav"]], &dingSoundID);
-	}
-	
-	AudioServicesPlaySystemSound(dingSoundID);		
 }
 
 -(void)playAlertSound {
@@ -773,7 +763,7 @@ AppDelegate * app;
     [modalContentView removeFromSuperview]; 
 
     CATransition *animation = [CATransition animation]; 
-    [animation setDuration:0.3f];
+    [animation setDuration:ANIMATION_DURATION];
     [animation setType:kCATransitionFade]; 
         
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
@@ -810,8 +800,9 @@ AppDelegate * app;
 }
 
 -(void)registerDevice {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
+#warning what's up w/ this api call???
         NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@register_device?device=%@", WebROOT, [[UIDevice currentDevice] uniqueIdentifier]]];
         
         NSURLResponse * response = nil;
@@ -900,7 +891,7 @@ AppDelegate * app;
     
     @try {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.3f];
+        [animation setDuration:ANIMATION_DURATION];
         [animation setType:kCATransitionFade];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
@@ -1012,7 +1003,6 @@ AppDelegate * app;
 
 -(void)logout {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-    
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
@@ -1021,9 +1011,12 @@ AppDelegate * app;
     self.latestResponse = nil;
     [transactionsViewController setData:nil];
     [receiveViewController setWallet:nil];
+    [accountViewController emptyWebView];
+    
+#warning would be nice to handle this a bit better...put up a login screen etc instead of the app just looking empty.
 }
 
--(void)forgetWallet {            
+-(void)forgetWallet {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
@@ -1108,8 +1101,6 @@ AppDelegate * app;
 }
 
 -(IBAction)signupClicked:(id)sender {
-    
-    [newAccountView refreshCaptcha];
     
     [app showModal:newAccountView];
 }
@@ -1196,7 +1187,7 @@ AppDelegate * app;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{         
+{
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     // Override point for customization after application launch.
@@ -1209,27 +1200,10 @@ AppDelegate * app;
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
     [reachability startNotifer];
     
-#ifdef CYDIA
     isRegistered = TRUE;
-#else
-    NSString *filePath = @"/Applications/Cydia.app";
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        isRegistered = TRUE;
-    } else {
-        isRegistered = [[NSUserDefaults standardUserDefaults] boolForKey:@"registered"];
-    }
-#endif
-    
-    if (isRegistered) {
-        tabViewController = oldTabViewController;
-    } else {
-        tabViewController = newTabViewController;
-        
-        [self registerDevice];
-    }
+    tabViewController = oldTabViewController;
     
     [_window setRootViewController:tabViewController];
-//    [_window insertSubview:tabViewController.view atIndex:0];
     
     if (!isRegistered) {
         
@@ -1250,7 +1224,6 @@ AppDelegate * app;
         NSData * walletCache = [app readFromFileName:WalletCachefile];
         if (walletCache != NULL) {        
             self.wallet = [[[Wallet alloc] initWithData:walletCache password:[self password]] autorelease];
-            
             wallet.delegate = self;
         } else {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
@@ -1268,9 +1241,6 @@ AppDelegate * app;
 
     [tabViewController setActiveViewController:transactionsViewController];
 
-#warning fix this
-//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    
     [self performSelector:@selector(checkStatus) withObject:nil afterDelay:120.0f];
     
     return YES;

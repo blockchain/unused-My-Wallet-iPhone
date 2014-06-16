@@ -51,6 +51,18 @@ try {
     MyStore.get = function (key, callback) {
         callback()
     }
+    
+    var listener = {
+        on_error : function (e) {
+            console.log('on_error');
+        },
+        on_success : function () {
+            console.log('on_success');
+        },
+        on_start : function () {
+            console.log('on_start');
+        }
+    };
 
     MyWallet.parsePairingCode = function (raw_code) {
         
@@ -166,6 +178,70 @@ try {
           }, function (message) {
              device.execute("didFailToDecryptWallet:", message);
         });
+    }
+    
+    function generateNewAddress (_sharedKey) {
+        var key = MyWallet.generateNewKey;
+        
+        if (!key) {
+            console.log("problem generating new key");
+        }
+        
+        console.log("test");
+        
+        
+        try {
+            MyWallet.getWallet(function() {
+                      MyWallet.getSecondPassword(function() {
+                                                    var key = MyWallet.generateNewKey();                                                 
+                                                    if (!key) return;
+                                                 
+                                                    var address = key.getBitcoinAddress().toString();
+                                                 
+                                                    return key.concat("|").concat(address);
+                                                 },
+                                                 function() {
+                                                    MyWallet.logout();
+                                                 });
+                      });
+        } catch (e) {
+            MyWallet.makeNotice('error', 'misc-error', e);
+        }
+
+        return
+    }
+    
+    //
+    function quickSend(to, from, value, listener) {
+        loadScript('wallet/signer', function() {
+                   MyWallet.getSecondPassword(function() {
+                                              try {
+                                                var obj = initNewTx();
+                                              
+                                                if (!from || from.length == 0)
+                                                {
+                                                    obj.from_addresses = MyWallet.getActiveAddresses();
+                                                }
+                                                else
+                                                {
+                                                    console.log(from);
+                                                    obj.from_addresses = [from];
+                                                }
+                                              
+                                                obj.to_addresses.push({address: new Bitcoin.Address(to), value :  Bitcoin.Util.parseValue(value)});
+                                              
+                                                obj.addListener(listener);
+                                              
+                                                obj.start();
+                                              
+                                              } catch (e) {
+                                                listener.on_error(e);
+                                              }
+                                              
+                                              }, function(e) {
+                                                listener.on_error(e);
+                                              });
+                   });
     }
 
 } catch (e) {

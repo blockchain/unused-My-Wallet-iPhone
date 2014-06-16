@@ -22,17 +22,13 @@
 #import "Wallet.h"
 
 @interface NewAccountView : UIView <UITextFieldDelegate, WalletDelegate> {
-    IBOutlet UIImageView * captchaImage;
     IBOutlet UITextField * passwordTextField;
     IBOutlet UITextField * password2TextField;
-    IBOutlet UITextField * captchaTextField;
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet UIButton * createButton;
 }
 
 -(IBAction)createAccountClicked:(id)sender;
-
--(void)refreshCaptcha;
 
 @property(nonatomic, strong) Wallet * wallet;
 

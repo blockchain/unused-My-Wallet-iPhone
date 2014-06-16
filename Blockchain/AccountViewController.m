@@ -45,17 +45,34 @@
 
 -(void)viewWillAppear:(BOOL)animated {
         
-        [webView stopLoading];
-    
-#ifdef CYDIA
-        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone&cydia=true", WebROOT, [app guid], [app sharedKey]];
-#else
-        NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
-#endif
-    
-        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:requestString]]];
+    [webView stopLoading];
 
+    [self loadWebView];
 }
+
+- (void)emptyWebView
+{
+    [webView loadHTMLString:@"Logged out" baseURL:nil];
+}
+
+// call when login occurs
+- (void)loadWebView
+{
+//#ifdef CYDIA
+//    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone&cydia=true", WebROOT, [app guid], [app sharedKey]];
+    
+    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
+
+    //#else
+//    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
+//#endif
+    
+    if (app.wallet)
+    {
+        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:requestString]]];
+    }
+}
+
 
 - (void)viewDidLoad
 {

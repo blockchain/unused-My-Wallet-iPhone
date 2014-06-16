@@ -73,7 +73,7 @@
 
 -(NSDictionary*)resolveAlias:(NSString*)alias;
 
--(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload catpcha:(NSString*)captcha;
+-(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload;
 
 -(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error;
 

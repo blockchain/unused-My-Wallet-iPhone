@@ -19,14 +19,12 @@
 @synthesize activeKeys;
 @synthesize archivedKeys;
 @synthesize otherKeys;
-@synthesize depositButton;
 
 -(void)dealloc {
     
     [currencyConversionLabel release];
     [amountKeyoboardAccessoryView release];
     [optionsTitleLabel release];
-    [depositButton release];
     [archiveUnarchiveButton release];
     [optionsModalView release];
     [requestCoinsView release];
@@ -108,30 +106,10 @@
     [wallet cancelTxSigning];
 }
 
-
 -(void)viewDidLoad {
-#ifdef CYDIA
-    
-    NSLog(@"Add it");
-    
-    //button_green.png
-    
-    self.depositButton = [[[UIButton alloc] initWithFrame:CGRectMake(64, 20, 131, 30)] autorelease];
-    
-    [depositButton setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
-    
-    [depositButton setTitle:[NSString stringWithFormat:@"%@stant%@", @"In", @" Deposit"] forState:UIControlStateNormal];
-    
-    [depositButton addTarget:self action:@selector(depositClicked:) forControlEvents:UIControlEventTouchDown];
-    
-    [depositButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
-    
-    [firstSectionFooterView addSubview:depositButton];
-#endif
-
     // Hack for screensize
     UIWindow *w = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);    
+    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);
 }
 
 -(void)reload {
@@ -206,38 +184,12 @@
     });
 }
 
--(void)depositClicked:(id)sender {
-    for (Key * key in [wallet.keys allValues]) {
-        
-        //Only depsit to addresses with private keys and active
-        if (key.priv && key.tag != 2) {
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://blockchain.info/deposit?address=%@", key.addr]];
-        
-            [[UIApplication sharedApplication] openURL:url];
-            
-            break;
-        }
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 0) {
-        return firstSectionFooterView.frame.size.height;
-    } else if (section == 1) {
-        return secondSectionFooterView.frame.size.height;
-    }
-    
-    return 0.0f;
-
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == 0) {
+
+    if (section == 0)
+    {
         return firstSectionFooterView;
-    } else if (section == 1) {
-        return secondSectionFooterView;
     }
-    
     return nil;
 }
 
@@ -246,6 +198,8 @@
     if ([otherKeys count]) ++n;
     if ([archivedKeys count]) ++n;
     if ([activeKeys count]) ++n;
+    
+    NSLog(@"n: %d", n);
     return n;
 }
 
@@ -439,6 +393,11 @@
     return 70.0f;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 30.0f;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0)
         return @"Active";
@@ -463,13 +422,6 @@
     } else {
         [noaddressesView setHidden:TRUE];
     }
-    
-#ifdef CYDIA
-    [depositButton setHidden:FALSE];
-#else
-    [depositButton setHidden:TRUE];
-#endif
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -495,6 +447,10 @@
     
     Address * address = [app.latestResponse.addresses objectForKey:key.addr];
 
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+    [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+    [cell setSelectedBackgroundView:v];
+    
     if (address) {
         cell.balanceLabel.text = [app formatMoney:address->final_balance];
     } else {

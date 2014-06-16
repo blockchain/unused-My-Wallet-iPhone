@@ -115,7 +115,7 @@
     
     if (animated) {
         CATransition *animation = [CATransition animation]; 
-        [animation setDuration:0.3f]; 
+        [animation setDuration:ANIMATION_DURATION]; 
         
         [animation setType:kCATransitionPush]; 
         

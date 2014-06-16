@@ -16,10 +16,8 @@
 -(void)dealloc {
     [createButton release];
     [activity release];
-    [captchaImage release];
     [passwordTextField release];
     [password2TextField release];
-    [captchaTextField release];
     [super dealloc];
 }
 
@@ -33,25 +31,8 @@
 	[app.tabViewController responderMayHaveChanged];
 }
 
--(void)refreshCaptcha {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", WebROOT, @"kaptcha.jpg"]];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [[[UIImage alloc] initWithData:data] autorelease];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            captchaImage.image = img;
-            
-            [activity stopAnimating];
-        });  
-    });
-}
-
 -(void)awakeFromNib {
     [activity startAnimating];
-    
-    [self refreshCaptcha];
 }
 
 -(void)walletJSReady {
@@ -62,12 +43,11 @@
 //        [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
         NSLog(@"Generated new bitcoin address %@", key.addr);
         
-        if ([app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] catpcha:captchaTextField.text]) {
+        if ([app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]]) {
             [app didGenerateNewWallet:wallet password:passwordTextField.text];
             
             [app closeModal];
         } else {
-            [self refreshCaptcha];
         }
         
     } else {
@@ -89,12 +69,6 @@
         [app standardNotify:@"Passwords do not match"];
         return;
     }
-    
-//    if ([captchaTextField.text length] == 0) {
-//        [app standardNotify:@"You must enter the captcha code"];
-//        return;
-//    }
-    
     [app startTask:TaskGeneratingWallet];
 
     self.wallet = [[[Wallet alloc] initWithPassword:passwordTextField.text] autorelease];

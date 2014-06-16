@@ -83,11 +83,17 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 {
     NSString * store = @"App Store";
     
-    #ifdef CYDIA
-        store = @"Cydia";
-    #endif
+//    #ifdef CYDIA
+//        store = @"Cydia";
+//    #endif
     
-    NSString * message = [NSString stringWithFormat:@"<pre>%@\n\n%@\n\n%@\n%@ - %@ - %@</pre>", [exception reason], [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey], [self osVersionBuild], [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion], store];
+    NSString * message = [NSString stringWithFormat:@"<pre>%@\n\n%@\n\n%@\n%@ - %@ - %@</pre>",
+                                                      [exception reason],
+                                                      [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey],
+                                                      [self osVersionBuild],
+                                                      [[UIDevice currentDevice] systemName],
+                                                      [[UIDevice currentDevice] systemVersion],
+                                                      store];
     
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     

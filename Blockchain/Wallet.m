@@ -49,6 +49,7 @@
 }
 
 -(void)setJSVars {
+#warning fix all this stuff
     [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"double_encryption = %s;", [self doubleEncryption] ? "true" : "false"]];
     
     if (self.secondPassword)
@@ -58,22 +59,26 @@
 
     [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sharedKey = '%@'", [self sharedKey]]];
 
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
+//    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
 }
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value {
+
     [self setJSVars];
    
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sendTx('%@', '%@', '%@');", toAddress, fromAddress, value]];
+    // to, from, value,
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"MyWallet.quickSend('%@', '%@', '%@', listener);", toAddress, fromAddress, value]];
 }
 
 
+// generateNewAddress
 -(Key*)generateNewKey {
     [self setJSVars];
     
-//    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddressAndKey();", [self sharedKey]]] componentsSeparatedByString:@"|"];
-    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:@"generateNewAddressAndKey();"] componentsSeparatedByString:@"|"];
-
+    // generateNewAddress is in wallet.html
+    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddress(%@);", [self sharedKey]]] componentsSeparatedByString:@"|"];
+    
+//    NSArray *components = [webView stringByEvaluatingJavaScriptFromString:NSString stringWithFormat:@"generateNewAddressAndKey();", [self sharedKey]];
     if ([components count] == 2) {
         
         Key * key = [[[Key alloc] init] autorelease];
@@ -116,8 +121,10 @@
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet}" withString:walletJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bridge}" withString:bridgeJS];
 
+    // Break here to debug js
+    
     [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
-        
+    
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
     }
@@ -140,8 +147,6 @@
     return  self;
 }
 
-
-
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -154,7 +159,7 @@
     NSLog(@"error message: %@", message);
 }
 
-
+// This is only called when creating a new account
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
@@ -420,6 +425,8 @@
     
     [document setValue:addressBookArray forKey:@"address_book"];
 }
+
+// Calls from JS
 
 -(void)log:(NSString*)message {
     NSLog(@"console.log: %@", message);

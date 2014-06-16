@@ -34,7 +34,6 @@
 		9F1831F91517884C00FB3D52 /* button_red_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831F71517884C00FB3D52 /* button_red_large.png */; };
 		9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831F81517884C00FB3D52 /* button_red_large@2x.png */; };
 		9F1831FD1517912900FB3D52 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831FB1517912800FB3D52 /* beep.wav */; };
-		9F1831FE1517912900FB3D52 /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831FC1517912800FB3D52 /* ding.wav */; };
 		9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */; };
 		9F2D934A14C05DD00053F0FF /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D934914C05DD00053F0FF /* Address.m */; };
 		9F2D934E14C0792D0053F0FF /* TransactionTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934D14C0792D0053F0FF /* TransactionTableView.xib */; };
@@ -85,7 +84,6 @@
 		9F749E031514F1F900B3A8B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749E021514F1F900B3A8B8 /* CoreMedia.framework */; };
 		9F749E051514F20200B3A8B8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749E041514F20200B3A8B8 /* CoreVideo.framework */; };
 		9F749E071514F22500B3A8B8 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749E061514F22500B3A8B8 /* libiconv.dylib */; };
-		9F765EDF14BBBEC400048EFB /* footer.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EDD14BBBEC400048EFB /* footer.png */; };
 		9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EDE14BBBEC400048EFB /* footer@2x.png */; };
 		9F765EEC14BBC00000048EFB /* 119-piggy-bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE414BBC00000048EFB /* 119-piggy-bank.png */; };
 		9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */; };
@@ -200,7 +198,6 @@
 		9F1831F71517884C00FB3D52 /* button_red_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red_large.png; sourceTree = "<group>"; };
 		9F1831F81517884C00FB3D52 /* button_red_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red_large@2x.png"; sourceTree = "<group>"; };
 		9F1831FB1517912800FB3D52 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
-		9F1831FC1517912800FB3D52 /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
 		9F2780B515343A7D0015F83F /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = Blockchain/UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		9F2780B615343A7D0015F83F /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = Blockchain/UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		9F2D934814C05DD00053F0FF /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
@@ -269,7 +266,6 @@
 		9F749E021514F1F900B3A8B8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		9F749E041514F20200B3A8B8 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9F749E061514F22500B3A8B8 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		9F765EDD14BBBEC400048EFB /* footer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = footer.png; sourceTree = "<group>"; };
 		9F765EDE14BBBEC400048EFB /* footer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "footer@2x.png"; sourceTree = "<group>"; };
 		9F765EE414BBC00000048EFB /* 119-piggy-bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "119-piggy-bank.png"; sourceTree = "<group>"; };
 		9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "119-piggy-bank@2x.png"; sourceTree = "<group>"; };
@@ -535,7 +531,6 @@
 				9F765EF414BBC2CF00048EFB /* divider@2x.png */,
 				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
 				9F7DCCEF153452A8000CBFC8 /* fbButton.png */,
-				9F765EDD14BBBEC400048EFB /* footer.png */,
 				9F765EDE14BBBEC400048EFB /* footer@2x.png */,
 				9F2D934F14C07B2D0053F0FF /* funds_moved.png */,
 				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
@@ -801,7 +796,6 @@
 			isa = PBXGroup;
 			children = (
 				9F1831FB1517912800FB3D52 /* beep.wav */,
-				9F1831FC1517912800FB3D52 /* ding.wav */,
 				9F7480D21514030800BC4292 /* alert-received.wav */,
 			);
 			name = Sounds;
@@ -911,7 +905,6 @@
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
 				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
-				9F765EDF14BBBEC400048EFB /* footer.png in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				9F765EEC14BBC00000048EFB /* 119-piggy-bank.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
@@ -989,7 +982,6 @@
 				9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */,
 				C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
-				9F1831FE1517912900FB3D52 /* ding.wav in Resources */,
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,

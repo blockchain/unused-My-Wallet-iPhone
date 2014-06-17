@@ -38,7 +38,7 @@
                         <outlet property="delegate" destination="-1" id="14"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" id="6">
+                <view contentMode="scaleToFill" id="6" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -86,12 +86,12 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="2CU-C1-4SL">
+                <view contentMode="scaleToFill" id="2CU-C1-4SL" userLabel="Button Container View">
                     <rect key="frame" x="0.0" y="405" width="320" height="47"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Yez-oe-AkH">
-                            <rect key="frame" x="178" y="8" width="122" height="30"/>
+                            <rect key="frame" x="168" y="9" width="140" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="New Address" backgroundImage="button_green.png">
@@ -106,7 +106,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="i1j-pG-caF">
-                            <rect key="frame" x="20" y="8" width="141" height="30"/>
+                            <rect key="frame" x="12" y="9" width="140" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Scan Private Key" backgroundImage="button_green.png">
@@ -119,10 +119,15 @@
                                 <action selector="scanKeyClicked:" destination="-1" eventType="touchUpInside" id="bgE-Fm-mdd"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" id="8Eq-K0-YhX">
+                        <view contentMode="scaleToFill" id="8Eq-K0-YhX" userLabel="Line View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.70034391979999999" green="0.70034391979999999" blue="0.70034391979999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" id="wdm-ev-vSa" userLabel="Line View">
+                            <rect key="frame" x="0.0" y="1" width="320" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.93234454310000003" green="0.93234454310000003" blue="0.93234454310000003" alpha="1" colorSpace="calibratedRGB"/>

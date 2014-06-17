@@ -647,9 +647,9 @@ AppDelegate * app;
 
 -(void)pushWebViewController:(NSString*)url {
     if (webViewController == nil) {
-        webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:[NSBundle mainBundle]];
         
-        [webViewController viewDidLoad];
+        webViewController = [[WebViewController alloc] init];
+        [webViewController viewDidLoad]; // ??????
     }
 
     [tabViewController setActiveViewController:webViewController animated:TRUE index:-1];

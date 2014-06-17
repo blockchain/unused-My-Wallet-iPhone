@@ -50,25 +50,18 @@
     [self loadWebView];
 }
 
+// Called after user logs out
 - (void)emptyWebView
 {
     [webView loadHTMLString:@"Logged out" baseURL:nil];
 }
 
-// call when login occurs
+// called after user logs in
 - (void)loadWebView
 {
-//#ifdef CYDIA
-//    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone&cydia=true", WebROOT, [app guid], [app sharedKey]];
-    
-    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
-
-    //#else
-//    NSString * requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
-//#endif
-    
     if (app.wallet)
     {
+        NSString *requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:requestString]]];
     }
 }
@@ -78,14 +71,17 @@
 {
     [super viewDidLoad];
 	
-    //Remove Shadow
-    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
+    if (APP_IS_IPHONE5) {
+        self.view.frame = CGRectMake(0, 0, 320, 450);
     }
-    // Hack for screensize
+    else {
+        self.view.frame = CGRectMake(0, 0, 320, 361);
+    }
 
-    UIWindow *w = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    self.view.frame = CGRectMake(0, 0, 320, w.bounds.size.height - 70);
+    // Remove Shadow
+//    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
+//        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
+//    }
 }
 
 @end

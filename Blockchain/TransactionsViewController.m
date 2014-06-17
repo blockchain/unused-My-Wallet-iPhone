@@ -139,9 +139,16 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
     
-    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+    if (APP_IS_IPHONE5)
+    {
+        self.view.frame = CGRectMake(0, 0, 320, 450);
+    }
+    else {
+        self.view.frame = CGRectMake(0, 0, 320, 361);
+    }    
 }
 
 -(void)dealloc {

@@ -130,7 +130,6 @@
 		9FCA4D2F15149D6B00ECDFBE /* 23-circle-south@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D2C15149D6B00ECDFBE /* 23-circle-south@2x.png */; };
 		9FCA4D3015149D6B00ECDFBE /* 27-circle-north@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */; };
 		9FCA4D391514A83400ECDFBE /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D381514A83400ECDFBE /* WebViewController.m */; };
-		9FCA4D3B1514A86500ECDFBE /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3A1514A86500ECDFBE /* WebView.xib */; };
 		9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */; };
 		9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */; };
 		9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF851514EDF500E92C90 /* modal_background_large.png */; };
@@ -328,7 +327,6 @@
 		9FCA4D2D15149D6B00ECDFBE /* 27-circle-north@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "27-circle-north@2x.png"; sourceTree = "<group>"; };
 		9FCA4D371514A83400ECDFBE /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		9FCA4D381514A83400ECDFBE /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		9FCA4D3A1514A86500ECDFBE /* WebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
 		9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "25-circle-west.png"; sourceTree = "<group>"; };
 		9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "25-circle-west@2x.png"; sourceTree = "<group>"; };
 		9FDAEF621514EB5200E92C90 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
@@ -820,7 +818,6 @@
 				9FDAEF891514EE0000E92C90 /* ModalView.xib */,
 				9F61B89F151532A20083C57A /* ReceiveCoins.xib */,
 				9F45F82D1514E6BF00018AED /* SendCoins.xib */,
-				9FCA4D3A1514A86500ECDFBE /* WebView.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -963,7 +960,6 @@
 				9FCA4D2F15149D6B00ECDFBE /* 23-circle-south@2x.png in Resources */,
 				9FCA4D3015149D6B00ECDFBE /* 27-circle-north@2x.png in Resources */,
 				C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */,
-				9FCA4D3B1514A86500ECDFBE /* WebView.xib in Resources */,
 				9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */,
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,
 				C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */,

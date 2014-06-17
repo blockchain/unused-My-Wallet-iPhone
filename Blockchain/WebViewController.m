@@ -99,8 +99,16 @@
     [super viewDidLoad];
 	
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
-    }   
+        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
+    }
+    
+    if (APP_IS_IPHONE5)
+    {
+        self.view.frame = CGRectMake(0, 0, 320, 450);
+    }
+    else {
+        self.view.frame = CGRectMake(0, 0, 320, 361);
+    }
 }
 
 - (void)viewDidUnload

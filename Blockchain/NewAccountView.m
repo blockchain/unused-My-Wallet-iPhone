@@ -51,6 +51,7 @@
         }
         
     } else {
+#warning getting this error when pairing
         [app standardNotify:@"Error generating bitcoin address"];
     }
     
@@ -59,6 +60,7 @@
     self.wallet = nil;
 }
 
+// Get here from New Account and also when manually pairing
 -(IBAction)createAccountClicked:(id)sender {
     
     if ([passwordTextField.text length] < 10 || [passwordTextField.text length] > 255) {

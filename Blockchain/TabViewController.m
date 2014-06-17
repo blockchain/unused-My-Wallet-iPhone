@@ -31,26 +31,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	return self;
 }
 
--(void)moveArrow {
-	
-	if (desiredIndex == selectedIndex)
-		return;
-	else if (desiredIndex > selectedIndex) {
-		++selectedIndex;
-	} else {
-		--selectedIndex;
-	}
-	
-	[UIView beginAnimations:@"MoveArrow" context:nil];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationDuration:arrowStepDuration];
-	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	[UIView setAnimationDidStopSelector:@selector(arrowAnimationStopped)];
-	whiteDownArrow.frame = CGRectMake(arrowPositions[selectedIndex].x, arrowPositions[selectedIndex].y, whiteDownArrow.frame.size.width, whiteDownArrow.frame.size.height);
-	[UIView commitAnimations];
-}
-
-
 -(void) keyboardWillShow:(NSNotification *)note
 {		
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardRect];
@@ -90,14 +70,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 
 -(void)setSelectedIndex:(int)nindex {
 	desiredIndex = nindex;
-		
-	arrowStepDuration = ANIMATION_DURATION / abs(desiredIndex - selectedIndex);
-	
-	[self moveArrow];
-}
-
--(void)arrowAnimationStopped {
-	[self moveArrow];
 }
 
 -(void)awakeFromNib {
@@ -109,7 +81,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	nextButton.enabled = NO;
 	nextButton.alpha = 0.0f;
 	
-	whiteDownArrow.frame = CGRectMake(arrowPositions[0].x, arrowPositions[0].y, whiteDownArrow.frame.size.width, whiteDownArrow.frame.size.height);
 	selectedIndex = 0;
     
     [[NSNotificationCenter defaultCenter]
@@ -192,17 +163,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
         [[contentView layer] addAnimation:animation forKey:@"SwitchToView1"]; 
     }
     
-    if (index < 0) {
-        [whiteDownArrow setHidden:TRUE];
-    } else {
-        [whiteDownArrow setHidden:FALSE];
-    }
-
-    // Hide arrow for now.
-    [whiteDownArrow setHidden:TRUE];
-    
     [self setSelectedIndex:index];
-
 }
 
 -(BOOL)backButtonEnabled {

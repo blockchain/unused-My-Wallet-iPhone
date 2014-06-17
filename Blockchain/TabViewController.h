@@ -12,7 +12,6 @@
 	IBOutlet UIView * header;
 	IBOutlet UIView * footer;
 	IBOutlet UIView * contentView;
-	IBOutlet UIImageView * whiteDownArrow;
 
 	IBOutlet UIButton * nextButton;
 	IBOutlet UIButton * backButton;

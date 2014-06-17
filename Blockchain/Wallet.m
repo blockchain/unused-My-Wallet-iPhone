@@ -159,7 +159,7 @@
     NSLog(@"error message: %@", message);
 }
 
-// This is only called when creating a new account
+// This is only called when creating a new account,
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];

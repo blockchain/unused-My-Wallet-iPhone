@@ -68,10 +68,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     }
 }
 
--(void)setSelectedIndex:(int)nindex {
-	desiredIndex = nindex;
-}
-
 -(void)awakeFromNib {
 	
 	keyboardRect = CGRectMake(0, 264, 320, 216);
@@ -125,7 +121,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     return selectedIndex;
 }
 
--(void)setActiveViewController:(UIViewController *)nviewcontroller animated:(BOOL)animated index:(int)index {
+-(void)setActiveViewController:(UIViewController *)nviewcontroller animated:(BOOL)animated index:(int)newIndex {
 		
 	if (nviewcontroller == activeViewController)
 		return;
@@ -152,19 +148,17 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
         CATransition *animation = [CATransition animation]; 
         [animation setDuration:ANIMATION_DURATION];
         [animation setType:kCATransitionPush]; 
-        
-        if (index > selectedIndex)
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+
+        if (newIndex > selectedIndex)
             [animation setSubtype:kCATransitionFromRight];
         else
             [animation setSubtype:kCATransitionFromLeft];
-
-        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         
         [[contentView layer] addAnimation:animation forKey:@"SwitchToView1"]; 
     }
-    
-    [self setSelectedIndex:index];
 
+    selectedIndex = newIndex;
 }
 
 -(BOOL)backButtonEnabled {

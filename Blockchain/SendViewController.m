@@ -266,14 +266,14 @@
     
     return @"";
 }
+
+#pragma mark - Actions
 -(IBAction)addressBookClicked:(id)sender {
-    AddressBookView * view = [[AddressBookView alloc] initWithWallet:app.wallet];
+    AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
+    addressBookView.delegate = self;
+    [app showModal:addressBookView];
     
-    view.delegate = self;
-    
-    [app showModal:view];
-    
-    [view release];
+    [addressBookView release];
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender {

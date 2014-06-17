@@ -76,22 +76,9 @@
 
 -(void)loadURL:(NSString*)url {
     
-    NSLog(@"%@", webView);
-    
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
     [self addCookiesToRequest:request];
-
     [webView loadRequest:request];
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
 }
 
 - (void)viewDidLoad
@@ -113,18 +100,6 @@
         self.view.frame = CGRectMake(0, 0, 320, 361);
     }
 }
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 
 -(void)dealloc {
     [webView release];

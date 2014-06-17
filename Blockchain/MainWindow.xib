@@ -632,7 +632,7 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="logoutClicked:" destination="3" eventType="touchUpInside" id="582"/>
+                            <action selector="powerClicked:" destination="3" eventType="touchUpInside" id="FFL-mF-Op1"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="691" userLabel="Refresh Button Small">

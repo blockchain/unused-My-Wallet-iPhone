@@ -192,7 +192,7 @@ typedef enum {
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;
 -(IBAction)infoClicked:(UIButton *)sender;
--(IBAction)logoutClicked:(id)sender;
+-(IBAction)powerClicked:(id)sender;
 -(IBAction)signupClicked:(id)sender;
 -(IBAction)loginClicked:(id)sender; 
 -(IBAction)scanAccountQRCodeclicked:(id)sender;

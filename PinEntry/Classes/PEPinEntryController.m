@@ -31,7 +31,7 @@
 static PEViewController *EnterController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Enter your passcode";
+	c.prompt = @"Please enter your pin";
 	c.title = @"";
 	return c;
 }
@@ -39,7 +39,7 @@ static PEViewController *EnterController()
 static PEViewController *NewController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Enter new passcode";
+	c.prompt = @"Please enter a new pin";
 	c.title = @"";
 	return c;
 }
@@ -47,7 +47,7 @@ static PEViewController *NewController()
 static PEViewController *VerifyController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Verify new passcode";
+	c.prompt = @"Confirm your pin";
 	c.title = @"";
 	return c;
 }
@@ -92,7 +92,7 @@ static PEViewController *VerifyController()
 	switch (pinStage) {
 		case PS_VERIFY:
 			if(![self.pinDelegate pinEntryController:self shouldAcceptPin:[controller.pin intValue]]) {
-				controller.prompt = @"Wrong passcode, retry";
+				controller.prompt = @"Incorrect pin. Please retry.";
 				[controller resetPin];
 			} else {
 				if(verifyOnly == NO) {

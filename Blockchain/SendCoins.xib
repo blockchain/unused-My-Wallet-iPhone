@@ -61,11 +61,11 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" id="6">
-                    <rect key="frame" x="0.0" y="102" width="320" height="102"/>
+                    <rect key="frame" x="0.0" y="102" width="320" height="100"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="11">
-                            <rect key="frame" x="12" y="57" width="140" height="32"/>
+                            <rect key="frame" x="14" y="58" width="140" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                             <state key="normal" title="Scan From QR" backgroundImage="button_blue.png">
@@ -79,7 +79,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12">
-                            <rect key="frame" x="167" y="57" width="140" height="32"/>
+                            <rect key="frame" x="168" y="58" width="140" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                             <state key="normal" title="Address Book" backgroundImage="button_blue.png">
@@ -100,7 +100,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="9" id="31">
-                            <rect key="frame" x="41" y="17" width="266" height="31"/>
+                            <rect key="frame" x="39" y="16" width="273" height="31"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="alert"/>
@@ -146,18 +146,18 @@
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="UFr-og-Lbi">
-                    <rect key="frame" x="-9" y="205" width="339" height="56"/>
+                    <rect key="frame" x="0.0" y="205" width="320" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Amount:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="48">
-                            <rect key="frame" x="20" y="17" width="61" height="21"/>
+                            <rect key="frame" x="11" y="17" width="61" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4">
-                            <rect key="frame" x="203" y="12" width="116" height="32"/>
+                            <rect key="frame" x="192" y="12" width="116" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Send Payment" backgroundImage="button_green.png">
@@ -171,7 +171,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" clearsOnBeginEditing="YES" minimumFontSize="17" id="52" userLabel="Amount No Border Style Text Field - 0.00">
-                            <rect key="frame" x="92" y="12" width="54" height="31"/>
+                            <rect key="frame" x="83" y="12" width="54" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" keyboardAppearance="alert"/>
@@ -180,14 +180,14 @@
                             </connections>
                         </textField>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="BTC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="51">
-                            <rect key="frame" x="154" y="17" width="39" height="21"/>
+                            <rect key="frame" x="128" y="17" width="39" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" id="49">
-                            <rect key="frame" x="84" y="12" width="109" height="31"/>
+                            <rect key="frame" x="74" y="12" width="90" height="31"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="alert"/>

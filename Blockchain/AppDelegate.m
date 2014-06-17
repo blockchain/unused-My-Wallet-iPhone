@@ -43,48 +43,7 @@ AppDelegate * app;
 @synthesize modalDelegate;
 @synthesize readerView;
 
--(RemoteDataSource*)dataSource {
-    return dataSource;
-}
-
--(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {   
-    if (fsymbolLocal && latestResponse.symbol.conversion) {
-        @try {
-            BOOL negative = false;
-
-            NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
-            
-            if ([number compare:[NSNumber numberWithInt:0]] < 0) {
-                number = [number decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
-                negative = TRUE;
-            }
-            
-            if (negative)
-                return [@"-" stringByAppendingString:[latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
-            else
-                return [latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
-            
-        } @catch (NSException * e) {
-            NSLog(@"%@", e);
-        }
-    }
-    
-    
-    NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
-    
-    NSString * string = [btcFromatter stringFromNumber:number];
-    
-    if ([string length] >= 8) {
-        string = [string substringToIndex:8];
-    }
-    
-    
-    return [string stringByAppendingString:@" BTC"];
-}
-
--(NSString*)formatMoney:(uint64_t)value {   
-    return [self formatMoney:value localCurrency:symbolLocal];
-}
+#pragma mark - Lifecycle
 
 -(id)init {
     if (self = [super init]) {
@@ -106,12 +65,88 @@ AppDelegate * app;
     return self;
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    wallet.secondPassword  = nil;
+    
+    [self disconnect];
+}
 
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [self showPinModal];
+}
+
+- (void)installUncaughtExceptionHandler
+{
+	InstallUncaughtExceptionHandler();
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
+    
+    // Override point for customization after application launch.
+    _window.backgroundColor = [UIColor whiteColor];
+    
+    [_window makeKeyAndVisible];
+    
+    //Netowrk status updates
+    self.reachability = [Reachability reachabilityForInternetConnection];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
+    [reachability startNotifer];
+    
+    isRegistered = TRUE;
+    tabViewController = oldTabViewController;
+    
+    [_window setRootViewController:tabViewController];
+    
+    if (!isRegistered) {
+        
+        [dataSource getUnconfirmedTransactions];
+        
+    } else if (![self guid] || ![self sharedKey]) {
+        [self showWelcome];
+        
+    } else if (![self password]) {
+        
+        [self showModal:mainPasswordView];
+        
+        [mainPasswordTextField becomeFirstResponder];
+        
+    } else {
+        
+        //Restore the wallet cache
+        NSData * walletCache = [app readFromFileName:WalletCachefile];
+        if (walletCache != NULL) {
+            self.wallet = [[[Wallet alloc] initWithData:walletCache password:[self password]] autorelease];
+            wallet.delegate = self;
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
+        }
+        
+        [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+        
+        //Restore the transactions cache
+        NSData * multiAddrCache = [app readFromFileName:MultiaddrCacheFile];
+        if (multiAddrCache != NULL) {
+            self.latestResponse = [dataSource parseMultiAddr:multiAddrCache];
+            transactionsViewController.data = latestResponse;
+        }
+    }
+    
+    [tabViewController setActiveViewController:transactionsViewController];
+    
+    [self performSelector:@selector(checkStatus) withObject:nil afterDelay:120.0f];
+    
+    return YES;
+}
+
+
+#pragma mark - UI State
 -(void)toggleSymbol {
     symbolLocal = !symbolLocal;
     
     [transactionsViewController setText];
-    
     [[transactionsViewController tableView] reloadData];
 }
 
@@ -134,9 +169,9 @@ AppDelegate * app;
                 break;
             case TaskSaveWallet:
                 [self showBusy];
-
+                
                 [busyLabel setText:@"saving wallet"];
-
+                
                 break;
             case TaskLoadUnconfirmed:
                 [self showBusy];
@@ -150,22 +185,22 @@ AppDelegate * app;
                 }
                 
                 [busyLabel setText:@"downloading wallet"];
-
+                
                 break;
                 
             case TaskGetMultiAddr:
                 if (transactionsViewController.data == NULL) {
                     [self showBusy];
                 }
-
+                
                 [busyLabel setText:@"downloading transactions"];
-
+                
                 break;
             case TaskLoadExternalURL:
                 [self showBusy];
                 
                 [busyLabel setText:@"loading page"];
-
+                
                 break;
         }
         
@@ -178,6 +213,7 @@ AppDelegate * app;
         [self setStatus];
     });
 }
+
 -(void)finishTask {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (tasks > 0) {
@@ -194,20 +230,46 @@ AppDelegate * app;
     });
 }
 
+
 -(void)setStatus {
     [powerButton setHighlighted:FALSE];
-
+    
     if (tasks > 0) {
         [powerButton setEnabled:FALSE];
     } else {
         [powerButton setEnabled:TRUE];
-
+        
         if ([webSocket readyState] != ReadyStateOpen) {
             [powerButton setHighlighted:TRUE];
         }
     }
 }
 
+#pragma mark - AlertView Helpers
+
+- (void)standardNotify:(NSString*)message
+{
+	[self standardNotify:message title:@"Error" delegate:nil];
+}
+
+- (void)standardNotify:(NSString*)message delegate:(id)fdelegate
+{
+	[self standardNotify:message title:@"Error" delegate:fdelegate];
+}
+
+- (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            [alert release];
+        }
+    });
+}
+
+#pragma mark File IO
 
 -(NSData*)readFromFileName:(NSString *)fileName  {
         
@@ -260,27 +322,7 @@ AppDelegate * app;
     return TRUE;
 }
 
-- (void)standardNotify:(NSString*)message
-{
-	[self standardNotify:message title:@"Error" delegate:nil];	
-}
-
-- (void)standardNotify:(NSString*)message delegate:(id)fdelegate
-{
-	[self standardNotify:message title:@"Error" delegate:fdelegate];	
-}
-
-- (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alert show];	
-            [alert release]; 
-        }
-    });	
-}
+#pragma mark - Websockets
 
 -(void)subscribeWalletAndToKeys {
     NSString * msg = [NSString stringWithFormat:@"{\"op\":\"wallet_sub\",\"guid\":\"%@\"}", [self guid]];
@@ -435,6 +477,8 @@ AppDelegate * app;
     }
 }
 
+#pragma mark - Wallet Delegates
+
 -(void)didGenerateNewWallet:(Wallet*)_wallet password:(NSString*)password {
     
     [self forgetWallet];
@@ -474,7 +518,6 @@ AppDelegate * app;
     self.webSocket = [[[WebSocketUIView alloc] init] autorelease];
     webSocket.delegate = self;
     [webSocket connect:WebSocketURL];
-    
 }
 
 -(void)walletDataNotModified {    
@@ -503,42 +546,6 @@ AppDelegate * app;
     [self showModal:mainPasswordView];
     
     [mainPasswordTextField becomeFirstResponder];
-}
-
--(IBAction)mainPasswordClicked:(id)sender {
-    
-    mainPasswordTextField.text = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    if ([mainPasswordTextField.text length] < 10) {
-        [app standardNotify:@"Passowrd must be 10 or more characters in length"];
-        return;
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:mainPasswordTextField.text forKey:@"password"];
-
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
-    
-    [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
-    
-    mainPasswordTextField.text = nil;
-    
-    [app closeModal];
-}
-
--(IBAction)refreshClicked:(id)sender {
-    if (![self guid] || ![self sharedKey]) {
-        [app showWelcome];
-        return;
-    }
-    
-    if (wallet.password) {
-        if (time(NULL) - dataSource.lastWalletSync > 5.0f) {
-            //Fetch the wallet data
-            [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
-        }
-    } else {
-        [self walletFailedToDecrypt:wallet];
-    }
 }
 
 -(void)didGetWalletData:(NSData *)data  {
@@ -707,7 +714,6 @@ AppDelegate * app;
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    
     if (!isRegistered)
         return FALSE;
     
@@ -898,13 +904,6 @@ AppDelegate * app;
     }
 }
 
--(void)parseAccountQRCodeData:(NSString*)qrString {
-
-}
-
-
-
-
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
 
     if ([guid length] != 36) {
@@ -970,6 +969,7 @@ AppDelegate * app;
 
         NSLog(@"self.wallet: %@", self.wallet);
 
+#warning incomplete?
 //        [self setAccountData:guid sharedKey:sharedKey password:password];
         
         [readerView stop];
@@ -1010,8 +1010,6 @@ AppDelegate * app;
     [transactionsViewController setData:nil];
     [receiveViewController setWallet:nil];
     [accountViewController emptyWebView];
-    
-#warning would be nice to handle this a bit better...put up a login screen etc instead of the app just looking empty.
 }
 
 -(void)forgetWallet {
@@ -1030,46 +1028,9 @@ AppDelegate * app;
     [receiveViewController setWallet:nil];
 }
 
-#pragma mark - Pin Entry
+#pragma mark - Show Screens
 
-- (BOOL)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin
-{
-    NSNumber *pinObj = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
-
-	if(pinObj && pin == [pinObj intValue])
-    {
-		if(c.verifyOnly == YES)
-        {
-			[tabViewController dismissViewControllerAnimated:YES completion:^{
-            }];
-		}
-        
-		return YES;
-	}
-    else
-    {
-		return NO;
-	}
-}
-
-- (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)pin
-{
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:pin] forKey:@"pin"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSLog(@"Saved new pin");
-
-	// Update your info to new pin code
-	[tabViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
-{
-	NSLog(@"Pin change cancelled!");
-	[tabViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-
+// Modal menu
 -(void)showWelcome {
     if (!isRegistered)
         return;
@@ -1085,6 +1046,45 @@ AppDelegate * app;
     [app showModal:welcomeView];
 }
 
+-(void)showSendCoins {
+    
+    if (!sendViewController) {
+        sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
+        
+        [sendViewController viewDidLoad];
+    }
+    
+    sendViewController.wallet = wallet;
+    
+    [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
+}
+
+- (void)showPinModal
+{
+    // if pin exists - verify
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            PEPinEntryController *c = [PEPinEntryController pinVerifyController];
+            c.navigationBarHidden = YES;
+            c.pinDelegate = self;
+            
+            [_window.rootViewController presentViewController:c animated:YES completion:nil];
+        });
+    }
+    // no pin - create
+    else
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            PEPinEntryController *c = [PEPinEntryController pinCreateController];
+            c.navigationBarHidden = YES;
+            c.pinDelegate = self;
+            
+            [_window.rootViewController presentViewController:c animated:YES completion:nil];
+        });
+    }
+}
+
 #pragma mark - Actions
 
 -(IBAction)changePinClicked:(id)sender {
@@ -1094,7 +1094,7 @@ AppDelegate * app;
     [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
--(IBAction)logoutClicked:(id)sender {
+-(IBAction)powerClicked:(id)sender {
     [self showWelcome];
 }
 
@@ -1148,20 +1148,51 @@ AppDelegate * app;
     [tabViewController setActiveViewController:accountViewController animated:TRUE index:3];
 }
 
-
--(void)showSendCoins {
+-(IBAction)mainPasswordClicked:(id)sender {
     
-    if (!sendViewController) {
-        sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
-        
-        [sendViewController viewDidLoad];
+    mainPasswordTextField.text = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if ([mainPasswordTextField.text length] < 10) {
+        [app standardNotify:@"Passowrd must be 10 or more characters in length"];
+        return;
     }
     
-    sendViewController.wallet = wallet;
+    [[NSUserDefaults standardUserDefaults] setObject:mainPasswordTextField.text forKey:@"password"];
     
-    [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
+    
+    [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+    
+    mainPasswordTextField.text = nil;
+    
+    [app closeModal];
 }
 
+-(IBAction)refreshClicked:(id)sender {
+    if (![self guid] || ![self sharedKey]) {
+        [app showWelcome];
+        return;
+    }
+    
+    if (wallet.password) {
+        if (time(NULL) - dataSource.lastWalletSync > 5.0f) {
+            //Fetch the wallet data
+            [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
+        }
+    } else {
+        [self walletFailedToDecrypt:wallet];
+    }
+}
+
+-(IBAction)modalBackgroundClicked:(id)sender {
+    [modalView endEditing:FALSE];
+}
+
+#pragma mark - Accessors
+
+-(RemoteDataSource*)dataSource {
+    return dataSource;
+}
 
 -(NSString*)password {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
@@ -1175,127 +1206,83 @@ AppDelegate * app;
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
 }
 
--(IBAction)modalBackgroundClicked:(id)sender {
-    [modalView endEditing:FALSE];
-}
+#pragma mark - Pin Entry Delegates
 
-- (void)installUncaughtExceptionHandler
+- (BOOL)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin
 {
-	InstallUncaughtExceptionHandler();
-}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
+    NSNumber *pinObj = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
     
-    // Override point for customization after application launch.
-    _window.backgroundColor = [UIColor whiteColor];
-    
-    [_window makeKeyAndVisible];
-    
-    //Netowrk status updates
-    self.reachability = [Reachability reachabilityForInternetConnection];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
-    [reachability startNotifer];
-    
-    isRegistered = TRUE;
-    tabViewController = oldTabViewController;
-    
-    [_window setRootViewController:tabViewController];
-    
-    if (!isRegistered) {
-        
-        [dataSource getUnconfirmedTransactions];
-
-    } else if (![self guid] || ![self sharedKey]) {        
-        [self showWelcome];
-    
-    } else if (![self password]) {
-      
-        [self showModal:mainPasswordView];
-        
-        [mainPasswordTextField becomeFirstResponder];
-        
-    } else {
-        
-        //Restore the wallet cache
-        NSData * walletCache = [app readFromFileName:WalletCachefile];
-        if (walletCache != NULL) {        
-            self.wallet = [[[Wallet alloc] initWithData:walletCache password:[self password]] autorelease];
-            wallet.delegate = self;
-        } else {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
-        }
-        
-        [dataSource getWallet:[self guid] sharedKey:[self sharedKey] checksum:[self checksumCache]];
-        
-        //Restore the transactions cache
-        NSData * multiAddrCache = [app readFromFileName:MultiaddrCacheFile];
-        if (multiAddrCache != NULL) {        
-            self.latestResponse = [dataSource parseMultiAddr:multiAddrCache];
-            transactionsViewController.data = latestResponse;
-        }
-    }
-
-    [tabViewController setActiveViewController:transactionsViewController];
-
-    [self performSelector:@selector(checkStatus) withObject:nil afterDelay:120.0f];
-    
-    return YES;
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    /*
-     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-     */
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    wallet.secondPassword  = nil;
-    
-    [self disconnect];
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [self showPinModal];
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    /*
-     Called when the application is about to terminate.
-     Save data if appropriate.
-     See also applicationDidEnterBackground:.
-     */
-}
-
-- (void)showPinModal
-{
-    // if pin exists - verify
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
+	if(pinObj && pin == [pinObj intValue])
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PEPinEntryController *c = [PEPinEntryController pinVerifyController];
-            c.navigationBarHidden = YES;
-            c.pinDelegate = self;
-            
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
-    }
-    // no pin - create
+		if(c.verifyOnly == YES)
+        {
+			[tabViewController dismissViewControllerAnimated:YES completion:^{
+            }];
+		}
+        
+		return YES;
+	}
     else
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PEPinEntryController *c = [PEPinEntryController pinCreateController];
-            c.navigationBarHidden = YES;
-            c.pinDelegate = self;
+		return NO;
+	}
+}
 
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
+- (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)pin
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:pin] forKey:@"pin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"Saved new pin");
+    
+	// Update your info to new pin code
+	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
+{
+	NSLog(@"Pin change cancelled!");
+	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Format helpers
+
+-(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {
+    if (fsymbolLocal && latestResponse.symbol.conversion) {
+        @try {
+            BOOL negative = false;
+            
+            NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
+            
+            if ([number compare:[NSNumber numberWithInt:0]] < 0) {
+                number = [number decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
+                negative = TRUE;
+            }
+            
+            if (negative)
+                return [@"-" stringByAppendingString:[latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
+            else
+                return [latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
+            
+        } @catch (NSException * e) {
+            NSLog(@"%@", e);
+        }
     }
+    
+    
+    NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
+    
+    NSString * string = [btcFromatter stringFromNumber:number];
+    
+    if ([string length] >= 8) {
+        string = [string substringToIndex:8];
+    }
+    
+    return [string stringByAppendingString:@" BTC"];
+}
+
+-(NSString*)formatMoney:(uint64_t)value {
+    return [self formatMoney:value localCurrency:symbolLocal];
 }
 
 @end

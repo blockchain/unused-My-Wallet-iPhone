@@ -88,7 +88,6 @@
         }
     } else if (transaction->result < 0) {
         
-        
         [typeImageView setImage:[UIImage imageNamed:@"payment_sent.png"]];
         [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btcButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
@@ -124,8 +123,6 @@
     float x = typeImageView.frame.origin.x+typeImageView.frame.size.width+5;
     
     [hashButton setFrame:CGRectMake(x, hashButton.frame.origin.y, self.frame.size.width - x - 5, hashButton.frame.size.height)];
-
-    
     [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, y, btcButton.frame.size.width, btcButton.frame.size.height)];
     
     [confirmationsButton setFrame:CGRectMake(confirmationsButton.frame.origin.x, y, confirmationsButton.frame.size.width, confirmationsButton.frame.size.height)];
@@ -134,8 +131,6 @@
 
 -(IBAction)btcbuttonclicked:(id)sender {
     [app toggleSymbol];
-    
-    
 }
 
 -(void)seLatestBlock:(LatestBlock*)block {

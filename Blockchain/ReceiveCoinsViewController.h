@@ -43,9 +43,6 @@
     
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
-    
-    IBOutlet UIView * firstSectionFooterView;
-    IBOutlet UIView * secondSectionFooterView;
 
 }
 

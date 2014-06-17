@@ -645,14 +645,12 @@ AppDelegate * app;
     }
 }
 
+// Only gets called when displaying a transaction hash
 -(void)pushWebViewController:(NSString*)url {
-    if (webViewController == nil) {
-        
-        webViewController = [[WebViewController alloc] init];
-        [webViewController viewDidLoad]; // ??????
-    }
+    webViewController = [[WebViewController alloc] init];
+    [webViewController viewDidLoad]; // ??
 
-    [tabViewController setActiveViewController:webViewController animated:TRUE index:-1];
+    [tabViewController setActiveViewController:webViewController animated:YES index:-1];
 
     [webViewController loadURL:url];
 }

@@ -35,7 +35,6 @@
     [archivedKeys release];
     [tableView release];
     [requestAmountTextField release];
-    [firstSectionFooterView release];
     [super dealloc];
 }
 
@@ -188,22 +187,13 @@
     });
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-
-    if (section == 0)
-    {
-        return firstSectionFooterView;
-    }
-    return nil;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     int n = 0;
+    
     if ([otherKeys count]) ++n;
     if ([archivedKeys count]) ++n;
     if ([activeKeys count]) ++n;
-    
-    NSLog(@"n: %d", n);
+
     return n;
 }
 

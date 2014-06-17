@@ -164,6 +164,7 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
     }
     
     [self setSelectedIndex:index];
+
 }
 
 -(BOOL)backButtonEnabled {

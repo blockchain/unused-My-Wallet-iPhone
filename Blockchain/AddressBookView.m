@@ -63,8 +63,12 @@
     
     NSString * addr =  [addresses objectAtIndex:[indexPath row]];
     
+    // User-given Label
     cell.textLabel.text = [wallet.addressBook objectForKey:addr];
-    
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+
+    // Actual Bitcoin Address
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0f];
     cell.detailTextLabel.text = addr;
                             
     return cell;

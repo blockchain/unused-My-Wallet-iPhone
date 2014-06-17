@@ -20,7 +20,6 @@
 	UIViewController * activeViewController;
 	UIViewController * oldViewController;
 	int selectedIndex;
-    int defaultPin;
 	double arrowStepDuration;
 	CGPoint originalOffset;
 }

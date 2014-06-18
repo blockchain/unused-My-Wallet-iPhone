@@ -593,7 +593,7 @@
                 <outlet property="transactionCountLabel" destination="567" id="568"/>
             </connections>
         </viewController>
-        <viewController id="273" customClass="TabViewcontroller">
+        <viewController wantsFullScreenLayout="YES" extendedLayoutIncludesOpaqueBars="YES" id="273" customClass="TabViewcontroller">
             <view key="view" contentMode="scaleToFill" id="280">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -745,7 +745,6 @@
                 </subviews>
                 <color key="backgroundColor" red="0.10588235294117647" green="0.54117647058823526" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
             </view>
-            <extendedEdge key="edgesForExtendedLayout"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
@@ -759,7 +758,7 @@
     </objects>
     <resources>
         <image name="01-refresh.png" width="24" height="26"/>
-        <image name="119-piggy-bank.png" width="27" height="20"/>
+        <image name="119-piggy-bank.png" width="28" height="28"/>
         <image name="145-persondot.png" width="24" height="26"/>
         <image name="23-circle-south.png" width="28" height="28"/>
         <image name="27-circle-north.png" width="28" height="28"/>

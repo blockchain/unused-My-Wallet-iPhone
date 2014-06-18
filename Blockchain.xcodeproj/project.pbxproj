@@ -85,7 +85,6 @@
 		9F749E051514F20200B3A8B8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749E041514F20200B3A8B8 /* CoreVideo.framework */; };
 		9F749E071514F22500B3A8B8 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749E061514F22500B3A8B8 /* libiconv.dylib */; };
 		9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EDE14BBBEC400048EFB /* footer@2x.png */; };
-		9F765EEC14BBC00000048EFB /* 119-piggy-bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE414BBC00000048EFB /* 119-piggy-bank.png */; };
 		9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */; };
 		9F765EEE14BBC00000048EFB /* 145-persondot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE614BBC00000048EFB /* 145-persondot.png */; };
 		9F765EEF14BBC00000048EFB /* 145-persondot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F765EE714BBC00000048EFB /* 145-persondot@2x.png */; };
@@ -266,7 +265,6 @@
 		9F749E041514F20200B3A8B8 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9F749E061514F22500B3A8B8 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		9F765EDE14BBBEC400048EFB /* footer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "footer@2x.png"; sourceTree = "<group>"; };
-		9F765EE414BBC00000048EFB /* 119-piggy-bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "119-piggy-bank.png"; sourceTree = "<group>"; };
 		9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "119-piggy-bank@2x.png"; sourceTree = "<group>"; };
 		9F765EE614BBC00000048EFB /* 145-persondot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "145-persondot.png"; sourceTree = "<group>"; };
 		9F765EE714BBC00000048EFB /* 145-persondot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "145-persondot@2x.png"; sourceTree = "<group>"; };
@@ -489,7 +487,6 @@
 				C9B66D141941FCB30057E662 /* Identity */,
 				9F6FA3511536E7EB005BA19C /* 01-refresh.png */,
 				9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */,
-				9F765EE414BBC00000048EFB /* 119-piggy-bank.png */,
 				9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */,
 				9F765EE614BBC00000048EFB /* 145-persondot.png */,
 				9F765EE714BBC00000048EFB /* 145-persondot@2x.png */,
@@ -911,7 +908,6 @@
 				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
 				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
-				9F765EEC14BBC00000048EFB /* 119-piggy-bank.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
 				9F765EEE14BBC00000048EFB /* 145-persondot.png in Resources */,

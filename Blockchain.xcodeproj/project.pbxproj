@@ -158,6 +158,10 @@
 		C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91791945D8F600FD516D /* PEPin-off.png */; };
 		C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE917A1945D8F600FD516D /* PEPin-on.png */; };
 		C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9BE918B1945F5FC00FD516D /* Images.xcassets */; };
+		ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98A1959968F00255292 /* address-book-icon.png */; };
+		ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98B1959968F00255292 /* address-book-icon@2x.png */; };
+		ECE9A9901959968F00255292 /* camera-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98C1959968F00255292 /* camera-icon.png */; };
+		ECE9A9911959968F00255292 /* camera-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98D1959968F00255292 /* camera-icon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -379,6 +383,10 @@
 		C9BE91791945D8F600FD516D /* PEPin-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-off.png"; sourceTree = "<group>"; };
 		C9BE917A1945D8F600FD516D /* PEPin-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-on.png"; sourceTree = "<group>"; };
 		C9BE918B1945F5FC00FD516D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		ECE9A98A1959968F00255292 /* address-book-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon.png"; sourceTree = "<group>"; };
+		ECE9A98B1959968F00255292 /* address-book-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon@2x.png"; sourceTree = "<group>"; };
+		ECE9A98C1959968F00255292 /* camera-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon.png"; sourceTree = "<group>"; };
+		ECE9A98D1959968F00255292 /* camera-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -486,6 +494,10 @@
 			children = (
 				C9B66D141941FCB30057E662 /* Identity */,
 				9F6FA3511536E7EB005BA19C /* 01-refresh.png */,
+				ECE9A98A1959968F00255292 /* address-book-icon.png */,
+				ECE9A98B1959968F00255292 /* address-book-icon@2x.png */,
+				ECE9A98C1959968F00255292 /* camera-icon.png */,
+				ECE9A98D1959968F00255292 /* camera-icon@2x.png */,
 				9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */,
 				9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */,
 				9F765EE614BBC00000048EFB /* 145-persondot.png */,
@@ -905,6 +917,7 @@
 				C974BDAD19489A840094898B /* signer.js in Resources */,
 				C974BDAE19489A840094898B /* wallet.js in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
+				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,
 				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
 				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
@@ -917,11 +930,13 @@
 				9F765EF514BBC2CF00048EFB /* divider@2x.png in Resources */,
 				C9BE91801945D8F600FD516D /* PEKeyboard-1-dot.png in Resources */,
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
+				ECE9A9911959968F00255292 /* camera-icon@2x.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
+				ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */,
 				9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */,
 				C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */,
 				9F2D935414C07B2D0053F0FF /* payment_sent.png in Resources */,
@@ -948,6 +963,7 @@
 				9F7480B51513E98700BC4292 /* power-white@2x.png in Resources */,
 				9F7480B71513E9F100BC4292 /* power-red.png in Resources */,
 				9F7480D31514030800BC4292 /* alert-received.wav in Resources */,
+				ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */,
 				9F7480D7151404E200BC4292 /* payment_moved@2x.png in Resources */,
 				9F7480DA151405B700BC4292 /* payment_received@2x.png in Resources */,
 				9F7480DD151405D200BC4292 /* payment_sent@2x.png in Resources */,

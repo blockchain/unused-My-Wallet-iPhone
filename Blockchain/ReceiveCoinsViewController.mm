@@ -48,25 +48,14 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
             if ([app getSecondPasswordBlocking]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    Key * key =  [wallet parsePrivateKey:privateKey];
                     
-                    if (key == nil) {
-                        [app standardNotify:@"Error importing private key"];
-                        return;
-                    }
-                    
-                    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] success:^ {
+                    if ([wallet addKey:privateKey]) {
                         [self reload];
                         
-                        [app standardNotify:[NSString stringWithFormat:@"Added bitcoin address %@", key.addr] title:@"Success" delegate:nil];
-                        
-                        [app.dataSource multiAddr:wallet.guid addresses:[wallet.keys allKeys]];
-                        
-                        [app subscribeWalletAndToKeys];
-                    } error:^{ 
-                        [wallet removeAddress:key.addr];
-                        
-                    }];
+                        [app standardNotify:[NSString stringWithFormat:@"Added bitcoin address"] title:@"Success" delegate:nil];
+                    } else {
+                        [app standardNotify:@"Error importing private key"];
+                    }
                 });
             } else {
                 [app standardNotify:@"Cannot Generate new address without the second password"];
@@ -161,26 +150,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
         if ([app getSecondPasswordBlocking]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                Key * key =  [wallet generateNewKey];
-                
-                if (key == nil) {
-                    [app standardNotify:@"Error generating bitcoin address"];
-                    return;
-                }
-                
-                [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString] success:^ {
-                    [self reload];
+                   [wallet generateNewKey:^(Key* key) {
                     
-                    [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
-                        
-                    [app.dataSource multiAddr:wallet.guid addresses:[wallet activeAddresses]];
-                    
-                    [app subscribeWalletAndToKeys];
-                } error:^{ 
-                    [wallet removeAddress:key.addr];
-
-                }];
-            });
+                       [self reload];
+                       
+                       [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
+                    }];
+                });
         } else {
             [app standardNotify:@"Cannot Generate new address without the second password"];
         }
@@ -226,8 +202,6 @@
         
     [self reload];
     
-    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
-
     [app closeModal];
 }
 
@@ -358,9 +332,7 @@
         [wallet archiveAddress:key.addr];
     
     self.wallet = wallet;
-    
-    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
-    
+        
     [app closeModal];
 }
 
@@ -439,18 +411,14 @@
     else
         [cell.watchLabel setHidden:FALSE];
     
-    Address * address = [app.latestResponse.addresses objectForKey:key.addr];
-
+    uint64_t balance = [app.wallet getAddressBalance:key.addr];
+    
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
     [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
     [cell setSelectedBackgroundView:v];
     
-    if (address) {
-        cell.balanceLabel.text = [app formatMoney:address->final_balance];
-    } else {
-        cell.balanceLabel.text = nil;
-    }
-    
+    cell.balanceLabel.text = [app formatMoney:balance];
+ 
     return cell;
 }
 

@@ -64,9 +64,7 @@
     [wallet addToAddressBook:to label:labelAddressTextField.text];
     
     [app closeModal];
-    
-    [app.dataSource saveWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]];
-    
+        
     [self reallyDoPayment];
 }
 

@@ -9,6 +9,7 @@
 #import "Wallet.h"
 #import "JSONKit.h"
 #import "AppDelegate.h"
+#import "Transaction.h"
 
 @implementation Key
 @synthesize addr;
@@ -29,12 +30,27 @@
 
 @implementation Wallet
 
-@synthesize encrypted_payload;
 @synthesize delegate;
 @synthesize secondPassword;
 @synthesize password;
 @synthesize webView;
-@synthesize document;
+@synthesize sharedKey;
+@synthesize guid;
+@synthesize keys;
+
+
++(id)parseJSON:(NSString*)json {
+    NSError * error = nil;
+    
+    id dict = [NSJSONSerialization JSONObjectWithData:[json dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &error];
+    
+    if (error != NULL) {
+        NSLog(@"Error Parsing JSON %@", error);
+        return nil;
+    }
+
+    return dict;
+}
 
 + (NSString *)generateUUID 
 {
@@ -44,62 +60,41 @@
     return [(NSString *)string autorelease];
 }
 
+-(BOOL)isDoubleEncrypted {
+    return [[self.webView executeJSSynchronous:@"MyWallet.getDoubleEncryption()"] isEqualToString:@"TRUE"];
+}
+
+-(void)getHistory {
+    [self.webView executeJS:@"MyWallet.get_history()"];
+}
+
 -(void)cancelTxSigning {
     [webView stringByEvaluatingJavaScriptFromString:@"cancel();"];
 }
 
--(void)setJSVars {
-#warning fix all this stuff
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"double_encryption = %s;", [self doubleEncryption] ? "true" : "false"]];
-    
-    if (self.secondPassword)
-        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = '%@';", self.secondPassword]];
-    else
-        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"dpassword = null"]];
-
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"sharedKey = '%@'", [self sharedKey]]];
-
-//    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseWalletJSON('%@');", [self jsonString]]];
-}
-
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value {
-
-    [self setJSVars];
-   
-    // to, from, value,
-    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"MyWallet.quickSend('%@', '%@', '%@', listener);", toAddress, fromAddress, value]];
+       [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"MyWallet.quickSend('%@', '%@', '%@', listener);", toAddress, fromAddress, value]];
 }
 
 
 // generateNewAddress
--(Key*)generateNewKey {
-    [self setJSVars];
-    
-    // generateNewAddress is in wallet.html
-    NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"generateNewAddress(%@);", [self sharedKey]]] componentsSeparatedByString:@"|"];
-    
-//    NSArray *components = [webView stringByEvaluatingJavaScriptFromString:NSString stringWithFormat:@"generateNewAddressAndKey();", [self sharedKey]];
-    if ([components count] == 2) {
+-(void)generateNewKey:(void (^)(Key * key))callback {
+    [self.webView executeJSWithCallback:^(NSString * encoded_key) {
+        NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:encoded_key] componentsSeparatedByString:@"|"];
         
-        Key * key = [[[Key alloc] init] autorelease];
-        key.addr = [components objectAtIndex:0];
-        key.priv = [components objectAtIndex:1];
-        
-        [self addKey:key];
-
-        return key;
-    }
-    
-    return nil;
-}
-
--(NSString*)jsonString {    
-    return [document JSONString];
+        if ([components count] == 2) {
+            Key * key = [[[Key alloc] init] autorelease];
+            
+            key.addr = [components objectAtIndex:0];
+            key.priv = [components objectAtIndex:1];
+            
+            callback(key);
+        }
+    } command:@"MyWalletPhone.generateNewKey()"];
 }
 
 
 -(void)loadJS {
-    
     NSError * error = nil;
 #warning clean this up -- load directly from js.
     NSString * bitcoinJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
@@ -121,6 +116,10 @@
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet}" withString:walletJS];
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bridge}" withString:bridgeJS];
 
+    if (self.guid && self.sharedKey && self.password) {
+        walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\" data-sharedkey=\"%@\">", self.guid, self.sharedKey]];
+    }
+    
     // Break here to debug js
     
     [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
@@ -132,31 +131,49 @@
     [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
 }
 
--(id)initWithEncryptedQRString:(NSString*)encryptedQRString {
-
-    if ([super init]) {
-        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
-        [webView setJSDelegate:self];
-        
-        self.document = [NSMutableDictionary dictionary];
-        [self loadJS];
-
-        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode('%@');", encryptedQRString]];
-    }
-
-    return  self;
-}
-
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     [app setAccountData:dict[@"guid"] sharedKey:dict[@"sharedKey"] password:dict[@"password"]];
-    [app.dataSource getWallet:dict[@"guid"] sharedKey:dict[@"sharedKey"] checksum:nil];
 }
 
 - (void)errorParsingPairingCode:(NSString *)message
 {
     NSLog(@"error message: %@", message);
+}
+
+
+#pragma mark Init Methods
+
+//Called When Reading QR Pairing
+-(id)initWithEncryptedQRString:(NSString*)encryptedQRString {
+    
+    if ([super init]) {
+        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        [webView setJSDelegate:self];
+        
+        [self loadJS];
+        
+        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode('%@');", encryptedQRString]];
+    }
+    
+    return  self;
+}
+
+//Called when entering guid manually
+-(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey {
+    if ([super init]) {
+        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        
+        [webView setJSDelegate:self];
+        
+        self.guid = _guid;
+        self.sharedKey = _sharedKey;
+      
+        [self loadJS];
+    }
+    return  self;
 }
 
 // This is only called when creating a new account,
@@ -167,27 +184,27 @@
         [webView setJSDelegate:self];
         
         self.password = fpassword;        
-        self.document = [NSMutableDictionary dictionary];
         self.guid = [Wallet generateUUID];
         self.sharedKey = [Wallet generateUUID];
         
-        //Generate the fist Address
-        [self generateNewKey];
-        
         [self loadJS];
+
+        //Generate the first Address
+        [self generateNewKey:nil];
     }
     return  self;
 }
 
--(id)initWithData:(NSData*)payload password:(NSString*)fpassword {
+-(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
     
     if ([super init]) {
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
         
         [webView setJSDelegate:self];
         
-        self.password = fpassword;
-        self.encrypted_payload = payload;
+        self.password = _password;
+        self.guid = _guid;
+        self.sharedKey = _sharedKey;
         
         // Load the JS. Proceed in the webviewDidLoad callback
         [self loadJS];
@@ -195,27 +212,6 @@
     
     return self;
 }
-
--(Key*)parsePrivateKey:(NSString*)key {
-    [self setJSVars];
-    
-    NSArray * components = [[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parsePrivateKey('%@');", key]] componentsSeparatedByString:@"|"];
-    
-    if ([components count] == 2) {
-        
-        Key * key = [[[Key alloc] init] autorelease];
-        key.addr = [components objectAtIndex:0];
-        key.priv = [components objectAtIndex:1];
-        
-        [self addKey:key];
-                
-        return key;
-    }
-    
-    return nil;
-}
-
-
 
 -(NSString*)labelForAddress:(NSString*)address {
     NSString * addressbookLabel = [[self addressBook] objectForKey:address];
@@ -231,199 +227,69 @@
     return address;
 }
 
-
-
 -(BOOL)isValidAddress:(NSString*)string {
     NSString * result = [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
     
     return ([result length] > 0);
 }
 
--(NSString*)encryptedString {    
-    NSString * _json = [self jsonString];
-    NSString * _password = [self password];
+
+-(NSArray*)allAddresses {
+    NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllAddresses())"];
     
-    if ([_json length] == 0 || [_password length] == 0)
-        return nil;
-
-    NSString * encryptedFunction = [NSString stringWithFormat:@"encrypt('%@', '%@');", _json, _password];
-
-   return  [webView stringByEvaluatingJavaScriptFromString:encryptedFunction];
-}
-
--(NSString*)guid {
-    return [document objectForKey:@"guid"];
-}
-
--(void)setGuid:(NSString *)guid {
-    [document setValue:guid forKey:@"guid"];
-}
-
--(NSString*)sharedKey {
-    return [document objectForKey:@"sharedKey"];
-}
-
--(void)setSharedKey:(NSString *)sharedKey {
-    [document setValue:sharedKey forKey:@"sharedKey"];
-}
-
--(BOOL)doubleEncryption {
-    return [[document objectForKey:@"double_encryption"] boolValue];
-}
-
--(void)setDoubleEncryption:(BOOL)value {
-    [document setValue:[NSNumber numberWithBool:value] forKey:@"double_encryption"];
-}
-
--(NSString*)dPasswordHash {
-    return [document objectForKey:@"dpasswordhash"];
-}
-
--(void)setdPasswordHash:(NSString*)dpasswordhash {
-    [document setValue:dpasswordhash forKey:@"dpasswordhash"];
+    return [Wallet parseJSON:allAddressesJSON];
 }
 
 
 -(NSArray*)activeAddresses {
-    NSMutableArray * active = [NSMutableArray array];
-    NSArray * keysArray = [document objectForKey:@"keys"];
-
-    for (NSDictionary * keyDict in keysArray) {
-        int tag = [[keyDict objectForKey:@"tag"] intValue];
-
-        if (tag == 2)
-            continue;
-        
-        [active addObject:[keyDict objectForKey:@"addr"]];
-    }
+    NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getActiveAddresses())"];
     
-    return active;
+    return [Wallet parseJSON:activeAddressesJSON];
 }
 
--(NSDictionary*)keys {
-    NSArray * keysArray = [document objectForKey:@"keys"];
-    NSMutableDictionary * keys = [NSMutableDictionary dictionaryWithCapacity:[keysArray count]];
-    
-    for (NSDictionary * keyDict in keysArray) {
-        
-        Key * key = [[[Key alloc] init] autorelease];
-        key.addr = [keyDict objectForKey:@"addr"];
-        key.priv = [keyDict objectForKey:@"priv"];
-        key.tag = [[keyDict objectForKey:@"tag"] intValue];
-        key.label = [keyDict objectForKey:@"label"];
-        
-        [keys setObject:key forKey:key.addr];
-    }
-    
-    return keys;
-}
-
--(NSDictionary*)keyDictForAddress:(NSString*)address {
-    NSMutableArray * keysArray = [document objectForKey:@"keys"];
-    
-    for (int ii = 0; ii < [keysArray count]; ++ii) {
-        NSDictionary * keyDict = [keysArray objectAtIndex:ii];
-                
-        if ([[keyDict objectForKey:@"addr"] isEqualToString:address]) {
-            return keyDict;
-        }
-    }
-    return nil;
-}
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address {
-    NSDictionary * keyDict = [self keyDictForAddress:address];
     
-    if (keyDict) {
-        [keyDict setValue:label forKey:@"label"];
-    }
+    //TODO escape properly
+    [self.webView executeJS:@"MyWallet.setLabel('%@', '%@')", address, label];
 }
 
 -(void)archiveAddress:(NSString*)address {
-    NSDictionary * keyDict = [self keyDictForAddress:address];
-
-    if (keyDict) {
-        [keyDict setValue:[NSNumber numberWithInt:2] forKey:@"tag"];
-    }
+    [self.webView executeJS:@"MyWallet.archiveAddr()", address];
 }
 
 -(void)unArchiveAddress:(NSString*)address {
-    NSDictionary * keyDict = [self keyDictForAddress:address];
-    
-    if (keyDict) {
-        [keyDict setValue:[NSNumber numberWithInt:0] forKey:@"tag"];
-    }
+    [self.webView executeJS:@"MyWallet.unArchiveAddr()", address];
 }
 
 -(void)removeAddress:(NSString*)address {
-
-    NSDictionary * keyDict = [self keyDictForAddress:address];
-    
-    if (keyDict) {
-        NSMutableArray * keysArray = [document objectForKey:@"keys"];
-
-        [keysArray removeObject:keyDict];
-        
-        [document setValue:keysArray forKey:@"keys"];
-    }
+    [self.webView executeJS:@"MyWallet.deleteAddress()", address];
 }
 
--(void)addKey:(Key*)key {
-    
-    NSMutableArray * keysArray = [document objectForKey:@"keys"];
+-(uint64_t)getAddressBalance:(NSString*)address {
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance('%@')", address] longLongValue];
+}
 
-    if (keysArray == nil) {
-        keysArray = [NSMutableArray array];
-        [document setValue:keysArray forKey:@"keys"]; 
+-(BOOL)addKey:(NSString*)privateKeyString {
+    
+    //TODO escape properly
+    NSString * returnVal = [self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey('%@')", privateKeyString];
+    
+    if ([returnVal isEqualToString:@"TRUE"]) {
+        return true;
+    } else {
+        return false;
     }
-    
-    NSMutableDictionary * keydict = [NSMutableDictionary dictionary];
-    
-    [keydict setObject:key.addr forKey:@"addr"];
-    
-    if (key.priv)
-        [keydict setObject:key.priv forKey:@"priv"];
-    
-    if (key.tag > 0)
-        [keydict setObject:[NSNumber numberWithInt:key.tag] forKey:@"tag"];
-    
-    if (key.label)
-        [keydict setObject:key.label forKey:@"label"];
-    
-    [keysArray addObject:keydict];
-        
-    [document setValue:keysArray forKey:@"keys"];
 }
 
 -(NSDictionary*)addressBook {
-    NSMutableDictionary * addressBook = [NSMutableDictionary dictionary];
-    NSArray * addressBookDict = [document objectForKey:@"address_book"];
-    for (NSDictionary * addrDict in addressBookDict) {
-        [addressBook setObject:[addrDict objectForKey:@"label"] forKey:[addrDict objectForKey:@"addr"]];
-    }
-    return addressBook;
+    NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAddressBook())"];
+    
+    return [Wallet parseJSON:addressBookJSON];
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
-    
-    //Check if it already existing
-    if ([[self addressBook] objectForKey:address])
-        return;
-    
-    NSMutableArray * addressBookArray = [document objectForKey:@"address_book"];
-
-    if (addressBookArray == nil) {
-        addressBookArray = [NSMutableArray array];
-        [document setValue:addressBookArray forKey:@"address_book"]; 
-    }
-    
-    NSMutableDictionary * addrDict = [NSMutableDictionary dictionary];
-    [addrDict setValue:label forKey:@"label"];
-    [addrDict setValue:address forKey:@"addr"];
-    
-    [addressBookArray addObject:addrDict];
-    
-    [document setValue:addressBookArray forKey:@"address_book"];
+    [self.webView executeJS:@"MyWallet.addAddressBookEntry('%@', '%@')", address, label];
 }
 
 // Calls from JS
@@ -443,38 +309,10 @@
 
 -(void)didDecryptWallet:(NSString*)walletJSON {
     NSLog(@"didDecryptWallet:");
-
-    if (walletJSON) {
-        self.document = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)walletJSON, kCFPropertyListMutableContainers);
-    }
     
     if ([delegate respondsToSelector:@selector(walletDidLoad:)])
         [delegate walletDidLoad:self];
 }
-
--(void)decrypt {
-    self.secondPassword = nil;
-
-    if (self.encrypted_payload == nil) {
-        NSLog(@"encrypted payload is nil");
-        return;
-    }
-
-    NSString * payload = [[[NSString alloc] initWithData:self.encrypted_payload encoding:NSUTF8StringEncoding] autorelease];
-    
-    NSString * decryptFunction = [NSString stringWithFormat:@"decrypt('%@', '%@');", payload, self.password];
-
-    // Evaluate
-   [webView stringByEvaluatingJavaScriptFromString:decryptFunction];
-}
-
--(void)loadData:(NSData*)payload password:(NSString*)fpassword {
-    self.encrypted_payload = payload;
-    self.password = fpassword;
- 
-    [self decrypt];
-}
-
 
 #pragma mark WebView Delegate Methods
 - (BOOL)webView:(UIWebView *)webView2 shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
@@ -494,6 +332,103 @@
     return YES;
 }
 
+-(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
+    
+    NSDictionary * dict = [Wallet parseJSON:latestBlockJSON];
+    
+    LatestBlock * latestBlock = [[LatestBlock alloc] init];
+    
+    latestBlock.hash = [dict objectForKey:@"hash"];
+    latestBlock.height = [[dict objectForKey:@"height"] intValue];
+    latestBlock.time = [[dict objectForKey:@"time"] longLongValue];
+    latestBlock.blockIndex = [[dict objectForKey:@"block_index"] intValue];
+    
+    [delegate didSetLatestBlock:latestBlock];
+}
+
+-(void)parseMultiAddrJSON:(NSString*)multiAddrJSON {
+    
+    if (multiAddrJSON == nil)
+        return;
+    
+    NSDictionary * dict = [Wallet parseJSON:multiAddrJSON];
+    
+    MulitAddressResponse * response = [[MulitAddressResponse alloc] init];
+    
+    response.transactions = [NSMutableArray array];
+
+    NSArray * transactionsArray = [dict objectForKey:@"transactions"];
+    
+    for (NSDictionary * dict in transactionsArray) {
+        
+        Transaction * tx = [Transaction fromJSONDict:dict];
+        
+        [response.transactions addObject:tx];
+    }
+    
+    response.final_balance = [[dict objectForKey:@"final_balance"] longLongValue];
+    response.total_received = [[dict objectForKey:@"total_received"] longLongValue];
+    response.n_transactions = [[dict objectForKey:@"n_transactions"] longValue];
+    response.total_sent = [[dict objectForKey:@"total_sent"] longLongValue];
+    
+    [delegate didGetMultiAddressResponse:response];
+}
+
+-(void)getFinalBalance {
+    [self.webView executeJSWithCallback:^(NSString * final_balance) {
+        self.final_balance = [final_balance longLongValue];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:self.final_balance] forKey:@"final_balance"];
+        
+    } command:@"MyWallet.getFinalBalance()"];
+}
+
+-(void)getTotalSent {
+    [self.webView executeJSWithCallback:^(NSString * total_sent) {
+        self.total_sent = [total_sent longLongValue];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:self.total_sent] forKey:@"total_sent"];
+    } command:@"MyWallet.getTotalSent()"];
+}
+
+
+-(void)did_multiaddr {
+    NSLog(@"Did MultiAddr");
+    
+    [self getFinalBalance];
+    
+    [self.webView executeJSWithCallback:^(NSString * multiAddrJSON) {
+        
+        [self parseMultiAddrJSON:multiAddrJSON];
+    
+        [[NSUserDefaults standardUserDefaults] setObject:multiAddrJSON forKey:@"multiaddr"];
+    } command:@"JSON.stringify(MyWalletPhone.getMultiAddrResponse())"];
+}
+
+-(void)did_set_latest_block {
+    [self.webView executeJSWithCallback:^(NSString* latestBlockJSON) {
+        
+        [[NSUserDefaults standardUserDefaults] setObject:latestBlockJSON forKey:@"transactions"];
+
+        [self parseLatestBlockJSON:latestBlockJSON];
+        
+    } command:@"JSON.stringify(MyWallet.getLatestBlock())"];
+}
+
+-(void)did_decrypt {
+    NSLog(@"Did Decrypt");
+}
+
+-(void)error_restoring_wallet {
+    NSLog(@"Error Restoring Wallet");
+}
+
+-(void)did_set_guid {
+    NSLog(@"Did Set GUID");
+    
+    [self.webView executeJS:[NSString stringWithFormat:@"setPassword(\"%@\")", self.password]];
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"Start load");
 }
@@ -505,19 +440,12 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    if (self.encrypted_payload) {
-        [self decrypt];
-        
-        self.encrypted_payload = nil;
-    }
-    
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
 }
 
 -(void)dealloc {
     [self.password release];
-    [self.document release];
     
     self.webView = nil;
     
@@ -580,4 +508,46 @@
     
     return nil;
 }
+
+
+//Callbacks from javascript localstorage
+
+-(id)getKey:(NSString*)dictionary {
+    NSString * key = [dictionary valueForKey:@"key"];
+    
+    //NSLog(@"GET %@", key);
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:key];
+}
+
+-(id)saveKey:(NSString*)dictionary {
+    NSString * key = [dictionary valueForKey:@"key"];
+    NSString * value = [dictionary valueForKey:@"value"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:value forKey:key];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    return nil;
+}
+
+-(id)removeKey:(NSString*)dictionary {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[dictionary valueForKey:@"key"]];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    return nil;
+}
+
+-(id)clearKeys:(NSString*)dictionary {
+    NSString * appDomain = [[NSBundle mainBundle] bundleIdentifier];
+    
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    return nil;
+}
+
+
 @end

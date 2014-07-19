@@ -35,31 +35,6 @@
     [activity startAnimating];
 }
 
--(void)walletJSReady {
-    
-    Key * key = [wallet generateNewKey];
-    
-    if (key) {
-//        [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
-        NSLog(@"Generated new bitcoin address %@", key.addr);
-        
-        if ([app.dataSource insertWallet:[wallet guid] sharedKey:[wallet sharedKey] payload:[wallet encryptedString]]) {
-            [app didGenerateNewWallet:wallet password:passwordTextField.text];
-            
-            [app closeModal];
-        } else {
-        }
-        
-    } else {
-#warning getting this error when pairing
-        [app standardNotify:@"Error generating bitcoin address"];
-    }
-    
-    [app finishTask];
-    
-    self.wallet = nil;
-}
-
 // Get here from New Account and also when manually pairing
 -(IBAction)createAccountClicked:(id)sender {
     
@@ -71,6 +46,7 @@
         [app standardNotify:@"Passwords do not match"];
         return;
     }
+    
     [app startTask:TaskGeneratingWallet];
 
     self.wallet = [[[Wallet alloc] initWithPassword:passwordTextField.text] autorelease];

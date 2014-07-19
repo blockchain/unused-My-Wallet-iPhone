@@ -67,6 +67,7 @@
 -(id)JSdelegate;
 
 -(void)executeJS:(NSString*)formatString,  ...;
+-(NSString*)executeJSSynchronous:(NSString*)formatString,  ...;
 -(void)executeJSWithCallback:(void (^)(NSString * result))callback command:(NSString*)formatString,  ...;
 
 @end

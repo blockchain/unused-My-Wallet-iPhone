@@ -81,6 +81,21 @@
     }
 }
 
+
+-(NSString*)executeJSSynchronous:(NSString*)formatString,  ... {
+    
+    va_list args;
+    va_start(args, formatString);
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
+    va_end(args);
+    
+    if (!self.isLoaded) {
+        @throw [NSException exceptionWithName:@"JSBridgeWebView Exception" reason:@"Cannot Call Synchronous Method With Webview not fully loaded" userInfo:nil];
+    }
+    
+    return [self stringByEvaluatingJavaScriptFromString:contents];
+}
+
 -(void)executeJS:(NSString*)formatString,  ...
 {
     va_list args;

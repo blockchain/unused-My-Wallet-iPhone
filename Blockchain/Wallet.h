@@ -20,6 +20,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JSBridgeWebView.h"
+#import "MultiAddressResponse.h"
 
 @interface Key : NSObject {
     int tag;
@@ -34,6 +35,8 @@
 
 @protocol WalletDelegate <NSObject>
 @optional
+-(void)didSetLatestBlock:(LatestBlock*)block;
+-(void)didGetMultiAddressResponse:(MulitAddressResponse*)response;
 -(void)walletDidLoad:(Wallet*)wallet;
 -(void)walletFailedToDecrypt:(Wallet*)wallet;
 -(void)walletJSReady;
@@ -41,30 +44,34 @@
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {
-    NSDictionary * document;
 }
 
-@property(nonatomic, strong) id<WalletDelegate> delegate;
-@property(nonatomic, retain) NSString * secondPassword;
-@property(nonatomic, retain) NSData * encrypted_payload;
+//Core Wallet Init Properties
+@property(nonatomic, retain) NSString * guid;
+@property(nonatomic, retain) NSString * sharedKey;
 @property(nonatomic, retain) NSString * password;
+@property(nonatomic, retain) NSString * secondPassword;
+
+@property(nonatomic, strong) id<WalletDelegate> delegate;
 @property(nonatomic, strong) JSBridgeWebView * webView;
-@property(nonatomic, strong) NSDictionary * document;
 
+@property(nonatomic) uint64_t final_balance;
+@property(nonatomic) uint64_t total_sent;
+@property(nonatomic) uint64_t total_received;
 
--(NSString*)guid;
--(void)setGuid:(NSString *)guid;
--(NSString*)sharedKey;
--(void)setSharedKey:(NSString *)sharedKey;
--(BOOL)doubleEncryption;
--(NSDictionary*)keys;
--(NSDictionary*)addressBook;
--(NSString*)dPasswordHash;
+//TODO remove
+@property(nonatomic, retain) NSDictionary * keys;
+
+#pragma mark Init Methods
+-(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
+-(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey;
+-(id)initWithPassword:(NSString*)password; //Create a new Wallet
 -(id)initWithEncryptedQRString:(NSString*)encryptedQRString;
 
--(Key*)parsePrivateKey:(NSString*)key;
+-(NSDictionary*)addressBook;
+-(NSString*)dPasswordHash;
 
-+(NSString *)generateUUID;
++(NSString*)generateUUID;
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address;
 
@@ -74,15 +81,10 @@
 
 -(void)removeAddress:(NSString*)address;
 
--(id)initWithPassword:(NSString*)password; //Create a new Wallet
-
 -(void)loadData:(NSData*)data password:(NSString*)password;
-
--(id)initWithData:(NSData*)string password:(NSString*)password; //Restore wallet from base64 data
-
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value;
 
--(Key*)generateNewKey;
+-(void)generateNewKey:(void (^)(Key * key))callback;
 
 -(NSString*)labelForAddress:(NSString*)address;
 
@@ -96,8 +98,16 @@
 
 -(void)cancelTxSigning;
 
--(void)addKey:(Key*)key;
+-(BOOL)addKey:(NSString*)privateKeyString;
 
 -(NSArray*)activeAddresses;
+-(NSArray*)allAddresses;
+
+-(BOOL)isDoubleEncrypted;
+
+-(void)getHistory;
+
+-(uint64_t)getAddressBalance:(NSString*)address;
+
 
 @end

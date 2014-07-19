@@ -21,6 +21,8 @@ try {
     ${signer}
     ${wallet}
     ${bridge}
+    
+    var MyWalletPhone = {};
 
     console.log = function(message) {
         device.execute("log:", message);
@@ -28,6 +30,7 @@ try {
 
     isExtension = true;
     APP_NAME = 'javascript_iphone_app';
+    APP_VERSION = '0.1 BETA';
     root = "https://blockchain.info/";
     
     $(document).ready(function() {
@@ -38,18 +41,74 @@ try {
         device.execute(event);
     });
     
-    function exceptionToString(err) {
-        var vDebug = "";
-        for (var prop in err) {
-            vDebug += "property: " + prop + " value: [" + err[prop] + "] - ";
+    MyWalletPhone.generateNewKey = function() {
+        var key = MyWallet.generateNewKey();
+        
+        if (!key) return;
+        
+        var address = key.getBitcoinAddress().toString();
+        
+        return key.concat("|").concat(address);
+    }
+    
+    MyWalletPhone.getMultiAddrResponse = function() {
+        var obj = {};
+        
+        obj.transactions = MyWallet.getTransactions();
+        obj.total_received = MyWallet.getTotalReceived();
+        obj.total_sent = MyWallet.getTotalSent();
+        obj.final_balance = MyWallet.getFinalBalance();
+        obj.n_transactions = obj.transactions.length;
+
+        return obj;
+    }
+    
+    MyWalletPhone.addPrivateKey = function(privateKeyString) {
+        try {
+            var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
+
+            if (format == 'bip38') {
+                throw 'Unsupported';
+            }
+
+            var key = MyWallet.privateKeyStringToKey(privateKeyString, format);
+
+            var addr = null;
+            if (format == 'compsipa') {
+                addr = key.getBitcoinAddressCompressed().toString();
+            } else {
+                addr = key.getBitcoinAddress().toString();
+            }
+
+            if (addr == null || addr.length == 0 || addr == 'undefined')
+                throw 'Unable to decode bitcoin addresses from private key';
+
+            if (MyWallet.addressExists(addr) && !MyWallet.isWatchOnly(addr))
+                throw 'Address already exists in the wallet';
+                
+            return MyWallet.addPrivateKey(key, {compressed : format == 'compsipa', app_name : APP_NAME, app_version : APP_VERSION});
+        } catch (e) {
+            console.log(e);
+            return false;
         }
-        return "Exception: " + vDebug + " toString(): value: [" + err.toString() + "]";
     }
 
-    MyStore.put = function (key, value) {}
+    MyStore.put = function (key, value) {
+        device.execute("saveKey:", key, value);
+    }
 
     MyStore.get = function (key, callback) {
-        callback()
+        var callback_obj = device.execute("getKey:", key, value);
+        
+        callback_obj.response = callback;
+    }
+    
+    MyStore.remove = function(key) {
+        device.execute("removeKey:", key);
+    }
+    
+    MyStore.clear = function() {
+        device.execute("clearKeys:");
     }
     
     var listener = {
@@ -105,30 +164,38 @@ try {
                        guid: guid
                    },
                    success: function (encryption_phrase) {
-                       var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
-                                                        return decrypted != null;
-                                                        }, function () {
-                                                        error('Decryption Error');
-                                                        });
-                       
-                       if (decrypted != null) {
-                       var components2 = decrypted.split("|");
-                       
-                       success({
-                               version: raw_code[0],
-                               guid: guid,
-                               sharedKey: components2[0],
-                               password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                           var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                                         return decrypted != null;
+                                  }, function () {
+                                         error('Decryption Error');
                                });
-                       }
-                   },
+                           
+                           if (decrypted != null) {
+                           var components2 = decrypted.split("|");
+                           
+                           success({
+                                   version: raw_code[0],
+                                   guid: guid,
+                                   sharedKey: components2[0],
+                                   password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                                });
+                           }
+                       },
                    error: function (res) {
-                    error(res.responseText);
+                            error(res.responseText);
                    }
                    });
         } catch (e) {
             error('Error ' + e);
         }
+    }
+    
+    function setPassword(password) {
+        console.log('Set Password ' + password);
+        
+        $('#restore-password').val(password);
+        
+        $('#restore-wallet-continue').click();
     }
 
     function parseAddress(addrstring) {
@@ -138,109 +205,6 @@ try {
             return null;
         }
     }
-
-
-    function parseMiniKey(miniKey) {
-        var check = Crypto.SHA256(miniKey + '?');
-        
-        switch (check.slice(0, 2)) {
-            case '00':
-            var decodedKey = Crypto.SHA256(miniKey, {
-                                           asBytes: true
-                                           });
-                                           return decodedKey;
-                                           break;
-                                           case '01':
-                                           var x = Crypto.util.hexToBytes(check.slice(2, 4))[0];
-                                           var count = Math.round(Math.pow(2, (x / 4)));
-                                           var decodedKey = Crypto.PBKDF2(miniKey, 'Satoshi Nakamoto', 32, {
-                                                                          iterations: count,
-                                                                          asBytes: true
-                                                                          });
-                                                                          return decodedKey;
-                                                                          break;
-                                                                          default:
-                                                                          console.log('invalid key');
-                                                                          break;
-        }
-    };
-
-    //Changed padding to CBC iso10126 9th March 2012 & iterations to pbkdf2_iterations
-    function encrypt(data, password) {
-        return MyWallet.encryptWallet(data, password);
-    }
-
-    //When the ecryption format changes it can produce data which appears to decrypt fine but actually didn't
-    //So we call success(data) and if it returns true the data was formatted correctly
-    function decrypt(data, password) {
-        return MyWallet.decryptWallet(data, password, function (wallet_obj) {
-             device.execute("didDecryptWallet:", wallet_obj);
-          }, function (message) {
-             device.execute("didFailToDecryptWallet:", message);
-        });
-    }
-    
-    function generateNewAddress (_sharedKey) {
-        var key = MyWallet.generateNewKey;
-        
-        if (!key) {
-            console.log("problem generating new key");
-        }
-        
-        try {
-            MyWallet.getWallet(function() {
-                      MyWallet.getSecondPassword(function() {
-                                                    var key = MyWallet.generateNewKey();                                                 
-                                                    if (!key) return;
-                                                 
-                                                    var address = key.getBitcoinAddress().toString();
-                                                 
-                                                    return key.concat("|").concat(address);
-                                                 },
-                                                 function() {
-                                                    MyWallet.logout();
-                                                 });
-                      });
-        } catch (e) {
-            MyWallet.makeNotice('error', 'misc-error', e);
-        }
-
-        return
-    }
-    
-    //
-    function quickSend(to, from, value, listener) {
-        loadScript('wallet/signer', function() {
-                   MyWallet.getSecondPassword(function() {
-                                              try {
-                                                var obj = initNewTx();
-                                              
-                                                if (!from || from.length == 0)
-                                                {
-                                                    obj.from_addresses = MyWallet.getActiveAddresses();
-                                                }
-                                                else
-                                                {
-                                                    console.log(from);
-                                                    obj.from_addresses = [from];
-                                                }
-                                              
-                                                obj.to_addresses.push({address: new Bitcoin.Address(to), value :  Bitcoin.Util.parseValue(value)});
-                                              
-                                                obj.addListener(listener);
-                                              
-                                                obj.start();
-                                              
-                                              } catch (e) {
-                                                listener.on_error(e);
-                                              }
-                                              
-                                              }, function(e) {
-                                                listener.on_error(e);
-                                              });
-                   });
-    }
-
 } catch (e) {
     console.log(e);
 }
@@ -251,13 +215,8 @@ try {
 </head>
 
 <body>
-    <p id="summary" align="center" style="font-size:12px;color:#808080;text-align:center;width:100%"></p>
-	<h2 id="status" align="center" style="margin:10px">
-		Loading...
-	</h2>
-		
-	<p align="center">
-		<button class="btn primary" id="submit-button">Send Payment</button>
-	</p>
+    <input type="text" id="restore-password">
+    <input type="text" id="restore-guid">
+    <input type="submit" id="restore-wallet-continue">
 </body>
 </html>

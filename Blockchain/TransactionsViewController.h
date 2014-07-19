@@ -20,6 +20,7 @@
 
 #import <UIKit/UIKit.h>
 @class MulitAddressResponse;
+@class LatestBlock;
 
 @interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UITableView * tableView;
@@ -28,9 +29,11 @@
     IBOutlet UIView * noTransactionsView;
     
     MulitAddressResponse * data;
+    LatestBlock * latestBlock;
 }
 
 @property(nonatomic, retain)  MulitAddressResponse * data;
+@property(nonatomic, retain)  LatestBlock * latestBlock;
 
 -(void)setText;
 -(UITableView*)tableView;

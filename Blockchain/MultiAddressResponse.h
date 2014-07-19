@@ -38,8 +38,6 @@
 
 @interface MulitAddressResponse : NSObject {
     NSMutableArray * transactions;
-    NSMutableDictionary * addresses;
-    
     uint64_t total_received;
     uint64_t total_sent;
     uint64_t final_balance;
@@ -47,44 +45,11 @@
 }
 
 @property(nonatomic, retain) NSMutableArray * transactions;
-@property(nonatomic, retain) NSMutableDictionary * addresses;
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;
 @property(nonatomic, assign) uint64_t final_balance;
 @property(nonatomic, assign) uint32_t n_transactions;
 
 @property(nonatomic, strong) CurrencySymbol * symbol;
-@property(nonatomic, strong) LatestBlock * latestBlock;
-
-@end
-
-
-@protocol RemoteDataSourceDelagate <NSObject>
--(void)didGetMultiAddr:(MulitAddressResponse*)response;
--(void)didGetUnconfirmedTransactions:(MulitAddressResponse*)response;
--(void)didGetWalletData:(NSData*)data;
--(void)walletDataNotModified;
-@end
-
-@interface RemoteDataSource : NSObject 
-
-@property(nonatomic, strong) id<RemoteDataSourceDelagate> delegate;
-@property(nonatomic, assign) double lastWalletSync;
-
--(NSDictionary*)resolveAlias:(NSString*)alias;
-
--(BOOL)insertWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload;
-
--(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)sharedKey payload:(NSString*)payload success:(void(^)() )success error:(void(^)() )_error;
-
--(void)saveWallet:(NSString*)walletIdentifier sharedKey:(NSString*)apiKey payload:(NSString*)payload;
-
--(void)multiAddr:(NSString*)walletIdentifier addresses:(NSArray*)addresses;
-
--(void)getWallet:(NSString*)walletIdentifier sharedKey:(NSString*)apiKey checksum:(NSString*)checksum;
-
--(void)getUnconfirmedTransactions;
-
--(MulitAddressResponse*)parseMultiAddr:(NSData*)data;
 
 @end

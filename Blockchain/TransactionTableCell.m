@@ -23,8 +23,7 @@
 
 
 -(IBAction)transactionHashClicked:(UIButton *)button {
-    if (app->isRegistered)
-        [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction->hash]];
+    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction->hash]];
 }
 
 -(void)reload {   

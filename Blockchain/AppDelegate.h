@@ -22,7 +22,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #import "Wallet.h"
-#import "RemoteDataSource.h"
+#import "MultiAddressResponse.h"
 #import "WebSocket.h"
 #import "Reachability.h"
 #import "TabViewController.h"
@@ -39,7 +39,7 @@
 //Some features disabled to pass review process
 //#define CYDIA
 
-@class TransactionsViewController, RemoteDataSource, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
+@class TransactionsViewController, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
 
 typedef enum {
     TaskGetMultiAddr,
@@ -50,10 +50,8 @@ typedef enum {
     TaskLoadExternalURL
 } Task;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RemoteDataSourceDelagate, WalletDelegate, WebSocketDelegate, ZBarReaderViewDelegate,PEPinEntryControllerDelegate> {
-    RemoteDataSource * dataSource;
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, WebSocketDelegate, ZBarReaderViewDelegate,PEPinEntryControllerDelegate> {
     Wallet * wallet;
-    WebSocket * webSocket;
     Reachability * reachability;
     
     SystemSoundID alertSoundID;
@@ -91,7 +89,7 @@ typedef enum {
     IBOutlet UIView * manualView;
     IBOutlet UITextField * manualIdentifier;
     IBOutlet UITextField * manualSharedKey;
-    IBOutlet UITextField * manualPAssword;
+    IBOutlet UITextField * manualPassword;
 
     WebViewController * webViewController;
     
@@ -102,14 +100,12 @@ typedef enum {
     @public
     
     BOOL symbolLocal;
-    BOOL isRegistered;
 }
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
 @property (retain, nonatomic) Wallet * wallet;
 @property (retain, strong) MulitAddressResponse * latestResponse;
 
-@property (retain, nonatomic) WebSocket * webSocket;
 @property (retain, nonatomic) Reachability * reachability;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 
@@ -128,9 +124,6 @@ typedef enum {
 -(void)playAlertSound;
 
 -(TabViewcontroller*)tabViewController;
--(void)walletDidLoad:(Wallet *)wallet;
--(void)didGetMultiAddr:(MulitAddressResponse *)response;
--(void)didGetWalletData:(NSData *)data;
 
 -(void)forgetWallet;
 -(void)showWelcome;
@@ -152,7 +145,13 @@ typedef enum {
 
 -(void)startTask:(Task)task;
 -(void)finishTask;
--(void)subscribeWalletAndToKeys;
+
+//Wallet Delegate
+-(void)didSetLatestBlock:(LatestBlock*)block;
+-(void)walletDidLoad:(Wallet *)wallet;
+-(void)walletFailedToDecrypt:(Wallet*)wallet;
+-(void)walletJSReady;
+-(void)didSubmitTransaction;
 
 //Wesocket Delegate
 -(void)webSocketOnOpen:(WebSocket*)webSocket;
@@ -176,8 +175,6 @@ typedef enum {
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;
 
 -(BOOL)getSecondPasswordBlocking;
-  
--(RemoteDataSource*)dataSource;
 
 -(void)toggleSymbol;
   

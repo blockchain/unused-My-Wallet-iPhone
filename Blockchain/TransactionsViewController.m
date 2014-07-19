@@ -9,12 +9,13 @@
 #import "TransactionsViewController.h"
 #import "Transaction.h"
 #import "TransactionTableCell.h"
-#import "RemoteDataSource.h"
+#import "MultiAddressResponse.h"
 #import "AppDelegate.h"
 
 @implementation TransactionsViewController
 
 @synthesize data;
+@synthesize latestBlock;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [data.transactions count];
@@ -31,7 +32,7 @@
     
     cell.transaction = transaction;
     
-    [cell seLatestBlock:data.latestBlock];
+    [cell seLatestBlock:self.latestBlock];
     
     [cell reload];
 
@@ -129,6 +130,7 @@
 }
 
 -(void)dealloc {
+    [latestBlock release];
     [noTransactionsView release];
     [finalBalanceLabel release];
     [transactionCountLabel release];

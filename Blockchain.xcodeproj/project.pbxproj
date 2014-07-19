@@ -98,7 +98,7 @@
 		9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3C14BC7C4F00048EFB /* Transaction.m */; };
 		9F765F4014BC7C5E00048EFB /* Input.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3F14BC7C5E00048EFB /* Input.m */; };
 		9F765F4314BC7C6D00048EFB /* Output.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4214BC7C6D00048EFB /* Output.m */; };
-		9F765F4714BC8AEF00048EFB /* RemoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */; };
+		9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */; };
 		9F765F4A14BC8C0D00048EFB /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4914BC8C0D00048EFB /* JSONKit.m */; };
 		9F7DCC8B153451B2000CBFC8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCC8A153451B2000CBFC8 /* CoreData.framework */; };
 		9F7DCCEB15345213000CBFC8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCCEA15345213000CBFC8 /* Security.framework */; };
@@ -287,8 +287,8 @@
 		9F765F3F14BC7C5E00048EFB /* Input.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Input.m; sourceTree = "<group>"; };
 		9F765F4114BC7C6D00048EFB /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output.h; sourceTree = "<group>"; };
 		9F765F4214BC7C6D00048EFB /* Output.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Output.m; sourceTree = "<group>"; };
-		9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDataSource.h; sourceTree = "<group>"; };
-		9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDataSource.m; sourceTree = "<group>"; };
+		9F765F4514BC8AEF00048EFB /* MultiAddressResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiAddressResponse.h; sourceTree = "<group>"; };
+		9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiAddressResponse.m; sourceTree = "<group>"; };
 		9F765F4814BC8C0D00048EFB /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Blockchain/JSONKit.h; sourceTree = "<group>"; };
 		9F765F4914BC8C0D00048EFB /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Blockchain/JSONKit.m; sourceTree = "<group>"; };
 		9F7DCC8A153451B2000CBFC8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -625,8 +625,8 @@
 				C9BE91641945C41300FD516D /* APIDefines.h */,
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,
 				9FB3638514B60128004BEA02 /* AppDelegate.m */,
-				9F765F4514BC8AEF00048EFB /* RemoteDataSource.h */,
-				9F765F4614BC8AEF00048EFB /* RemoteDataSource.m */,
+				9F765F4514BC8AEF00048EFB /* MultiAddressResponse.h */,
+				9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */,
 				9F7480E115140EA500BC4292 /* TabViewController.h */,
 				9F7480E215140EA500BC4292 /* TabViewController.m */,
 				848B498D15907E85009D49BB /* iOS-WebSockets */,
@@ -1035,7 +1035,7 @@
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
 				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
-				9F765F4714BC8AEF00048EFB /* RemoteDataSource.m in Sources */,
+				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
 				9F765F4A14BC8C0D00048EFB /* JSONKit.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,

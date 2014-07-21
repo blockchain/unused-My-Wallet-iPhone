@@ -25,6 +25,20 @@
 @synthesize conversion;
 @synthesize symbolappearsAfter;
 
+- (id)initWithDictionary:(NSDictionary *)dict {
+
+    self = [super init];
+//    if (self) {
+//        self.code = dict[@"symbol"];
+//        self.symbol = dict[@"symbol"];
+//        self.name = dict[@"symbol"];
+//        self.conversion = dict[@"symbol"];
+//        self.symbolappearsAfter = dict[@"symbol"];
+//    }
+    
+    return self;
+}
+
 -(void)dealloc {
     [code release];
     [symbol release];

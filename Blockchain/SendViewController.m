@@ -42,13 +42,8 @@
     wallet = _wallet;
     [wallet retain];
     
-    self.fromAddress = [NSMutableArray array];
+    self.fromAddress = [[self.wallet activeAddresses] mutableCopy];
     
-    for (Key * key in [wallet.keys allValues]) {
-        if (key.tag == 0) {
-            [fromAddress addObject:key];
-        }
-    }
     
     NSLog(@"Set Wallet");
     
@@ -84,9 +79,7 @@
                     @try {
                         [wallet sendPaymentTo:to from:from value:value];
                         
-                        [app showModal:[wallet webView]];
-                        
-                        app.modalDelegate = self;
+                        [app showModal:[wallet webView] onDismiss:nil];
                     } @catch (NSException * e) {
                         [UncaughtExceptionHandler logException:e];
                     }
@@ -108,7 +101,7 @@
     } else if (buttonIndex == 1) {
         labelAddressLabel.text = to;
         
-        [app showModal:labelAddressView];
+        [app showModal:labelAddressView onDismiss:nil];
         
         [labelAddressTextField becomeFirstResponder];
     }
@@ -140,7 +133,7 @@
         return;
     }
     
-    if ([[wallet.addressBook objectForKey:to] length] == 0 && [[wallet keys] objectForKey:to] == nil) {
+    if ([[wallet.addressBook objectForKey:to] length] == 0 && ![wallet.allAddresses containsObject:to]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?" 
                                                         message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", to]
                                                        delegate:nil 
@@ -217,9 +210,13 @@
     
     [readerView setReaderDelegate:self];
     
-    [app showModal:readerView];
-    
-    app.modalDelegate = self;
+    [app showModal:readerView onDismiss:^() {
+        [readerView stop];
+        
+        self.readerView = nil;
+        
+        [wallet cancelTxSigning];
+    }];
 }
 
 -(void)viewDidLoad {
@@ -244,14 +241,6 @@
     return 0;
 }
 
--(void)didDismissModal {    
-    [readerView stop];
-
-    self.readerView = nil;
-
-    [wallet cancelTxSigning];
-}
-
 -(void)didSelectAddress:(NSString *)address {
     toField.text = address;
 }
@@ -272,7 +261,14 @@
 -(IBAction)addressBookClicked:(id)sender {
     AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
     addressBookView.delegate = self;
-    [app showModal:addressBookView];
+
+    [app showModal:addressBookView onDismiss:^() {
+        [readerView stop];
+        
+        self.readerView = nil;
+        
+        [wallet cancelTxSigning];
+    }];
     
     [addressBookView release];
 }

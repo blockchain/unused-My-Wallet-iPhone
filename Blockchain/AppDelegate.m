@@ -26,6 +26,7 @@
 #import "Output.h"
 #import "UIDevice+Hardware.h"
 #import "UncaughtExceptionHandler.h"
+#import "UITextField+Blocks.h"
 
 AppDelegate * app;
 
@@ -35,9 +36,7 @@ AppDelegate * app;
 @synthesize wallet;
 @synthesize reachability;
 @synthesize modalView;
-@synthesize modalContentView;
 @synthesize latestResponse;
-@synthesize modalDelegate;
 @synthesize readerView;
 
 #pragma mark - Lifecycle
@@ -76,6 +75,9 @@ AppDelegate * app;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
+  
+#warning needed?
+//    symbolLocal = NO;
     
     // Override point for customization after application launch.
     _window.backgroundColor = [UIColor whiteColor];
@@ -96,18 +98,22 @@ AppDelegate * app;
         
     } else if (![self password]) {
         
-        [self showModal:mainPasswordView];
+        [self showModal:mainPasswordView onDismiss:nil];
         
         [mainPasswordTextField becomeFirstResponder];
         
     } else {
         
-        NSString * guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
-        NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
-        NSString * password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
-
+        NSString * guid = [self guid];
+        NSString * sharedKey = [self sharedKey];
+        NSString * password = [self password];
+        
+        NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
+        
         if (guid && sharedKey && password) {
             self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
+            
+            self.wallet.delegate = self;
         }
     }
     
@@ -319,9 +325,7 @@ AppDelegate * app;
     NSLog(@"walletDidLoad");
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
-    
-    _tempLastKeyCount = [_wallet.keys count];
-    
+        
     receiveViewController.wallet = _wallet;
     sendViewController.wallet = _wallet;
     [accountViewController loadWebView];
@@ -347,7 +351,7 @@ AppDelegate * app;
     //Cleare the checksum cache incase it has
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
 
-    [self showModal:mainPasswordView];
+    [self showModal:mainPasswordView onDismiss:nil];
     
     [mainPasswordTextField becomeFirstResponder];
 }
@@ -358,7 +362,7 @@ AppDelegate * app;
 
         wallet.delegate = self;
     } else {
-        [self showModal:mainPasswordView];
+        [self showModal:mainPasswordView onDismiss:nil];
         
         [mainPasswordTextField becomeFirstResponder];
     }
@@ -470,6 +474,10 @@ AppDelegate * app;
     [app closeModal];
 }
 
+-(TransactionsViewController*)transactionsViewController {
+    return transactionsViewController;
+}
+
 -(TabViewcontroller*)tabViewController {
     return tabViewController;
 }
@@ -481,7 +489,7 @@ AppDelegate * app;
 -(void)closeModal {
     
     [modalView removeFromSuperview]; 
-    [modalContentView removeFromSuperview]; 
+    [modalView.modalContentView removeFromSuperview];
 
     CATransition *animation = [CATransition animation]; 
     [animation setDuration:ANIMATION_DURATION];
@@ -490,13 +498,14 @@ AppDelegate * app;
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     
     [[_window layer] addAnimation:animation forKey:@"HideModal"]; 
-        
-    if ([modalDelegate respondsToSelector:@selector(didDismissModal)])
-        [modalDelegate didDismissModal];
-        
-    self.modalContentView = nil;
+    
+    if (self.modalView.delegate) {
+        self.modalView.delegate();        
+    }
+    
+    self.modalView.modalContentView = nil;
     self.modalView = nil;
-    self.modalDelegate = nil;
+    self.modalView.delegate = nil;
 }
 
 -(IBAction)secondPasswordClicked:(id)sender {
@@ -520,52 +529,44 @@ AppDelegate * app;
     return YES;
 }
 
--(BOOL)getSecondPasswordBlocking {
+-(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
     
     @try {
-        if (![wallet isDoubleEncrypted])
-            return YES;
-        
-        if (wallet.secondPassword)
-            return YES;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            @try {
-                [app showModal:secondPasswordView];
-            
-                [secondPasswordTextField becomeFirstResponder];
-            } @catch (NSException * e) {
-                [UncaughtExceptionHandler logException:e];
-            }
-        });
-        
-        usleep(50000);
-
-        while (app.modalView) {
-            usleep(20000);
+        if (wallet.secondPassword) {
+            success(wallet.secondPassword);
+            return;
         }
         
-        if (wallet.secondPassword)
-            return TRUE;
-        
-        return FALSE;
+        [secondPasswordTextField becomeFirstResponder];
+
+        [app showModal:secondPasswordView onDismiss:^() {
+            if ([secondPasswordTextField.text length] > 0) {
+                success(secondPasswordTextField.text);
+            } else {
+                error(@"No Password Entered");
+            }
+        }];
     } @catch (NSException * e) {
         [UncaughtExceptionHandler logException:e];
+        
+        error(@"Caught Exception Getting Password");
     }
 }
 
--(void)showModal:(UIView*)contentView {
+
+-(void)showModal:(UIView*)contentView onDismiss:(void (^)())onDismiss {
 
     @try {
         if (modalView) {
-//            NSLog(@"closing modal..already visible");
             [self closeModal];
         }
         
-        [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
-        [modalContentView addSubview:contentView];
+        self.modalView.delegate = onDismiss;
         
-        contentView.frame = CGRectMake(0, 0, modalContentView.frame.size.width, modalContentView.frame.size.height);
+        [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
+        [modalView.modalContentView addSubview:contentView];
+        
+        contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
         [_window.rootViewController.view addSubview:modalView];
         [_window.rootViewController.view endEditing:TRUE];
      } @catch (NSException * e) {
@@ -607,12 +608,6 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [app closeModal];
-}
-
--(void)didDismissModal {
-    [readerView stop];
-    
-    self.readerView = nil;
 }
 
 -(BOOL)isZBarSupported {
@@ -661,15 +656,17 @@ AppDelegate * app;
     if ([self isZBarSupported]) {
         self.readerView = [[ZBarReaderView new] autorelease];
         
-        [app showModal:readerView];
-
-        self.modalDelegate = self;
+        [app showModal:readerView onDismiss:^() {
+            [readerView stop];
+            
+            self.readerView = nil;
+        }];
         
         [readerView start];
         
         [readerView setReaderDelegate:self];
     } else {
-        [self showModal:manualView];
+        [self showModal:manualView onDismiss:nil];
     }
 }
 
@@ -714,7 +711,7 @@ AppDelegate * app;
         [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
     }
     
-    [app showModal:welcomeView];
+    [app showModal:welcomeView onDismiss:nil];
 }
 
 -(void)showSendCoins {
@@ -771,7 +768,7 @@ AppDelegate * app;
 
 -(IBAction)signupClicked:(id)sender {
     
-    [app showModal:newAccountView];
+    [app showModal:newAccountView onDismiss:nil];
 }
 
 -(IBAction)loginClicked:(id)sender {
@@ -785,7 +782,7 @@ AppDelegate * app;
         
         [app closeModal];
     } else {
-        [app showModal:pairingInstructionsView];
+        [app showModal:pairingInstructionsView onDismiss:nil];
     }
 }
 

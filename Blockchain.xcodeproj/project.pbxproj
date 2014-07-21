@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
-		848B499115907E85009D49BB /* README in Resources */ = {isa = PBXBuildFile; fileRef = 848B498E15907E85009D49BB /* README */; };
 		848B499215907E85009D49BB /* WebSocketUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848B499015907E85009D49BB /* WebSocketUIView.m */; };
+		84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */; };
+		84B601CA197AD03800DA1829 /* UIModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C9197AD03800DA1829 /* UIModalView.m */; };
+		84CCFAAC197D766D00DA4482 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = 84CCFAAB197D765000DA4482 /* jquery.js */; };
+		84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
 		9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA115134C2C00CD945D /* button_red@2x.png */; };
 		9F0CBAA615134D3200CD945D /* button_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA415134D3200CD945D /* button_grey.png */; };
@@ -137,7 +140,6 @@
 		C974BDA819489A840094898B /* bitcoinjs.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22952194892F70022A0D2 /* bitcoinjs.js */; };
 		C974BDA919489A840094898B /* blockchainapi.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22953194892F70022A0D2 /* blockchainapi.js */; };
 		C974BDAA19489A840094898B /* bootstrap.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295A194893420022A0D2 /* bootstrap.min.js */; };
-		C974BDAB19489A840094898B /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295B194893420022A0D2 /* jquery.min.js */; };
 		C974BDAC19489A840094898B /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22954194892F70022A0D2 /* shared.js */; };
 		C974BDAD19489A840094898B /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B22955194892F70022A0D2 /* signer.js */; };
 		C974BDAE19489A840094898B /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = C9B2295C194893420022A0D2 /* wallet.js */; };
@@ -171,6 +173,13 @@
 		848B498E15907E85009D49BB /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		848B498F15907E85009D49BB /* WebSocketUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketUIView.h; sourceTree = "<group>"; };
 		848B499015907E85009D49BB /* WebSocketUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketUIView.m; sourceTree = "<group>"; };
+		84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Blocks.h"; sourceTree = "<group>"; };
+		84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Blocks.m"; sourceTree = "<group>"; };
+		84B601C8197AD03800DA1829 /* UIModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModalView.h; sourceTree = "<group>"; };
+		84B601C9197AD03800DA1829 /* UIModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIModalView.m; sourceTree = "<group>"; };
+		84CCFAAB197D765000DA4482 /* jquery.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = jquery.js; path = "My-Wallet/jquery.js"; sourceTree = SOURCE_ROOT; };
+		84CCFAAD197D859C00DA4482 /* NSString+NSString_EscapeQuotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString_EscapeQuotes.h"; sourceTree = "<group>"; };
+		84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSString_EscapeQuotes.m"; sourceTree = "<group>"; };
 		9F0CBAA015134C2C00CD945D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		9F0CBAA115134C2C00CD945D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red@2x.png"; sourceTree = "<group>"; };
 		9F0CBAA415134D3200CD945D /* button_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey.png; sourceTree = "<group>"; };
@@ -360,7 +369,6 @@
 		C9B22954194892F70022A0D2 /* shared.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = shared.js; path = "My-Wallet/shared.js"; sourceTree = SOURCE_ROOT; };
 		C9B22955194892F70022A0D2 /* signer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = signer.js; path = "My-Wallet/signer.js"; sourceTree = SOURCE_ROOT; };
 		C9B2295A194893420022A0D2 /* bootstrap.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bootstrap.min.js; path = "My-Wallet/bootstrap.min.js"; sourceTree = SOURCE_ROOT; };
-		C9B2295B194893420022A0D2 /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jquery.min.js; path = "My-Wallet/jquery.min.js"; sourceTree = SOURCE_ROOT; };
 		C9B2295C194893420022A0D2 /* wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = wallet.js; path = "My-Wallet/wallet.js"; sourceTree = SOURCE_ROOT; };
 		C9BE91641945C41300FD516D /* APIDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIDefines.h; sourceTree = "<group>"; };
 		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
@@ -431,11 +439,11 @@
 		9F0CBAAB15135DF200CD945D /* JavaScript */ = {
 			isa = PBXGroup;
 			children = (
+				84CCFAAB197D765000DA4482 /* jquery.js */,
 				844BC7AF1949BD710024160B /* bridge.js */,
 				C9B22952194892F70022A0D2 /* bitcoinjs.js */,
 				C9B22953194892F70022A0D2 /* blockchainapi.js */,
 				C9B2295A194893420022A0D2 /* bootstrap.min.js */,
-				C9B2295B194893420022A0D2 /* jquery.min.js */,
 				C9B22954194892F70022A0D2 /* shared.js */,
 				C9B22955194892F70022A0D2 /* signer.js */,
 				C9B2295C194893420022A0D2 /* wallet.js */,
@@ -460,6 +468,8 @@
 				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
 				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
 				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
+				84CCFAAD197D859C00DA4482 /* NSString+NSString_EscapeQuotes.h */,
+				84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -620,6 +630,8 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
+				84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */,
+				84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */,
 				844BC7AC1949BB620024160B /* JSBridgeWebView.h */,
 				844BC7AD1949BB620024160B /* JSBridgeWebView.m */,
 				C9BE91641945C41300FD516D /* APIDefines.h */,
@@ -848,6 +860,8 @@
 				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
 				9F0CBAD61513CA2600CD945D /* UIFadeView.h */,
 				9F0CBAD71513CA2600CD945D /* UIFadeView.m */,
+				84B601C8197AD03800DA1829 /* UIModalView.h */,
+				84B601C9197AD03800DA1829 /* UIModalView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -908,11 +922,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CCFAAC197D766D00DA4482 /* jquery.js in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				C974BDA819489A840094898B /* bitcoinjs.js in Resources */,
 				C974BDA919489A840094898B /* blockchainapi.js in Resources */,
 				C974BDAA19489A840094898B /* bootstrap.min.js in Resources */,
-				C974BDAB19489A840094898B /* jquery.min.js in Resources */,
 				C974BDAC19489A840094898B /* shared.js in Resources */,
 				C974BDAD19489A840094898B /* signer.js in Resources */,
 				C974BDAE19489A840094898B /* wallet.js in Resources */,
@@ -1007,7 +1021,6 @@
 				9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */,
 				9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */,
 				9F6FA3541536E7EB005BA19C /* 01-refresh@2x.png in Resources */,
-				848B499115907E85009D49BB /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1033,11 +1046,13 @@
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
+				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
 				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
 				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
 				9F765F4A14BC8C0D00048EFB /* JSONKit.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
+				84B601CA197AD03800DA1829 /* UIModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* UIFadeView.m in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
@@ -1058,6 +1073,7 @@
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
+				84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */,
 				848B499215907E85009D49BB /* WebSocketUIView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

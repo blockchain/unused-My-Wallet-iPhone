@@ -18,7 +18,6 @@
 @synthesize wallet;
 @synthesize activeKeys;
 @synthesize archivedKeys;
-@synthesize otherKeys;
 
 -(void)dealloc {
     
@@ -29,7 +28,6 @@
     [optionsModalView release];
     [requestCoinsView release];
     [qrCodeImageView release];
-    [otherKeys release];
     [optionsAddressLabel release];
     [activeKeys release];
     [archivedKeys release];
@@ -45,8 +43,10 @@
     for(ZBarSymbol *sym in syms) {
         NSString * privateKey = sym.data;
         
+//TODO
+        /*
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-            if ([app getSecondPasswordBlocking]) {
+            if (!isDoubleEncrypted || [app getSecondPasswordBlocking]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     if ([wallet addKey:privateKey]) {
@@ -60,7 +60,7 @@
             } else {
                 [app standardNotify:@"Cannot Generate new address without the second password"];
             }
-        });
+        });*/
     }
     
     [app closeModal];
@@ -81,17 +81,13 @@
     
     [readerView setReaderDelegate:self];
     
-    [app showModal:readerView];
-    
-    app.modalDelegate = self;
-}
-
--(void)didDismissModal {    
-    [readerView stop];
-    
-    self.readerView = nil;
-    
-    [wallet cancelTxSigning];
+    [app showModal:readerView onDismiss:^() {
+        [readerView stop];
+        
+        self.readerView = nil;
+        
+        [wallet cancelTxSigning];
+    }];
 }
 
 -(void)viewDidLoad {
@@ -105,34 +101,13 @@
 }
 
 -(void)reload {
-    NSArray * keys = [[wallet keys] allValues];
+    self.activeKeys = [app.wallet activeAddresses];
+    self.archivedKeys = [app.wallet archivedAddresses];
 
-    self.activeKeys  = nil;
-    self.archivedKeys  = nil;
-    self.otherKeys  = nil;
-
-    if ([keys count] == 0) {
+    if ([activeKeys count] == 0) {
         [self.view addSubview:noaddressesView];
     } else {
         [noaddressesView removeFromSuperview];
-        
-        NSMutableArray * _activeKeys = [NSMutableArray arrayWithCapacity:[keys count]];
-        NSMutableArray * _archivedKeys = [NSMutableArray arrayWithCapacity:[keys count]];
-        NSMutableArray * _otherKeys = [NSMutableArray arrayWithCapacity:[keys count]];
-        
-        for (Key * key in keys) {
-            if ([key tag] == 0)
-                [_activeKeys addObject:key];
-            else if ([key tag] == 2)
-                [_archivedKeys addObject:key];
-            else
-                [_otherKeys addObject:key];
-        }
-        
-        
-        self.activeKeys = [_activeKeys sortedArrayUsingSelector:@selector(compare:)];
-        self.archivedKeys = [_archivedKeys sortedArrayUsingSelector:@selector(compare:)];
-        self.otherKeys = [_otherKeys sortedArrayUsingSelector:@selector(compare:)];
     }
     
     [tableView reloadData];
@@ -166,31 +141,26 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     int n = 0;
     
-    if ([otherKeys count]) ++n;
     if ([archivedKeys count]) ++n;
     if ([activeKeys count]) ++n;
 
     return n;
 }
 
--(Key *)getKey:(NSIndexPath*)indexPath {
+-(NSString *)getAddress:(NSIndexPath*)indexPath {
     
-    Key * key =  NULL;
+    NSString *addr = nil;
     
     if ([indexPath section] == 0)
-        key = [activeKeys objectAtIndex:[indexPath row]];
+        addr = [activeKeys objectAtIndex:[indexPath row]];
     else if ([indexPath section] == 1)
-        key = [archivedKeys objectAtIndex:[indexPath row]];
-    else
-        key = [otherKeys objectAtIndex:[indexPath row]];
+        addr = [archivedKeys objectAtIndex:[indexPath row]];
 
     
-    return key;
+    return addr;
 }
 
 -(IBAction)labelSaveClicked:(id)sender {
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
-    
     labelTextField.text = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([labelTextField.text length] == 0 || [labelTextField.text length] > 255) {
@@ -198,7 +168,8 @@
         return;
     }
     
-    [wallet setLabel: labelTextField.text ForAddress:key.addr];
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    [wallet setLabel:labelTextField.text ForAddress:addr];
         
     [self reload];
     
@@ -206,11 +177,11 @@
 }
 
 -(IBAction)copyAddressClicked:(id)sender {
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
-    
-    [app standardNotify:[NSString stringWithFormat:@"%@ copied to clipboard", key.addr]  title:@"Success" delegate:nil];
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
 
-    [UIPasteboard generalPasteboard].string = key.addr;
+    [app standardNotify:[NSString stringWithFormat:@"%@ copied to clipboard", addr]  title:@"Success" delegate:nil];
+
+    [UIPasteboard generalPasteboard].string = addr;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -226,20 +197,20 @@
 
 -(NSString*)uriURL {
     
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
-    
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+
     double amount = [requestAmountTextField.text doubleValue];
     
-    return [NSString stringWithFormat:@"bitcoin://%@?amount=%.8f", key.addr, amount];
+    return [NSString stringWithFormat:@"bitcoin://%@?amount=%.8f", addr, amount];
 }
 
 -(NSString*)blockchainUriURL {
     
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
-    
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+
     double amount = [requestAmountTextField.text doubleValue];
     
-    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", key.addr, amount];
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", addr, amount];
 }
 
 -(void)setQR {
@@ -262,25 +233,25 @@
     
     return TRUE;
 }
-
--(IBAction)shareByTwitter:(id)sender {
-#warning reimplement this
-//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-}
-
--(IBAction)shareByFacebook:(id)sender {
-#warning reimplement this
-//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-}
--(IBAction)shareByGooglePlus:(id)sender {
-#warning reimplement this
-//    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-}
-
--(IBAction)shareByEmailClicked:(id)sender {
-#warning reimplement this
-//  [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
-}
+//
+//-(IBAction)shareByTwitter:(id)sender {
+//#warning reimplement this
+////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+//}
+//
+//-(IBAction)shareByFacebook:(id)sender {
+//#warning reimplement this
+////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+//}
+//-(IBAction)shareByGooglePlus:(id)sender {
+//#warning reimplement this
+////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+//}
+//
+//-(IBAction)shareByEmailClicked:(id)sender {
+//#warning reimplement this
+////  [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
+//}
 
 -(IBAction)requestPaymentClicked:(id)sender {
     [self setQR];
@@ -304,18 +275,19 @@
 //	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
 //	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
     
-    [app showModal:requestCoinsView];
+    [app showModal:requestCoinsView onDismiss:nil];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * label =  [app.wallet labelForAddress:addr];
 
-    if (key.label)
-        labelAddressLabel.text = key.label;
+    if (label)
+        labelAddressLabel.text = label;
     else
-        labelAddressLabel.text = key.addr;
+        labelAddressLabel.text = addr;
 
-    [app showModal:labelAddressView];
+    [app showModal:labelAddressView onDismiss:nil];
     
     labelTextField.text = nil;
     
@@ -324,35 +296,38 @@
 
 -(IBAction)archiveAddressClicked:(id)sender {
 
-    Key * key =  [self getKey:[tableView indexPathForSelectedRow]];
+    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSInteger tag =  [app.wallet tagForAddress:addr];
 
-    if (key.tag == 2)
-        [wallet unArchiveAddress:key.addr];
+    if (tag == 2)
+        [wallet unArchiveAddress:addr];
     else
-        [wallet archiveAddress:key.addr];
+        [wallet archiveAddress:addr];
     
     self.wallet = wallet;
         
     [app closeModal];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    Key * key =  [self getKey:indexPath];
-    
-    if (key.tag == 2)
+    NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
+    NSInteger tag =  [app.wallet tagForAddress:addr];
+    NSString *label =  [app.wallet labelForAddress:addr];
+
+    if (tag == 2)
         [archiveUnarchiveButton setTitle:@"Unarchive" forState:UIControlStateNormal];
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView];
+    [app showModal:optionsModalView onDismiss:nil];
     
-    if (key.label)
-        optionsTitleLabel.text = key.label;
+    if (label)
+        optionsTitleLabel.text = label;
     else
         optionsTitleLabel.text = @"Bitcoin Address";
         
-    optionsAddressLabel.text = key.addr;
+    optionsAddressLabel.text = addr;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -370,20 +345,18 @@
     else if (section == 1)
         return @"Archived";
     else
-        return @"Other";
+        @throw @"Unknown Secion";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0)
         return [activeKeys count];
-    else if (section == 1)
-        return [archivedKeys count];
     else
-        return [otherKeys count];
+        return [archivedKeys count];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    if ([[wallet.keys allKeys] count] == 0) {
+    if ([[self.wallet activeAddresses] count] == 0) {
         [noaddressesView setHidden:FALSE];
     } else {
         [noaddressesView setHidden:TRUE];
@@ -396,22 +369,23 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
     }
+
+    NSString * addr =  [self getAddress:indexPath];
+    NSString * label =  [app.wallet labelForAddress:addr];
     
-    Key * key =  [self getKey:indexPath];
-    
-    if ([key label])
-        cell.labelLabel.text = [key label];
+    if (label)
+        cell.labelLabel.text = label;
     else 
         cell.labelLabel.text = @"No Label";
     
-    cell.addressLabel.text = [key addr];
+    cell.addressLabel.text = addr;
     
-    if ([key priv])
+    if ([app.wallet isWatchOnlyAddress:addr])
         [cell.watchLabel setHidden:TRUE];
     else
         [cell.watchLabel setHidden:FALSE];
     
-    uint64_t balance = [app.wallet getAddressBalance:key.addr];
+    uint64_t balance = [app.wallet getAddressBalance:addr];
     
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
     [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];

@@ -10,6 +10,7 @@
 #import "JSONKit.h"
 #import "AppDelegate.h"
 #import "Transaction.h"
+#import "NSString+NSString_EscapeQuotes.h"
 
 @implementation Key
 @synthesize addr;
@@ -36,8 +37,6 @@
 @synthesize webView;
 @synthesize sharedKey;
 @synthesize guid;
-@synthesize keys;
-
 
 +(id)parseJSON:(NSString*)json {
     NSError * error = nil;
@@ -73,7 +72,7 @@
 }
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value {
-       [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"MyWallet.quickSend('%@', '%@', '%@', listener);", toAddress, fromAddress, value]];
+    
 }
 
 
@@ -96,11 +95,10 @@
 
 -(void)loadJS {
     NSError * error = nil;
-#warning clean this up -- load directly from js.
     NSString * bitcoinJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * blockchainJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * bootstrapJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * jqueryJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * jqueryJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"jquery" ofType:@".js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * signerJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * sharedJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
@@ -155,7 +153,7 @@
         
         [self loadJS];
         
-        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode('%@');", encryptedQRString]];
+        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode(\"%@\");", [encryptedQRString escapeDoubleQuotes]]];
     }
     
     return  self;
@@ -213,18 +211,17 @@
     return self;
 }
 
--(NSString*)labelForAddress:(NSString*)address {
-    NSString * addressbookLabel = [[self addressBook] objectForKey:address];
+-(BOOL)isWatchOnlyAddress:(NSString*)address {
+    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeDoubleQuotes]] isEqualToString:@"true"];
+}
 
-    if (addressbookLabel) {
-        return addressbookLabel;
-    }
-    
-    Key * key = [[self keys] objectForKey:address];
-    if (key && [key label]) {
-        return [key label];
-    }
-    return address;
+
+-(NSString*)labelForAddress:(NSString*)address {
+    return [self.webView executeJSSynchronous:@"MyWallet.getAddressLabel(\"%@\")", [address escapeDoubleQuotes]];
+}
+
+-(NSInteger)tagForAddress:(NSString*)address {
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressTag(\"%@\")", [address escapeDoubleQuotes]] intValue];
 }
 
 -(BOOL)isValidAddress:(NSString*)string {
@@ -247,11 +244,18 @@
     return [Wallet parseJSON:activeAddressesJSON];
 }
 
+-(NSArray*)archivedAddresses {
+    NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getArchivedAddresses())"];
+    
+    return [Wallet parseJSON:activeAddressesJSON];
+}
+
+
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address {
     
     //TODO escape properly
-    [self.webView executeJS:@"MyWallet.setLabel('%@', '%@')", address, label];
+    [self.webView executeJS:@"MyWallet.setLabel(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
 }
 
 -(void)archiveAddress:(NSString*)address {
@@ -267,13 +271,13 @@
 }
 
 -(uint64_t)getAddressBalance:(NSString*)address {
-    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance('%@')", address] longLongValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance(\"%@\")", [address escapeDoubleQuotes]] longLongValue];
 }
 
 -(BOOL)addKey:(NSString*)privateKeyString {
     
     //TODO escape properly
-    NSString * returnVal = [self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey('%@')", privateKeyString];
+    NSString * returnVal = [self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeDoubleQuotes]];
     
     if ([returnVal isEqualToString:@"TRUE"]) {
         return true;
@@ -289,7 +293,7 @@
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
-    [self.webView executeJS:@"MyWallet.addAddressBookEntry('%@', '%@')", address, label];
+    [self.webView executeJS:@"MyWallet.addAddressBookEntry(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
 }
 
 // Calls from JS
@@ -360,16 +364,22 @@
     NSArray * transactionsArray = [dict objectForKey:@"transactions"];
     
     for (NSDictionary * dict in transactionsArray) {
-        
         Transaction * tx = [Transaction fromJSONDict:dict];
         
         [response.transactions addObject:tx];
     }
-    
+        
     response.final_balance = [[dict objectForKey:@"final_balance"] longLongValue];
     response.total_received = [[dict objectForKey:@"total_received"] longLongValue];
     response.n_transactions = [[dict objectForKey:@"n_transactions"] longValue];
     response.total_sent = [[dict objectForKey:@"total_sent"] longLongValue];
+    response.addresses = [dict objectForKey:@"addresses"];
+
+# warning finish this
+//    CurrencySymbol *currencySymbol = [CurrencySymbol alloc]
+//    
+//    [[dict objectForKey:@"symbol"] objectForKey:@""];
+    
     
     [delegate didGetMultiAddressResponse:response];
 }
@@ -406,6 +416,9 @@
 }
 
 -(void)did_set_latest_block {
+    
+    NSLog(@"did_set_latest_block");
+    
     [self.webView executeJSWithCallback:^(NSString* latestBlockJSON) {
         
         [[NSUserDefaults standardUserDefaults] setObject:latestBlockJSON forKey:@"transactions"];
@@ -413,6 +426,14 @@
         [self parseLatestBlockJSON:latestBlockJSON];
         
     } command:@"JSON.stringify(MyWallet.getLatestBlock())"];
+}
+
+-(void)getSecondPassword:(NSString*)title success:(void(^)(id))_success error:(void(^)(id))_error {
+    [app getSecondPassword:^(NSString * _secondPassword) {
+        _success(_secondPassword);
+    } error:^(NSString * errorMessage) {
+        _error(errorMessage);
+    }];
 }
 
 -(void)did_decrypt {
@@ -440,6 +461,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    NSLog(@"webViewDidFinishLoad:");
+    
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
 }
@@ -452,101 +475,29 @@
     [super dealloc];
 }
 
-- (NSString*)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary
-{
-    NSString * function = (NSString*)[dictionary objectForKey:@"function"];
-    
-    if (function != nil) {
-        SEL selector = NSSelectorFromString(function);
-        if ([self respondsToSelector:selector]) {
-            
-            NSMethodSignature *sig = [self methodSignatureForSelector:selector];
-            if (!sig)
-                return nil;
-            
-            NSInvocation* invo = [NSInvocation invocationWithMethodSignature:sig];
-            [invo setTarget:self];
-            [invo setSelector:selector];
-            
-            
-            if ([sig numberOfArguments] > 2) {
-                id arg1 = [dictionary objectForKey:@"arg1"];
-                if (arg1 != nil)
-                    [invo setArgument:&arg1 atIndex:2];
-            }
-            
-            if ([sig numberOfArguments] > 3) {
-                id arg2 = [dictionary objectForKey:@"arg2"];
-                if (arg2 != nil)
-                    [invo setArgument:&arg2 atIndex:3];
-            }
-            
-            if ([sig numberOfArguments] > 4) {
-                id arg3 = [dictionary objectForKey:@"arg3"];
-                if (arg3 != nil)
-                    [invo setArgument:&arg3 atIndex:4];
-            }
-            
-            if ([sig numberOfArguments] > 5) {
-                id arg4 = [dictionary objectForKey:@"arg4"];
-                if (arg4 != nil)
-                    [invo setArgument:&arg4 atIndex:5];
-            }
-            
-            [invo invoke];
-            if (sig.methodReturnLength) {
-                id anObject;
-                [invo getReturnValue:&anObject];
-                return anObject;
-            }
-            
-            return nil;
-        } else {
-            return nil;
-        }
-    }
-    
-    return nil;
-}
-
-
 //Callbacks from javascript localstorage
-
--(id)getKey:(NSString*)dictionary {
-    NSString * key = [dictionary valueForKey:@"key"];
-    
-    //NSLog(@"GET %@", key);
-    
-    return [[NSUserDefaults standardUserDefaults] valueForKey:key];
+-(void)getKey:(NSString*)key success:(void (^)(NSString*))success {
+    success([[NSUserDefaults standardUserDefaults] valueForKey:key]);
 }
 
--(id)saveKey:(NSString*)dictionary {
-    NSString * key = [dictionary valueForKey:@"key"];
-    NSString * value = [dictionary valueForKey:@"value"];
-    
+-(void)saveKey:(NSString*)key value:(NSString*)value {
     [[NSUserDefaults standardUserDefaults] setValue:value forKey:key];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    return nil;
 }
 
--(id)removeKey:(NSString*)dictionary {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[dictionary valueForKey:@"key"]];
+-(void)removeKey:(NSString*)key {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    return nil;
 }
 
--(id)clearKeys:(NSString*)dictionary {
+-(void)clearKeys {
     NSString * appDomain = [[NSBundle mainBundle] bundleIdentifier];
     
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    return nil;
 }
 
 

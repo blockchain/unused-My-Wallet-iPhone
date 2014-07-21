@@ -12,6 +12,7 @@
 #import "Output.h"
 #import "Input.h"
 #import "NSDate+Extensions.h"
+#import "TransactionsViewController.h"
 
 @implementation TransactionTableCell
 
@@ -59,20 +60,21 @@
             [btcButton setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
         }
         
-        NSArray * inputs = nil;
-        if (app.wallet)
-            inputs = [transaction inputsNotFromWallet:app.wallet];
+        NSArray * inputs = [transaction inputsNotFromAddresses:[[app transactionsViewController].data addresses]];
         
-        if ([inputs count] == 0)
+        if ([inputs count] == 0) {
             inputs = transaction.inputs;
+        }
         
         
         //Show the inouts i.e. where the coins are from
         for (Input * input in inputs) {
             UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)] autorelease];
             
-            if (app.wallet)
-                [label setText:[app.wallet labelForAddress:[[input prev_out] addr]]];
+            NSString * addressLabel = [app.wallet labelForAddress:[[input prev_out] addr]];
+
+            if ([addressLabel length] > 0)
+                [label setText:addressLabel];
             else
                 [label setText:[[input prev_out] addr]];
 
@@ -87,20 +89,30 @@
         }
     } else if (transaction->result < 0) {
         
-        [typeImageView setImage:[UIImage imageNamed:@"payment_sent.png"]];
-        [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [btcButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
+        NSArray * outputs = [transaction outputsNotToAddresses:[app transactionsViewController].data.addresses];
         
-        NSArray * outputs = [transaction outputsNotToWallet:app.wallet];
+        if ([outputs count] == 0) {
+            [typeImageView setImage:[UIImage imageNamed:@"payment_moved.png"]];
+            [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_grey.png"] forState:UIControlStateNormal];
+        } else {
+            [typeImageView setImage:[UIImage imageNamed:@"payment_sent.png"]];
+            [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
+        }
         
-        if ([outputs count] == 0)
+        //Show the addresses involved anyway
+        if ([outputs count] == 0) {
             outputs = transaction.outputs;
+        }
         
         for (Output * output in outputs) {
             UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)] autorelease];
             
-            if (app.wallet)
-                [label setText:[app.wallet labelForAddress:[output addr]]];
+            NSString * addressLabel = [app.wallet labelForAddress:[output addr]];
+            
+            if ([addressLabel length] > 0)
+                [label setText:addressLabel];
             else
                 [label setText:[output addr]];
 
@@ -135,12 +147,12 @@
 -(void)seLatestBlock:(LatestBlock*)block {
     
     int confirmations = block.height - transaction->block_height + 1;
-    
-    if (confirmations == 0 || transaction->block_height == 0) { 
+
+    if (confirmations <= 0 || transaction->block_height == 0) {
         [confirmationsButton setHidden:FALSE];
 
         [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:[NSString stringWithFormat:@"%d Unconfirmed", confirmations] forState:UIControlStateNormal];
+        [confirmationsButton setTitle:@"Unconfirmed" forState:UIControlStateNormal];
         
        
     } else if (confirmations < 100) { 

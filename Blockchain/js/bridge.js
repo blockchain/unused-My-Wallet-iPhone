@@ -143,32 +143,38 @@ function JSBridgeObj_AddObject(id, obj)
 
 
 var device = {
-    execute: function(func_name, arg1, arg2, arg3, arg4) {
+    execute: function(func_name, args, success, error) {
         var obj = new JSBridgeObj();
     
         obj.addObject("function", func_name);
         
-        if (arg1) {
-            obj.addObject("arg1", arg1);
+        if (success) {
+            obj.addObject("success", "TRUE");
         }
         
-        if (arg2) {
-            obj.addObject("arg2", arg2);
-        }
-    
-        if (arg3) {
-            obj.addObject("arg3", arg3);
+        if (error) {
+            obj.addObject("error", "TRUE");
         }
         
-        if (arg4) {
-            obj.addObject("arg4", arg4);
+        if (args) {
+            if (args.length >= 1) {
+                obj.addObject("arg1", args[0]);
+            }
+            
+            if (args.length >= 2) {
+                obj.addObject("arg2", args[1]);
+            }
+        
+            if (args.length >= 3) {
+                obj.addObject("arg3", args[2]);
+            }
+            
+            if (args.length >= 4) {
+                obj.addObject("arg4", args[3]);
+            }
         }
         
-        var callback_obj = {}
-
-        obj.sendBridgeObject(callback_obj);
-        
-        return callback_obj;
+        obj.sendBridgeObject(success, error);
     }
 }
 
@@ -176,7 +182,7 @@ var device = {
  This method sends the object to the Objective-C code. Basically,
  it tries to load a special URL, which passes the object id.
  */
-function JSBridgeObj_SendObject(callback_obj)
+function JSBridgeObj_SendObject(success, error)
 {
     JSBridge_objArray[JSBridge_objCount] = this.objectJson;
 
@@ -184,18 +190,25 @@ function JSBridgeObj_SendObject(callback_obj)
 
     window.location.href = "JSBridge://ReadNotificationWithId=" + JSBridge_pendingObjIDs.join(',');
 
-    if (callback_obj && callback_obj.response) {
-        (function(JSBridge_objCount, callback_obj) {
+    if (success || error) {
+        (function(JSBridge_objCount, success, error) {
             var ii = 0;
             var interval = setInterval(function() {
-                if (JSBridge_objResponses[JSBridge_objCount] || ii > 250) {
-                    callback_obj.response(JSBridge_objResponses[JSBridge_objCount]);
+                var responseContainer = JSBridge_objResponses[JSBridge_objCount];
+                                       
+                if (responseContainer || ii > 250) {
+                    if (responseContainer && responseContainer.success) {
+                       success(responseContainer.obj);
+                    } else {
+                       error(responseContainer.obj);
+                    }
+                                       
                     clearInterval(interval);
                 } else {
                     ++ii;
                 }
             }, 1);
-        })(JSBridge_objCount, callback_obj);
+        })(JSBridge_objCount, success, error);
     }
 
     JSBridge_objCount++;
@@ -215,10 +228,11 @@ function JSBridge_getJsonStringForObjectWithId(objId)
     return "{" + jsonStr + "}";
 }
 
-function JSBridge_setResponseWithId(objId, value)
+function JSBridge_setResponseWithId(objId, value, success)
 {
-    JSBridge_objResponses[objId] = value;
+    JSBridge_objResponses[objId] = {obj: value, success: success};
 
+    //Received response, remove from pending
     var i = JSBridge_pendingObjIDs.indexOf(objId);
     if(i != -1) {
         JSBridge_pendingObjIDs.splice(i, 1);

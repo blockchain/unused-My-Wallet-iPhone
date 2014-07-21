@@ -27,8 +27,8 @@
 -(NSArray*)inputs;
 -(NSArray*)outputs;
 
--(NSArray*)inputsNotFromWallet:(Wallet*)wallet;
--(NSArray*)outputsNotToWallet:(Wallet*)wallet;
+-(NSArray*)inputsNotFromAddresses:(NSArray*)addresses;
+-(NSArray*)outputsNotToAddresses:(NSArray*)adresses;
 
 +(Transaction*)fromJSONDict:(NSDictionary*)dict;
  

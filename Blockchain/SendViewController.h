@@ -54,6 +54,4 @@
 -(void)setToAddress:(NSString*)string;
 -(void)setAmount:(NSString*)amount;
 
--(void)didDismissModal;
-
 @end

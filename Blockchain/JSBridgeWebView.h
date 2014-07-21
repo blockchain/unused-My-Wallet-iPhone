@@ -37,10 +37,7 @@
 	the regular UIWebView notifications (i.e. page did start loding, page loading error, etc.)
  */
 @protocol JSBridgeWebViewDelegate
-@required
-- (NSString*)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary;
 @end
-
 
 /*
 	JSBridgeWebView class is responsible for identifying javascript notifications. Its delegate must 

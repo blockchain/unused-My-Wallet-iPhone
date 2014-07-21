@@ -35,9 +35,8 @@
     transaction->size = [[transactionDict objectForKey:@"size"] intValue];
     transaction->tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
     
-        
     transaction->time =[[transactionDict objectForKey:@"time"] longLongValue];
-    transaction->block_height = [[transactionDict objectForKey:@"block_height"] intValue];
+    transaction->block_height = [[transactionDict objectForKey:@"blockHeight"] intValue];
     
     
     NSArray * inputsJSONArray = [transactionDict objectForKey:@"inputs"];
@@ -81,10 +80,10 @@
     [super dealloc];
 }
 
--(NSArray*)inputsNotFromWallet:(Wallet*)wallet {
+-(NSArray*)inputsNotFromAddresses:(NSArray*)addresses {
     NSMutableArray * array = [NSMutableArray array];
     for (Input * input in inputs) {
-        if ([wallet.keys objectForKey:[[input prev_out] addr]])
+        if ([addresses containsObject:[[input prev_out] addr]])
             continue;
         
         [array addObject:input];
@@ -92,10 +91,10 @@
     return array;
 }
 
--(NSArray*)outputsNotToWallet:(Wallet*)wallet {
+-(NSArray*)outputsNotToAddresses:(NSArray*)addresses {
     NSMutableArray * array = [NSMutableArray array];
     for (Output * output in outputs) {
-        if ([wallet.keys objectForKey:[output addr]])
+        if ([addresses containsObject:[output addr]])
             continue;
         
         [array addObject:output];

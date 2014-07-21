@@ -32,8 +32,8 @@
     LatestBlock * latestBlock;
 }
 
-@property(nonatomic, retain)  MulitAddressResponse * data;
-@property(nonatomic, retain)  LatestBlock * latestBlock;
+@property(nonatomic, retain) MulitAddressResponse * data;
+@property(nonatomic, retain) LatestBlock * latestBlock;
 
 -(void)setText;
 -(UITableView*)tableView;

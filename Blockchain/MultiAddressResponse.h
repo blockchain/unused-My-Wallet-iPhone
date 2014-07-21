@@ -37,6 +37,7 @@
 @end
 
 @interface MulitAddressResponse : NSObject {
+    NSArray * addresses;
     NSMutableArray * transactions;
     uint64_t total_received;
     uint64_t total_sent;
@@ -44,6 +45,7 @@
     uint32_t n_transactions;
 }
 
+@property(nonatomic, retain) NSArray * addresses;
 @property(nonatomic, retain) NSMutableArray * transactions;
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;

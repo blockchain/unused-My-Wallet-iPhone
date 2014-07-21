@@ -48,7 +48,6 @@
 
 @property(nonatomic, strong) NSArray * activeKeys;
 @property(nonatomic, strong) NSArray * archivedKeys;
-@property(nonatomic, strong) NSArray * otherKeys;
 
 @property(nonatomic, strong) IBOutlet Wallet * wallet;
 

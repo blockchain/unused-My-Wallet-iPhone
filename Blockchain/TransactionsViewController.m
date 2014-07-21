@@ -63,7 +63,7 @@
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
     if (transaction->result < 0) {
-        NSArray * outputs = [transaction outputsNotToWallet:app.wallet];
+        NSArray * outputs = [transaction outputsNotToAddresses:data.addresses];
         
         if ([outputs count] == 0)
             outputs = transaction.outputs;
@@ -71,7 +71,7 @@
         baseHeight += [outputs count] * 22;
     } else {
         
-        NSArray * inputs = [transaction inputsNotFromWallet:app.wallet];
+        NSArray * inputs = [transaction inputsNotFromAddresses:data.addresses];
         
         if ([inputs count] == 0)
             inputs = transaction.inputs;
@@ -100,6 +100,16 @@
     [transactionCountLabel setText:[NSString stringWithFormat:@"%d Transactions", data.n_transactions]];
     
     [finalBalanceLabel setText:[app formatMoney:data.final_balance]];
+}
+
+-(void)setLatestBlock:(LatestBlock *)_latestBlock {
+    [latestBlock release];
+    latestBlock = _latestBlock;
+    [latestBlock retain];
+    
+    if (latestBlock && latestBlock.blockIndex != _latestBlock.blockIndex) {
+        [tableView reloadData];
+    }
 }
 
 -(void)setData:(MulitAddressResponse *)_data {

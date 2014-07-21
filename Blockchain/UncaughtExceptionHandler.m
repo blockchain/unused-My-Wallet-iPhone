@@ -83,10 +83,6 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 {
     NSString * store = @"App Store";
     
-//    #ifdef CYDIA
-//        store = @"Cydia";
-//    #endif
-    
     NSString * message = [NSString stringWithFormat:@"<pre>%@\n\n%@\n\n%@\n%@ - %@ - %@</pre>",
                                                       [exception reason],
                                                       [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey],
@@ -94,7 +90,8 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
                                                       [[UIDevice currentDevice] systemName],
                                                       [[UIDevice currentDevice] systemVersion],
                                                       store];
-    
+    NSLog(@"Logging exception: %@", message);
+
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
 	NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://blockchain.info/exception_log?device=iphone&message=%@", message]];
@@ -103,8 +100,6 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     NSError * error = NULL;
     
    [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&repsonse error:&error];
-    
-    NSLog(@"Did Log %@ %@", url, message);
 }
 
 - (void)handleException:(NSException *)exception

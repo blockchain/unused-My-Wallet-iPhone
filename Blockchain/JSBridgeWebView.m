@@ -31,6 +31,7 @@
 
 #import "JSBridgeWebView.h"
 #import "JSONKit.h"
+#import "NSString+NSString_EscapeQuotes.h"
 
 @interface JSCommandObject : NSObject
 @property(nonatomic, strong) NSString * command;
@@ -272,6 +273,84 @@
 	return result;
 }
 
+
+- (void)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary success:(void (^)(id))success error:(void (^)(id))error
+{
+    NSString * function = (NSString*)[dictionary objectForKey:@"function"];
+        
+    BOOL successArg = [[dictionary objectForKey:@"success"] isEqualToString:@"TRUE"];
+    BOOL errorArg = [[dictionary objectForKey:@"error"] isEqualToString:@"TRUE"];
+    
+    int componentsCount = [[function componentsSeparatedByString:@":"] count]-1;
+
+    if (successArg) {
+        function = [function stringByAppendingString:@"success:"];
+    }
+    
+    if (errorArg) {
+        function = [function stringByAppendingString:@"error:"];
+    }
+    
+    if (function != nil) {
+        SEL selector = NSSelectorFromString(function);
+        if ([self.JSdelegate respondsToSelector:selector]) {
+            
+            NSMethodSignature * sig = [self.JSdelegate methodSignatureForSelector:selector];
+            
+            if (sig) {
+                NSInvocation* invo = [NSInvocation invocationWithMethodSignature:sig];
+                
+                [invo setTarget:self.JSdelegate];
+                [invo setSelector:selector];
+                
+                int index = 2;
+                
+                if ([sig numberOfArguments] > index && componentsCount >= 1) {
+                    id arg1 = [dictionary objectForKey:@"arg1"];
+                    [invo setArgument:&arg1 atIndex:index];
+                    ++index;
+                }
+                
+                if ([sig numberOfArguments] > index && componentsCount >= 2) {
+                    id arg2 = [dictionary objectForKey:@"arg2"];
+                    [invo setArgument:&arg2 atIndex:index];
+                    ++index;
+                }
+                
+                if ([sig numberOfArguments] > index && componentsCount >= 3) {
+                    id arg3 = [dictionary objectForKey:@"arg3"];
+                    [invo setArgument:&arg3 atIndex:index];
+                    ++index;
+                }
+                
+                if ([sig numberOfArguments] > index && componentsCount >= 3) {
+                    id arg4 = [dictionary objectForKey:@"arg4"];
+                    [invo setArgument:&arg4 atIndex:index];
+                    ++index;
+                }
+                
+                if (successArg) {
+                    [invo setArgument:&success atIndex:index];
+                    ++index;
+                }
+                
+                if (errorArg) {
+                    [invo setArgument:&error atIndex:index];
+                    ++index;
+                }
+                                
+                [invo invoke];
+            } else {
+                NSLog(@"!!! JSdelegate does not respond to selector %@", function);
+            }
+        }
+    }
+    
+    if (!successArg && !errorArg) {
+        success(nil);
+    }
+}
+
 /*
 	Listen to any try of page loading. This method checks, by the URL to be loaded, if
 	it is a JS notification.
@@ -279,7 +358,7 @@
 - (BOOL)webView:(UIWebView *)p_WebView  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
 {
     
-    NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
+   // NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
     
 	// Checks if it is a JS notification. It returns the ID ob the JSON object in the JS code. Returns nil if it is not.
 	NSArray * IDArray = [self getJSNotificationIds:[request URL]];
@@ -302,15 +381,27 @@
                     // Calls the delegate method with the notified object.
                     if(bridgeDelegate)
                     {
-                        NSString * response = [bridgeDelegate webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated];
-                        
-                        if (response != nil) {
-                            NSString * function = [NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, \"%@\");", jsNotId, [response stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
-                            
-                            [p_WebView stringByEvaluatingJavaScriptFromString:function];
-                        } else {
-                            [p_WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, null);", jsNotId]];
-                        }
+                        [self webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
+                            //On success
+                            if (success != nil) {
+                                NSString * function = [NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeDoubleQuotes]];
+                                
+                                [p_WebView stringByEvaluatingJavaScriptFromString:function];
+                            } else {
+                                [p_WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId]];
+                            }
+                        } error:^(id error) {
+                            //On Error
+                            if (error != nil) {
+                                NSString * function = [NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, \"%@\", false);", jsNotId, [error escapeDoubleQuotes]];
+                                
+                                [p_WebView stringByEvaluatingJavaScriptFromString:function];
+                                
+                            } else {
+                                [p_WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId]];
+
+                            }
+                        }];
                     }
                 }
             }

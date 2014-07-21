@@ -59,9 +59,6 @@
 @property(nonatomic) uint64_t total_sent;
 @property(nonatomic) uint64_t total_received;
 
-//TODO remove
-@property(nonatomic, retain) NSDictionary * keys;
-
 #pragma mark Init Methods
 -(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
 -(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey;
@@ -87,12 +84,12 @@
 -(void)generateNewKey:(void (^)(Key * key))callback;
 
 -(NSString*)labelForAddress:(NSString*)address;
+-(NSInteger)tagForAddress:(NSString*)address;
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label;
 
 -(BOOL)isValidAddress:(NSString*)string;
-
--(NSString*)jsonString;
+-(BOOL)isWatchOnlyAddress:(NSString*)address;
 
 -(NSString*)encryptedString;
 
@@ -100,8 +97,12 @@
 
 -(BOOL)addKey:(NSString*)privateKeyString;
 
+
+//Fetch String Array Of Addresses
 -(NSArray*)activeAddresses;
 -(NSArray*)allAddresses;
+-(NSArray*)archivedAddresses;
+
 
 -(BOOL)isDoubleEncrypted;
 

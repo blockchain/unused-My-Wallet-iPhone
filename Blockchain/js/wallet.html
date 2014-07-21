@@ -9,12 +9,11 @@ body {
     padding:5px;
 }
 </style>
+
+<script type="text/javascript">${jquery}</script>
+<script type="text/javascript">${bootstrap}</script>
         
 <script type="text/javascript"> 
-try {
-    ${jquery}
-    ${bootstrap}
-
     ${bitcoinjs}
     ${shared}
     ${blockchainapi}
@@ -25,7 +24,7 @@ try {
     var MyWalletPhone = {};
 
     console.log = function(message) {
-        device.execute("log:", message);
+        device.execute("log:", [message]);
     }
 
     isExtension = true;
@@ -37,7 +36,7 @@ try {
         MyWallet.logout = function() {}
     });
   
-    MyWallet.addEventListener(function (event) {
+    MyWallet.addEventListener(function (event) {                              
         device.execute(event);
     });
     
@@ -59,58 +58,75 @@ try {
         obj.total_sent = MyWallet.getTotalSent();
         obj.final_balance = MyWallet.getFinalBalance();
         obj.n_transactions = obj.transactions.length;
+        obj.addresses = MyWallet.getAllAddresses();
+
+        obj.symbol = symbol_local;
+
 
         return obj;
     }
     
     MyWalletPhone.addPrivateKey = function(privateKeyString) {
-        try {
-            var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
+        MyWallet.getSecondPassword(function() {
+            try {
+                var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
 
-            if (format == 'bip38') {
-                throw 'Unsupported';
+                if (format == 'bip38') {
+                    throw 'Unsupported';
+                }
+
+                var key = MyWallet.privateKeyStringToKey(privateKeyString, format);
+
+                var addr = null;
+                if (format == 'compsipa') {
+                    addr = key.getBitcoinAddressCompressed().toString();
+                } else {
+                    addr = key.getBitcoinAddress().toString();
+                }
+
+                if (addr == null || addr.length == 0 || addr == 'undefined')
+                    throw 'Unable to decode bitcoin addresses from private key';
+
+                if (MyWallet.addressExists(addr) && !MyWallet.isWatchOnly(addr))
+                    throw 'Address already exists in the wallet';
+                    
+                return MyWallet.addPrivateKey(key, {compressed : format == 'compsipa', app_name : APP_NAME, app_version : APP_VERSION});
+            } catch (e) {
+                console.log(e);
+                return false;
             }
-
-            var key = MyWallet.privateKeyStringToKey(privateKeyString, format);
-
-            var addr = null;
-            if (format == 'compsipa') {
-                addr = key.getBitcoinAddressCompressed().toString();
+        });
+    }
+    
+    MyWallet.getPassword = function(modal, success, error) {
+        var callback = device.execute("getPassword:", ["Get Second Password"], function(password) {
+            if (second_password && second_password.length > 0) {
+              success(second_password);
             } else {
-                addr = key.getBitcoinAddress().toString();
+              error();
             }
-
-            if (addr == null || addr.length == 0 || addr == 'undefined')
-                throw 'Unable to decode bitcoin addresses from private key';
-
-            if (MyWallet.addressExists(addr) && !MyWallet.isWatchOnly(addr))
-                throw 'Address already exists in the wallet';
-                
-            return MyWallet.addPrivateKey(key, {compressed : format == 'compsipa', app_name : APP_NAME, app_version : APP_VERSION});
-        } catch (e) {
-            console.log(e);
-            return false;
-        }
+        });
     }
 
+    //Wrapper Around localstorage
     MyStore.put = function (key, value) {
-        device.execute("saveKey:", key, value);
+        device.execute("saveKey:value:", [key, value]);
     }
 
     MyStore.get = function (key, callback) {
-        var callback_obj = device.execute("getKey:", key, value);
-        
-        callback_obj.response = callback;
+        device.execute("getKey:", [key], function(value) {
+        });
     }
     
     MyStore.remove = function(key) {
-        device.execute("removeKey:", key);
+        device.execute("removeKey:", [key]);
     }
     
     MyStore.clear = function() {
-        device.execute("clearKeys:");
+        device.execute("clearKeys");
     }
     
+    //End localstorage wrapper
     var listener = {
         on_error : function (e) {
             console.log('on_error');
@@ -126,11 +142,11 @@ try {
     MyWallet.parsePairingCode = function (raw_code) {
         
         var success = function (pairing_code) {
-            device.execute("didParsePairingCode:", pairing_code);
+            device.execute("didParsePairingCode:", [pairing_code]);
         }
         
         var error = function (message) {
-            device.execute("errorParsingPairingCode:", message);
+            device.execute("errorParsingPairingCode:", [message]);
         }
         
         try {
@@ -190,9 +206,7 @@ try {
         }
     }
     
-    function setPassword(password) {
-        console.log('Set Password ' + password);
-        
+    function setPassword(password) {        
         $('#restore-password').val(password);
         
         $('#restore-wallet-continue').click();
@@ -205,9 +219,6 @@ try {
             return null;
         }
     }
-} catch (e) {
-    console.log(e);
-}
 </script>
 
 <meta name="viewport" content="width=150px, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">

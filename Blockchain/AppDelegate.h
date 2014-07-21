@@ -28,6 +28,7 @@
 #import "TabViewController.h"
 #import "ZBarSDK.h"
 #import "PEPinEntryController.h"
+#import "UIModalView.h"
 
 #define SATOSHI 100000000
 #define MultiaddrCacheFile @"multiaddr.cache"
@@ -35,9 +36,6 @@
 #define WebSocketURL @"wss://ws.blockchain.info/inv"
 #define WebROOT @"https://blockchain.info/"
 #define MULTI_ADDR_TIME 60.0f //1 Minute
-
-//Some features disabled to pass review process
-//#define CYDIA
 
 @class TransactionsViewController, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
 
@@ -59,9 +57,7 @@ typedef enum {
     SystemSoundID dingSoundID;
     
     NSNumberFormatter * btcFromatter;
-    
-    int _tempLastKeyCount;
-    
+        
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet UIFadeView * busyView;
     IBOutlet UILabel * busyLabel;
@@ -109,9 +105,7 @@ typedef enum {
 @property (retain, nonatomic) Reachability * reachability;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 
-@property (retain, strong) IBOutlet UIView * modalView;
-@property (retain, strong) IBOutlet UIView * modalContentView;
-@property (retain, strong) id modalDelegate;
+@property (retain, strong) IBOutlet MyUIModalView * modalView;
 
 
 -(IBAction)manualPairClicked:(id)sender;
@@ -124,6 +118,7 @@ typedef enum {
 -(void)playAlertSound;
 
 -(TabViewcontroller*)tabViewController;
+-(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
 -(void)showWelcome;
@@ -133,7 +128,7 @@ typedef enum {
 -(NSString*)password;
 
 //Simple Modal UIVIew
--(void)showModal:(UIView*)contentView;
+-(void)showModal:(UIView*)contentView onDismiss:(void (^)())onDismiss;
 -(void)closeModal;
 -(IBAction)closeModalClicked:(id)sender;
 
@@ -153,12 +148,6 @@ typedef enum {
 -(void)walletJSReady;
 -(void)didSubmitTransaction;
 
-//Wesocket Delegate
--(void)webSocketOnOpen:(WebSocket*)webSocket;
--(void)webSocketOnClose:(WebSocket*)webSocket;
--(void)webSocket:(WebSocket*)webSocket onError:(NSError*)error;
--(void)webSocket:(WebSocket*)webSocket onReceive:(NSData*)data; //Data is only until this function returns (You cannot retain it!)
-
 //Status timer
 -(void)checkStatus;
 
@@ -171,10 +160,12 @@ typedef enum {
 -(BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName;
 -(NSData*)readFromFileName:(NSString *)fileName;
 
+//Request Second Password From User
+-(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;
+
+
 -(NSString*)formatMoney:(uint64_t)value;
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;
-
--(BOOL)getSecondPasswordBlocking;
 
 -(void)toggleSymbol;
   

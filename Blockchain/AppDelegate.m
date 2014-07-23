@@ -92,7 +92,9 @@ AppDelegate * app;
     busyView.alpha = 0.0f;
 
     if ([self guid]) {
-        [self showPinModal];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showPinModal];
+        });
     }
     
     if (![self guid] || ![self sharedKey]) {

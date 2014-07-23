@@ -179,12 +179,16 @@
 
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
+    NSLog(@"didParsePairingCode:");
+
     if ([delegate respondsToSelector:@selector(didParsePairingCode:)])
         [delegate didParsePairingCode:dict];
 }
 
 - (void)errorParsingPairingCode:(NSString *)message
 {
+    NSLog(@"errorParsingPairingCode:");
+    
     if ([delegate respondsToSelector:@selector(errorParsingPairingCode:)])
         [delegate errorParsingPairingCode:message];
 }

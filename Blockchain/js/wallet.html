@@ -335,11 +335,11 @@ MyWallet.parsePairingCode = function (raw_code) {
                }
             },
             error: function (res) {
-                error(res.responseText);
+                error('Pairing Code Server Error ' + res.responseText);
             }
         });
     } catch (e) {
-        error('Error ' + e);
+        error('Error Parsing Pairing Code ' + e);
     }
 }
 

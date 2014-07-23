@@ -76,6 +76,15 @@ CGPoint arrowPositions[4] = {
 	 selector:@selector(keyboardWillHide:)
 	 name:UIKeyboardWillHideNotification
 	 object:nil];
+    
+    //Swipe between tabs for fun
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    
+    [contentView addGestureRecognizer:swipeLeft];
+    [contentView addGestureRecognizer:swipeRight];
 }
 
 -(void)setActiveViewController:(UIViewController *)nviewcontroller {

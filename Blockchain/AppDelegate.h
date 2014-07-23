@@ -110,11 +110,15 @@
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showWelcome:(BOOL)isClosable;
+-(void)showWelcome;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
 -(NSString*)password;
+
+- (void)swipeLeft;
+- (void)swipeRight;
+
 
 //Simple Modal UIVIew
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;

@@ -56,16 +56,6 @@ AppDelegate * app;
     return self;
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [self showPinModal];
-    
-    [self.wallet getHistory];
-}
 
 - (void)installUncaughtExceptionHandler
 {
@@ -91,7 +81,7 @@ AppDelegate * app;
     [_window setRootViewController:tabViewController];
         
     if (![self guid] || ![self sharedKey]) {
-        [self showWelcome:FALSE];
+        [self showWelcome];
     } else if (![self password]) {
         [self showModal:mainPasswordView isClosable:FALSE onDismiss:nil];
         
@@ -117,8 +107,45 @@ AppDelegate * app;
     
     busyView.frame = _window.frame;
     
+    busyView.alpha = 0.0f;
+
+    [self showPinModal];
+
     return YES;
 }
+
+- (void)transitionToIndex:(NSInteger)newIndex
+{
+    if (newIndex == 0)
+        [self transactionsClicked:nil];
+    else if (newIndex == 1)
+        [self receiveCoinClicked:nil];
+    else if (newIndex == 2)
+        [self sendCoinsClicked:nil];
+    else if (newIndex == 3)
+        [self infoClicked:nil];
+    else
+        NSLog(@"Unknown tab index: %d", newIndex);
+}
+
+- (void)swipeLeft
+{
+    if (tabViewController.selectedIndex < 3)
+    {
+        NSInteger newIndex = tabViewController.selectedIndex + 1;
+        [self transitionToIndex:newIndex];
+    }
+}
+
+- (void)swipeRight
+{
+    if (tabViewController.selectedIndex)
+    {
+        NSInteger newIndex = tabViewController.selectedIndex - 1;
+        [self transitionToIndex:newIndex];
+    }
+}
+
 
 
 #pragma mark - UI State
@@ -266,6 +293,8 @@ AppDelegate * app;
     [transactionsViewController reload];
     [receiveViewController reload];
     [sendViewController reload];
+    
+    [app closeModal];
 }
 
 -(void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
@@ -297,17 +326,22 @@ AppDelegate * app;
     [mainPasswordTextField becomeFirstResponder];
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [self showPinModal];
+}
+
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
     if (![self guid] || ![self sharedKey]) {
-        [app showWelcome:FALSE];
+        [app showWelcome];
         return;
     }
     
     if (!wallet.password) {
         [self walletFailedToDecrypt:wallet];
     }
-    
+
+    [self.wallet getHistory];    
 }
 
 -(void)playBeepSound {
@@ -609,7 +643,9 @@ AppDelegate * app;
         
         PairingCodeParser * parser = [[PairingCodeParser alloc] init];
         
-        [parser scanAndParse:^(NSDictionary*code) {            
+        [parser scanAndParse:^(NSDictionary*code) {
+            NSLog(@"Parsed Pairing Code %@", code);
+            
             self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
             
             self.wallet.delegate = self;
@@ -653,7 +689,7 @@ AppDelegate * app;
 #pragma mark - Show Screens
 
 // Modal menu
--(void)showWelcome:(BOOL)isCloseable {
+-(void)showWelcome {
     if ([self password]) {
         [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     } else if ([self guid] || [self sharedKey]) {
@@ -681,24 +717,24 @@ AppDelegate * app;
     // if pin exists - verify
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PEPinEntryController *c = [PEPinEntryController pinVerifyController];
             c.navigationBarHidden = YES;
             c.pinDelegate = self;
             
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
+            [_window.rootViewController presentViewController:c animated:NO completion:nil];
+//        });
     }
     // no pin - create
     else
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PEPinEntryController *c = [PEPinEntryController pinCreateController];
             c.navigationBarHidden = YES;
             c.pinDelegate = self;
             
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
+            [_window.rootViewController presentViewController:c animated:NO completion:nil];
+//        });
     }
 }
 
@@ -712,7 +748,7 @@ AppDelegate * app;
 }
 
 -(IBAction)powerClicked:(id)sender {
-    [self showWelcome:TRUE];
+    [self showWelcome];
 }
 
 -(IBAction)signupClicked:(id)sender {
@@ -725,6 +761,10 @@ AppDelegate * app;
         [self logout];
         
         [app closeModal];
+        
+        [self walletFailedToDecrypt:wallet];
+        
+        [app showPinModal];
     } else if ([self guid] || [self sharedKey]) {
         [self forgetWallet];
         
@@ -793,7 +833,7 @@ AppDelegate * app;
 
 -(IBAction)refreshClicked:(id)sender {
     if (![self guid] || ![self sharedKey]) {
-        [app showWelcome:FALSE];
+        [app showWelcome];
         return;
     }
     

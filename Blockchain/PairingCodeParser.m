@@ -76,7 +76,7 @@
         break;
     }
     
-    [app closeModal];
+    [app showWelcome];
     
     [self.readerView stop];
     

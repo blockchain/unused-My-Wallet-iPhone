@@ -749,12 +749,15 @@ AppDelegate * app;
         
         if ([self password]) {
             welcomeLabel.text = @"Welcome Back";
+            createWalletButton.hidden = YES;
             [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
         } else if ([self guid] || [self sharedKey]) {
             welcomeLabel.text = @"Welcome Back";
+            createWalletButton.hidden = YES;
             [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
         } else {
-            welcomeLabel.text = @"Welcome";
+            welcomeLabel.text = @"Welcome to Blockchain Wallet";
+            createWalletButton.hidden = NO;
             [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
         }
     }];
@@ -823,10 +826,6 @@ AppDelegate * app;
         [app closeModal];
         
         [self walletFailedToDecrypt:wallet];
-        
-        if ([self guid]) {
-            [app showPinModal];
-        }
     } else if ([self guid] || [self sharedKey]) {
         [app closeModal];
         

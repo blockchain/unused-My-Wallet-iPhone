@@ -16,6 +16,7 @@
                 <outlet property="busyLabel" destination="263" id="265"/>
                 <outlet property="busyView" destination="260" id="264"/>
                 <outlet property="changePINButton" destination="OKS-md-gDQ" id="GGT-Ir-3TN"/>
+                <outlet property="createWalletButton" destination="377" id="qmH-KO-8ee"/>
                 <outlet property="mainPasswordTextField" destination="626" id="633"/>
                 <outlet property="mainPasswordView" destination="623" id="634"/>
                 <outlet property="manualIdentifier" destination="587" id="avE-9g-qfe"/>
@@ -147,7 +148,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="370">
-                    <rect key="frame" x="50" y="268" width="180" height="32"/>
+                    <rect key="frame" x="50" y="264" width="180" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="Scan Pairing Code" backgroundImage="button_blue.png">
@@ -240,7 +241,7 @@
                 <outlet property="passwordTextField" destination="395" id="451"/>
             </connections>
         </view>
-        <view contentMode="scaleToFill" id="375" userLabel="Welcome Back">
+        <view contentMode="scaleToFill" id="375" userLabel="Welcome">
             <rect key="frame" x="0.0" y="0.0" width="280" height="308"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -276,10 +277,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="280" height="40"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Welcome" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="380">
-                            <rect key="frame" x="64" y="11" width="153" height="26"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Welcome to Blockchain Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="380">
+                            <rect key="frame" x="-7" y="7" width="294" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>

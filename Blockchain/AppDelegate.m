@@ -56,16 +56,6 @@ AppDelegate * app;
     return self;
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [self showPinModal];
-    
-    [self.wallet getHistory];
-}
 
 - (void)installUncaughtExceptionHandler
 {
@@ -114,7 +104,10 @@ AppDelegate * app;
     [tabViewController setActiveViewController:transactionsViewController];
     
     [_window addSubview:busyView];
-    
+    busyView.alpha = 0.0f;
+
+    [self showPinModal];
+
     return YES;
 }
 
@@ -302,10 +295,13 @@ AppDelegate * app;
         return;
     }
     
+    [self showPinModal];
+    
     if (!wallet.password) {
         [self walletFailedToDecrypt:wallet];
     }
-    
+
+    [self.wallet getHistory];    
 }
 
 -(void)playBeepSound {

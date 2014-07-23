@@ -12,8 +12,10 @@
 @implementation MyUIModalView
 
 -(void)dealloc {
+    self.closeButtonBackground = nil;
     self.closeButton = nil;
-    self.delegate = nil;
+    self.onDismiss = nil;
+    self.onResume = nil;
     self.modalContentView = nil;
     [super dealloc];
 }

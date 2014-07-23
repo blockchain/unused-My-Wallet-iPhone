@@ -44,8 +44,9 @@
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
     
-    NSNumberFormatter * btcFromatter;
-        
+    NSNumberFormatter * btcFormatter;
+    NSNumberFormatter * localCurrencyFormatter;
+
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet BCFadeView * busyView;
     IBOutlet UILabel * busyLabel;
@@ -122,7 +123,8 @@
 - (void)swipeRight;
 
 //Simple Modal UIVIew
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable;
 -(void)closeModal;
 
 -(NSDictionary*)parseURI:(NSString*)string;

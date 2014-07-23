@@ -12,8 +12,11 @@
  
 }
 
-@property(nonatomic, copy) void (^delegate)();
+@property(nonatomic, copy) void (^onDismiss)();
+@property(nonatomic, copy) void (^onResume)();
 @property(nonatomic, retain) IBOutlet UIView * modalContentView;
+@property(nonatomic, retain) IBOutlet UIView * closeButtonBackground;
+
 @property(nonatomic) BOOL isClosable;
 @property(nonatomic, retain) IBOutlet UIButton * closeButton;
 

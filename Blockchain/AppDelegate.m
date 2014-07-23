@@ -43,12 +43,14 @@ AppDelegate * app;
 -(id)init {
     if (self = [super init]) {
          
-        btcFromatter = [[NSNumberFormatter alloc] init];  
-    
-        [btcFromatter setMaximumSignificantDigits:5];
-        [btcFromatter setMaximumFractionDigits:5];
+        btcFormatter = [[NSNumberFormatter alloc] init];
+        [btcFormatter setMaximumSignificantDigits:5];
+        [btcFormatter setMaximumFractionDigits:5];
+        [btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
-        [btcFromatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        localCurrencyFormatter = [[NSNumberFormatter alloc] init];
+        [localCurrencyFormatter setMaximumFractionDigits:2];
+        [localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         self.modalChain = [[[NSMutableArray alloc] init] autorelease];
         
@@ -85,7 +87,7 @@ AppDelegate * app;
     if (![self guid] || ![self sharedKey]) {
         [self showWelcome];
     } else if (![self password]) {
-        [self showModal:mainPasswordView isClosable:FALSE onDismiss:nil];
+        [self showModal:mainPasswordView isClosable:FALSE];
         
         [mainPasswordTextField becomeFirstResponder];
     } else {
@@ -326,7 +328,7 @@ AppDelegate * app;
     //Cleare the checksum cache incase it has
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
 
-    [self showModal:mainPasswordView isClosable:FALSE onDismiss:nil];
+    [self showModal:mainPasswordView isClosable:FALSE];
     
     [mainPasswordTextField becomeFirstResponder];
 }
@@ -466,7 +468,7 @@ AppDelegate * app;
         }
         
         secondPasswordTextField.text = nil;
-    }];
+    } onResume:nil];
     
     [secondPasswordTextField becomeFirstResponder];
 }
@@ -500,7 +502,7 @@ AppDelegate * app;
         }
         
         secondPasswordTextField.text = nil;
-    }];
+    } onResume:nil];
     
     [secondPasswordTextField becomeFirstResponder];
 }
@@ -517,24 +519,35 @@ AppDelegate * app;
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [[_window layer] addAnimation:animation forKey:@"HideModal"];
     
-    if (self.modalView.delegate) {
-        self.modalView.delegate();
+    if (self.modalView.onDismiss) {
+        self.modalView.onDismiss();
+        self.modalView.onDismiss = nil;
     }
     
     self.modalView.modalContentView = nil;
     self.modalView = nil;
-    self.modalView.delegate = nil;
     
     if ([self.modalChain count] > 0) {
         MyUIModalView * previousModalView = [self.modalChain objectAtIndex:[self.modalChain count]-1];
         
-        [app showModal:previousModalView.modalContentView isClosable:previousModalView.isClosable onDismiss:previousModalView.delegate];
+        [_window.rootViewController.view addSubview:previousModalView];
+        [_window.rootViewController.view endEditing:TRUE];
+        
+        if (self.modalView.onResume) {
+            self.modalView.onResume();
+        }
+        
+        self.modalView = previousModalView;
         
         [self.modalChain removeObjectAtIndex:[self.modalChain count]-1];
     }
 }
 
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss {
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable {
+    [self showModal:contentView isClosable:_isClosable onDismiss:nil onResume:nil];
+}
+
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
     
     @try {
         if (modalView) {
@@ -543,11 +556,11 @@ AppDelegate * app;
             if (modalView.isClosable) {
                 [modalView.modalContentView removeFromSuperview];
 
-                if (self.modalView.delegate) {
-                    self.modalView.delegate();
+                if (self.modalView.onDismiss) {
+                    self.modalView.onDismiss();
+                    self.modalView.onDismiss = nil;
                 }
                 
-                self.modalView.delegate = nil;
                 self.modalView.modalContentView = nil;
             } else {
                 [self.modalChain addObject:modalView];
@@ -562,8 +575,13 @@ AppDelegate * app;
         
         modalView.isClosable = _isClosable;
         
-        self.modalView.delegate = onDismiss;
-
+        self.modalView.onDismiss = onDismiss;
+        self.modalView.onResume = onResume;
+        
+        if (onResume) {
+            onResume();
+        }
+        
         contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
         [_window.rootViewController.view addSubview:modalView];
         [_window.rootViewController.view endEditing:TRUE];
@@ -677,7 +695,7 @@ AppDelegate * app;
             [app standardNotify:error];
         }];
     } else {
-        [self showModal:manualView isClosable:TRUE onDismiss:nil];
+        [self showModal:manualView isClosable:TRUE];
     }
 }
 
@@ -713,15 +731,15 @@ AppDelegate * app;
 
 // Modal menu
 -(void)showWelcome {
-    if ([self password]) {
-        [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-    } else if ([self guid] || [self sharedKey]) {
-        [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
-    } else {
-        [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
-    }
-    
-    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil];
+    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
+        if ([self password]) {
+            [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
+        } else if ([self guid] || [self sharedKey]) {
+            [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
+        } else {
+            [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
+        }
+    }];
 }
 
 -(void)showSendCoins {
@@ -769,11 +787,10 @@ AppDelegate * app;
 }
 
 -(IBAction)signupClicked:(id)sender {
-    [app showModal:newAccountView isClosable:TRUE onDismiss:nil];
+    [app showModal:newAccountView isClosable:TRUE];
 }
 
 -(IBAction)loginClicked:(id)sender {
-    
     if ([self password]) {
         [self logout];
         
@@ -783,11 +800,13 @@ AppDelegate * app;
         
         [app showPinModal];
     } else if ([self guid] || [self sharedKey]) {
+        [app closeModal];
+        
         [self forgetWallet];
         
-        [app showModal:welcomeView isClosable:NO onDismiss:nil];
+        [app showWelcome];
     } else {
-        [app showModal:pairingInstructionsView isClosable:TRUE onDismiss:nil];
+        [app showModal:pairingInstructionsView isClosable:TRUE];
     }
 }
 
@@ -933,9 +952,9 @@ AppDelegate * app;
             }
             
             if (negative)
-                return [@"-" stringByAppendingString:[latestResponse.symbol_local.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
+                return [@"-" stringByAppendingString:[latestResponse.symbol_local.symbol stringByAppendingString:[localCurrencyFormatter stringFromNumber:number]]];
             else
-                return [latestResponse.symbol_local.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
+                return [latestResponse.symbol_local.symbol stringByAppendingString:[localCurrencyFormatter stringFromNumber:number]];
             
         } @catch (NSException * e) {
             NSLog(@"%@", e);
@@ -943,7 +962,7 @@ AppDelegate * app;
     } else if (latestResponse.symbol_btc) {
         NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];
         
-        NSString * string = [btcFromatter stringFromNumber:number];
+        NSString * string = [btcFormatter stringFromNumber:number];
         
         if ([string length] >= 8) {
             string = [string substringToIndex:8];
@@ -952,11 +971,9 @@ AppDelegate * app;
         return [string stringByAppendingFormat:@" %@", latestResponse.symbol_btc.symbol];
     }
     
-    
-    
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:SATOSHI]];
     
-    NSString * string = [btcFromatter stringFromNumber:number];
+    NSString * string = [btcFormatter stringFromNumber:number];
     
     if ([string length] >= 8) {
         string = [string substringToIndex:8];

@@ -244,14 +244,9 @@
                         <action selector="createAccountClicked:" destination="355" eventType="touchUpInside" id="431"/>
                     </connections>
                 </button>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" id="436">
-                    <rect key="frame" x="186" y="160" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="activity" destination="436" id="437"/>
                 <outlet property="createButton" destination="398" id="441"/>
                 <outlet property="password2TextField" destination="397" id="452"/>
                 <outlet property="passwordTextField" destination="395" id="451"/>

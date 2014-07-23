@@ -80,7 +80,7 @@
         
         [app showModal:sendProgressModal isClosable:TRUE onDismiss:^() {
             [app.wallet cancelTxSigning];
-        }];
+        } onResume:nil];
     };
     
     listener.on_begin_signing = ^() {
@@ -118,8 +118,7 @@
     [listener release];
 }
 
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {    
-
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView tag] == kTagAlertLabelAddress)
     {
         // do nothing & proceed
@@ -130,7 +129,7 @@
         else if (buttonIndex == 1) {
             labelAddressLabel.text = toField.text;
             
-            [app showModal:labelAddressView isClosable:TRUE onDismiss:nil];
+            [app showModal:labelAddressView isClosable:TRUE];
             
             [labelAddressTextField becomeFirstResponder];
         }
@@ -301,7 +300,7 @@
         [self.readerView stop];
         
         self.readerView = nil;
-    }];
+    } onResume:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -385,7 +384,7 @@
         self.readerView = nil;
         
         [app.wallet cancelTxSigning];
-    }];
+    } onResume:nil];
     
     [addressBookView release];
 }

@@ -259,6 +259,12 @@ MyWallet.makeNotice = function(type, _id, msg) {
     device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
 }
 
+MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
+    MyWallet.addAddressBookEntry(bitcoinAddress, label);
+    
+    MyWallet.backupWalletDelayed();
+}
+
 //Wrapper Around localstorage
 /*MyStore.put = function (key, value) {
     device.execute("saveKey:value:", [key, value]);

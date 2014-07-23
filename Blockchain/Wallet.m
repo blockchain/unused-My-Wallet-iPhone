@@ -317,7 +317,7 @@
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
-    [self.webView executeJS:@"MyWallet.addAddressBookEntry(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWalletPhone.addAddressBookEntry(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
 }
 
 // Calls from JS

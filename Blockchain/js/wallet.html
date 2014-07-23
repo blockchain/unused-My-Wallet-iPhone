@@ -262,7 +262,7 @@ MyWallet.makeNotice = function(type, _id, msg) {
 MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
     MyWallet.addAddressBookEntry(bitcoinAddress, label);
     
-    MyWallet.backupWalletDelayed();
+    MyWallet.backupWallet();
 }
 
 //Wrapper Around localstorage

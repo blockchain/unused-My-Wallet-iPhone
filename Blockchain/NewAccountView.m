@@ -67,6 +67,8 @@
     app.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
     
     app.wallet.delegate = app;
+    
+    [app standardNotify:[NSString stringWithFormat:@"Successfully Created New Account"] title:@"Success" delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

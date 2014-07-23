@@ -118,7 +118,7 @@
     [listener release];
 }
 
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {    
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView tag] == kTagAlertLabelAddress)
     {
         // do nothing & proceed

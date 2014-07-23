@@ -32,6 +32,7 @@
 }
 
 -(void)didParsePairingCode:(NSDictionary *)dict {
+    
     [app networkActivityStop];
 
     if (self.success) {
@@ -76,11 +77,7 @@
         break;
     }
     
-    [app showWelcome];
-    
-    [self.readerView stop];
-    
-    self.readerView = nil;
+    [app closeModal];
 }
 
 @end

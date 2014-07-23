@@ -1,3 +1,9 @@
 Source Code License: LGPL v3
 
 Artwork & images remain Copyright Ben Reeves - Qkos Services Ltd 2012
+
+before building: 
+
+git submodule init
+git submodule update
+cd Submodules/My-Wallet git checkout master

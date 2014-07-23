@@ -63,7 +63,7 @@
     return [(NSString *)string autorelease];
 }
 
--(BOOL)isIntialized {
+- (BOOL)isInitialized {
     if ([self.webView isLoaded])
         return [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
     else
@@ -75,7 +75,7 @@
 }
 
 -(void)getHistory {
-    if ([self isIntialized])
+    if ([self isInitialized])
         [self.webView executeJS:@"MyWallet.get_history()"];
 }
 

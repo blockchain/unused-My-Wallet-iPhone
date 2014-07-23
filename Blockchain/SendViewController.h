@@ -34,6 +34,7 @@
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
 
+    
     IBOutlet UIButton * sendPaymentButton;
     IBOutlet UIView * labelAddressView;
     IBOutlet UILabel * labelAddressLabel;
@@ -45,16 +46,17 @@
 
 @property(nonatomic, retain) NSArray * fromAddresses;
 @property(nonatomic, retain) ZBarReaderView * readerView;
+@property(nonatomic, retain) NSString *toAddress;
 
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
 
 -(void)didSelectAddress:(NSString *)address;
 
--(IBAction)reviewPaymentClicked:(id)sender;
+-(IBAction)sendPaymentClicked:(id)sender;
 -(IBAction)labelAddressClicked:(id)sender;
 
--(void)setToAddress:(NSString*)string;
+-(void)setToAddressFromUrlHandler:(NSString*)string;
 -(void)setAmount:(NSString*)amount;
 
 -(void)reload;

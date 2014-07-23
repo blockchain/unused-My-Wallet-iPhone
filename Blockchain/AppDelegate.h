@@ -51,7 +51,9 @@
     IBOutlet BCFadeView * busyView;
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
-    
+
+    IBOutlet UIButton *createWalletButton;
+
     IBOutlet TabViewcontroller * tabViewController;
     IBOutlet TabViewcontroller * newTabViewController;
     IBOutlet TabViewcontroller * oldTabViewController;

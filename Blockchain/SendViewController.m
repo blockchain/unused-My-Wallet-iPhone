@@ -272,13 +272,18 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [self doCurrencyConversion];
     
-	[app.tabViewController responderMayHaveChanged];
+    if (textField == amountField) {
+        [self doCurrencyConversion];
+    }
+    
+    [app.tabViewController responderMayHaveChanged];
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+    if (textField == amountField) {
+        [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+    }
     
     return TRUE;
 }

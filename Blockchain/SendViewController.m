@@ -294,7 +294,13 @@
             return @"Any Address";
         }
         
-        return [app.wallet labelForAddress:[self.fromAddresses objectAtIndex:index-1]];
+        NSString * address = [self.fromAddresses objectAtIndex:index-1];
+        NSString * label = [app.wallet labelForAddress:address];
+        if (label) {
+            return label;
+        } else {
+            return address;
+        }
     }
     
     return @"";

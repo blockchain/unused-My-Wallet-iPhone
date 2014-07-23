@@ -418,6 +418,8 @@
     NSLog(@"on_tx");
 
     [app playBeepSound];
+    
+    [self getHistory];
 }
 
 -(void)did_multiaddr {

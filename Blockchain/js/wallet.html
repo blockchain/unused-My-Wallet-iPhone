@@ -375,7 +375,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             dataType: 'json',
             url: root +'multiaddr',
             data: data,
-            timeout: 120000,
+            timeout: 60000,
             retryLimit: 2,
             success: function(obj) {
                 if (obj.error != null) {

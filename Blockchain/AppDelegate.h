@@ -18,6 +18,8 @@
  * MA 02110-1301  USA
  */
 
+#pragma mark test watch only
+
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 

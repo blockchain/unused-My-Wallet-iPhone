@@ -510,7 +510,7 @@
                     <rect key="frame" x="146" y="226" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Pair Device" backgroundImage="button_red.png">
+                    <state key="normal" title="Re-Pair Device" backgroundImage="button_red.png">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">

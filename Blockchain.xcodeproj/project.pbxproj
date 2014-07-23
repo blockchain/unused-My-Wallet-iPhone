@@ -153,14 +153,14 @@
 		C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE91791945D8F600FD516D /* PEPin-off.png */; };
 		C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C9BE917A1945D8F600FD516D /* PEPin-on.png */; };
 		C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9BE918B1945F5FC00FD516D /* Images.xcassets */; };
-		C9C17A94197FCE4700BF8A4E /* bitcoinjs.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A8C197FCE4700BF8A4E /* bitcoinjs.js */; };
-		C9C17A95197FCE4700BF8A4E /* blockchainapi.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A8D197FCE4700BF8A4E /* blockchainapi.js */; };
-		C9C17A96197FCE4700BF8A4E /* bootstrap.min.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A8E197FCE4700BF8A4E /* bootstrap.min.js */; };
-		C9C17A97197FCE4700BF8A4E /* import-export.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A8F197FCE4700BF8A4E /* import-export.js */; };
-		C9C17A98197FCE4700BF8A4E /* jquery.min.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A90197FCE4700BF8A4E /* jquery.min.js */; };
-		C9C17A99197FCE4700BF8A4E /* shared.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A91197FCE4700BF8A4E /* shared.js */; };
-		C9C17A9A197FCE4700BF8A4E /* signer.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A92197FCE4700BF8A4E /* signer.js */; };
-		C9C17A9B197FCE4700BF8A4E /* wallet.js in Sources */ = {isa = PBXBuildFile; fileRef = C9C17A93197FCE4700BF8A4E /* wallet.js */; };
+		C9C17A9C197FD0C600BF8A4E /* bitcoinjs.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A8C197FCE4700BF8A4E /* bitcoinjs.js */; };
+		C9C17A9D197FD0C600BF8A4E /* blockchainapi.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A8D197FCE4700BF8A4E /* blockchainapi.js */; };
+		C9C17A9E197FD0C600BF8A4E /* bootstrap.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A8E197FCE4700BF8A4E /* bootstrap.min.js */; };
+		C9C17A9F197FD0C600BF8A4E /* import-export.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A8F197FCE4700BF8A4E /* import-export.js */; };
+		C9C17AA0197FD0C600BF8A4E /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A90197FCE4700BF8A4E /* jquery.min.js */; };
+		C9C17AA1197FD0C600BF8A4E /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A91197FCE4700BF8A4E /* shared.js */; };
+		C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A92197FCE4700BF8A4E /* signer.js */; };
+		C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A93197FCE4700BF8A4E /* wallet.js */; };
 		ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98A1959968F00255292 /* address-book-icon.png */; };
 		ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98B1959968F00255292 /* address-book-icon@2x.png */; };
 		ECE9A9901959968F00255292 /* camera-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98C1959968F00255292 /* camera-icon.png */; };
@@ -915,6 +915,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9C17A9C197FD0C600BF8A4E /* bitcoinjs.js in Resources */,
+				C9C17A9D197FD0C600BF8A4E /* blockchainapi.js in Resources */,
+				C9C17A9E197FD0C600BF8A4E /* bootstrap.min.js in Resources */,
+				C9C17A9F197FD0C600BF8A4E /* import-export.js in Resources */,
+				C9C17AA0197FD0C600BF8A4E /* jquery.min.js in Resources */,
+				C9C17AA1197FD0C600BF8A4E /* shared.js in Resources */,
+				C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */,
+				C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
@@ -1026,14 +1034,12 @@
 				9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */,
 				9F7480E315140EF200BC4292 /* TabViewController.m in Sources */,
 				844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */,
-				C9C17A94197FCE4700BF8A4E /* bitcoinjs.js in Sources */,
 				9FB3638214B60128004BEA02 /* main.m in Sources */,
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
-				C9C17A97197FCE4700BF8A4E /* import-export.js in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
 				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
@@ -1044,28 +1050,22 @@
 				84B601CA197AD03800DA1829 /* UIModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* UIFadeView.m in Sources */,
-				C9C17A96197FCE4700BF8A4E /* bootstrap.min.js in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
 				9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */,
 				9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */,
-				C9C17A9A197FCE4700BF8A4E /* signer.js in Sources */,
 				9FCA4D391514A83400ECDFBE /* WebViewController.m in Sources */,
 				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
 				9F91B607151666EC00ACB32D /* NewAccountView.m in Sources */,
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,
 				9F1831E51516A45700FB3D52 /* NSString+SHA256.m in Sources */,
-				C9C17A9B197FCE4700BF8A4E /* wallet.js in Sources */,
 				9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */,
-				C9C17A99197FCE4700BF8A4E /* shared.js in Sources */,
 				9F5F3E57151BED0100128830 /* DataMatrix.mm in Sources */,
 				9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */,
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				9F5F3E5A151BED0100128830 /* QREncoder.mm in Sources */,
 				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
-				C9C17A95197FCE4700BF8A4E /* blockchainapi.js in Sources */,
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
-				C9C17A98197FCE4700BF8A4E /* jquery.min.js in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
 				84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */,

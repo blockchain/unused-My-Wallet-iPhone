@@ -653,7 +653,10 @@
 }
 
 -(NSInteger)getWebsocketReadyState {
-    return [[self.webView executeJSSynchronous:@"MyWalletPhone.getWsReadyState()"] integerValue];
+    if ([self.webView isLoaded])
+        return [[self.webView executeJSSynchronous:@"MyWalletPhone.getWsReadyState()"] integerValue];
+    else
+        return -1;
 }
 
 -(void)ws_on_close {

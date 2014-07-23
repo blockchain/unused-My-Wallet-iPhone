@@ -261,9 +261,7 @@ CGPoint arrowPositions[4] = {
 	} else {
 		--selectedIndex;
 	}
-    
-    NSLog(@"moveArrow index %d", selectedIndex);
-    
+        
 	[UIView beginAnimations:@"MoveArrow" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDuration:arrowStepDuration];

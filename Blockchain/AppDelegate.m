@@ -115,6 +115,8 @@ AppDelegate * app;
     
     [_window addSubview:busyView];
     
+    busyView.frame = _window.frame;
+    
     return YES;
 }
 
@@ -727,8 +729,6 @@ AppDelegate * app;
         [self forgetWallet];
         
         [app showModal:welcomeView isClosable:NO onDismiss:nil];
-        
-        [app closeModal];
     } else {
         [app showModal:pairingInstructionsView isClosable:TRUE onDismiss:nil];
     }

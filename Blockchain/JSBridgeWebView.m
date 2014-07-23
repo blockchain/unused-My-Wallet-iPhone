@@ -99,7 +99,7 @@
     va_end(args);
     
     if (!self.isLoaded) {
-        @throw [NSException exceptionWithName:@"JSBridgeWebView Exception" reason:@"Cannot Call Synchronous Method With Webview not fully loaded" userInfo:nil];
+        @throw [NSException exceptionWithName:@"JSBridgeWebView Exception" reason:[NSString stringWithFormat:@"Cannot Call Synchronous Method With Webview not fully loaded %@", formatString] userInfo:nil];
     }
     
     return [self stringByEvaluatingJavaScriptFromString:contents];

@@ -243,7 +243,7 @@ MyWallet.makeNotice = function(type, _id, msg) {
 }
 
 //Wrapper Around localstorage
-MyStore.put = function (key, value) {
+/*MyStore.put = function (key, value) {
     device.execute("saveKey:value:", [key, value]);
 }
 
@@ -257,7 +257,7 @@ MyStore.remove = function(key) {
 
 MyStore.clear = function() {
     device.execute("clearKeys");
-}
+}*/
 
 //End localstorage wrapper
 var listener = {
@@ -349,6 +349,7 @@ function setPassword(password) {
     $('#restore-wallet-continue').click();
 }
 
+
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
         MyWallet.setLoadingText('Loading transactions');
 
@@ -366,10 +367,11 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             no_compact : true,
             ct : clientTime,
             n : n,
+            no_buttons : true,
             language : MyWallet.getLanguage(),
             guid : MyWallet.getGuid()
         };
-
+        
         $.retryAjax({
             type: "POST",
             dataType: 'json',
@@ -378,6 +380,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             timeout: 60000,
             retryLimit: 2,
             success: function(obj) {
+                    
                 if (obj.error != null) {
                     MyWallet.makeNotice('error', 'misc-error', obj.error);
                 }

@@ -63,12 +63,20 @@
     return [(NSString *)string autorelease];
 }
 
+-(BOOL)isIntialized {
+    if ([self.webView isLoaded])
+        return [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
+    else
+        return FALSE;
+}
+
 -(BOOL)isDoubleEncrypted {
     return [[self.webView executeJSSynchronous:@"MyWallet.getDoubleEncryption()"] boolValue];
 }
 
 -(void)getHistory {
-    [self.webView executeJS:@"MyWallet.get_history()"];
+    if ([self isIntialized])
+        [self.webView executeJS:@"MyWallet.get_history()"];
 }
 
 -(void)cancelTxSigning {
@@ -163,13 +171,6 @@
     }
     
     [webView loadHTMLString:walletHTML baseURL:baseURL];
-    
-    /*
-    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
-    }
-            
-    [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];*/
 }
 
 -(void)parsePairingCode:(NSString*)code {
@@ -565,12 +566,16 @@
 
 //Callbacks from javascript localstorage
 -(void)getKey:(NSString*)key success:(void (^)(NSString*))success {
+    id value = [[NSUserDefaults standardUserDefaults] valueForKey:key];
+    
     NSLog(@"getKey:%@", key);
     
-    success([[NSUserDefaults standardUserDefaults] valueForKey:key]);
+    success(value);
 }
 
 -(void)saveKey:(NSString*)key value:(NSString*)value {
+    NSLog(@"saveKey:%@", key);
+
     [[NSUserDefaults standardUserDefaults] setValue:value forKey:key];
     
     [[NSUserDefaults standardUserDefaults] synchronize];

@@ -230,60 +230,6 @@ AppDelegate * app;
     });
 }
 
-#pragma mark File IO
-
--(NSData*)readFromFileName:(NSString *)fileName  {
-        
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	
-    // the path to write file
-    NSString * documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
-        
-    if (![[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
-        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
-                                  withIntermediateDirectories:YES 
-                                                   attributes:nil 
-                                                        error:NULL];
-    }
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:documentPath]) {
-        return [[[NSData alloc] initWithContentsOfFile:documentPath] autorelease];
-    }
-
-    return NULL;
-}
-
-- (BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName 
-{   
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	
-    // the path to write file
-    NSString *documentPath = [documentsDirectory stringByAppendingPathComponent:fileName];
-    
-    
-    NSLog(@"Write to bytes %d file %@", [data length], documentPath);
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:documentPath])  {
-        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
-                                  withIntermediateDirectories:YES 
-                                                   attributes:nil 
-                                                        error:NULL];
-    }
-    
-    NSError * error = nil;
-    
-    [data writeToFile:documentPath options:0 error:&error];
-    
-    if (error) {
-        NSLog(@"Error writing file %@", error);
-        
-        return FALSE;
-    }
-    
-    return TRUE;
-}
-
-
 -(void)didGenerateNewWallet:(Wallet*)_wallet password:(NSString*)password {
     
     [self forgetWallet];
@@ -412,8 +358,6 @@ AppDelegate * app;
     }
         
     NSString * replaced = [[urlString stringByReplacingOccurrencesOfString:@"bitcoin:" withString:@"bitcoin://"] stringByReplacingOccurrencesOfString:@"////" withString:@"//"];
-    
-    NSLog(@"%@", replaced);
     
     NSURL * url = [NSURL URLWithString:replaced];
     
@@ -682,8 +626,6 @@ AppDelegate * app;
     NSString * guid = manualIdentifier.text;
     NSString * password = manualPassword.text;
     
-    NSLog(@"guid %@", guid);
-    
     self.wallet = [[[Wallet alloc] initWithGuid:guid password:password] autorelease];
     
     self.wallet.delegate = app;
@@ -699,8 +641,6 @@ AppDelegate * app;
         PairingCodeParser * parser = [[PairingCodeParser alloc] init];
         
         [parser scanAndParse:^(NSDictionary*code) {
-            NSLog(@"Parsed Pairing Code %@", code);
-            
             self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
             
             self.wallet.delegate = self;

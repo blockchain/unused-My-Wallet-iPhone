@@ -145,10 +145,6 @@
 - (void)standardNotify:(NSString*)message delegate:(id)fdelegate;
 - (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate;
 
-//Write and read from file
--(BOOL)writeToFile:(NSData *)data fileName:(NSString *)fileName;
--(NSData*)readFromFileName:(NSString *)fileName;
-
 //Request Second Password From User
 -(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;
 -(void)getPrivateKeyPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;

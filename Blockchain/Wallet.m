@@ -323,7 +323,7 @@
 // Calls from JS
 
 -(void)log:(NSString*)message {
-    NSLog(@"console.log: %@", message);
+    //NSLog(@"console.log: %@", message);
 }
 
 -(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
@@ -456,7 +456,7 @@
         
         _success(_secondPassword);
     } error:^(NSString * errorMessage) {
-        NSLog(@"getPassword error %@", errorMessage);
+        //NSLog(@"getPassword error %@", errorMessage);
 
         _error(errorMessage);
     }];
@@ -495,14 +495,14 @@
 
 
 -(void)on_create_new_account:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
-    NSLog(@"on_create_new_account: %@", _guid);
+    NSLog(@"on_create_new_account:");
     
     if ([delegate respondsToSelector:@selector(didCreateNewAccount:sharedKey:password:)])
         [delegate didCreateNewAccount:_guid sharedKey:_sharedKey password:_password];
 }
 
 -(void)on_error_creating_new_account:(NSString*)message {
-    NSLog(@"on_error_creating_new_account:%@", message);
+    //NSLog(@"on_error_creating_new_account:%@", message);
     
     if ([delegate respondsToSelector:@selector(errorCreatingNewAccount:)])
         [delegate errorCreatingNewAccount:message];

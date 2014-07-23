@@ -24,8 +24,6 @@
     [self.closeButton setEnabled:_isClosable];
 }
 
-@synthesize modalContentView;
-
 -(IBAction)closeModalClicked:(id)sender {
     if (self.isClosable) {
         [app closeModal];

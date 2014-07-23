@@ -96,6 +96,7 @@
 @property (nonatomic) BOOL disableBusyView;
 
 @property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
+@property (retain, nonatomic) NSMutableArray * modalChain;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;
@@ -118,7 +119,6 @@
 
 - (void)swipeLeft;
 - (void)swipeRight;
-
 
 //Simple Modal UIVIew
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;

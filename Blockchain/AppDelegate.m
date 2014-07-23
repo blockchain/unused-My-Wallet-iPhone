@@ -50,6 +50,8 @@ AppDelegate * app;
         
         [btcFromatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
+        self.modalChain = [[[NSMutableArray alloc] init] autorelease];
+        
         app = self;
         
     }
@@ -440,30 +442,6 @@ AppDelegate * app;
     return tabViewController;
 }
 
-
--(void)closeModal {
-    
-    [modalView removeFromSuperview]; 
-    [modalView.modalContentView removeFromSuperview];
-
-    CATransition *animation = [CATransition animation]; 
-    [animation setDuration:ANIMATION_DURATION];
-    [animation setType:kCATransitionFade]; 
-        
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-    
-    [[_window layer] addAnimation:animation forKey:@"HideModal"]; 
-    
-    if (self.modalView.delegate) {
-        self.modalView.delegate();        
-    }
-    
-    self.modalView.modalContentView = nil;
-    self.modalView = nil;
-    self.modalView.delegate = nil;
-}
-
-
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
 {
     [aTextField resignFirstResponder];
@@ -527,19 +505,61 @@ AppDelegate * app;
 }
 
 
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss {
-
-    @try {
-        BOOL isPreviousModalClosable = modalView == nil || modalView.isClosable;
+-(void)closeModal {
+    [modalView removeFromSuperview];
+    [modalView.modalContentView removeFromSuperview];
+    
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:ANIMATION_DURATION];
+    [animation setType:kCATransitionFade];
+    
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [[_window layer] addAnimation:animation forKey:@"HideModal"];
+    
+    if (self.modalView.delegate) {
+        self.modalView.delegate();
+    }
+    
+    self.modalView.modalContentView = nil;
+    self.modalView = nil;
+    self.modalView.delegate = nil;
+    
+    if ([self.modalChain count] > 0) {
+        MyUIModalView * previousModalView = [self.modalChain objectAtIndex:[self.modalChain count]-1];
         
+        [app showModal:previousModalView.modalContentView isClosable:previousModalView.isClosable onDismiss:previousModalView.delegate];
+        
+        [self.modalChain removeObjectAtIndex:[self.modalChain count]-1];
+    }
+}
+
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss {
+    
+    @try {
         if (modalView) {
-            [self closeModal];
+            [modalView removeFromSuperview];
+
+            if (modalView.isClosable) {
+                [modalView.modalContentView removeFromSuperview];
+
+                if (self.modalView.delegate) {
+                    self.modalView.delegate();
+                }
+                
+                self.modalView.delegate = nil;
+                self.modalView.modalContentView = nil;
+            } else {
+                [self.modalChain addObject:modalView];
+            }
+            
+            self.modalView = nil;
         }
         
         [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
+        
         [modalView.modalContentView addSubview:contentView];
         
-        modalView.isClosable = isPreviousModalClosable && _isClosable;
+        modalView.isClosable = _isClosable;
         
         self.modalView.delegate = onDismiss;
 

@@ -433,20 +433,22 @@
 		9F1831F315176F2200FB3D52 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				9F6C8611153468610086C200 /* NSDate+Extensions.h */,
-				9F6C8612153468610086C200 /* NSDate+Extensions.m */,
-				9F1831E91516ADDB00FB3D52 /* NSString+URLEncode.h */,
-				9F1831EA1516ADDB00FB3D52 /* NSString+URLEncode.m */,
-				9F1831E31516A45700FB3D52 /* NSString+SHA256.h */,
-				9F1831E41516A45700FB3D52 /* NSString+SHA256.m */,
 				9F1831E01516A39500FB3D52 /* NSData+Hex.h */,
 				9F1831E11516A39500FB3D52 /* NSData+Hex.m */,
-				9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */,
-				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
-				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
-				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
+				9F6C8611153468610086C200 /* NSDate+Extensions.h */,
+				9F6C8612153468610086C200 /* NSDate+Extensions.m */,
 				84CCFAAD197D859C00DA4482 /* NSString+NSString_EscapeQuotes.h */,
 				84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */,
+				9F1831E31516A45700FB3D52 /* NSString+SHA256.h */,
+				9F1831E41516A45700FB3D52 /* NSString+SHA256.m */,
+				9F1831E91516ADDB00FB3D52 /* NSString+URLEncode.h */,
+				9F1831EA1516ADDB00FB3D52 /* NSString+URLEncode.m */,
+				9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */,
+				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
+				84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */,
+				84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */,
+				9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */,
+				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -611,8 +613,6 @@
 		9FB3637B14B60128004BEA02 /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
-				84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */,
-				84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */,
 				844BC7AC1949BB620024160B /* JSBridgeWebView.h */,
 				844BC7AD1949BB620024160B /* JSBridgeWebView.m */,
 				9FB3638414B60128004BEA02 /* AppDelegate.h */,

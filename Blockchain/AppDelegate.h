@@ -116,6 +116,10 @@
 -(NSString*)sharedKey;
 -(NSString*)password;
 
+- (void)swipeLeft;
+- (void)swipeRight;
+
+
 //Simple Modal UIVIew
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;
 -(void)closeModal;

@@ -111,6 +111,39 @@ AppDelegate * app;
     return YES;
 }
 
+- (void)transitionToIndex:(NSInteger)newIndex
+{
+    if (newIndex == 0)
+        [self transactionsClicked:nil];
+    else if (newIndex == 1)
+        [self receiveCoinClicked:nil];
+    else if (newIndex == 2)
+        [self sendCoinsClicked:nil];
+    else if (newIndex == 3)
+        [self infoClicked:nil];
+    else
+        NSLog(@"Unknown tab index: %d", newIndex);
+}
+
+- (void)swipeLeft
+{
+    if (tabViewController.selectedIndex < 3)
+    {
+        NSInteger newIndex = tabViewController.selectedIndex + 1;
+        [self transitionToIndex:newIndex];
+    }
+}
+
+- (void)swipeRight
+{
+    if (tabViewController.selectedIndex)
+    {
+        NSInteger newIndex = tabViewController.selectedIndex - 1;
+        [self transitionToIndex:newIndex];
+    }
+}
+
+
 
 #pragma mark - UI State
 -(void)toggleSymbol {

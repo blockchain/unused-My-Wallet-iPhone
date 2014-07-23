@@ -68,6 +68,7 @@
     
     BOOL validateSecondPassword;
     IBOutlet UILabel * secondPasswordDescriptionLabel;
+    IBOutlet UILabel * welcomeLabel;
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     

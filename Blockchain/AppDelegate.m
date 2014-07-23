@@ -740,10 +740,13 @@ AppDelegate * app;
 -(void)showWelcome {
     [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
         if ([self password]) {
+            welcomeLabel.text = @"Welcome Back";
             [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
         } else if ([self guid] || [self sharedKey]) {
+            welcomeLabel.text = @"Welcome Back";
             [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
         } else {
+            welcomeLabel.text = @"Welcome";
             [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
         }
     }];

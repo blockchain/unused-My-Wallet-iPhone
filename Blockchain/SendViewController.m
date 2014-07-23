@@ -335,6 +335,8 @@
     fromField.valueColor = [UIColor darkGrayColor];
     
     amountField.inputAccessoryView = amountKeyoboardAccessoryView;
+#warning do this
+//    [amountField setKeyboardType:UIKeyboardTypeDecimalPad];
     [amountField setReturnKeyType:UIReturnKeyDone];
 
     [toField setReturnKeyType:UIReturnKeyDone];

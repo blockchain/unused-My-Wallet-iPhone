@@ -203,8 +203,12 @@
     [self setQR];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
+    [requestAmountTextField setReturnKeyType:UIReturnKeyDone];
+#warning do this
+//    [requestAmountTextField setKeyboardType:UIKeyboardTypeDecimalPad];
     
     [app showModal:requestCoinsView isClosable:TRUE];
+    [requestAmountTextField becomeFirstResponder];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {

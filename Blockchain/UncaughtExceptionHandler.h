@@ -25,4 +25,4 @@
 
 void SignalHandler(int signal);
 void HandleException(NSException *exception);
-void InstallUncaughtExceptionHandler();
+void InstallUncaughtExceptionHandler(void);

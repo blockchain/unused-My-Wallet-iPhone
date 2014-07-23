@@ -57,6 +57,8 @@
 -(void)networkActivityStop;
 -(void)didParsePairingCode:(NSDictionary *)dict;
 -(void)errorParsingPairingCode:(NSString*)message;
+-(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
+-(void)errorCreatingNewAccount:(NSString*)message;
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {
@@ -78,8 +80,7 @@
 
 #pragma mark Init Methods
 -(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
--(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey;
--(id)initWithPassword:(NSString*)password; //Create a new Wallet
+-(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey; //Only Works if 2FA is disabled (manual pairing);
 -(id)init;
 
 -(NSDictionary*)addressBook;
@@ -132,5 +133,8 @@
 -(void)clearDelegates;
 
 -(NSInteger)getWebsocketReadyState;
+
+-(void)newAccount:(NSString*)password;
+
 
 @end

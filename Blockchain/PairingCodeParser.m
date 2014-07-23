@@ -52,7 +52,7 @@
         [self.readerView stop];
         
         self.readerView = nil;
-    }];
+    } onResume:nil];
     
     [self.readerView start];
     

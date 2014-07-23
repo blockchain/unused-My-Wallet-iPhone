@@ -63,7 +63,7 @@
     return [(NSString *)string autorelease];
 }
 
--(BOOL)isIntialized {
+-(BOOL)isInitialized {
     if ([self.webView isLoaded])
         return [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
     else
@@ -75,7 +75,7 @@
 }
 
 -(void)getHistory {
-    if ([self isIntialized])
+    if ([self isInitialized])
         [self.webView executeJS:@"MyWallet.get_history()"];
 }
 
@@ -221,26 +221,6 @@
         self.password = _password;
       
         [self loadJS];
-    }
-    return  self;
-}
-
-// This is only called when creating a new account,
--(id)initWithPassword:(NSString*)fpassword {
-    if ([super init]) {
-        self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
-                
-        [webView setJSDelegate:self];
-        
-        self.password = fpassword;        
-        self.guid = [Wallet generateUUID];
-        self.sharedKey = [Wallet generateUUID];
-        
-        [self loadJS];
-
-        //Generate the first Address
-        [self generateNewKey];
     }
     return  self;
 }
@@ -513,6 +493,21 @@
         [delegate walletDidLoad:self];
 }
 
+
+-(void)on_create_new_account:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
+    NSLog(@"on_create_new_account: %@", _guid);
+    
+    if ([delegate respondsToSelector:@selector(didCreateNewAccount:sharedKey:password:)])
+        [delegate didCreateNewAccount:_guid sharedKey:_sharedKey password:_password];
+}
+
+-(void)on_error_creating_new_account:(NSString*)message {
+    NSLog(@"on_error_creating_new_account:%@", message);
+    
+    if ([delegate respondsToSelector:@selector(errorCreatingNewAccount:)])
+        [delegate errorCreatingNewAccount:message];
+}
+
 -(void)on_backup_wallet_error {
     NSLog(@"on_backup_wallet_error");
  
@@ -536,7 +531,7 @@
     NSLog(@"did_set_guid");
     
     if (self.password) {
-        [self.webView executeJS:[NSString stringWithFormat:@"setPassword(\"%@\")", self.password]];
+        [self.webView executeJS:[NSString stringWithFormat:@"MyWalletPhone.setPassword(\"%@\")", self.password]];
     }
 }
 
@@ -671,6 +666,10 @@
     NSLog(@"ws_on_open");
     
     [app setStatus];
+}
+
+-(void)newAccount:(NSString*)__password {
+    [self.webView executeJS:@"MyWalletPhone.newAccount(\"%@\")", [__password escapeDoubleQuotes]];
 }
 
 @end

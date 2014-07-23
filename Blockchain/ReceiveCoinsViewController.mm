@@ -71,7 +71,7 @@
         self.readerView = nil;
         
         [app.wallet cancelTxSigning];
-    }];
+    } onResume:nil];
 }
 
 -(void)viewDidLoad {
@@ -204,7 +204,7 @@
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     
-    [app showModal:requestCoinsView isClosable:TRUE onDismiss:nil];
+    [app showModal:requestCoinsView isClosable:TRUE];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
@@ -216,7 +216,7 @@
     else
         labelAddressLabel.text = addr;
 
-    [app showModal:labelAddressView isClosable:TRUE onDismiss:nil];
+    [app showModal:labelAddressView isClosable:TRUE];
     
     labelTextField.text = nil;
     
@@ -249,7 +249,7 @@
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView isClosable:TRUE onDismiss:nil];
+    [app showModal:optionsModalView isClosable:TRUE];
     
     if (label)
         optionsTitleLabel.text = label;

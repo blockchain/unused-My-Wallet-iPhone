@@ -62,6 +62,7 @@
             <color key="backgroundColor" red="0.93234455589999998" green="0.93234455589999998" blue="0.93234455589999998" alpha="0.34999999999999998" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="closeButton" destination="15" id="4VI-B9-jEr"/>
+                <outlet property="closeButtonBackground" destination="13" id="qGF-HB-alW"/>
                 <outlet property="modalContentView" destination="11" id="2y5-Jv-Tdk"/>
             </connections>
         </view>

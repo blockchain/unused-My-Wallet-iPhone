@@ -155,6 +155,23 @@ MyWalletPhone.isValidAddress = function(addrstring) {
     }
 }
 
+MyWalletPhone.setPassword = function(password) {
+    $('#restore-password').val(password);
+    
+    $('#restore-wallet-continue').click();
+}
+
+MyWalletPhone.newAccount = function(password) {
+    loadScript('wallet-signup', function() {
+        MyWalletSignup.generateNewWallet(password, null, function(guid, sharedKey, password) {
+            MyStore.clear();
+            device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
+        }, function (e) {
+            device.execute('on_error_creating_new_account:', [''+e]);
+        });
+    });
+}
+
 MyWalletPhone.getMultiAddrResponse = function() {
     var obj = {};
 
@@ -342,13 +359,6 @@ MyWallet.parsePairingCode = function (raw_code) {
         error('Error Parsing Pairing Code ' + e);
     }
 }
-
-function setPassword(password) {
-    $('#restore-password').val(password);
-
-    $('#restore-wallet-continue').click();
-}
-
 
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
         MyWallet.setLoadingText('Loading transactions');

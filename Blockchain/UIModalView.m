@@ -7,9 +7,29 @@
 //
 
 #import "UIModalView.h"
+#import "AppDelegate.h"
 
 @implementation MyUIModalView
 
+-(void)dealloc {
+    self.closeButton = nil;
+    self.delegate = nil;
+    self.modalContentView = nil;
+    [super dealloc];
+}
+
+-(void)setIsClosable:(BOOL)__isClosable {
+    _isClosable = __isClosable;
+    
+    [self.closeButton setEnabled:_isClosable];
+}
+
 @synthesize modalContentView;
+
+-(IBAction)closeModalClicked:(id)sender {
+    if (self.isClosable) {
+        [app closeModal];
+    }
+}
 
 @end

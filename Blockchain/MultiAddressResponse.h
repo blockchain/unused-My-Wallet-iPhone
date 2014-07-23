@@ -27,6 +27,9 @@
 @property(nonatomic, strong) NSString * name;
 @property(nonatomic, assign) uint64_t conversion;
 @property(nonatomic, assign) BOOL symbolappearsAfter;
+
++(CurrencySymbol*)symbolFromDict:(NSDictionary*)dict;
+
 @end
 
 @interface LatestBlock : NSObject
@@ -37,12 +40,6 @@
 @end
 
 @interface MulitAddressResponse : NSObject {
-    NSArray * addresses;
-    NSMutableArray * transactions;
-    uint64_t total_received;
-    uint64_t total_sent;
-    uint64_t final_balance;
-    uint32_t n_transactions;
 }
 
 @property(nonatomic, retain) NSArray * addresses;
@@ -52,6 +49,7 @@
 @property(nonatomic, assign) uint64_t final_balance;
 @property(nonatomic, assign) uint32_t n_transactions;
 
-@property(nonatomic, strong) CurrencySymbol * symbol;
+@property(nonatomic, strong) CurrencySymbol * symbol_btc;
+@property(nonatomic, strong) CurrencySymbol * symbol_local;
 
 @end

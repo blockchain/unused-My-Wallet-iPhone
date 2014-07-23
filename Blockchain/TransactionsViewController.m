@@ -112,11 +112,7 @@
     }
 }
 
--(void)setData:(MulitAddressResponse *)_data {
-    [data release];
-    data = _data;
-    [data retain];
-    
+-(void)reload {
     [self setText];
     
     [tableView reloadData];
@@ -130,13 +126,13 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     
-    if (APP_IS_IPHONE5)
-    {
+    if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);
-    }
-    else {
+    } else {
         self.view.frame = CGRectMake(0, 0, 320, 361);
-    }    
+    }
+    
+    [self reload];
 }
 
 -(void)dealloc {

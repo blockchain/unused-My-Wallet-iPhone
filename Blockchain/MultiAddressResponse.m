@@ -16,7 +16,6 @@
 #import "Wallet.h"
 #import "NSString+SHA256.h"
 #import "NSString+URLEncode.h"
-#import "APIDefines.h"
 
 @implementation CurrencySymbol
 @synthesize code;
@@ -25,18 +24,16 @@
 @synthesize conversion;
 @synthesize symbolappearsAfter;
 
-- (id)initWithDictionary:(NSDictionary *)dict {
-
-    self = [super init];
-//    if (self) {
-//        self.code = dict[@"symbol"];
-//        self.symbol = dict[@"symbol"];
-//        self.name = dict[@"symbol"];
-//        self.conversion = dict[@"symbol"];
-//        self.symbolappearsAfter = dict[@"symbol"];
-//    }
++(CurrencySymbol*)symbolFromDict:(NSDictionary *)dict {
+    CurrencySymbol * symbol = [[[CurrencySymbol alloc] init] autorelease];
     
-    return self;
+    symbol.code = [dict objectForKey:@"code"];
+    symbol.symbol = [dict objectForKey:@"symbol"];
+    symbol.conversion = [[dict objectForKey:@"conversion"] longLongValue];
+    symbol.name = [dict objectForKey:@"name"];
+    symbol.symbolappearsAfter = [[dict objectForKey:@"symbolAppearsAfter"] boolValue];
+    
+    return symbol;
 }
 
 -(void)dealloc {
@@ -67,11 +64,13 @@
 @synthesize total_sent;
 @synthesize final_balance;
 @synthesize n_transactions;
-@synthesize symbol;
+@synthesize symbol_local;
+@synthesize symbol_btc;
 
 -(void)dealloc {
-    [symbol release];
     [transactions release];
+    [symbol_btc release];
+    [symbol_local release];
     [super dealloc];
 }
 

@@ -12,6 +12,7 @@
 	IBOutlet UIView * header;
 	IBOutlet UIView * footer;
 	IBOutlet UIView * contentView;
+	IBOutlet UIImageView * arrow;
 
 	IBOutlet UIButton * nextButton;
 	IBOutlet UIButton * backButton;
@@ -20,8 +21,10 @@
 	UIViewController * activeViewController;
 	UIViewController * oldViewController;
 	int selectedIndex;
-	double arrowStepDuration;
 	CGPoint originalOffset;
+    
+    int desiredIndex;
+	double arrowStepDuration;
 }
 
 @property(nonatomic, retain) UIViewController * activeViewController;

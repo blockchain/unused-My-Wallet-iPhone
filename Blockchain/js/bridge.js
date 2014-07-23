@@ -39,7 +39,7 @@
 // It is used to index data in the JSBridge_objArray.
 var JSBridge_objCount = 0;
 
-var JSBridge_pendingObjIDs = [];
+var JSBridge_pendingObjIDs = {};
 
 // Keeps the objects that should be communicated to the Objective-C code.
 var JSBridge_objArray = new Array();
@@ -91,7 +91,9 @@ function JSBridgeObj()
 function JSBridgeObj_AddObjectAuxiliar(id, obj)
 {
     var result = "";
-    if(typeof(obj) != "undefined")
+    if (obj === null) {
+        result = "\"" + id + "\": { \"value\": null, \"type\": \"" + objType + "\"}";
+    } else if(typeof(obj) != "undefined")
     {
         if(isObjAnArray(obj))
         {
@@ -116,8 +118,6 @@ function JSBridgeObj_AddObjectAuxiliar(id, obj)
         {
             var objStr = JSON.stringify(obj);
             var objType = typeof(obj);
-            
-
             result = "\"" + id + "\": { \"value\":" + "" + objStr + ", \"type\": \"" + objType + "\"}";
         }
     }
@@ -186,30 +186,13 @@ function JSBridgeObj_SendObject(success, error)
 {
     JSBridge_objArray[JSBridge_objCount] = this.objectJson;
 
-    JSBridge_pendingObjIDs.push(JSBridge_objCount);
+    JSBridge_pendingObjIDs[JSBridge_objCount] = {
+        JSBridge_objCount : JSBridge_objCount,
+        success : success,
+        error : error
+    };
 
-    window.location.href = "JSBridge://ReadNotificationWithId=" + JSBridge_pendingObjIDs.join(',');
-
-    if (success || error) {
-        (function(JSBridge_objCount, success, error) {
-            var ii = 0;
-            var interval = setInterval(function() {
-                var responseContainer = JSBridge_objResponses[JSBridge_objCount];
-                                       
-                if (responseContainer || ii > 250) {
-                    if (responseContainer && responseContainer.success) {
-                       success(responseContainer.obj);
-                    } else {
-                       error(responseContainer.obj);
-                    }
-                                       
-                    clearInterval(interval);
-                } else {
-                    ++ii;
-                }
-            }, 1);
-        })(JSBridge_objCount, success, error);
-    }
+    window.location.href = "JSBridge://ReadNotificationWithId=" + Object.keys(JSBridge_pendingObjIDs).join(',');
 
     JSBridge_objCount++;
 }
@@ -232,13 +215,25 @@ function JSBridge_setResponseWithId(objId, value, success)
 {
     JSBridge_objResponses[objId] = {obj: value, success: success};
 
-    //Received response, remove from pending
-    var i = JSBridge_pendingObjIDs.indexOf(objId);
-    if(i != -1) {
-        JSBridge_pendingObjIDs.splice(i, 1);
+    var responseObj = JSBridge_pendingObjIDs[objId];
+    
+    if (responseObj && (responseObj.success || responseObj.error)) {
+        var responseContainer = JSBridge_objResponses[responseObj.JSBridge_objCount];
+        
+        if (responseContainer) {
+            if (responseContainer && responseContainer.success) {
+                if (responseObj.success)
+                    responseObj.success(responseContainer ? responseContainer.obj : null);
+            } else {
+                if (responseObj.error)
+                    responseObj.error(responseContainer ? responseContainer.obj : null);
+            }
+        }
     }
+    
+    //Received response, remove from pending
+    delete JSBridge_pendingObjIDs[objId];
 }
-
 
 /*
  Checks if an object is an array.

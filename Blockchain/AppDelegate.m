@@ -27,6 +27,7 @@
 #import "UIDevice+Hardware.h"
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"
+#import "PairingCodeParser.h"
 
 AppDelegate * app;
 
@@ -34,10 +35,8 @@ AppDelegate * app;
 
 @synthesize window = _window;
 @synthesize wallet;
-@synthesize reachability;
 @synthesize modalView;
 @synthesize latestResponse;
-@synthesize readerView;
 
 #pragma mark - Lifecycle
 
@@ -52,19 +51,20 @@ AppDelegate * app;
         [btcFromatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         app = self;
-        tasks = 0;
         
     }
     return self;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    wallet.secondPassword  = nil;
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [self showPinModal];
+    
+    [self.wallet getHistory];
 }
 
 - (void)installUncaughtExceptionHandler
@@ -76,32 +76,28 @@ AppDelegate * app;
 {
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
   
-#warning needed?
-//    symbolLocal = NO;
+    [_window addSubview:busyView];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
+        
+        self.loadingText = [notification object];
+    }];
     
     // Override point for customization after application launch.
     _window.backgroundColor = [UIColor whiteColor];
     
     [_window makeKeyAndVisible];
     
-    //Netowrk status updates
-    self.reachability = [Reachability reachabilityForInternetConnection];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(reachabilityChanged:) name:kReachabilityChangedNotification object: nil];
-    [reachability startNotifer];
-    
     tabViewController = oldTabViewController;
     
     [_window setRootViewController:tabViewController];
-    
+        
     if (![self guid] || ![self sharedKey]) {
-        [self showWelcome];
-        
+        [self showWelcome:FALSE];
     } else if (![self password]) {
-        
-        [self showModal:mainPasswordView onDismiss:nil];
+        [self showModal:mainPasswordView isClosable:FALSE onDismiss:nil];
         
         [mainPasswordTextField becomeFirstResponder];
-        
     } else {
         
         NSString * guid = [self guid];
@@ -111,7 +107,7 @@ AppDelegate * app;
         NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
         
         if (guid && sharedKey && password) {
-            self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
+            self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
             
             self.wallet.delegate = self;
         }
@@ -131,99 +127,42 @@ AppDelegate * app;
     [[transactionsViewController tableView] reloadData];
 }
 
--(void)showBusy {
-    if (tasks == 0) {
-        [_window addSubview:busyView];
-        [busyView fadeIn];
-    }
-}
-
--(void)startTask:(Task)task {
+-(void)setDisableBusyView:(BOOL)__disableBusyView {
+    _disableBusyView = __disableBusyView;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        switch (task) {
-            case TaskGeneratingWallet:
-                [self showBusy];
-                
-                [busyLabel setText:@"generating wallet"];
-                break;
-            case TaskSaveWallet:
-                [self showBusy];
-                
-                [busyLabel setText:@"saving wallet"];
-                
-                break;
-            case TaskLoadUnconfirmed:
-                [self showBusy];
-                
-                [busyLabel setText:@"loading unconfirmed"];
-                
-                break;
-            case TaskGetWallet:
-                if (wallet == NULL) {
-                    [self showBusy];
-                }
-                
-                [busyLabel setText:@"downloading wallet"];
-                
-                break;
-                
-            case TaskGetMultiAddr:
-                if (transactionsViewController.data == NULL) {
-                    [self showBusy];
-                }
-                
-                [busyLabel setText:@"downloading transactions"];
-                
-                break;
-            case TaskLoadExternalURL:
-                [self showBusy];
-                
-                [busyLabel setText:@"loading page"];
-                
-                break;
-        }
-        
-        if (tasks == 0) {
-            [activity startAnimating];
-        }
-        
-        ++tasks;
-        
-        [self setStatus];
-    });
+    if (_disableBusyView)
+        [busyView removeFromSuperview];
+    else
+        [_window addSubview:busyView];
 }
 
--(void)finishTask {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (tasks > 0) {
-            --tasks;
-        }
-        
-        if (tasks == 0) {
-            [busyView fadeOut];
-            
-            [activity stopAnimating];
-        }
-        
-        [self setStatus];
-    });
+-(void)networkActivityStart {
+    [busyView fadeIn];
+
+    [powerButton setEnabled:FALSE];
+
+    if (self.loadingText) {
+        [busyLabel setText:self.loadingText];
+    }
+    
+    [self setStatus];
 }
 
+-(void)networkActivityStop {
+    [powerButton setEnabled:TRUE];
+
+    [busyView fadeOut];
+    
+    [activity stopAnimating];
+    
+    [self setStatus];
+}
 
 -(void)setStatus {
-    [powerButton setHighlighted:FALSE];
-    
-    if (tasks > 0) {
-        [powerButton setEnabled:FALSE];
+    if ([app.wallet getWebsocketReadyState] != 1) {
+        [powerButton setHighlighted:TRUE];
     } else {
-        [powerButton setEnabled:TRUE];
-        
-#warning Reimplement Status icon
-        //if ([webSocket readyState] != ReadyStateOpen) {
-        //    [powerButton setHighlighted:TRUE];
-        //}
+        [powerButton setHighlighted:FALSE];
     }
 }
 
@@ -242,7 +181,6 @@ AppDelegate * app;
 - (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alert show];
@@ -316,25 +254,26 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    receiveViewController.wallet = _wallet;
-    sendViewController.wallet = _wallet;
 }
 
 -(void)walletDidLoad:(Wallet *)_wallet {      
     NSLog(@"walletDidLoad");
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
-        
-    receiveViewController.wallet = _wallet;
-    sendViewController.wallet = _wallet;
-    [accountViewController loadWebView];
+    
+    [transactionsViewController reload];
+    [receiveViewController reload];
+    [sendViewController reload];
 }
 
 -(void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
     self.latestResponse = response;
 
     transactionsViewController.data = response;
+    
+    [transactionsViewController reload];
+    [receiveViewController reload];
+    [sendViewController reload];
 }
 
 -(void)didSetLatestBlock:(LatestBlock*)block {
@@ -351,27 +290,15 @@ AppDelegate * app;
     //Cleare the checksum cache incase it has
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
 
-    [self showModal:mainPasswordView onDismiss:nil];
+    [self showModal:mainPasswordView isClosable:FALSE onDismiss:nil];
     
     [mainPasswordTextField becomeFirstResponder];
-}
-
--(void)didGetWalletData:(NSData *)data  {
-    if ([self password]) {
-        self.wallet = [[[Wallet alloc] initWithData:data password:[self password]] autorelease];
-
-        wallet.delegate = self;
-    } else {
-        [self showModal:mainPasswordView onDismiss:nil];
-        
-        [mainPasswordTextField becomeFirstResponder];
-    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
     if (![self guid] || ![self sharedKey]) {
-        [app showWelcome];
+        [app showWelcome:FALSE];
         return;
     }
     
@@ -403,10 +330,6 @@ AppDelegate * app;
 	AudioServicesPlaySystemSound(alertSoundID);		
 }
 
-//Called by Reachability whenever status changes.
-- (void) reachabilityChanged: (NSNotification* )note
-{	
-}
 
 // Only gets called when displaying a transaction hash
 -(void)pushWebViewController:(NSString*)url {
@@ -470,9 +393,6 @@ AppDelegate * app;
     return YES;
 }
 
--(void)didSubmitTransaction {
-    [app closeModal];
-}
 
 -(TransactionsViewController*)transactionsViewController {
     return transactionsViewController;
@@ -482,9 +402,6 @@ AppDelegate * app;
     return tabViewController;
 }
 
--(IBAction)closeModalClicked:(id)sender {
-    [self closeModal];
-}
 
 -(void)closeModal {
     
@@ -508,19 +425,6 @@ AppDelegate * app;
     self.modalView.delegate = nil;
 }
 
--(IBAction)secondPasswordClicked:(id)sender {
-    NSString * password = secondPasswordTextField.text;
-        
-    if (![[[wallet.sharedKey stringByAppendingString:password] SHA256:10] isEqualToString:wallet.dPasswordHash]) {
-        [app standardNotify:@"Second Password Incorrect"];
-    } else {
-        wallet.secondPassword = password;
-        
-        [app closeModal];
-    }
-    
-    secondPasswordTextField.text = nil;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
 {
@@ -529,43 +433,78 @@ AppDelegate * app;
     return YES;
 }
 
--(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
+-(void)getPrivateKeyPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
     
-    @try {
-        if (wallet.secondPassword) {
-            success(wallet.secondPassword);
-            return;
+    validateSecondPassword = FALSE;
+    
+    secondPasswordDescriptionLabel.text = @"The private key you are attempting to import is encrypted. Please enter the password below.";
+
+    [app showModal:secondPasswordView isClosable:TRUE onDismiss:^() {
+        NSString * password = secondPasswordTextField.text;
+        
+        if ([password length] == 0) {
+            if (error) error(@"No Password Entered");
+        } else {
+            if (success) success(password);
         }
         
-        [secondPasswordTextField becomeFirstResponder];
+        secondPasswordTextField.text = nil;
+    }];
+    
+    [secondPasswordTextField becomeFirstResponder];
+}
 
-        [app showModal:secondPasswordView onDismiss:^() {
-            if ([secondPasswordTextField.text length] > 0) {
-                success(secondPasswordTextField.text);
-            } else {
-                error(@"No Password Entered");
-            }
-        }];
-    } @catch (NSException * e) {
-        [UncaughtExceptionHandler logException:e];
-        
-        error(@"Caught Exception Getting Password");
+-(IBAction)secondPasswordClicked:(id)sender {
+    NSString * password = secondPasswordTextField.text;
+    
+    if (!validateSecondPassword || [wallet validateSecondPassword:password]) {
+        [app closeModal];
+    } else {
+        [app standardNotify:@"Second Password Incorrect"];
+        secondPasswordTextField.text = nil;
     }
 }
 
+-(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
+    
+    secondPasswordDescriptionLabel.text = @"This action requires the second password for your bitcoin wallet. Please enter it below and press continue.";
+    
+    validateSecondPassword = TRUE;
+    
+    [app showModal:secondPasswordView isClosable:TRUE onDismiss:^() {
+        NSString * password = secondPasswordTextField.text;
+                    
+        if ([password length] == 0) {
+            if (error) error(@"No Password Entered");
+        } else if(![wallet validateSecondPassword:password]) {
+            if (error) error(@"Second Password Incorrect");
+        } else {
+            if (success) success(password);
+        }
+        
+        secondPasswordTextField.text = nil;
+    }];
+    
+    [secondPasswordTextField becomeFirstResponder];
+}
 
--(void)showModal:(UIView*)contentView onDismiss:(void (^)())onDismiss {
+
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss {
 
     @try {
+        BOOL isPreviousModalClosable = modalView == nil || modalView.isClosable;
+        
         if (modalView) {
             [self closeModal];
         }
         
-        self.modalView.delegate = onDismiss;
-        
         [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
         [modalView.modalContentView addSubview:contentView];
         
+        modalView.isClosable = isPreviousModalClosable && _isClosable;
+        
+        self.modalView.delegate = onDismiss;
+
         contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
         [_window.rootViewController.view addSubview:modalView];
         [_window.rootViewController.view endEditing:TRUE];
@@ -580,8 +519,35 @@ AppDelegate * app;
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
     } @catch (NSException * e) {
-        NSLog(@"%@", e);
+        NSLog(@"Animation Exception %@", e);
     }
+}
+
+-(void)didFailBackupWallet:(Wallet*)wallet {
+    //Don't know a safe way to recover
+    //Just clear everything and restart
+    
+    [self.wallet cancelTxSigning];
+    
+    self.wallet = nil;
+    self.latestResponse = nil;
+    
+    transactionsViewController.data = nil;
+    [transactionsViewController reload];
+    [receiveViewController reload];
+    [sendViewController reload];
+    
+    [accountViewController emptyWebView];
+    
+    self.wallet = [[[Wallet alloc] initWithGuid:[self guid] sharedKey:[self sharedKey] password:[self password]] autorelease];
+    
+    self.wallet.delegate = app;
+}
+
+-(void)didBackupWallet:(Wallet*)wallet {
+    [transactionsViewController reload];
+    [receiveViewController reload];
+    [sendViewController reload];
 }
 
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
@@ -625,48 +591,32 @@ AppDelegate * app;
     NSString * guid = manualIdentifier.text;
     NSString * password = manualPassword.text;
     
-    self.wallet = [[Wallet alloc] initWithGuid:guid password:password];
+    NSLog(@"guid %@", guid);
+    
+    self.wallet = [[[Wallet alloc] initWithGuid:guid password:password] autorelease];
     
     self.wallet.delegate = app;
+    
+    [app closeModal];
 }
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
-    
-    // do something uselful with results
-    for(ZBarSymbol *sym in syms) {        
-        Wallet * pairingWallet = [[Wallet alloc] initWithEncryptedQRString:sym.data];
-
-        NSLog(@"pairingWallet: %@", pairingWallet);
-
-#warning incomplete?
-//        [self setAccountData:guid sharedKey:sharedKey password:password];
-        
-        [readerView stop];
-        
-        [app closeModal];
-        
-        break;
-    }
-    
-    self.readerView = nil;
-}
 
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        self.readerView = [[ZBarReaderView new] autorelease];
         
-        [app showModal:readerView onDismiss:^() {
-            [readerView stop];
+        PairingCodeParser * parser = [[PairingCodeParser alloc] init];
+        
+        [parser scanAndParse:^(NSDictionary*code) {            
+            self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
             
-            self.readerView = nil;
+            self.wallet.delegate = self;
+
+        } error:^(NSString*error) {
+            [app standardNotify:error];
         }];
-        
-        [readerView start];
-        
-        [readerView setReaderDelegate:self];
     } else {
-        [self showModal:manualView onDismiss:nil];
+        [self showModal:manualView isClosable:TRUE onDismiss:nil];
     }
 }
 
@@ -674,12 +624,15 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
+    [self.wallet cancelTxSigning];
 
     self.wallet = nil;
     self.latestResponse = nil;
-    [transactionsViewController setData:nil];
-    [receiveViewController setWallet:nil];
+    
+    transactionsViewController.data = nil;
+    [transactionsViewController reload];
+    [receiveViewController reload];
+    [sendViewController reload];
     [accountViewController emptyWebView];
 }
 
@@ -690,19 +643,15 @@ AppDelegate * app;
     
     [[NSUserDefaults standardUserDefaults] synchronize];   
     
-    [[NSFileManager defaultManager] removeItemAtPath:WalletCachefile error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:MultiaddrCacheFile error:nil];
-
     self.wallet = nil;
     self.latestResponse = nil;
     [transactionsViewController setData:nil];
-    [receiveViewController setWallet:nil];
 }
 
 #pragma mark - Show Screens
 
 // Modal menu
--(void)showWelcome {
+-(void)showWelcome:(BOOL)isCloseable {
     if ([self password]) {
         [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     } else if ([self guid] || [self sharedKey]) {
@@ -711,7 +660,7 @@ AppDelegate * app;
         [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
     }
     
-    [app showModal:welcomeView onDismiss:nil];
+    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil];
 }
 
 -(void)showSendCoins {
@@ -721,8 +670,6 @@ AppDelegate * app;
         
         [sendViewController viewDidLoad];
     }
-    
-    sendViewController.wallet = wallet;
     
     [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
 }
@@ -763,12 +710,11 @@ AppDelegate * app;
 }
 
 -(IBAction)powerClicked:(id)sender {
-    [self showWelcome];
+    [self showWelcome:TRUE];
 }
 
 -(IBAction)signupClicked:(id)sender {
-    
-    [app showModal:newAccountView onDismiss:nil];
+    [app showModal:newAccountView isClosable:TRUE onDismiss:nil];
 }
 
 -(IBAction)loginClicked:(id)sender {
@@ -780,9 +726,11 @@ AppDelegate * app;
     } else if ([self guid] || [self sharedKey]) {
         [self forgetWallet];
         
+        [app showModal:welcomeView isClosable:NO onDismiss:nil];
+        
         [app closeModal];
     } else {
-        [app showModal:pairingInstructionsView onDismiss:nil];
+        [app showModal:pairingInstructionsView isClosable:TRUE onDismiss:nil];
     }
 }
 
@@ -792,9 +740,7 @@ AppDelegate * app;
         
         [receiveViewController viewDidLoad];
     }
-    
-    receiveViewController.wallet = wallet;
-    
+        
     [tabViewController setActiveViewController:receiveViewController animated:TRUE index:1];
 }
 
@@ -835,7 +781,9 @@ AppDelegate * app;
     NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     
     if (guid && sharedKey && password) {
-        self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
+        self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
+        
+        self.wallet.delegate = self;
     }
     
     mainPasswordTextField.text = nil;
@@ -845,7 +793,7 @@ AppDelegate * app;
 
 -(IBAction)refreshClicked:(id)sender {
     if (![self guid] || ![self sharedKey]) {
-        [app showWelcome];
+        [app showWelcome:FALSE];
         return;
     }
     
@@ -916,11 +864,11 @@ AppDelegate * app;
 #pragma mark - Format helpers
 
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {
-    if (fsymbolLocal && latestResponse.symbol.conversion) {
+    if (fsymbolLocal && latestResponse.symbol_local.conversion) {
         @try {
             BOOL negative = false;
             
-            NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol.conversion]];
+            NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)latestResponse.symbol_local.conversion]];
             
             if ([number compare:[NSNumber numberWithInt:0]] < 0) {
                 number = [number decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
@@ -928,17 +876,28 @@ AppDelegate * app;
             }
             
             if (negative)
-                return [@"-" stringByAppendingString:[latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
+                return [@"-" stringByAppendingString:[latestResponse.symbol_local.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]]];
             else
-                return [latestResponse.symbol.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
+                return [latestResponse.symbol_local.symbol stringByAppendingString:[btcFromatter stringFromNumber:number]];
             
         } @catch (NSException * e) {
             NSLog(@"%@", e);
         }
+    } else if (latestResponse.symbol_btc) {
+        NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];
+        
+        NSString * string = [btcFromatter stringFromNumber:number];
+        
+        if ([string length] >= 8) {
+            string = [string substringToIndex:8];
+        }
+        
+        return [string stringByAppendingFormat:@" %@", latestResponse.symbol_btc.symbol];
     }
     
     
-    NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)SATOSHI]];
+    
+    NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:SATOSHI]];
     
     NSString * string = [btcFromatter stringFromNumber:number];
     

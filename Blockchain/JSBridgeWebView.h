@@ -44,24 +44,13 @@
 	comply with the JSBridgeWebViewDelegate.
  */
 @interface JSBridgeWebView : UIWebView <UIWebViewDelegate> {
-
-	/* 
-		The external delegate that will listen to the javascript notifications.
-		The UIWebView delegate is used internally for handling the notifications
-		from javascript. The JSBridge API user does not need to worry about
-		the bridgeDelegate.
-	 */ 
-	id<JSBridgeWebViewDelegate, UIWebViewDelegate> bridgeDelegate;
-
     NSMutableSet * usedIDs;
 }
 
 @property(nonatomic) BOOL isLoaded;
-@property(nonatomic, strong) NSMutableArray * pending_commands;
-
+@property(nonatomic, retain) NSMutableArray * pending_commands;
+@property(nonatomic, retain) NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate> * JSDelegate;
 -(void)reset;
--(void)setJSDelegate:(NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate>*) newDelegate;
--(id)JSdelegate;
 
 -(void)executeJS:(NSString*)formatString,  ...;
 -(NSString*)executeJSSynchronous:(NSString*)formatString,  ...;

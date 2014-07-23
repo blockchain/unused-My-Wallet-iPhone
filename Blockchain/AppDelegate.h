@@ -23,34 +23,20 @@
 
 #import "Wallet.h"
 #import "MultiAddressResponse.h"
-#import "WebSocket.h"
-#import "Reachability.h"
 #import "TabViewController.h"
 #import "ZBarSDK.h"
 #import "PEPinEntryController.h"
 #import "UIModalView.h"
 
 #define SATOSHI 100000000
-#define MultiaddrCacheFile @"multiaddr.cache"
-#define WalletCachefile @"wallet.aes.json"
-#define WebSocketURL @"wss://ws.blockchain.info/inv"
+#define LOADING_TEXT_NOTIFICAITON_KEY @"SetLoadingText"
 #define WebROOT @"https://blockchain.info/"
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
-@class TransactionsViewController, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse;
+@class TransactionsViewController, Wallet, UIFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
 
-typedef enum {
-    TaskGetMultiAddr,
-    TaskGetWallet,
-    TaskSaveWallet,
-    TaskLoadUnconfirmed,
-    TaskGeneratingWallet,
-    TaskLoadExternalURL
-} Task;
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, WebSocketDelegate, ZBarReaderViewDelegate,PEPinEntryControllerDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate,PEPinEntryControllerDelegate> {
     Wallet * wallet;
-    Reachability * reachability;
     
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
@@ -76,6 +62,9 @@ typedef enum {
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
     IBOutlet UIButton * pairLogoutButton;
+    
+    BOOL validateSecondPassword;
+    IBOutlet UILabel * secondPasswordDescriptionLabel;
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     
@@ -91,7 +80,6 @@ typedef enum {
     
     int webScoketFailures;
     int myPin;    
-    int tasks;
     
     @public
     
@@ -100,13 +88,12 @@ typedef enum {
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
 @property (retain, nonatomic) Wallet * wallet;
-@property (retain, strong) MulitAddressResponse * latestResponse;
+@property (retain, nonatomic) MulitAddressResponse * latestResponse;
+@property (nonatomic, retain) NSString * loadingText;
 
-@property (retain, nonatomic) Reachability * reachability;
-@property(nonatomic, strong) ZBarReaderView * readerView;
+@property (nonatomic) BOOL disableBusyView;
 
-@property (retain, strong) IBOutlet MyUIModalView * modalView;
-
+@property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;
@@ -121,35 +108,24 @@ typedef enum {
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showWelcome;
+-(void)showWelcome:(BOOL)isClosable;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
 -(NSString*)password;
 
 //Simple Modal UIVIew
--(void)showModal:(UIView*)contentView onDismiss:(void (^)())onDismiss;
+-(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;
 -(void)closeModal;
--(IBAction)closeModalClicked:(id)sender;
-
--(NSString*)checksumCache;
-
--(void)writeWalletCacheToDisk:(NSString*)payload;
 
 -(NSDictionary*)parseURI:(NSString*)string;
-
--(void)startTask:(Task)task;
--(void)finishTask;
 
 //Wallet Delegate
 -(void)didSetLatestBlock:(LatestBlock*)block;
 -(void)walletDidLoad:(Wallet *)wallet;
 -(void)walletFailedToDecrypt:(Wallet*)wallet;
--(void)walletJSReady;
--(void)didSubmitTransaction;
-
-//Status timer
--(void)checkStatus;
+-(void)networkActivityStart;
+-(void)networkActivityStop;
 
 //Display a message
 - (void)standardNotify:(NSString*)message;
@@ -162,7 +138,7 @@ typedef enum {
 
 //Request Second Password From User
 -(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;
-
+-(void)getPrivateKeyPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;
 
 -(NSString*)formatMoney:(uint64_t)value;
 -(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;
@@ -172,8 +148,6 @@ typedef enum {
 -(void)pushWebViewController:(NSString*)url;
 
 -(void)showSendCoins;
-
--(void)didSubmitTransaction;
 
 -(IBAction)modalBackgroundClicked:(id)sender;
 -(IBAction)receiveCoinClicked:(UIButton *)sender;
@@ -187,6 +161,8 @@ typedef enum {
 -(IBAction)secondPasswordClicked:(id)sender;
 -(IBAction)mainPasswordClicked:(id)sender;
 -(IBAction)refreshClicked:(id)sender;
+
+-(void)setStatus;
 
 @end
 

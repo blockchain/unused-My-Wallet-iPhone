@@ -14,49 +14,42 @@
 #import "AddressBookView.h"
 #import "TabViewController.h"
 #import "UncaughtExceptionHandler.h"
+#import "UITextField+Blocks.h"
 
 @implementation SendViewController
 
-@synthesize wallet;
-@synthesize fromAddress;
-@synthesize readerView;
-
 -(void)dealloc {
+    [btcCodeLabel release];
+    [sendPaymentButton release];
     [amountKeyoboardAccessoryView release];
     [currencyConversionLabel release];
-    [readerView release];
     [toField release];
-    [wallet release];
     [fromField release];
     [labelAddressView release];
     [labelAddressLabel release];
     [labelAddressTextField release];
+    [sendProgressModal release];
+    [sendProgressModalText release];
+    [toFieldContainerField release];
+    
+    self.readerView = nil;
+    self.fromAddresses = nil;
+    
     [super dealloc];
 }
 
--(void)setWallet:(Wallet*)_wallet {
-    
-    [[wallet webView] removeFromSuperview];
-    
-    [wallet release];
-    wallet = _wallet;
-    [wallet retain];
-    
-    self.fromAddress = [[self.wallet activeAddresses] mutableCopy];
-    
-    
-    NSLog(@"Set Wallet");
+-(void)reload {
+    self.fromAddresses = [app.wallet activeAddresses];
     
     [fromField reload];
     
     [fromField setIndex:0];
 }
 
-
 -(IBAction)labelAddressClicked:(id)sender {
     NSString * to = toField.text;
     
-    [wallet addToAddressBook:to label:labelAddressTextField.text];
+    [app.wallet addToAddressBook:to label:labelAddressTextField.text];
     
     [app closeModal];
         
@@ -64,33 +57,61 @@
 }
 
 -(void)reallyDoPayment {
+    uint64_t satoshiValue = [app.wallet parseBitcoinValue:amountField.text];
+    
     NSString * to = toField.text;
     NSString * from = @"";
     if ([fromField index] > 0) {
-        from = [[fromAddress objectAtIndex:[fromField index]-1] addr];
+        from = [self.fromAddresses objectAtIndex:[fromField index]-1];
     }
     
-    NSString * value = amountField.text;
+    transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        @try {
-            if ([app getSecondPasswordBlocking]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    @try {
-                        [wallet sendPaymentTo:to from:from value:value];
-                        
-                        [app showModal:[wallet webView] onDismiss:nil];
-                    } @catch (NSException * e) {
-                        [UncaughtExceptionHandler logException:e];
-                    }
-                });
-            } else {
-                [app standardNotify:@"Cannot send payment without the second password"];
-            }
-        } @catch (NSException * e) {
-            [UncaughtExceptionHandler logException:e];
-        }
-    });
+    [sendPaymentButton setEnabled:FALSE];
+    
+    listener.on_start = ^() {
+        app.disableBusyView = TRUE;
+
+        sendProgressModalText.text = @"Please Wait";
+        
+        [app showModal:sendProgressModal isClosable:TRUE onDismiss:^() {
+            [app.wallet cancelTxSigning];
+        }];
+    };
+    
+    listener.on_begin_signing = ^() {
+        sendProgressModalText.text = @"Signing Inputs";
+    };
+    
+    listener.on_sign_progress = ^(int input) {
+        sendProgressModalText.text = [NSString stringWithFormat:@"Signing Input %d", input];
+    };
+    
+    listener.on_finish_signing = ^() {
+        sendProgressModalText.text = @"Finished Signing Inputs";
+    };
+    
+    listener.on_success = ^() {
+        [app standardNotify:@"Payment Sent!" title:@"Success" delegate:nil];
+        
+        [sendPaymentButton setEnabled:TRUE];
+
+        app.disableBusyView = FALSE;
+        
+        [app closeModal];
+    };
+    
+    listener.on_error = ^(NSString* error) {
+        [sendPaymentButton setEnabled:TRUE];
+
+        app.disableBusyView = FALSE;
+
+        [app closeModal];
+    };
+    
+    [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    
+    [listener release];
 }
 
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {    
@@ -101,7 +122,7 @@
     } else if (buttonIndex == 1) {
         labelAddressLabel.text = to;
         
-        [app showModal:labelAddressView onDismiss:nil];
+        [app showModal:labelAddressView isClosable:TRUE onDismiss:nil];
         
         [labelAddressTextField becomeFirstResponder];
     }
@@ -115,25 +136,25 @@
         return;
     }
     
-    if (![wallet isValidAddress:to]) {
+    if (![app.wallet isValidAddress:to]) {
         [app standardNotify:@"Invalid to bitcoin address"];
         return;
     }
             
-    double value = [amountField.text doubleValue];
+    uint64_t value = [app.wallet parseBitcoinValue:amountField.text];
     if (value <= 0) {
-        [app standardNotify:@"You must enter a value greter than zero"];
+        [app standardNotify:@"Invalid Send Value"];
         return;
     }
     
-    int countPriv = [[wallet activeAddresses] count];
+    int countPriv = [[app.wallet activeAddresses] count];
     
     if (countPriv == 0) {
         [app standardNotify:@"You have no active bitcoin addresses available for sending"];
         return;
     }
     
-    if ([[wallet.addressBook objectForKey:to] length] == 0 && ![wallet.allAddresses containsObject:to]) {
+    if ([[app.wallet.addressBook objectForKey:to] length] == 0 && ![app.wallet.allAddresses containsObject:to]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?" 
                                                         message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", to]
                                                        delegate:nil 
@@ -151,7 +172,7 @@
 -(void)doCurrencyConversion {
     uint64_t amount = SATOSHI;
     if ([amountField.text length] > 0)
-        amount = [amountField.text doubleValue] * SATOSHI;
+        amount = [app.wallet parseBitcoinValue:amountField.text];
     
     currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
 
@@ -206,37 +227,59 @@
 -(void)initQRCodeView {
     self.readerView = [[ZBarReaderView new] autorelease];
     
-    [readerView start];
+    [self.readerView start];
     
-    [readerView setReaderDelegate:self];
+    [self.readerView setReaderDelegate:self];
     
-    [app showModal:readerView onDismiss:^() {
-        [readerView stop];
+    [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
+        [self.readerView stop];
         
         self.readerView = nil;
-        
-        [wallet cancelTxSigning];
     }];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    if (app.latestResponse.symbol_btc)
+        btcCodeLabel.text = app.latestResponse.symbol_btc.symbol;
+    
+    sendProgressModalText.text = nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
+        
+        sendProgressModalText.text = [notification object];
+    }];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     
+    [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
+        return FALSE;
+    }];
+    
     fromField.valueFont = [UIFont systemFontOfSize:14];
     
+    fromField.valueColor = [UIColor darkGrayColor];
+    
     amountField.inputAccessoryView = amountKeyoboardAccessoryView;
-
+    
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);
     }
     else {
         self.view.frame = CGRectMake(0, 0, 320, 361);
     }
+    
+    [self reload];
 }
 
 -(NSUInteger)countForValueField:(MultiValueField*)valueField {
     if (valueField == fromField) {
-        return [fromAddress count]+1;
+        return [self.fromAddresses count]+1;
     }
     return 0;
 }
@@ -251,7 +294,7 @@
             return @"Any Address";
         }
         
-        return [wallet labelForAddress:[[fromAddress objectAtIndex:index-1] addr]];
+        return [app.wallet labelForAddress:[self.fromAddresses objectAtIndex:index-1]];
     }
     
     return @"";
@@ -262,12 +305,12 @@
     AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
     addressBookView.delegate = self;
 
-    [app showModal:addressBookView onDismiss:^() {
-        [readerView stop];
+    [app showModal:addressBookView isClosable:TRUE onDismiss:^() {
+        [self.readerView stop];
         
         self.readerView = nil;
         
-        [wallet cancelTxSigning];
+        [app.wallet cancelTxSigning];
     }];
     
     [addressBookView release];

@@ -26,22 +26,25 @@
 @class Wallet, MultiValueField;
 
 @interface SendViewController : UIViewController <MultiValueFieldDataSource, ZBarReaderViewDelegate, AddressBookDelegate, UIAlertViewDelegate> {
-    Wallet * wallet;
     IBOutlet MultiValueField * fromField;
+    IBOutlet UITextField * toFieldContainerField;
     IBOutlet UITextField * toField;
     IBOutlet UITextField * amountField;
    
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
 
+    IBOutlet UIButton * sendPaymentButton;
     IBOutlet UIView * labelAddressView;
     IBOutlet UILabel * labelAddressLabel;
     IBOutlet UITextField * labelAddressTextField;
+    IBOutlet UIView * sendProgressModal;
+    IBOutlet UILabel * sendProgressModalText;
+    IBOutlet UILabel * btcCodeLabel;
 }
 
-@property(nonatomic, strong) Wallet * wallet;
-@property(nonatomic, strong) NSMutableArray * fromAddress;
-@property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, retain) NSArray * fromAddresses;
+@property(nonatomic, retain) ZBarReaderView * readerView;
 
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
@@ -53,5 +56,7 @@
 
 -(void)setToAddress:(NSString*)string;
 -(void)setAmount:(NSString*)amount;
+
+-(void)reload;
 
 @end

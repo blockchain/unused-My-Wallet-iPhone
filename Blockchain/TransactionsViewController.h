@@ -35,6 +35,7 @@
 @property(nonatomic, retain) MulitAddressResponse * data;
 @property(nonatomic, retain) LatestBlock * latestBlock;
 
+-(void)reload;
 -(void)setText;
 -(UITableView*)tableView;
 

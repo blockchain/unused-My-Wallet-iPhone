@@ -14,10 +14,12 @@
 
 #define PI 3.14159265
 
-CGPoint arrowPositions[4] = {28.0f, 29.0f,
-    107.0f, 20.0f,
-    190.0f, 19.0f,
-    270.0f, 27.0f};
+CGPoint arrowPositions[4] = {
+    33.0f, 46.0f,
+    112.0f, 46.0f,
+    193.0f, 46.0f,
+    274.0f, 46.0f
+};
 
 @implementation TabViewcontroller
 
@@ -74,8 +76,6 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	 selector:@selector(keyboardWillHide:)
 	 name:UIKeyboardWillHideNotification
 	 object:nil];
-    
-    // [self.view setBackgroundColor:[UIColor greenColor]];
 }
 
 -(void)setActiveViewController:(UIViewController *)nviewcontroller {
@@ -148,7 +148,9 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
         [[contentView layer] addAnimation:animation forKey:@"SwitchToView1"]; 
     }
 
-    selectedIndex = newIndex;
+    NSLog(@"setActiveViewController Animated");
+
+    [self setSelectedIndex:newIndex];
 }
 
 -(BOOL)backButtonEnabled {
@@ -237,6 +239,41 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 	[UIView commitAnimations];
 }
 
+-(void)setSelectedIndex:(int)nindex {
+	desiredIndex = nindex;
+    
+	arrowStepDuration = 0.2f / abs(desiredIndex - selectedIndex);
+    
+	[self moveArrow];
+}
+
+-(void)arrowAnimationStopped {
+	[self moveArrow];
+}
+
+-(void)moveArrow {
+    
+	if (desiredIndex == selectedIndex)
+        return;
+	else if (desiredIndex > selectedIndex) {
+		++selectedIndex;
+	} else {
+		--selectedIndex;
+	}
+    
+    NSLog(@"moveArrow %@", arrow);
+    
+	[UIView beginAnimations:@"MoveArrow" context:nil];
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationDuration:arrowStepDuration];
+	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
+	[UIView setAnimationDidStopSelector:@selector(arrowAnimationStopped)];
+	arrow.frame = CGRectMake(arrowPositions[selectedIndex].x, arrowPositions[selectedIndex].y, arrow.frame.size.width, arrow.frame.size.height);
+	[UIView commitAnimations];
+}
+
+
+
 -(IBAction)backClicked:(id)sender {
 	
 	[UIView beginAnimations:@"bumpButton" context:nil];
@@ -251,6 +288,12 @@ CGPoint arrowPositions[4] = {28.0f, 29.0f,
 }
 
 -(void)dealloc {
+    [arrow release];
+    [contentView release];
+    [footer release];
+    [header release];
+    [nextButton release];
+    [backButton release];
 	[oldViewController release];
 	[activeViewController release];
 	[super dealloc];

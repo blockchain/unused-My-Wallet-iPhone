@@ -60,6 +60,14 @@
 
 @implementation JSBridgeWebView
 
+-(void)dealloc {
+    [self stopLoading];
+    self.delegate = nil;
+    self.JSDelegate = nil;
+    [self.pending_commands release];
+    [super dealloc];
+}
+
 -(void)executeJSWithCallback:(void (^)(NSString * result))callback command:(NSString*)formatString,  ...
 {
     va_list args;
@@ -127,7 +135,6 @@
 	{
         self.pending_commands = [NSMutableArray array];
         [self setDelegate:self];
-		bridgeDelegate = nil;
         usedIDs = [[NSMutableSet alloc] init];
 	}
 	
@@ -138,7 +145,6 @@
 {
     self.pending_commands = [NSMutableArray array];
     [self setDelegate:self];
-    bridgeDelegate = nil;
     usedIDs = [[NSMutableSet alloc] init];
 }
 
@@ -152,7 +158,6 @@
 	{
         self.pending_commands = [NSMutableArray array];
         [self setDelegate:self];
-		bridgeDelegate = nil;
         usedIDs = [NSMutableSet set];
 	}
 	
@@ -163,33 +168,6 @@
     usedIDs = [NSMutableSet set];
 }
 
-/*
-	This is the reimplementation of the superclass setter method for the delegate property.
-	This reimplementation hides the internal functionality of the class.
- 
-	It checks if the newDelegate object conforms to the JSBridgeWebViewDelegate.
- */
--(void) setJSDelegate:(NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate>*) newDelegate
-{
-	if([newDelegate conformsToProtocol:@protocol(JSBridgeWebViewDelegate)])
-	{
-		bridgeDelegate  = (id<JSBridgeWebViewDelegate, UIWebViewDelegate>) newDelegate;
-	} else 
-	{
-		assert(@"The delegate should comforms to the JSBridgeWebViewDelegate protocol.");
-	}
-}
-
-/*
-	This is the reimplementation of the superclass getter method for the delegate property.
- 
-	The method returns the bridgeDelegate object. The regular super.delegate object is used 
-	internally only and it is set to self.
- */
--(id) JSdelegate
-{
-	return bridgeDelegate;
-}
 
 /*
 	Verifies if the JS is trying to communicate. This verification is done
@@ -276,6 +254,8 @@
 
 - (void)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary success:(void (^)(id))success error:(void (^)(id))error
 {
+    //NSLog(@"didReceiveJSNotificationWithDictionary: %@", dictionary);
+    
     NSString * function = (NSString*)[dictionary objectForKey:@"function"];
         
     BOOL successArg = [[dictionary objectForKey:@"success"] isEqualToString:@"TRUE"];
@@ -283,6 +263,32 @@
     
     int componentsCount = [[function componentsSeparatedByString:@":"] count]-1;
 
+    __block int retain = 0;
+
+    if (success || errorArg) {
+        [webview retain];
+        [self.JSDelegate retain];
+        ++retain;
+    }
+    
+    void (^_success)(id) = ^(id object) {
+        success(object);
+        
+        if (retain > 0) {
+            [webview release];
+            [self.JSDelegate release];
+        }
+    };
+    
+    void (^_error)(id) = ^(id object) {
+        error(object);
+        
+        if (retain > 0) {
+            [webview release];
+            [self.JSDelegate release];
+        }
+    };
+    
     if (successArg) {
         function = [function stringByAppendingString:@"success:"];
     }
@@ -293,14 +299,14 @@
     
     if (function != nil) {
         SEL selector = NSSelectorFromString(function);
-        if ([self.JSdelegate respondsToSelector:selector]) {
+        if ([self.JSDelegate respondsToSelector:selector]) {
             
-            NSMethodSignature * sig = [self.JSdelegate methodSignatureForSelector:selector];
+            NSMethodSignature * sig = [self.JSDelegate methodSignatureForSelector:selector];
             
             if (sig) {
                 NSInvocation* invo = [NSInvocation invocationWithMethodSignature:sig];
                 
-                [invo setTarget:self.JSdelegate];
+                [invo setTarget:self.JSDelegate];
                 [invo setSelector:selector];
                 
                 int index = 2;
@@ -330,19 +336,19 @@
                 }
                 
                 if (successArg) {
-                    [invo setArgument:&success atIndex:index];
+                    [invo setArgument:&_success atIndex:index];
                     ++index;
                 }
                 
                 if (errorArg) {
-                    [invo setArgument:&error atIndex:index];
+                    [invo setArgument:&_error atIndex:index];
                     ++index;
                 }
                                 
                 [invo invoke];
-            } else {
-                NSLog(@"!!! JSdelegate does not respond to selector %@", function);
             }
+        } else {
+            NSLog(@"!!! JSdelegate does not respond to selector %@", function);
         }
     }
     
@@ -357,8 +363,7 @@
  */
 - (BOOL)webView:(UIWebView *)p_WebView  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
 {
-    
-   // NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
+   NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
     
 	// Checks if it is a JS notification. It returns the ID ob the JSON object in the JS code. Returns nil if it is not.
 	NSArray * IDArray = [self getJSNotificationIds:[request URL]];
@@ -379,7 +384,7 @@
                     NSDictionary* dicTranslated = [self translateDictionary:jsonDic];
                     
                     // Calls the delegate method with the notified object.
-                    if(bridgeDelegate)
+                    if(self.JSDelegate)
                     {
                         [self webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
@@ -431,19 +436,19 @@
     
     self.isLoaded = true;
     
-    if ([bridgeDelegate respondsToSelector:@selector(webViewDidFinishLoad:)])
-        [bridgeDelegate webViewDidFinishLoad:webView];
+    if ([self.JSDelegate respondsToSelector:@selector(webViewDidFinishLoad:)])
+        [self.JSDelegate webViewDidFinishLoad:webView];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"JSBridgeWebView Did fail %@", error);
     
-    if ([bridgeDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)])
-        [bridgeDelegate webView:webView didFailLoadWithError:error];
+    if ([self.JSDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)])
+        [self.JSDelegate webView:webView didFailLoadWithError:error];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    if ([bridgeDelegate respondsToSelector:@selector(webViewDidStartLoad:)])
-        [bridgeDelegate webViewDidStartLoad:webView];
+    if ([self.JSDelegate respondsToSelector:@selector(webViewDidStartLoad:)])
+        [self.JSDelegate webViewDidStartLoad:webView];
 }
 @end

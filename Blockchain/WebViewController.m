@@ -37,11 +37,19 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    [app startTask:TaskLoadExternalURL];
+    app.loadingText = @"Loading External Page";
+    
+    [app networkActivityStart];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [app finishTask];
+    [app networkActivityStop];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [app standardNotify:[error localizedDescription]];
+    
+    [app networkActivityStop];
 }
 
 -(void)addCookiesToRequest:(NSMutableURLRequest*)request {
@@ -68,16 +76,12 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [app finishTask];
-
-    [app standardNotify:[error localizedDescription]];
-}
-
 -(void)loadURL:(NSString*)url {
     
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
     [self addCookiesToRequest:request];
+   
     [webView loadRequest:request];
 }
 
@@ -86,6 +90,9 @@
     [super viewDidLoad];
     
     webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    webView.delegate = self;
+    
 	[self.view addSubview:webView];
     
     // Hide the imageViews?

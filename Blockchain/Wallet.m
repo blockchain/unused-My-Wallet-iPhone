@@ -11,6 +11,11 @@
 #import "AppDelegate.h"
 #import "Transaction.h"
 #import "NSString+NSString_EscapeQuotes.h"
+#import "MultiAddressResponse.h"
+#import "UncaughtExceptionHandler.h"
+
+@implementation transactionProgressListeners
+@end
 
 @implementation Key
 @synthesize addr;
@@ -32,7 +37,6 @@
 @implementation Wallet
 
 @synthesize delegate;
-@synthesize secondPassword;
 @synthesize password;
 @synthesize webView;
 @synthesize sharedKey;
@@ -60,7 +64,7 @@
 }
 
 -(BOOL)isDoubleEncrypted {
-    return [[self.webView executeJSSynchronous:@"MyWallet.getDoubleEncryption()"] isEqualToString:@"TRUE"];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getDoubleEncryption()"] boolValue];
 }
 
 -(void)getHistory {
@@ -68,106 +72,148 @@
 }
 
 -(void)cancelTxSigning {
-    [webView stringByEvaluatingJavaScriptFromString:@"cancel();"];
+    [self.webView executeJSSynchronous:@"MyWalletPhone.cancelTxSigning();"];
 }
 
--(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress value:(NSString*)value {
+-(void)tx_on_success:(NSString*)txProgressID {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
     
+    if (listener) {
+        if (listener.on_success) {
+            listener.on_success();
+        }
+    }
 }
 
+-(void)tx_on_start:(NSString*)txProgressID {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
+    
+    if (listener) {
+        if (listener.on_start) {
+            listener.on_start();
+        }
+    }
+}
+
+-(void)tx_on_error:(NSString*)txProgressID error:(NSString*)error {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
+    
+    if (listener) {
+        if (listener.on_error) {
+            listener.on_error(error);
+        }
+    }
+}
+
+-(void)tx_on_begin_signing:(NSString*)txProgressID {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
+    
+    if (listener) {
+        if (listener.on_begin_signing) {
+            listener.on_begin_signing();
+        }
+    }
+}
+
+-(void)tx_on_sign_progress:(NSString*)txProgressID input:(NSString*)input {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
+    
+    if (listener) {
+        if (listener.on_sign_progress) {
+            listener.on_sign_progress([input integerValue]);
+        }
+    }
+}
+
+-(void)tx_on_finish_signing:(NSString*)txProgressID {
+    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
+    
+    if (listener) {
+        if (listener.on_finish_signing) {
+            listener.on_finish_signing();
+        }
+    }
+}
+
+-(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress satoshiValue:(NSString*)satoshiValue listener:(transactionProgressListeners*)listener {
+    
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSend(\"%@\", \"%@\", \"%@\")", [fromAddress escapeDoubleQuotes], [toAddress escapeDoubleQuotes], [satoshiValue escapeDoubleQuotes]];
+        
+    [self.transactionProgressListeners setObject:listener forKey:txProgressID];
+}
 
 // generateNewAddress
--(void)generateNewKey:(void (^)(Key * key))callback {
-    [self.webView executeJSWithCallback:^(NSString * encoded_key) {
-        NSArray *components = [[webView stringByEvaluatingJavaScriptFromString:encoded_key] componentsSeparatedByString:@"|"];
-        
-        if ([components count] == 2) {
-            Key * key = [[[Key alloc] init] autorelease];
-            
-            key.addr = [components objectAtIndex:0];
-            key.priv = [components objectAtIndex:1];
-            
-            callback(key);
-        }
-    } command:@"MyWalletPhone.generateNewKey()"];
+-(void)generateNewKey {
+    [self.webView executeJS:@"MyWalletPhone.generateNewKey()"];
 }
-
 
 -(void)loadJS {
     NSError * error = nil;
-    NSString * bitcoinJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bitcoinjs" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * blockchainJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"blockchainapi" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * bootstrapJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"min.js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * jqueryJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"jquery" ofType:@".js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * signerJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"signer" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * sharedJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"shared" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * walletJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
-    NSString * bridgeJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"bridge" ofType:@"js"] encoding:NSUTF8StringEncoding error:&error];
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
-    
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bitcoinjs}" withString:bitcoinJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${blockchainapi}" withString:blockchainJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bootstrap}" withString:bootstrapJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${jquery}" withString:jqueryJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${signer}" withString:signerJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${shared}" withString:sharedJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${wallet}" withString:walletJS];
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${bridge}" withString:bridgeJS];
 
-    if (self.guid && self.sharedKey && self.password) {
+    
+    NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
+                       
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${resource_url}" withString:[baseURL absoluteString]];
+    
+    if (self.guid && self.sharedKey) {
         walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\" data-sharedkey=\"%@\">", self.guid, self.sharedKey]];
+    } else if (self.guid) {
+        walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\">", self.guid]];
     }
     
-    // Break here to debug js
+    [webView loadHTMLString:walletHTML baseURL:baseURL];
     
-    [webView loadHTMLString:walletHTML baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]]];
-    
+    /*
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
     }
             
-    [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];
+    [webView setBackgroundColor:[UIColor colorWithRed:246.0f/255.0f green:246.0f/255.0f blue:246.0f/255.0f alpha:1.0f]];*/
+}
+
+-(void)parsePairingCode:(NSString*)code {
+    [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]];
 }
 
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [app setAccountData:dict[@"guid"] sharedKey:dict[@"sharedKey"] password:dict[@"password"]];
+    if ([delegate respondsToSelector:@selector(didParsePairingCode:)])
+        [delegate didParsePairingCode:dict];
 }
 
 - (void)errorParsingPairingCode:(NSString *)message
 {
-    NSLog(@"error message: %@", message);
+    if ([delegate respondsToSelector:@selector(errorParsingPairingCode:)])
+        [delegate errorParsingPairingCode:message];
 }
 
 
 #pragma mark Init Methods
 
 //Called When Reading QR Pairing
--(id)initWithEncryptedQRString:(NSString*)encryptedQRString {
-    
+-(id)init {
     if ([super init]) {
+        self.transactionProgressListeners = [NSMutableDictionary dictionary];
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
         [webView setJSDelegate:self];
         
         [self loadJS];
-        
-        [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode(\"%@\");", [encryptedQRString escapeDoubleQuotes]]];
     }
     
-    return  self;
+    return self;
 }
 
 //Called when entering guid manually
--(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey {
+-(id)initWithGuid:(NSString *)_guid password:(NSString*)_password {
     if ([super init]) {
+        self.transactionProgressListeners = [NSMutableDictionary dictionary];
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
         
         [webView setJSDelegate:self];
         
         self.guid = _guid;
-        self.sharedKey = _sharedKey;
+        self.password = _password;
       
         [self loadJS];
     }
@@ -177,6 +223,7 @@
 // This is only called when creating a new account,
 -(id)initWithPassword:(NSString*)fpassword {
     if ([super init]) {
+        self.transactionProgressListeners = [NSMutableDictionary dictionary];
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
                 
         [webView setJSDelegate:self];
@@ -188,7 +235,7 @@
         [self loadJS];
 
         //Generate the first Address
-        [self generateNewKey:nil];
+        [self generateNewKey];
     }
     return  self;
 }
@@ -196,6 +243,7 @@
 -(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
     
     if ([super init]) {
+        self.transactionProgressListeners = [NSMutableDictionary dictionary];
         self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
         
         [webView setJSDelegate:self];
@@ -211,8 +259,12 @@
     return self;
 }
 
+-(BOOL)validateSecondPassword:(NSString*)secondPassword {
+    return [[self.webView executeJSSynchronous:@"MyWallet.validateSecondPassword(\"%@\")", [secondPassword escapeDoubleQuotes]] boolValue];
+}
+
 -(BOOL)isWatchOnlyAddress:(NSString*)address {
-    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeDoubleQuotes]] isEqualToString:@"true"];
+    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeDoubleQuotes]] boolValue];
 }
 
 
@@ -225,11 +277,8 @@
 }
 
 -(BOOL)isValidAddress:(NSString*)string {
-    NSString * result = [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"parseAddress('%@');", string]];
-    
-    return ([result length] > 0);
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.isValidAddress(\"%@\");", [string escapeDoubleQuotes]] boolValue];
 }
-
 
 -(NSArray*)allAddresses {
     NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllAddresses())"];
@@ -253,21 +302,19 @@
 
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address {
-    
-    //TODO escape properly
     [self.webView executeJS:@"MyWallet.setLabel(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
 }
 
 -(void)archiveAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.archiveAddr()", address];
+    [self.webView executeJS:@"MyWallet.archiveAddr(\"%@\")", [address escapeDoubleQuotes]];
 }
 
 -(void)unArchiveAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.unArchiveAddr()", address];
+    [self.webView executeJS:@"MyWallet.unArchiveAddr(\"%@\")", [address escapeDoubleQuotes]];
 }
 
 -(void)removeAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.deleteAddress()", address];
+    [self.webView executeJS:@"MyWallet.deleteAddress(\"%@\")", [address escapeDoubleQuotes]];
 }
 
 -(uint64_t)getAddressBalance:(NSString*)address {
@@ -275,15 +322,7 @@
 }
 
 -(BOOL)addKey:(NSString*)privateKeyString {
-    
-    //TODO escape properly
-    NSString * returnVal = [self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeDoubleQuotes]];
-    
-    if ([returnVal isEqualToString:@"TRUE"]) {
-        return true;
-    } else {
-        return false;
-    }
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeDoubleQuotes]] boolValue];
 }
 
 -(NSDictionary*)addressBook {
@@ -300,40 +339,6 @@
 
 -(void)log:(NSString*)message {
     NSLog(@"console.log: %@", message);
-}
-
--(void)didFailToDecryptWallet:(NSString*)message {
-    
-    NSLog(@"Failed To Decrypt Wallet: %@", message);
-    
-    if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
-        [delegate walletFailedToDecrypt:self];
-    
-}
-
--(void)didDecryptWallet:(NSString*)walletJSON {
-    NSLog(@"didDecryptWallet:");
-    
-    if ([delegate respondsToSelector:@selector(walletDidLoad:)])
-        [delegate walletDidLoad:self];
-}
-
-#pragma mark WebView Delegate Methods
-- (BOOL)webView:(UIWebView *)webView2 shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
-    
-    NSString *requestString = [[[request URL] absoluteString] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-    
-    NSLog(@"Request URL %@", [request URL]);
-    
-    if ([requestString hasPrefix:@"log://"]) {
-        NSLog(@"UIWebView console: %@", [webView2 stringByEvaluatingJavaScriptFromString:@"getMsg();"]);
-        return NO;
-    } else if ([requestString hasPrefix:@"did-submit-tx://"]) {
-        if ([delegate respondsToSelector:@selector(didSubmitTransaction)])
-        [delegate didSubmitTransaction];
-    }
-    
-    return YES;
 }
 
 -(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
@@ -357,7 +362,7 @@
     
     NSDictionary * dict = [Wallet parseJSON:multiAddrJSON];
     
-    MulitAddressResponse * response = [[MulitAddressResponse alloc] init];
+    MulitAddressResponse * response = [[[MulitAddressResponse alloc] init] autorelease];
     
     response.transactions = [NSMutableArray array];
 
@@ -374,12 +379,20 @@
     response.n_transactions = [[dict objectForKey:@"n_transactions"] longValue];
     response.total_sent = [[dict objectForKey:@"total_sent"] longLongValue];
     response.addresses = [dict objectForKey:@"addresses"];
-
-# warning finish this
-//    CurrencySymbol *currencySymbol = [CurrencySymbol alloc]
-//    
-//    [[dict objectForKey:@"symbol"] objectForKey:@""];
     
+    {
+        NSDictionary * symbolLocalDict = [dict objectForKey:@"symbol_local"] ;
+        if (symbolLocalDict) {
+            response.symbol_local = [CurrencySymbol symbolFromDict:symbolLocalDict];
+        }
+    }
+    
+    {
+        NSDictionary * symbolBTCDict = [dict objectForKey:@"symbol_btc"] ;
+        if (symbolBTCDict) {
+            response.symbol_btc = [CurrencySymbol symbolFromDict:symbolBTCDict];
+        }
+    }
     
     [delegate didGetMultiAddressResponse:response];
 }
@@ -401,18 +414,25 @@
     } command:@"MyWallet.getTotalSent()"];
 }
 
+-(void)on_tx {
+    NSLog(@"on_tx");
+
+    [app playBeepSound];
+}
 
 -(void)did_multiaddr {
-    NSLog(@"Did MultiAddr");
+    NSLog(@"did_multiaddr");
     
     [self getFinalBalance];
     
     [self.webView executeJSWithCallback:^(NSString * multiAddrJSON) {
-        
         [self parseMultiAddrJSON:multiAddrJSON];
-    
-        [[NSUserDefaults standardUserDefaults] setObject:multiAddrJSON forKey:@"multiaddr"];
     } command:@"JSON.stringify(MyWalletPhone.getMultiAddrResponse())"];
+}
+
+
+-(void)on_block {
+    NSLog(@"on_block");
 }
 
 -(void)did_set_latest_block {
@@ -428,26 +448,89 @@
     } command:@"JSON.stringify(MyWallet.getLatestBlock())"];
 }
 
--(void)getSecondPassword:(NSString*)title success:(void(^)(id))_success error:(void(^)(id))_error {
+-(void)getPassword:(NSString*)selector success:(void(^)(id))_success {
+    if ([selector isEqualToString:@"#second-password-modal"]) {
+        [app getSecondPassword:^(NSString * _secondPassword) {
+            _success(_secondPassword);
+        } error:nil];
+    } else if ([selector isEqualToString:@"#import-private-key-password"]) {
+        [app getPrivateKeyPassword:^(NSString * _secondPassword) {
+            _success(_secondPassword);
+        } error:nil];
+    } else {
+        @throw [NSException exceptionWithName:@"Unknown Modal" reason:[NSString stringWithFormat:@"Unknown Modal Selector %@", selector] userInfo:nil];
+    }
+}
+
+-(void)getPassword:(NSString*)title success:(void(^)(id))_success error:(void(^)(id))_error {
     [app getSecondPassword:^(NSString * _secondPassword) {
+        
+        NSLog(@"getPassword: Success");
+        
         _success(_secondPassword);
     } error:^(NSString * errorMessage) {
+        NSLog(@"getPassword error %@", errorMessage);
+
         _error(errorMessage);
     }];
 }
 
--(void)did_decrypt {
-    NSLog(@"Did Decrypt");
+
+-(void)setLoadingText:(NSString*)message {    
+    [[NSNotificationCenter defaultCenter] postNotificationName:LOADING_TEXT_NOTIFICAITON_KEY object:message];
+}
+
+-(uint64_t)parseBitcoinValue:(NSString*)input {
+    return [[self.webView executeJSSynchronous:@"precisionToSatoshiBN(\"%@\").toString()", input] longLongValue];
+}
+
+-(void)on_generate_key:(NSString*)address {
+    NSLog(@"on_generate_key");
+    
+    [delegate didGenerateNewAddress:address];
 }
 
 -(void)error_restoring_wallet {
-    NSLog(@"Error Restoring Wallet");
+    NSLog(@"error_restoring_wallet");
+    if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
+        [delegate walletFailedToDecrypt:self];
+}
+
+-(void)did_decrypt {
+    NSLog(@"did_decrypt");
+    
+    self.sharedKey = [self.webView executeJSSynchronous:@"MyWallet.getSharedKey()"];
+    self.guid = [self.webView executeJSSynchronous:@"MyWallet.getGuid()"];
+
+    if ([delegate respondsToSelector:@selector(walletDidLoad:)])
+        [delegate walletDidLoad:self];
+}
+
+-(void)on_backup_wallet_error {
+    NSLog(@"on_backup_wallet_error");
+ 
+    if ([delegate respondsToSelector:@selector(didFailBackupWallet:)])
+        [delegate didFailBackupWallet:self];
+}
+
+-(void)on_backup_wallet_success {
+    NSLog(@"on_backup_wallet_success");
+    
+    if ([delegate respondsToSelector:@selector(didBackupWallet:)])
+        [delegate didBackupWallet:self];
+
+}
+
+-(void)did_fail_set_guid {
+    NSLog(@"did_fail_set_guid");
 }
 
 -(void)did_set_guid {
-    NSLog(@"Did Set GUID");
+    NSLog(@"did_set_guid");
     
-    [self.webView executeJS:[NSString stringWithFormat:@"setPassword(\"%@\")", self.password]];
+    if (self.password) {
+        [self.webView executeJS:[NSString stringWithFormat:@"setPassword(\"%@\")", self.password]];
+    }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -468,15 +551,20 @@
 }
 
 -(void)dealloc {
-    [self.password release];
-    
+    self.guid = nil;
+    self.sharedKey = nil;
+    self.password = nil;
+    self.delegate = nil;
     self.webView = nil;
+    self.transactionProgressListeners = nil;
     
     [super dealloc];
 }
 
 //Callbacks from javascript localstorage
 -(void)getKey:(NSString*)key success:(void (^)(NSString*))success {
+    NSLog(@"getKey:%@", key);
+    
     success([[NSUserDefaults standardUserDefaults] valueForKey:key]);
 }
 
@@ -500,5 +588,74 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+-(void)makeNotice:(NSString*)type id:(NSString*)_id message:(NSString*)message {
+    if ([type isEqualToString:@"error"]) {
+        [app standardNotify:message title:@"Error" delegate:nil];
+    } else if ([type isEqualToString:@"info"]) {
+        [app standardNotify:message title:@"Information" delegate:nil];
+    }
+}
+
+-(void)jsUncaughtException:(NSString*)message url:(NSString*)url lineNumber:(NSNumber*)lineNumber {
+    
+    NSString * decription = [NSString stringWithFormat:@"Javscript Exception: %@ File: %@ lineNumber: %@", message, url, lineNumber];
+    
+    NSException * exception = [[NSException alloc] initWithName:@"Uncaught Exception" reason:decription userInfo:nil];
+    
+    [UncaughtExceptionHandler logException:exception];
+    
+    [exception release];
+    
+    [app standardNotify:decription];
+}
+
+-(CurrencySymbol*)getLocalSymbol {
+    return [CurrencySymbol symbolFromDict:[Wallet parseJSON:[webView executeJSSynchronous:@"JSON.stringify(symbol_local)"]]];
+}
+
+-(CurrencySymbol*)getBTCSymbol {
+    return [CurrencySymbol symbolFromDict:[Wallet parseJSON:[webView executeJSSynchronous:@"JSON.stringify(symbol_btc)"]]];
+}
+
+-(void)on_add_private_key:(NSString*)address {
+    [app standardNotify:[NSString stringWithFormat:@"Imported Private Key %@", address] title:@"Success" delegate:nil];
+}
+
+-(void)on_error_adding_private_key:(NSString*)error {
+    [app standardNotify:error];
+}
+
+-(void)ajaxStart {
+    if ([delegate respondsToSelector:@selector(networkActivityStart)])
+        [delegate networkActivityStart];
+}
+-(void)ajaxStop {
+    if ([delegate respondsToSelector:@selector(networkActivityStop)])
+        [delegate networkActivityStop];
+}
+
+-(void)clearDelegates {
+    self.webView.JSDelegate = nil;
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
+    self.webView = nil;
+    self.delegate = nil;
+}
+
+-(NSInteger)getWebsocketReadyState {
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.getWsReadyState()"] integerValue];
+}
+
+-(void)ws_on_close {
+    NSLog(@"ws_on_close");
+
+    [app setStatus];
+}
+
+-(void)ws_on_open {
+    NSLog(@"ws_on_open");
+    
+    [app setStatus];
+}
 
 @end

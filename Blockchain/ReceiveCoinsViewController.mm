@@ -15,7 +15,6 @@
 @implementation ReceiveCoinsViewController
 
 @synthesize readerView;
-@synthesize wallet;
 @synthesize activeKeys;
 @synthesize archivedKeys;
 
@@ -43,24 +42,9 @@
     for(ZBarSymbol *sym in syms) {
         NSString * privateKey = sym.data;
         
-//TODO
-        /*
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-            if (!isDoubleEncrypted || [app getSecondPasswordBlocking]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    if ([wallet addKey:privateKey]) {
-                        [self reload];
-                        
-                        [app standardNotify:[NSString stringWithFormat:@"Added bitcoin address"] title:@"Success" delegate:nil];
-                    } else {
-                        [app standardNotify:@"Error importing private key"];
-                    }
-                });
-            } else {
-                [app standardNotify:@"Cannot Generate new address without the second password"];
-            }
-        });*/
+        [app.wallet addKey:privateKey];
+        
+        break;
     }
     
     [app closeModal];
@@ -81,12 +65,12 @@
     
     [readerView setReaderDelegate:self];
     
-    [app showModal:readerView onDismiss:^() {
+    [app showModal:readerView isClosable:TRUE onDismiss:^() {
         [readerView stop];
         
         self.readerView = nil;
         
-        [wallet cancelTxSigning];
+        [app.wallet cancelTxSigning];
     }];
 }
 
@@ -98,6 +82,8 @@
     else {
         self.view.frame = CGRectMake(0, 0, 320, 361);
     }
+
+    [self reload];
 }
 
 -(void)reload {
@@ -113,29 +99,8 @@
     [tableView reloadData];
 }
 
--(void)setWallet:(Wallet *)_wallet {
-    [wallet release];
-    wallet = _wallet;
-    [wallet retain];
-    
-    [self reload];
-}
-
 -(IBAction)generateNewAddressClicked:(id)sender {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        if ([app getSecondPasswordBlocking]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                   [wallet generateNewKey:^(Key* key) {
-                    
-                       [self reload];
-                       
-                       [app standardNotify:[NSString stringWithFormat:@"Generated new bitcoin address %@", key.addr] title:@"Success" delegate:nil];
-                    }];
-                });
-        } else {
-            [app standardNotify:@"Cannot Generate new address without the second password"];
-        }
-    });
+    [app.wallet generateNewKey];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -169,7 +134,8 @@
     }
     
     NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
-    [wallet setLabel:labelTextField.text ForAddress:addr];
+   
+    [app.wallet setLabel:labelTextField.text ForAddress:addr];
         
     [self reload];
     
@@ -193,7 +159,6 @@
     [aTextField resignFirstResponder];
     return YES;
 }
-
 
 -(NSString*)uriURL {
     
@@ -222,7 +187,7 @@
 
     uint64_t amount = SATOSHI;
     if ([requestAmountTextField.text length] > 0)
-        amount = [requestAmountTextField.text doubleValue] * SATOSHI;
+        amount = [app.wallet parseBitcoinValue:requestAmountTextField.text];
     
     currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
     
@@ -233,49 +198,13 @@
     
     return TRUE;
 }
-//
-//-(IBAction)shareByTwitter:(id)sender {
-//#warning reimplement this
-////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-//}
-//
-//-(IBAction)shareByFacebook:(id)sender {
-//#warning reimplement this
-////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-//}
-//-(IBAction)shareByGooglePlus:(id)sender {
-//#warning reimplement this
-////    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
-//}
-//
-//-(IBAction)shareByEmailClicked:(id)sender {
-//#warning reimplement this
-////  [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
-//}
 
 -(IBAction)requestPaymentClicked:(id)sender {
     [self setQR];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     
-    //configure addthis -- (this step is optional)
-#warning re-implement sharing
-//	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
-//	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
-//	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
-    
-//    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
-//    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
-    
-	//Facebook connect settings
-//	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
-//	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
-//	
-//	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
-//	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
-//	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
-    
-    [app showModal:requestCoinsView onDismiss:nil];
+    [app showModal:requestCoinsView isClosable:TRUE onDismiss:nil];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
@@ -287,7 +216,7 @@
     else
         labelAddressLabel.text = addr;
 
-    [app showModal:labelAddressView onDismiss:nil];
+    [app showModal:labelAddressView isClosable:TRUE onDismiss:nil];
     
     labelTextField.text = nil;
     
@@ -300,12 +229,12 @@
     NSInteger tag =  [app.wallet tagForAddress:addr];
 
     if (tag == 2)
-        [wallet unArchiveAddress:addr];
+        [app.wallet unArchiveAddress:addr];
     else
-        [wallet archiveAddress:addr];
+        [app.wallet archiveAddress:addr];
     
-    self.wallet = wallet;
-        
+    [self reload];
+    
     [app closeModal];
 }
 
@@ -320,7 +249,7 @@
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView onDismiss:nil];
+    [app showModal:optionsModalView isClosable:TRUE onDismiss:nil];
     
     if (label)
         optionsTitleLabel.text = label;
@@ -336,7 +265,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30.0f;
+    return 40.0f;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -356,7 +285,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    if ([[self.wallet activeAddresses] count] == 0) {
+    if ([[app.wallet activeAddresses] count] == 0) {
         [noaddressesView setHidden:FALSE];
     } else {
         [noaddressesView setHidden:TRUE];

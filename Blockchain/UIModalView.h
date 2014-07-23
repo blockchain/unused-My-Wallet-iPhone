@@ -14,5 +14,9 @@
 
 @property(nonatomic, copy) void (^delegate)();
 @property(nonatomic, retain) IBOutlet UIView * modalContentView;
+@property(nonatomic) BOOL isClosable;
+@property(nonatomic, retain) IBOutlet UIButton * closeButton;
+
+-(IBAction)closeModalClicked:(id)sender;
 
 @end

@@ -55,12 +55,13 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="closeModalClicked:" destination="-1" eventType="touchUpInside" id="22"/>
+                        <action selector="closeModalClicked:" destination="2" eventType="touchUpInside" id="zw3-xC-PsQ"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.93234455589999998" green="0.93234455589999998" blue="0.93234455589999998" alpha="0.34999999999999998" colorSpace="calibratedRGB"/>
             <connections>
+                <outlet property="closeButton" destination="15" id="4VI-B9-jEr"/>
                 <outlet property="modalContentView" destination="11" id="2y5-Jv-Tdk"/>
             </connections>
         </view>

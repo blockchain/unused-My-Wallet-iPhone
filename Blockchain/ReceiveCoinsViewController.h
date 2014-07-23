@@ -43,13 +43,10 @@
     
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
-
 }
 
 @property(nonatomic, strong) NSArray * activeKeys;
 @property(nonatomic, strong) NSArray * archivedKeys;
-
-@property(nonatomic, strong) IBOutlet Wallet * wallet;
 
 -(void)reload;
 
@@ -61,12 +58,5 @@
 -(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
 -(IBAction)requestPaymentClicked:(id)sender;
-
-
-//Shared
--(IBAction)shareByEmailClicked:(id)sender;
--(IBAction)shareByTwitter:(id)sender;
--(IBAction)shareByFacebook:(id)sender;
--(IBAction)shareByGooglePlus:(id)sender;
 
 @end

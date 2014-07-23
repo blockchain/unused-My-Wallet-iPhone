@@ -47,8 +47,6 @@
         return;
     }
     
-    [app startTask:TaskGeneratingWallet];
-
     self.wallet = [[[Wallet alloc] initWithPassword:passwordTextField.text] autorelease];
     
     wallet.delegate = self;

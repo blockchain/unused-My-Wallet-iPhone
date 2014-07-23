@@ -288,14 +288,16 @@ AppDelegate * app;
     [mainPasswordTextField becomeFirstResponder];
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [self showPinModal];
+}
+
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
     if (![self guid] || ![self sharedKey]) {
         [app showWelcome:FALSE];
         return;
     }
-    
-    [self showPinModal];
     
     if (!wallet.password) {
         [self walletFailedToDecrypt:wallet];
@@ -675,24 +677,24 @@ AppDelegate * app;
     // if pin exists - verify
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PEPinEntryController *c = [PEPinEntryController pinVerifyController];
             c.navigationBarHidden = YES;
             c.pinDelegate = self;
             
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
+            [_window.rootViewController presentViewController:c animated:NO completion:nil];
+//        });
     }
     // no pin - create
     else
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PEPinEntryController *c = [PEPinEntryController pinCreateController];
             c.navigationBarHidden = YES;
             c.pinDelegate = self;
             
-            [_window.rootViewController presentViewController:c animated:YES completion:nil];
-        });
+            [_window.rootViewController presentViewController:c animated:NO completion:nil];
+//        });
     }
 }
 

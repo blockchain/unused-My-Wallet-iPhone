@@ -75,8 +75,6 @@ AppDelegate * app;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
-  
-    [_window addSubview:busyView];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
         
@@ -114,6 +112,8 @@ AppDelegate * app;
     }
     
     [tabViewController setActiveViewController:transactionsViewController];
+    
+    [_window addSubview:busyView];
     
     return YES;
 }

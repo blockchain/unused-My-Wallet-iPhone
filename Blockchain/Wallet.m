@@ -626,10 +626,14 @@
 }
 
 -(void)ajaxStart {
+    NSLog(@"ajaxStart");
+    
     if ([delegate respondsToSelector:@selector(networkActivityStart)])
         [delegate networkActivityStart];
 }
 -(void)ajaxStop {
+    NSLog(@"ajaxStop");
+
     if ([delegate respondsToSelector:@selector(networkActivityStop)])
         [delegate networkActivityStop];
 }

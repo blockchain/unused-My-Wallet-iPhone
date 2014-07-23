@@ -150,7 +150,8 @@ CGPoint arrowPositions[4] = {
 
     NSLog(@"setActiveViewController Animated");
 
-    [self setSelectedIndex:newIndex];
+    if (newIndex >= 0)
+        [self setSelectedIndex:newIndex];
 }
 
 -(BOOL)backButtonEnabled {
@@ -261,7 +262,7 @@ CGPoint arrowPositions[4] = {
 		--selectedIndex;
 	}
     
-    NSLog(@"moveArrow %@", arrow);
+    NSLog(@"moveArrow index %d", selectedIndex);
     
 	[UIView beginAnimations:@"MoveArrow" context:nil];
 	[UIView setAnimationDelegate:self];

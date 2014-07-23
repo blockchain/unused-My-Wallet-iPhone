@@ -531,6 +531,9 @@ AppDelegate * app;
         MyUIModalView * previousModalView = [self.modalChain objectAtIndex:[self.modalChain count]-1];
         
         [_window.rootViewController.view addSubview:previousModalView];
+
+        [_window.rootViewController.view bringSubviewToFront:busyView];
+
         [_window.rootViewController.view endEditing:TRUE];
         
         if (self.modalView.onResume) {
@@ -583,7 +586,11 @@ AppDelegate * app;
         }
         
         contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
+        
         [_window.rootViewController.view addSubview:modalView];
+        
+        [_window.rootViewController.view bringSubviewToFront:busyView];
+        
         [_window.rootViewController.view endEditing:TRUE];
      } @catch (NSException * e) {
          [UncaughtExceptionHandler logException:e];

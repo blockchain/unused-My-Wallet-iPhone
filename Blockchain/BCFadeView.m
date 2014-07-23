@@ -6,11 +6,12 @@
 //  Copyright (c) 2012 Qkos Services Ltd. All rights reserved.
 //
 
-#import "UIFadeView.h"
+#import "BCFadeView.h"
 
-@implementation UIFadeView
+@implementation BCFadeView
 
 - (void)fadeIn {
+    self.containerView.layer.cornerRadius = 5;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];

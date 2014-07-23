@@ -48,27 +48,33 @@
                 <action selector="receiveCoinClicked:" destination="3" eventType="touchUpInside" id="564"/>
             </connections>
         </button>
-        <view contentMode="scaleToFill" id="260" userLabel="Busy View" customClass="UIFadeView">
+        <view contentMode="scaleToFill" id="260" userLabel="Busy View" customClass="BCFadeView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="busy-background.png" id="261">
-                    <rect key="frame" x="138" y="203" width="45" height="43"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" id="262">
-                    <rect key="frame" x="151" y="215" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.75" contentMode="left" text="loading" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="263">
-                    <rect key="frame" x="17" y="254" width="289" height="29"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" id="5i0-zZ-Y4H">
+                    <rect key="frame" x="40" y="118" width="240" height="80"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="262">
+                            <rect key="frame" x="101.5" y="11.5" width="37" height="37"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.75" contentMode="left" text="loading" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="263">
+                            <rect key="frame" x="4" y="54" width="233" height="19"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.84999999999999998" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="0.5" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="containerView" destination="5i0-zZ-Y4H" id="Tlp-St-X3z"/>
+            </connections>
         </view>
         <window clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -802,7 +808,6 @@
         <image name="573-money.png" width="28" height="24"/>
         <image name="account-settings.png" width="28" height="28"/>
         <image name="arrow_down.png" width="15" height="8"/>
-        <image name="busy-background.png" width="45" height="43"/>
         <image name="button_blue.png" width="154" height="32"/>
         <image name="button_red.png" width="100" height="30"/>
         <image name="circle.png" width="28" height="28"/>

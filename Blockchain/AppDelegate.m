@@ -11,7 +11,7 @@
 #import "TransactionsViewController.h"
 #import "MultiAddressResponse.h"
 #import "Wallet.h"
-#import "UIFadeView.h"
+#import "BCFadeView.h"
 #import "TabViewController.h"
 #import "ReceiveCoinsViewController.h"
 #import "SendViewController.h"
@@ -104,15 +104,13 @@ AppDelegate * app;
     }
     
     [tabViewController setActiveViewController:transactionsViewController];
-    
-    [_window addSubview:busyView];
-    
+
+    [_window.rootViewController.view addSubview:busyView];
     busyView.frame = _window.frame;
-    
     busyView.alpha = 0.0f;
 
     [self showPinModal];
-
+    
     return YES;
 }
 
@@ -163,10 +161,13 @@ AppDelegate * app;
 -(void)setDisableBusyView:(BOOL)__disableBusyView {
     _disableBusyView = __disableBusyView;
     
-    if (_disableBusyView)
+    if (_disableBusyView) {
         [busyView removeFromSuperview];
-    else
-        [_window addSubview:busyView];
+    }
+    else {
+        [_window.rootViewController.view addSubview:busyView];
+//        [_window bringSubviewToFront:busyView];
+    }
 }
 
 -(void)networkActivityStart {
@@ -739,25 +740,19 @@ AppDelegate * app;
     // if pin exists - verify
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
     {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PEPinEntryController *c = [PEPinEntryController pinVerifyController];
-            c.navigationBarHidden = YES;
-            c.pinDelegate = self;
-            
-            [_window.rootViewController presentViewController:c animated:NO completion:nil];
-//        });
+        self.pinEntryViewController = [PEPinEntryController pinVerifyController];
     }
     // no pin - create
     else
     {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PEPinEntryController *c = [PEPinEntryController pinCreateController];
-            c.navigationBarHidden = YES;
-            c.pinDelegate = self;
-            
-            [_window.rootViewController presentViewController:c animated:NO completion:nil];
-//        });
+        self.pinEntryViewController = [PEPinEntryController pinCreateController];
     }
+    
+    self.pinEntryViewController.navigationBarHidden = YES;
+    self.pinEntryViewController.pinDelegate = self;
+    
+    [_window.rootViewController presentViewController:self.pinEntryViewController animated:NO completion:nil];
+//    [_window bringSubviewToFront:self.pinEntryViewController.view];
 }
 
 #pragma mark - Actions

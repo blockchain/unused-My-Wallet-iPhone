@@ -332,11 +332,13 @@
     }];
     
     fromField.valueFont = [UIFont systemFontOfSize:14];
-    
     fromField.valueColor = [UIColor darkGrayColor];
     
     amountField.inputAccessoryView = amountKeyoboardAccessoryView;
-    
+    [amountField setReturnKeyType:UIReturnKeyDone];
+
+    [toField setReturnKeyType:UIReturnKeyDone];
+
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);
     }

@@ -61,12 +61,26 @@
     wallet.delegate = self;
 }
 
+-(void)networkActivityStart {
+    [app networkActivityStart];
+}
+
+-(void)networkActivityStop {
+    [app networkActivityStop];
+}
+
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
     [app forgetWallet];
+    
+    [app clearPin];
+    
+    [app showPinModal];
     
     app.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
     
     app.wallet.delegate = app;
+    
+    [app standardNotify:[NSString stringWithFormat:@"Successfully Created New Account. Please Enter A New PIN Code."] title:@"Success" delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

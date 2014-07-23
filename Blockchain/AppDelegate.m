@@ -83,7 +83,18 @@ AppDelegate * app;
     tabViewController = oldTabViewController;
     
     [_window setRootViewController:tabViewController];
-        
+    
+    [tabViewController setActiveViewController:transactionsViewController];
+
+    [_window.rootViewController.view addSubview:busyView];
+    
+    busyView.frame = _window.frame;
+    busyView.alpha = 0.0f;
+
+    if ([self guid]) {
+        [self showPinModal];
+    }
+    
     if (![self guid] || ![self sharedKey]) {
         [self showWelcome];
     } else if (![self password]) {
@@ -104,14 +115,6 @@ AppDelegate * app;
             self.wallet.delegate = self;
         }
     }
-    
-    [tabViewController setActiveViewController:transactionsViewController];
-
-    [_window.rootViewController.view addSubview:busyView];
-    busyView.frame = _window.frame;
-    busyView.alpha = 0.0f;
-
-    [self showPinModal];
     
     return YES;
 }
@@ -334,7 +337,9 @@ AppDelegate * app;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [self showPinModal];
+    if ([self guid]) {
+        [self showPinModal];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -763,6 +768,10 @@ AppDelegate * app;
     [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
 }
 
+-(void)clearPin {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
+}
+
 - (void)showPinModal
 {
     // if pin exists - verify
@@ -808,7 +817,9 @@ AppDelegate * app;
         
         [self walletFailedToDecrypt:wallet];
         
-        [app showPinModal];
+        if ([self guid]) {
+            [app showPinModal];
+        }
     } else if ([self guid] || [self sharedKey]) {
         [app closeModal];
         

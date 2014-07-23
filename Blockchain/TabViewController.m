@@ -157,8 +157,6 @@ CGPoint arrowPositions[4] = {
         [[contentView layer] addAnimation:animation forKey:@"SwitchToView1"]; 
     }
 
-    NSLog(@"setActiveViewController Animated");
-
     if (newIndex >= 0)
         [self setSelectedIndex:newIndex];
 }
@@ -270,9 +268,7 @@ CGPoint arrowPositions[4] = {
 	} else {
 		--selectedIndex;
 	}
-    
-    NSLog(@"moveArrow index %d", selectedIndex);
-    
+        
 	[UIView beginAnimations:@"MoveArrow" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDuration:arrowStepDuration];

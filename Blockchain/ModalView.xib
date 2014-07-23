@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="24" userLabel="Background Button - Closes Modal">
-                    <rect key="frame" x="0.0" y="0.0" width="328" height="480"/>
+                    <rect key="frame" x="-52" y="-46" width="328" height="480"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal">
@@ -31,20 +31,20 @@
                     </connections>
                 </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="11" userLabel="Modal Content View">
-                    <rect key="frame" x="20" y="66" width="280" height="308"/>
+                    <rect key="frame" x="20" y="91" width="280" height="308"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.96550184490000002" green="0.96550184490000002" blue="0.96550184490000002" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <imageView contentMode="scaleToFill" image="close-container.png" id="13" userLabel="X Image View - close-container.png">
-                    <rect key="frame" x="232" y="12" width="73" height="73"/>
+                    <rect key="frame" x="232" y="37" width="73" height="73"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" image="modal_background_large.png" id="3" userLabel="Border Image View - modal_background_large.png">
-                    <rect key="frame" x="15" y="57" width="290" height="325"/>
+                    <rect key="frame" x="15" y="82" width="290" height="325"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="15" userLabel="X Button">
-                    <rect key="frame" x="242" y="23" width="52" height="35"/>
+                    <rect key="frame" x="242" y="48" width="52" height="35"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="31-circle-x.png">

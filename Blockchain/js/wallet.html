@@ -162,7 +162,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     obj.total_received = MyWallet.getTotalReceived();
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
-    obj.n_transactions = obj.transactions.length;
+    obj.n_transactions = MyWallet.getNTransactions();
     obj.addresses = MyWallet.getAllAddresses();
 
     obj.symbol_local = symbol_local;
@@ -243,7 +243,7 @@ MyWallet.makeNotice = function(type, _id, msg) {
 }
 
 //Wrapper Around localstorage
-MyStore.put = function (key, value) {
+/*MyStore.put = function (key, value) {
     device.execute("saveKey:value:", [key, value]);
 }
 
@@ -257,7 +257,7 @@ MyStore.remove = function(key) {
 
 MyStore.clear = function() {
     device.execute("clearKeys");
-}
+}*/
 
 //End localstorage wrapper
 var listener = {
@@ -335,11 +335,11 @@ MyWallet.parsePairingCode = function (raw_code) {
                }
             },
             error: function (res) {
-                error(res.responseText);
+                error('Pairing Code Server Error ' + res.responseText);
             }
         });
     } catch (e) {
-        error('Error ' + e);
+        error('Error Parsing Pairing Code ' + e);
     }
 }
 
@@ -348,6 +348,7 @@ function setPassword(password) {
 
     $('#restore-wallet-continue').click();
 }
+
 
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
         MyWallet.setLoadingText('Loading transactions');
@@ -366,10 +367,11 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             no_compact : true,
             ct : clientTime,
             n : n,
+            no_buttons : true,
             language : MyWallet.getLanguage(),
             guid : MyWallet.getGuid()
         };
-
+        
         $.retryAjax({
             type: "POST",
             dataType: 'json',
@@ -378,6 +380,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             timeout: 60000,
             retryLimit: 2,
             success: function(obj) {
+                    
                 if (obj.error != null) {
                     MyWallet.makeNotice('error', 'misc-error', obj.error);
                 }

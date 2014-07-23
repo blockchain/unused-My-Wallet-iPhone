@@ -114,6 +114,7 @@
 -(NSArray*)archivedAddresses;
 
 -(BOOL)isDoubleEncrypted;
+-(BOOL)isInitialized;
 
 -(BOOL)validateSecondPassword:(NSString*)secondPassword;
 

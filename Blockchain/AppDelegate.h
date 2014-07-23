@@ -96,6 +96,7 @@
 @property (nonatomic) BOOL disableBusyView;
 
 @property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
+@property (retain, nonatomic) NSMutableArray * modalChain;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;
@@ -110,7 +111,7 @@
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showWelcome:(BOOL)isClosable;
+-(void)showWelcome;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
@@ -118,7 +119,6 @@
 
 - (void)swipeLeft;
 - (void)swipeRight;
-
 
 //Simple Modal UIVIew
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss;
@@ -167,6 +167,7 @@
 -(IBAction)secondPasswordClicked:(id)sender;
 -(IBAction)mainPasswordClicked:(id)sender;
 -(IBAction)refreshClicked:(id)sender;
+-(IBAction)balanceTextClicked:(id)sender;
 
 -(void)setStatus;
 

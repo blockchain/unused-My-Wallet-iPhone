@@ -23,7 +23,10 @@
 -(void)setIsClosable:(BOOL)__isClosable {
     _isClosable = __isClosable;
     
-    [self.closeButton setEnabled:_isClosable];
+    //[self.closeButton setEnabled:_isClosable];
+
+    [self.closeButtonBackground setHidden:!_isClosable];
+    [self.closeButton setHidden:!_isClosable];
 }
 
 -(IBAction)closeModalClicked:(id)sender {

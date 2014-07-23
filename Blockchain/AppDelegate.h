@@ -65,6 +65,7 @@
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
     IBOutlet UIButton * pairLogoutButton;
+    IBOutlet UIButton * changePINButton;
     
     BOOL validateSecondPassword;
     IBOutlet UILabel * secondPasswordDescriptionLabel;

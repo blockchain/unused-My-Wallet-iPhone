@@ -29,6 +29,7 @@
                 <outlet property="secondPasswordTextField" destination="469" id="475"/>
                 <outlet property="secondPasswordView" destination="463" id="473"/>
                 <outlet property="transactionsViewController" destination="229" id="295"/>
+                <outlet property="welcomeLabel" destination="380" id="0eQ-7B-QXV"/>
                 <outlet property="welcomeView" destination="375" id="392"/>
                 <outlet property="window" destination="2" id="217"/>
             </connections>
@@ -38,15 +39,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" id="5i0-zZ-Y4H">
-                    <rect key="frame" x="40" y="118" width="240" height="80"/>
+                    <rect key="frame" x="35" y="118" width="250" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="262">
-                            <rect key="frame" x="101.5" y="11.5" width="37" height="37"/>
+                            <rect key="frame" x="106.5" y="11.5" width="37" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.75" contentMode="left" text="loading" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="263">
-                            <rect key="frame" x="4" y="54" width="233" height="19"/>
+                            <rect key="frame" x="6" y="53" width="238" height="19"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -238,14 +239,14 @@
             </connections>
         </view>
         <view contentMode="scaleToFill" id="375" userLabel="Welcome Back">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+            <rect key="frame" x="0.0" y="0.0" width="280" height="308"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="377">
-                    <rect key="frame" x="83" y="205" width="154" height="32"/>
+                    <rect key="frame" x="63" y="155" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="New Account" backgroundImage="button_blue.png">
+                    <state key="normal" title="Create Wallet" backgroundImage="button_green.png">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -256,7 +257,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="376">
-                    <rect key="frame" x="83" y="165" width="154" height="32"/>
+                    <rect key="frame" x="63" y="195" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="Pair Device" backgroundImage="button_blue.png">
@@ -270,11 +271,11 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" id="379">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="40"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Welcome Back" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="380">
-                            <rect key="frame" x="79" y="11" width="153" height="26"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Welcome" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="380">
+                            <rect key="frame" x="64" y="11" width="153" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -288,15 +289,15 @@
                     </subviews>
                     <color key="backgroundColor" red="0.93234454310000003" green="0.93234454310000003" blue="0.93234454310000003" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="If you already have a My Wallet Account press the pair device button. Otherwise please sign up. It's Free! No email required." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="378">
-                    <rect key="frame" x="20" y="48" width="280" height="102"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="378">
+                    <rect key="frame" x="20" y="45" width="240" height="102"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OKS-md-gDQ">
-                    <rect key="frame" x="83" y="245" width="154" height="32"/>
+                    <rect key="frame" x="63" y="235" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="Change Pin" backgroundImage="button_blue.png">
@@ -788,6 +789,7 @@
         <image name="account-settings.png" width="28" height="28"/>
         <image name="arrow_down.png" width="15" height="8"/>
         <image name="button_blue.png" width="154" height="32"/>
+        <image name="button_green.png" width="97" height="29"/>
         <image name="button_red.png" width="100" height="30"/>
         <image name="circle.png" width="28" height="28"/>
         <image name="divider.png" width="5" height="34"/>

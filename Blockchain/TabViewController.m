@@ -33,12 +33,12 @@ CGPoint arrowPositions[4] = {
 
 -(void) keyboardWillHide:(NSNotification *)note {	
     
-    if (contentView.frame.origin.y != originalOffset.y) {
+    /*if (contentView.frame.origin.y != originalOffset.y) {
         [UIView beginAnimations:@"MoveUp" context:nil];
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
         contentView.frame =  CGRectMake(contentView.frame.origin.x, originalOffset.y,  contentView.frame.size.width,  contentView.frame.size.height);
         [UIView commitAnimations];
-    }
+    }*/
 }
 
 -(void)responderMayHaveChanged {

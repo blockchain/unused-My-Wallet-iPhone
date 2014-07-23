@@ -503,7 +503,14 @@ AppDelegate * app;
 
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
     
-    @try {
+    @try {        
+        //Cannot re-display a modal which is already in the modalChain
+        for (MyUIModalView * chainModal in self.modalChain) {
+            if (chainModal.modalContentView == contentView) {
+                return;
+            }
+        }
+        
         if (modalView) {
             [modalView removeFromSuperview];
 
@@ -637,7 +644,6 @@ AppDelegate * app;
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        
         PairingCodeParser * parser = [[PairingCodeParser alloc] init];
         
         [parser scanAndParse:^(NSDictionary*code) {

@@ -16,6 +16,9 @@
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"
 
+#define kTagAlertLabelAddress 1
+#define kTagAlertConfirmPayment 2
+
 @implementation SendViewController
 
 -(void)dealloc {
@@ -24,6 +27,7 @@
     [amountKeyoboardAccessoryView release];
     [currencyConversionLabel release];
     [toField release];
+    [self.toAddress release];
     [fromField release];
     [labelAddressView release];
     [labelAddressLabel release];
@@ -47,19 +51,19 @@
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
-    NSString * to = toField.text;
-    
-    [app.wallet addToAddressBook:to label:labelAddressTextField.text];
-    
+    [app.wallet addToAddressBook:toField.text label:labelAddressTextField.text];
+
     [app closeModal];
-        
-    [self reallyDoPayment];
+    labelAddressTextField.text = @"";
+    
+    // Complete payment
+    [self confirmPayment];
 }
 
 -(void)reallyDoPayment {
     uint64_t satoshiValue = [app.wallet parseBitcoinValue:amountField.text];
     
-    NSString * to = toField.text;
+    NSString * to = self.toAddress;
     NSString * from = @"";
     if ([fromField index] > 0) {
         from = [self.fromAddresses objectAtIndex:[fromField index]-1];
@@ -115,28 +119,45 @@
 }
 
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {    
-    NSString * to = toField.text;
-
-    if (buttonIndex == 0) {
-        [self reallyDoPayment];
-    } else if (buttonIndex == 1) {
-        labelAddressLabel.text = to;
-        
-        [app showModal:labelAddressView isClosable:TRUE];
-        
-        [labelAddressTextField becomeFirstResponder];
+    if ([alertView tag] == kTagAlertLabelAddress)
+    {
+        // do nothing & proceed
+        if (buttonIndex == 0) {
+            [self confirmPayment];
+        }
+        // let user save address in addressbook
+        else if (buttonIndex == 1) {
+            labelAddressLabel.text = toField.text;
+            
+            [app showModal:labelAddressView isClosable:TRUE];
+            
+            [labelAddressTextField becomeFirstResponder];
+        }
+    }
+    else if ([alertView tag] == kTagAlertConfirmPayment)
+    {
+        if (buttonIndex == 1) {
+            [self reallyDoPayment];
+        }
+    }
+    else
+    {
+        NSLog(@"unknown alertview tag");
     }
 }
 
--(IBAction)reviewPaymentClicked:(id)sender {
-    NSString * to = toField.text;
+-(IBAction)sendPaymentClicked:(id)sender {
     
-    if ([to length] == 0) {
+    // If user pasted an address into the toField, assign it to toAddress
+    if ([self.toAddress length] == 0)
+        self.toAddress = toField.text;
+    
+    if ([self.toAddress length] == 0) {
         [app standardNotify:@"You must enter a destination address"];
         return;
     }
     
-    if (![app.wallet isValidAddress:to]) {
+    if (![app.wallet isValidAddress:self.toAddress]) {
         [app standardNotify:@"Invalid to bitcoin address"];
         return;
     }
@@ -154,19 +175,44 @@
         return;
     }
     
-    if ([[app.wallet.addressBook objectForKey:to] length] == 0 && ![app.wallet.allAddresses containsObject:to]) {
+    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?" 
-                                                        message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", to]
+                                                        message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", self.toAddress]
                                                        delegate:nil 
                                               cancelButtonTitle:@"No" 
                                               otherButtonTitles:@"Yes", nil];
         alert.delegate = self;
+        alert.tag = kTagAlertLabelAddress;
         
         [alert show];
         [alert release];
     } else {
-        [self reallyDoPayment];
+        [self confirmPayment];
     }
+}
+
+- (void)confirmPayment {
+    
+    NSString *amountString = [app formatMoney:[app.wallet parseBitcoinValue:amountField.text]];
+    
+    NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ to %@", amountString, self.toAddress];
+    
+    if (![toField.text isEqualToString:self.toAddress]) {
+        [messageString appendFormat:@" (%@)", toField.text];
+    }
+    
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Payment"
+                                                    message:messageString
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    alert.delegate = self;
+    alert.tag = kTagAlertConfirmPayment;
+    
+    [alert show];
+    [alert release];
 }
 
 -(void)doCurrencyConversion {
@@ -177,8 +223,9 @@
     currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
 
 }
--(void)setToAddress:(NSString*)string {
-    toField.text = string;
+-(void)setToAddressFromUrlHandler:(NSString*)string {
+    self.toAddress = string;
+    toField.text = [self labelForAddress:self.toAddress];
 }
 
 -(void)setAmount:(NSString*)amount {
@@ -187,13 +234,31 @@
     [self doCurrencyConversion];
 }
 
+- (NSString *)labelForAddress:(NSString *)address {
+
+    if ([[app.wallet.addressBook objectForKey:address] length] > 0) {
+        return [app.wallet.addressBook objectForKey:address];
+    
+    }
+    else if ([app.wallet.allAddresses containsObject:address]) {
+        NSString *label = [app.wallet labelForAddress:address];
+        if (label && ![label isEqualToString:@""])
+            return label;
+    }
+
+    return address;
+
+}
+
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
 {
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
         
         NSDictionary * dict = [app parseURI:sym.data];
-        toField.text = [dict objectForKey:@"address"];
+        toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
+        self.toAddress = [dict objectForKey:@"address"];
+        
         amountField.text = [dict objectForKey:@"amount"];
         
         [view stop];
@@ -284,8 +349,10 @@
     return 0;
 }
 
+// Address Book Delegate Method
 -(void)didSelectAddress:(NSString *)address {
-    toField.text = address;
+    toField.text = [self labelForAddress:address];
+    self.toAddress = address;
 }
 
 -(NSString*)titleForValueField:(MultiValueField*)valueField atIndex:(NSUInteger)index {
@@ -296,7 +363,7 @@
         
         NSString * address = [self.fromAddresses objectAtIndex:index-1];
         NSString * label = [app.wallet labelForAddress:address];
-        if (label) {
+        if (label && ![label isEqualToString:@""]) {
             return label;
         } else {
             return address;

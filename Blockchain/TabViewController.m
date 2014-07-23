@@ -230,14 +230,8 @@ CGPoint arrowPositions[4] = {
 	nextButton.frame = CGRectMake(nextButton.frame.origin.x, nextButton.frame.origin.y-10.0f, nextButton.frame.size.width, nextButton.frame.size.height);
 	[UIView commitAnimations];
 	
-#warning where is submitClicked:?
-	if ([self submitButtonEnabled]) {
-		if ([activeViewController respondsToSelector:@selector(submitClicked:)])
-			[(id)activeViewController performSelector:@selector(submitClicked:) withObject:sender];		
-	} else {
-		if ([activeViewController respondsToSelector:@selector(nextClicked:)])
-			[(id)activeViewController nextClicked:sender];	
-	}
+    if ([activeViewController respondsToSelector:@selector(nextClicked:)])
+        [(id)activeViewController nextClicked:sender];	
 }
 
 -(void)backButtonAniStopped {

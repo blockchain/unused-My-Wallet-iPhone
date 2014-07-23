@@ -19,7 +19,9 @@
  */
 #import <UIKit/UIKit.h>
 
-@interface UIFadeView : UIView
+@interface BCFadeView : UIView
+
+@property (nonatomic, retain) IBOutlet UIView *containerView;
 
 - (void)fadeIn;
 - (void)fadeOut;

@@ -745,6 +745,7 @@ AppDelegate * app;
 -(void)showWelcome {
     [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
         
+        
         [changePINButton setHidden:![self isPINSet]];
         
         if ([self password]) {

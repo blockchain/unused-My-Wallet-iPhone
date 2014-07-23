@@ -173,6 +173,8 @@
 -(IBAction)balanceTextClicked:(id)sender;
 
 -(void)setStatus;
+-(void)clearPin;
+-(void)showPinModal;
 
 @end
 

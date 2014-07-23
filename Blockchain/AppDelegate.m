@@ -146,7 +146,9 @@ AppDelegate * app;
     }
 }
 
-
+-(IBAction)balanceTextClicked:(id)sender {
+    [self toggleSymbol];
+}
 
 #pragma mark - UI State
 -(void)toggleSymbol {

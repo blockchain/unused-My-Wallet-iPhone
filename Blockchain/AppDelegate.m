@@ -744,6 +744,9 @@ AppDelegate * app;
 // Modal menu
 -(void)showWelcome {
     [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
+        
+        [changePINButton setHidden:![self isPINSet]];
+        
         if ([self password]) {
             welcomeLabel.text = @"Welcome Back";
             [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
@@ -772,10 +775,14 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
 }
 
+-(BOOL)isPINSet {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"] != nil;
+}
+
 - (void)showPinModal
 {
     // if pin exists - verify
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pin"])
+    if ([self isPINSet])
     {
         self.pinEntryViewController = [PEPinEntryController pinVerifyController];
     }

@@ -15,6 +15,7 @@
             <connections>
                 <outlet property="busyLabel" destination="263" id="265"/>
                 <outlet property="busyView" destination="260" id="264"/>
+                <outlet property="changePINButton" destination="OKS-md-gDQ" id="GGT-Ir-3TN"/>
                 <outlet property="mainPasswordTextField" destination="626" id="633"/>
                 <outlet property="mainPasswordView" destination="623" id="634"/>
                 <outlet property="manualIdentifier" destination="587" id="avE-9g-qfe"/>

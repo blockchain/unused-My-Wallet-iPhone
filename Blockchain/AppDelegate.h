@@ -177,6 +177,7 @@
 -(void)setStatus;
 -(void)clearPin;
 -(void)showPinModal;
+-(BOOL)isPINSet;
 
 @end
 

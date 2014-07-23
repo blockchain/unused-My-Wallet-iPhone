@@ -110,6 +110,9 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="alert"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="vFU-ZK-iLQ"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" red="0.90731148097826086" green="0.90731148097826086" blue="0.90731148097826086" alpha="1" colorSpace="calibratedRGB"/>

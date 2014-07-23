@@ -157,8 +157,6 @@ CGPoint arrowPositions[4] = {
         [[contentView layer] addAnimation:animation forKey:@"SwitchToView1"]; 
     }
 
-    NSLog(@"setActiveViewController Animated");
-
     if (newIndex >= 0)
         [self setSelectedIndex:newIndex];
 }

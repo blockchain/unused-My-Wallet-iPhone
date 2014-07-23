@@ -162,7 +162,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     obj.total_received = MyWallet.getTotalReceived();
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
-    obj.n_transactions = obj.transactions.length;
+    obj.n_transactions = MyWallet.getNTransactions();
     obj.addresses = MyWallet.getAllAddresses();
 
     obj.symbol_local = symbol_local;

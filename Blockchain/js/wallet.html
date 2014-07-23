@@ -326,6 +326,7 @@ MyWallet.parsePairingCode = function (raw_code) {
         $.ajax({
             type: "POST",
             url: root + 'wallet',
+            timeout: 60000,
             data: {
                 format: 'plain',
                 method: 'pairing-encryption-password',

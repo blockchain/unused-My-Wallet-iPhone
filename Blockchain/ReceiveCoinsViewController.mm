@@ -211,7 +211,7 @@
     NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
     NSString * label =  [app.wallet labelForAddress:addr];
 
-    if (label)
+    if (label && ![label isEqualToString:@""])
         labelAddressLabel.text = label;
     else
         labelAddressLabel.text = addr;

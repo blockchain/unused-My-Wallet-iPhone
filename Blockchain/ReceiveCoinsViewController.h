@@ -51,6 +51,7 @@
 -(void)reload;
 
 @property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, retain) NSString * clickedAddress;
 
 -(IBAction)labelAddressClicked:(id)sender;
 -(IBAction)archiveAddressClicked:(id)sender;

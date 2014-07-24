@@ -116,6 +116,8 @@ AppDelegate * app;
             self.wallet.delegate = self;
         }
     }
+    
+    return TRUE;
 }
 
 - (void)transitionToIndex:(NSInteger)newIndex
@@ -648,9 +650,18 @@ AppDelegate * app;
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        PairingCodeParser * parser = [[PairingCodeParser alloc] init];
+        PairingCodeParser * parser = [[[PairingCodeParser alloc] init] autorelease];
         
         [parser scanAndParse:^(NSDictionary*code) {
+            [app forgetWallet];
+            
+            //If the user has no PIN set force them to create one now
+            if (![app isPINSet]) {
+                [app showPinModal];
+            
+                [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
+            }
+            
             self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
             
             self.wallet.delegate = self;
@@ -821,7 +832,7 @@ AppDelegate * app;
         // confirm forget wallet
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning!!!"
-                                                        message:@"This will erase all wallet data on this device. Please confirm your wallet has been backed up to blockchain.info before forgetting this wallet. Forgetting a wallet that has not been backed up to blockchain.info will result in permanent loss of any bitcoin in this wallet!"
+                                                        message:@"This will erase all wallet data on this device. Please confirm you have your wallet information saved elsewhere otherwise any bitcoins in this wallet will be inaccessible!!"
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Forget Wallet", nil];

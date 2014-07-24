@@ -133,7 +133,7 @@
         return;
     }
     
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr = self.clickedAddress;
    
     [app.wallet setLabel:labelTextField.text ForAddress:addr];
         
@@ -143,7 +143,7 @@
 }
 
 -(IBAction)copyAddressClicked:(id)sender {
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr = self.clickedAddress;
 
     [app standardNotify:[NSString stringWithFormat:@"%@ copied to clipboard", addr]  title:@"Success" delegate:nil];
 
@@ -162,7 +162,7 @@
 
 -(NSString*)uriURL {
     
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr = self.clickedAddress;
 
     double amount = [requestAmountTextField.text doubleValue];
     
@@ -171,7 +171,7 @@
 
 -(NSString*)blockchainUriURL {
     
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr = self.clickedAddress;
 
     double amount = [requestAmountTextField.text doubleValue];
     
@@ -212,7 +212,7 @@
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr =  self.clickedAddress;
     NSString * label =  [app.wallet labelForAddress:addr];
 
     if (label && ![label isEqualToString:@""])
@@ -229,7 +229,7 @@
 
 -(IBAction)archiveAddressClicked:(id)sender {
 
-    NSString * addr =  [self getAddress:[tableView indexPathForSelectedRow]];
+    NSString * addr = self.clickedAddress;
     NSInteger tag =  [app.wallet tagForAddress:addr];
 
     if (tag == 2)
@@ -244,16 +244,21 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    
     NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
     NSInteger tag =  [app.wallet tagForAddress:addr];
     NSString *label =  [app.wallet labelForAddress:addr];
+
+    self.clickedAddress = addr;
 
     if (tag == 2)
         [archiveUnarchiveButton setTitle:@"Unarchive" forState:UIControlStateNormal];
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView isClosable:TRUE];
+    [app showModal:optionsModalView isClosable:TRUE onDismiss:^() {
+        self.clickedAddress = nil;
+    } onResume:nil];
     
     if (label)
         optionsTitleLabel.text = label;

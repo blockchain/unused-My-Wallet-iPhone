@@ -80,7 +80,7 @@
     
     app.wallet.delegate = app;
     
-    [app standardNotify:[NSString stringWithFormat:@"Successfully Created New Account. Please Enter A New PIN Code."] title:@"Success" delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin code that you would like to use to access your wallet. It's important you remember this pin code as it cannot be reset without first unlocking the app."] title:@"Your wallet was successfully created." delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

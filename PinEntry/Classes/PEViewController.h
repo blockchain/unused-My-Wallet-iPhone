@@ -51,7 +51,9 @@
 @property (nonatomic, readwrite, copy) NSString *prompt;
 @property (nonatomic, readwrite, assign) id <PEViewControllerDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UILabel *versionLabel;
+@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 
 - (void)resetPin;
+- (IBAction)cancelChangePin:(id)sender;
 
 @end

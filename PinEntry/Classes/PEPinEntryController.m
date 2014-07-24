@@ -38,9 +38,6 @@ static PEViewController *EnterController()
     NSString *version = infoDictionary[@"CFBundleShortVersionString"];
     c.versionLabel.text = [NSString stringWithFormat:@"v%@", version];
     
-//    NSLog(@"setting versionLabel.text to v%@", version);
-//    NSLog(@"versionLabel frame: %f %f %f %f", self.versionLabel.frame.origin.x, self.versionLabel.frame.origin.y, self.versionLabel.frame.size.width, self.versionLabel.frame.size.height);
-
 	return c;
 }
 

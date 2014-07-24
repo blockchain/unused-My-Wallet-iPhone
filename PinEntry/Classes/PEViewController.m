@@ -49,6 +49,12 @@
 	self.pin = @"";
 }
 
+- (IBAction)cancelChangePin:(id)sender
+{
+    [self.delegate cancelController];
+}
+
+
 - (void)dealloc
 {
 	self.pin = nil;

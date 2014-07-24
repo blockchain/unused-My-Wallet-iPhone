@@ -33,6 +33,14 @@ static PEViewController *EnterController()
 	PEViewController *c = [[PEViewController alloc] init];
 	c.prompt = @"Please enter your pin";
 	c.title = @"";
+    
+    NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
+    NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+    c.versionLabel.text = [NSString stringWithFormat:@"v%@", version];
+    
+//    NSLog(@"setting versionLabel.text to v%@", version);
+//    NSLog(@"versionLabel frame: %f %f %f %f", self.versionLabel.frame.origin.x, self.versionLabel.frame.origin.y, self.versionLabel.frame.size.width, self.versionLabel.frame.size.height);
+
 	return c;
 }
 
@@ -41,7 +49,12 @@ static PEViewController *NewController()
 	PEViewController *c = [[PEViewController alloc] init];
 	c.prompt = @"Please enter a new pin";
 	c.title = @"";
-	return c;
+
+    NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
+    NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+    c.versionLabel.text = [NSString stringWithFormat:@"v%@", version];
+
+    return c;
 }
 
 static PEViewController *VerifyController()
@@ -49,6 +62,11 @@ static PEViewController *VerifyController()
 	PEViewController *c = [[PEViewController alloc] init];
 	c.prompt = @"Confirm your pin";
 	c.title = @"";
+
+    NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
+    NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+    c.versionLabel.text = [NSString stringWithFormat:@"v%@", version];
+
 	return c;
 }
 

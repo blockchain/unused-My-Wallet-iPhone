@@ -13,6 +13,7 @@
                 <outlet property="pin2" destination="7" id="11"/>
                 <outlet property="pin3" destination="8" id="12"/>
                 <outlet property="promptLabel" destination="15" id="16"/>
+                <outlet property="versionLabel" destination="C16-0H-UUa" id="xXQ-pW-cty"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -61,6 +62,13 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v 2.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C16-0H-UUa">
+                    <rect key="frame" x="255" y="196" width="39" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.1058823529" green="0.54117647059999996" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

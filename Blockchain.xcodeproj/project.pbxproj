@@ -23,6 +23,7 @@
 		84F4BE16197FB78D00B7BF7B /* receive-money.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F4BE14197FB78D00B7BF7B /* receive-money.png */; };
 		84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F4BE15197FB78D00B7BF7B /* receive-money@2x.png */; };
 		84F4BE191980124A00B7BF7B /* wallet-signup.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4BE181980124200B7BF7B /* wallet-signup.js */; };
+		84FC02FA1981452D00B97D5B /* NSString+JSONParser_NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC02F91981452D00B97D5B /* NSString+JSONParser_NSString.m */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
 		9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA115134C2C00CD945D /* button_red@2x.png */; };
 		9F0CBAA615134D3200CD945D /* button_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA415134D3200CD945D /* button_grey.png */; };
@@ -177,6 +178,11 @@
 		84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Blocks.m"; sourceTree = "<group>"; };
 		84B601C8197AD03800DA1829 /* UIModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModalView.h; sourceTree = "<group>"; };
 		84B601C9197AD03800DA1829 /* UIModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIModalView.m; sourceTree = "<group>"; };
+		84C2569119810DF300F901D1 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = Library/keys/include/config.h; sourceTree = "<group>"; };
+		84C2569219810DF300F901D1 /* crypto_scrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = crypto_scrypt.h; path = Library/keys/include/crypto_scrypt.h; sourceTree = "<group>"; };
+		84C2569319810DF300F901D1 /* scrypt_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = scrypt_platform.h; path = Library/keys/include/scrypt_platform.h; sourceTree = "<group>"; };
+		84C2569419810DF300F901D1 /* sysendian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = Library/keys/include/sysendian.h; sourceTree = "<group>"; };
+		84C2569719810E1400F901D1 /* sha256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sha256.h; path = Library/keys/include/sha256.h; sourceTree = "<group>"; };
 		84CCFAAD197D859C00DA4482 /* NSString+NSString_EscapeQuotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString_EscapeQuotes.h"; sourceTree = "<group>"; };
 		84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSString_EscapeQuotes.m"; sourceTree = "<group>"; };
 		84F4BDF4197E71AF00B7BF7B /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header.png; sourceTree = "<group>"; };
@@ -191,6 +197,8 @@
 		84F4BE14197FB78D00B7BF7B /* receive-money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive-money.png"; sourceTree = "<group>"; };
 		84F4BE15197FB78D00B7BF7B /* receive-money@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive-money@2x.png"; sourceTree = "<group>"; };
 		84F4BE181980124200B7BF7B /* wallet-signup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "wallet-signup.js"; path = "Submodules/My-Wallet/wallet-signup.js"; sourceTree = SOURCE_ROOT; };
+		84FC02F81981452D00B97D5B /* NSString+JSONParser_NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSONParser_NSString.h"; sourceTree = "<group>"; };
+		84FC02F91981452D00B97D5B /* NSString+JSONParser_NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JSONParser_NSString.m"; sourceTree = "<group>"; };
 		9F0CBAA015134C2C00CD945D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		9F0CBAA115134C2C00CD945D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red@2x.png"; sourceTree = "<group>"; };
 		9F0CBAA415134D3200CD945D /* button_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey.png; sourceTree = "<group>"; };
@@ -423,6 +431,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84C25678198109AF00F901D1 /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				84C2569719810E1400F901D1 /* sha256.h */,
+				84C2569119810DF300F901D1 /* config.h */,
+				84C2569219810DF300F901D1 /* crypto_scrypt.h */,
+				84C2569319810DF300F901D1 /* scrypt_platform.h */,
+				84C2569419810DF300F901D1 /* sysendian.h */,
+			);
+			name = Keys;
+			sourceTree = "<group>";
+		};
 		9F0CBAAB15135DF200CD945D /* JavaScript */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +473,8 @@
 				84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */,
 				9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */,
 				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
+				84FC02F81981452D00B97D5B /* NSString+JSONParser_NSString.h */,
+				84FC02F91981452D00B97D5B /* NSString+JSONParser_NSString.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -797,6 +819,7 @@
 		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				84C25678198109AF00F901D1 /* Keys */,
 				9F765F4814BC8C0D00048EFB /* JSONKit.h */,
 				9F765F4914BC8C0D00048EFB /* JSONKit.m */,
 				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
@@ -1048,6 +1071,7 @@
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
+				84FC02FA1981452D00B97D5B /* NSString+JSONParser_NSString.m in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
 				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
@@ -1176,6 +1200,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/Library/OpenSSL-for-iPhone/include",
+				);
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
@@ -1202,6 +1231,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Blockchain/Blockchain-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/Library/OpenSSL-for-iPhone/include",
+				);
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (

@@ -7,12 +7,12 @@
 //
 
 #import "Wallet.h"
-#import "JSONKit.h"
 #import "AppDelegate.h"
 #import "Transaction.h"
 #import "NSString+NSString_EscapeQuotes.h"
 #import "MultiAddressResponse.h"
 #import "UncaughtExceptionHandler.h"
+#import "NSString+JSONParser_NSString.h"
 
 @implementation transactionProgressListeners
 @end
@@ -41,19 +41,6 @@
 @synthesize webView;
 @synthesize sharedKey;
 @synthesize guid;
-
-+(id)parseJSON:(NSString*)json {
-    NSError * error = nil;
-    
-    id dict = [NSJSONSerialization JSONObjectWithData:[json dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &error];
-    
-    if (error != NULL) {
-        NSLog(@"Error Parsing JSON %@", error);
-        return nil;
-    }
-
-    return dict;
-}
 
 + (NSString *)generateUUID 
 {
@@ -174,7 +161,10 @@
 }
 
 -(void)parsePairingCode:(NSString*)code {
-    [self.webView executeJS:[NSString stringWithFormat:@"MyWallet.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]];
+    
+    NSLog(@"Exec %@", [NSString stringWithFormat:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]);
+    
+    [self.webView executeJS:[NSString stringWithFormat:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]];
 }
 
 - (void)didParsePairingCode:(NSDictionary *)dict
@@ -268,20 +258,20 @@
 -(NSArray*)allAddresses {
     NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllAddresses())"];
     
-    return [Wallet parseJSON:allAddressesJSON];
+    return [allAddressesJSON getJSONObject];
 }
 
 
 -(NSArray*)activeAddresses {
     NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getActiveAddresses())"];
     
-    return [Wallet parseJSON:activeAddressesJSON];
+    return [activeAddressesJSON getJSONObject];
 }
 
 -(NSArray*)archivedAddresses {
     NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getArchivedAddresses())"];
     
-    return [Wallet parseJSON:activeAddressesJSON];
+    return [activeAddressesJSON getJSONObject];
 }
 
 
@@ -313,22 +303,26 @@
 -(NSDictionary*)addressBook {
     NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAddressBook())"];
     
-    return [Wallet parseJSON:addressBookJSON];
+    return [addressBookJSON getJSONObject];
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
     [self.webView executeJS:@"MyWalletPhone.addAddressBookEntry(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
 }
 
+-(void)clearLocalStorage {
+    [self.webView executeJSSynchronous:@"localstorage.clear();"];
+}
+
 // Calls from JS
 
 -(void)log:(NSString*)message {
-    //NSLog(@"console.log: %@", message);
+    NSLog(@"console.log: %@", [message description]);
 }
 
 -(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
     
-    NSDictionary * dict = [Wallet parseJSON:latestBlockJSON];
+    NSDictionary * dict = [latestBlockJSON getJSONObject];
     
     LatestBlock * latestBlock = [[LatestBlock alloc] init];
     
@@ -345,7 +339,7 @@
     if (multiAddrJSON == nil)
         return;
     
-    NSDictionary * dict = [Wallet parseJSON:multiAddrJSON];
+    NSDictionary * dict = [multiAddrJSON getJSONObject];
     
     MulitAddressResponse * response = [[[MulitAddressResponse alloc] init] autorelease];
     
@@ -531,7 +525,11 @@
     NSLog(@"did_set_guid");
     
     if (self.password) {
-        [self.webView executeJS:[NSString stringWithFormat:@"MyWalletPhone.setPassword(\"%@\")", self.password]];
+        NSString * command = [NSString stringWithFormat:@"MyWalletPhone.setPassword(\"%@\")", [self.password addBackslashes]];
+        
+        NSLog(@"%@", command);
+        
+        [self.webView executeJS:command];
     }
 }
 
@@ -616,11 +614,11 @@
 }
 
 -(CurrencySymbol*)getLocalSymbol {
-    return [CurrencySymbol symbolFromDict:[Wallet parseJSON:[webView executeJSSynchronous:@"JSON.stringify(symbol_local)"]]];
+    return [CurrencySymbol symbolFromDict:[[webView executeJSSynchronous:@"JSON.stringify(symbol_local)"] getJSONObject]];
 }
 
 -(CurrencySymbol*)getBTCSymbol {
-    return [CurrencySymbol symbolFromDict:[Wallet parseJSON:[webView executeJSSynchronous:@"JSON.stringify(symbol_btc)"]]];
+    return [CurrencySymbol symbolFromDict:[[webView executeJSSynchronous:@"JSON.stringify(symbol_btc)"] getJSONObject]];
 }
 
 -(void)on_add_private_key:(NSString*)address {

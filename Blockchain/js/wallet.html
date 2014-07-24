@@ -1,6 +1,9 @@
 <html>
 <head>
 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="UTF-8">
+
 <style type="text/css">
     body {
         word-wrap: break-word;
@@ -156,6 +159,9 @@ MyWalletPhone.isValidAddress = function(addrstring) {
 }
 
 MyWalletPhone.setPassword = function(password) {
+    
+    console.log('Set Password ' + password);
+    
     $('#restore-password').val(password);
     
     $('#restore-wallet-continue').click();
@@ -297,14 +303,14 @@ var listener = {
 
 MyWallet.showNotification = function() { }
 
-MyWallet.parsePairingCode = function (raw_code) {
+MyWalletPhone.parsePairingCode = function (raw_code) {
 
     var success = function (pairing_code) {
         device.execute("didParsePairingCode:", [pairing_code]);
     }
 
-    var error = function (message) {
-        device.execute("errorParsingPairingCode:", [message]);
+    var error = function (e) {
+        device.execute("errorParsingPairingCode:", [e]);
     }
 
     try {
@@ -329,6 +335,8 @@ MyWallet.parsePairingCode = function (raw_code) {
 
         var encrypted_data = components[2];
 
+        MyWallet.setLoadingText('Decrypting Pairing Code');
+
         $.ajax({
             type: "POST",
             url: root + 'wallet',
@@ -339,23 +347,29 @@ MyWallet.parsePairingCode = function (raw_code) {
                 guid: guid
             },
             success: function (encryption_phrase) {
-                var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
-                    return decrypted != null;
-                }, function () {
-                    error('Decryption Error');
-                });
-
-                if (decrypted != null) {
-                    var components2 = decrypted.split("|");
-
-                    success({
-                        version: raw_code[0],
-                        guid: guid,
-                        sharedKey: components2[0],
-                        password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+               try {
+                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                        return decrypted != null;
+                    }, function () {
+                        error('Decryption Error');
                     });
-               } else {
-                    error('Decryption Error');
+               
+                    if (decrypted != null) {
+                        var components2 = decrypted.split("|");
+
+                        console.log(''+UTF8.bytesToString(Crypto.util.hexToBytes(components2[1])));
+
+                        success({
+                            version: raw_code[0],
+                            guid: guid,
+                            sharedKey: components2[0],
+                            password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                        });
+                   } else {
+                        error('Decryption Error');
+                   }
+               } catch(e) {
+                    error(''+e);
                }
             },
             error: function (res) {
@@ -363,7 +377,7 @@ MyWallet.parsePairingCode = function (raw_code) {
             }
         });
     } catch (e) {
-        error('Error Parsing Pairing Code ' + e);
+        error(''+e);
     }
 }
 

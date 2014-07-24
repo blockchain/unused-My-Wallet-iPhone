@@ -77,51 +77,9 @@ function getBase64Image(img) {
  */
 function JSBridgeObj()
 {
-    this.objectJson = "";
+    this.objectJson = {};
     this.addObject = JSBridgeObj_AddObject;
     this.sendBridgeObject = JSBridgeObj_SendObject;
-}
-
-/*
- This mnethod receives as input a javascript object, and returns
- a string with the json representation for the object. The return string is similar to:
-
- "<objectId>" : { "value": "<object_value>", "type": "<object_type>" }
- */
-function JSBridgeObj_AddObjectAuxiliar(id, obj)
-{
-    var result = "";
-    if (obj === null) {
-        result = "\"" + id + "\": { \"value\": null, \"type\": \"" + objType + "\"}";
-    } else if(typeof(obj) != "undefined")
-    {
-        if(isObjAnArray(obj))
-        {
-            var objStr;
-            var length = obj.length;
-
-            objStr = "{";
-            for(i = 0; i < length; i++)
-            {
-                if(objStr != "{")
-                {
-                    objStr += ", ";
-                }
-                objStr += JSBridgeObj_AddObjectAuxiliar(("obj" + i), obj[i]);
-            }
-
-            objStr += "}";
-
-            result = "\"" + id + "\": { \"value\":" + objStr + ", \"type\": \"array\"}";
-        }
-        else
-        {
-            var objStr = JSON.stringify(obj);
-            var objType = typeof(obj);
-            result = "\"" + id + "\": { \"value\":" + "" + objStr + ", \"type\": \"" + objType + "\"}";
-        }
-    }
-    return result;
 }
 
 /*
@@ -129,16 +87,14 @@ function JSBridgeObj_AddObjectAuxiliar(id, obj)
  */
 function JSBridgeObj_AddObject(id, obj)
 {
-    var result = JSBridgeObj_AddObjectAuxiliar(id, obj);
-        
-    if(result != "")
-    {
-        if(this.objectJson != "")
-        {
-            this.objectJson += ", ";
-        }
-        this.objectJson += result;
+    var json_obj = {};
+    
+    json_obj[id] = {
+        value : obj,
+        type : typeof(obj)
     }
+        
+    $.extend(this.objectJson, json_obj);
 }
 
 
@@ -207,8 +163,8 @@ function JSBridge_getJsonStringForObjectWithId(objId)
     var jsonStr = JSBridge_objArray[objId];
 
     JSBridge_objArray[objId] = null;
-
-    return "{" + jsonStr + "}";
+    
+    return JSON.stringify(jsonStr);
 }
 
 function JSBridge_setResponseWithId(objId, value, success)

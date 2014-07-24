@@ -30,8 +30,8 @@
  */
 
 #import "JSBridgeWebView.h"
-#import "JSONKit.h"
 #import "NSString+NSString_EscapeQuotes.h"
+#import "NSString+JSONParser_NSString.h"
 
 @interface JSCommandObject : NSObject
 @property(nonatomic, strong) NSString * command;
@@ -377,9 +377,7 @@
                     // Reads the JSON object to be communicated.
                     NSString* jsonStr = [p_WebView stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
                     
-                    JSONDecoder * json = [[[JSONDecoder alloc] init] autorelease];
-                    
-                    NSDictionary * jsonDic = [json objectWithUTF8String:(const unsigned char*)[jsonStr UTF8String] length:[jsonStr length]];
+                    NSDictionary * jsonDic = [jsonStr getJSONObject];
                     
                     NSDictionary* dicTranslated = [self translateDictionary:jsonDic];
                     

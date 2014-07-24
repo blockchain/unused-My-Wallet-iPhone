@@ -12,4 +12,8 @@
 
 -(NSString*)escapeDoubleQuotes;
 
+- (NSString *)stringEscapedForJavasacript;
+
+-(NSString*)escapeASCII;
+
 @end

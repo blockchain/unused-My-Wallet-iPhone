@@ -20,7 +20,6 @@
 #import "WebViewController.h"
 #import "NewAccountView.h"
 #import "NSString+SHA256.h"
-#import "JSONKit.h"
 #import "Transaction.h"
 #import "Input.h"
 #import "Output.h"
@@ -690,6 +689,8 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];   
+    
+    [self.wallet clearLocalStorage];
     
     self.wallet = nil;
     self.latestResponse = nil;

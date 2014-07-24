@@ -127,6 +127,8 @@
 -(CurrencySymbol*)getLocalSymbol;
 -(CurrencySymbol*)getBTCSymbol;
 
+-(void)clearLocalStorage;
+
 -(void)parsePairingCode:(NSString*)code;
 
 //Clear the retained delegates to prepare for dealloc
@@ -136,5 +138,9 @@
 
 -(void)newAccount:(NSString*)password;
 
+// N, r, p
+
+-(void)crypto_scrypt:(NSString *)password salt:(NSString*)salt n:(uint64_t)N
+r:(uint32_t)r p:(uint32_t)p dkLen:(uint32_t)dkLen;
 
 @end

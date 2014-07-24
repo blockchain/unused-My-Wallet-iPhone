@@ -7,7 +7,6 @@
 //
 
 #import "MultiAddressResponse.h"
-#import "JSONKit.h"
 #import "AppDelegate.h"
 #import "Address.h"
 #import "Transaction.h"

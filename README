@@ -7,3 +7,7 @@ before building:
 git submodule init
 git submodule update
 cd Submodules/My-Wallet git checkout master
+cd ../../
+cd Library/OpenSSL-for-iPhone git checkout master
+./build-libssl.sh
+

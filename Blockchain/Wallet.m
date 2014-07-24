@@ -664,8 +664,8 @@
     [app setStatus];
 }
 
--(void)newAccount:(NSString*)__password {
-    [self.webView executeJS:@"MyWalletPhone.newAccount(\"%@\")", [__password escapeStringForJS]];
+-(void)newAccount:(NSString*)__password email:(NSString *)__email {
+    [self.webView executeJS:@"MyWalletPhone.newAccount(\"%@\", \"%@\")", [__password escapeStringForJS], [__email escapeStringForJS]];
 }
 
 -(NSData*)_internal_crypto_scrypt:(id)_password salt:(id)_salt n:(uint64_t)N

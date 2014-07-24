@@ -927,7 +927,7 @@
 				ORGANIZATIONNAME = "Qkos Services Ltd";
 				TargetAttributes = {
 					9FB3637014B60128004BEA02 = {
-						DevelopmentTeam = C76FGYXTS5;
+						DevelopmentTeam = NZ6PH75U7K;
 					};
 				};
 			};

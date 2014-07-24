@@ -701,19 +701,26 @@ AppDelegate * app;
 -(void)showWelcome {
     [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
         
-        
         [changePINButton setHidden:![self isPINSet]];
         
+        // User is logged in
         if ([self password]) {
-            welcomeLabel.text = @"Welcome Back";
+            welcomeLabel.text = @"Options";
+            welcomeInstructionsLabel.text = @"Logout or change your pin below.";
             createWalletButton.hidden = YES;
             [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-        } else if ([self guid] || [self sharedKey]) {
+        }
+        // Wallet paired, but no password
+        else if ([self guid] || [self sharedKey]) {
             welcomeLabel.text = @"Welcome Back";
+            welcomeInstructionsLabel.text = @"";
             createWalletButton.hidden = YES;
             [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
-        } else {
+        }
+        // User is completed logged out
+        else {
             welcomeLabel.text = @"Welcome to Blockchain Wallet";
+            welcomeInstructionsLabel.text = @"If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.";
             createWalletButton.hidden = NO;
             [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
         }
@@ -759,12 +766,35 @@ AppDelegate * app;
 //    [_window bringSubviewToFront:self.pinEntryViewController.view];
 }
 
+#pragma mark - AlertView Delegate
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+
+    if ([alertView tag] == kTagAlertForgetWallet)
+    {
+        // Forget Wallet Cancelled
+        if (buttonIndex == 0) {
+        }
+        // Forget Wallet Confirmed
+        else if (buttonIndex == 1) {
+            NSLog(@"forgetting wallet");
+            [app closeModal];
+            [self forgetWallet];
+            [app showWelcome];
+        }
+    }
+}
+
 #pragma mark - Actions
 
 -(IBAction)changePinClicked:(id)sender {
     PEPinEntryController *c = [PEPinEntryController pinChangeController];
     c.pinDelegate = self;
     c.navigationBarHidden = YES;
+    
+    PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0]; 
+    peViewController.cancelButton.hidden = NO;
+    
     [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
@@ -777,19 +807,32 @@ AppDelegate * app;
 }
 
 -(IBAction)loginClicked:(id)sender {
+    // Logout
     if ([self password]) {
         [self logout];
         
         [app closeModal];
         
-        [self walletFailedToDecrypt:wallet];
-    } else if ([self guid] || [self sharedKey]) {
-        [app closeModal];
+        [self walletFailedToDecrypt:wallet]; // misleading method name
+    }
+    // Forget wallet
+    else if ([self guid] || [self sharedKey]) {
         
-        [self forgetWallet];
+        // confirm forget wallet
         
-        [app showWelcome];
-    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning!!!"
+                                                        message:@"This will erase all wallet data on this device. Please confirm your wallet has been backed up to blockchain.info before forgetting this wallet. Forgetting a wallet that has not been backed up to blockchain.info will result in permanent loss of any bitcoin in this wallet!"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Forget Wallet", nil];
+        alert.delegate = self;
+        alert.tag = kTagAlertForgetWallet;
+        [alert show];
+        [alert release];
+
+    }
+    // Welcome
+    else {
         [app showModal:pairingInstructionsView isClosable:TRUE];
     }
 }

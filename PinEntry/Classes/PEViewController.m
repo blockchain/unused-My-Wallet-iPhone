@@ -41,12 +41,19 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	pins[0] = pin0;
+
+    pins[0] = pin0;
 	pins[1] = pin1;
 	pins[2] = pin2;
 	pins[3] = pin3;
 	self.pin = @"";
 }
+
+- (IBAction)cancelChangePin:(id)sender
+{
+    [self.delegate cancelController];
+}
+
 
 - (void)dealloc
 {

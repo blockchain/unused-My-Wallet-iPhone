@@ -164,9 +164,9 @@ MyWalletPhone.setPassword = function(password) {
     $('#restore-wallet-continue').click();
 }
 
-MyWalletPhone.newAccount = function(password) {
+MyWalletPhone.newAccount = function(password, email) {
     loadScript('wallet-signup', function() {
-        MyWalletSignup.generateNewWallet(password, null, function(guid, sharedKey, password) {
+        MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
             MyStore.clear();
             device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
         }, function (e) {

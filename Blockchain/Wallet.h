@@ -136,7 +136,7 @@
 
 -(NSInteger)getWebsocketReadyState;
 
--(void)newAccount:(NSString*)password;
+-(void)newAccount:(NSString*)password email:(NSString *)email;
 
 // BIP32 Paper Wallet scrypt functions
 -(void)crypto_scrypt:(NSString *)_password salt:(NSString*)salt n:(NSNumber*)N

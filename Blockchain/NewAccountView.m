@@ -37,8 +37,9 @@
     [activity startAnimating];
 }
 
+# pragma mark - Wallet Delegate method
 -(void)walletJSReady {
-    [self.wallet newAccount:self.tmpPassword];
+    [self.wallet newAccount:self.tmpPassword email:emailTextField.text];
 }
 
 // Get here from New Account and also when manually pairing
@@ -55,9 +56,21 @@
         [app standardNotify:@"Passwords do not match"];
         return;
     }
+
+    if ([emailTextField.text isEqualToString:@""]) {
+        [app standardNotify:@"Please provide an email address."];
+        return;
+    }
+
+    if ([emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
+        [app standardNotify:@"Invalid email address."];
+        return;
+    }
     
+    // Load the wallet (webview + js)
     self.wallet = [[[Wallet alloc] init] autorelease];
     
+    // Get callback when wallet is done loading
     wallet.delegate = self;
 }
 
@@ -80,7 +93,7 @@
     
     app.wallet.delegate = app;
     
-    [app standardNotify:[NSString stringWithFormat:@"Successfully Created New Account. Please Enter A New PIN Code."] title:@"Success" delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Your wallet was successfully created." delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

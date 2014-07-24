@@ -784,7 +784,7 @@ AppDelegate * app;
     c.pinDelegate = self;
     c.navigationBarHidden = YES;
     
-    PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0];
+    PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0]; 
     peViewController.cancelButton.hidden = NO;
     
     [self.tabViewController presentViewController:c animated:YES completion:nil];

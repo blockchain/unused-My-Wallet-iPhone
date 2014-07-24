@@ -22,6 +22,7 @@
 #import "Wallet.h"
 
 @interface NewAccountView : UIView <UITextFieldDelegate, WalletDelegate> {
+    IBOutlet UITextField * emailTextField;
     IBOutlet UITextField * passwordTextField;
     IBOutlet UITextField * password2TextField;
     IBOutlet UIActivityIndicatorView * activity;

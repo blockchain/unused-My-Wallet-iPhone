@@ -134,7 +134,7 @@
 
 -(NSInteger)getWebsocketReadyState;
 
--(void)newAccount:(NSString*)password;
+-(void)newAccount:(NSString*)password email:(NSString *)email;
 
 
 @end

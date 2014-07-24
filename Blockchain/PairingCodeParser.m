@@ -33,8 +33,6 @@
 
 -(void)didParsePairingCode:(NSDictionary *)dict {
     
-    NSLog(@"didParsePairingCode:%@", dict);
-    
     [app networkActivityStop];
 
     if (self.success) {
@@ -71,8 +69,6 @@
         self.wallet.delegate = self;
         
         [self.wallet parsePairingCode:sym.data];
-        
-        NSLog(@"Read Pairing Code %@", sym.data);
         
         app.loadingText = @"Parsing Pairing Code";
         

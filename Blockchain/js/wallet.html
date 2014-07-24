@@ -159,9 +159,6 @@ MyWalletPhone.isValidAddress = function(addrstring) {
 }
 
 MyWalletPhone.setPassword = function(password) {
-    
-    console.log('Set Password ' + password);
-    
     $('#restore-password').val(password);
     
     $('#restore-wallet-continue').click();
@@ -225,11 +222,17 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
                 var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
                                    
                 if (format == 'bip38') {
-                  throw 'BIP 38 unsupported';
-                }
-                                   
-                if (format == 'bip38') {
                     loadScript('import-export', function() {
+                               
+                       ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
+                            device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
+                                var bytes = Crypto.util.hexToBytes(buffer);
+                                callback(bytes);
+                            }, function(e) {
+                                error(''+e);
+                            });
+                       }
+                               
                         MyWallet.getPassword($('#import-private-key-password'), function(_password) {
                             ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
                                 //success
@@ -356,8 +359,6 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
                
                     if (decrypted != null) {
                         var components2 = decrypted.split("|");
-
-                        console.log(''+UTF8.bytesToString(Crypto.util.hexToBytes(components2[1])));
 
                         success({
                             version: raw_code[0],

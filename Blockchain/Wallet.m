@@ -13,6 +13,8 @@
 #import "MultiAddressResponse.h"
 #import "UncaughtExceptionHandler.h"
 #import "NSString+JSONParser_NSString.h"
+#import "crypto_scrypt.h"
+#import "NSData+Hex.h"
 
 @implementation transactionProgressListeners
 @end
@@ -132,7 +134,7 @@
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress satoshiValue:(NSString*)satoshiValue listener:(transactionProgressListeners*)listener {
     
-    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSend(\"%@\", \"%@\", \"%@\")", [fromAddress escapeDoubleQuotes], [toAddress escapeDoubleQuotes], [satoshiValue escapeDoubleQuotes]];
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSend(\"%@\", \"%@\", \"%@\")", [fromAddress escapeStringForJS], [toAddress escapeStringForJS], [satoshiValue escapeStringForJS]];
         
     [self.transactionProgressListeners setObject:listener forKey:txProgressID];
 }
@@ -161,10 +163,7 @@
 }
 
 -(void)parsePairingCode:(NSString*)code {
-    
-    NSLog(@"Exec %@", [NSString stringWithFormat:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]);
-    
-    [self.webView executeJS:[NSString stringWithFormat:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeDoubleQuotes]]];
+    [self.webView executeJS:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeStringForJS]];
 }
 
 - (void)didParsePairingCode:(NSDictionary *)dict
@@ -235,24 +234,24 @@
 }
 
 -(BOOL)validateSecondPassword:(NSString*)secondPassword {
-    return [[self.webView executeJSSynchronous:@"MyWallet.validateSecondPassword(\"%@\")", [secondPassword escapeDoubleQuotes]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.validateSecondPassword(\"%@\")", [secondPassword escapeStringForJS]] boolValue];
 }
 
 -(BOOL)isWatchOnlyAddress:(NSString*)address {
-    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeDoubleQuotes]] boolValue];
+    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeStringForJS]] boolValue];
 }
 
 
 -(NSString*)labelForAddress:(NSString*)address {
-    return [self.webView executeJSSynchronous:@"MyWallet.getAddressLabel(\"%@\")", [address escapeDoubleQuotes]];
+    return [self.webView executeJSSynchronous:@"MyWallet.getAddressLabel(\"%@\")", [address escapeStringForJS]];
 }
 
 -(NSInteger)tagForAddress:(NSString*)address {
-    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressTag(\"%@\")", [address escapeDoubleQuotes]] intValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
 }
 
 -(BOOL)isValidAddress:(NSString*)string {
-    return [[self.webView executeJSSynchronous:@"MyWalletPhone.isValidAddress(\"%@\");", [string escapeDoubleQuotes]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.isValidAddress(\"%@\");", [string escapeStringForJS]] boolValue];
 }
 
 -(NSArray*)allAddresses {
@@ -277,27 +276,27 @@
 
 
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.setLabel(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWallet.setLabel(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
 }
 
 -(void)archiveAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.archiveAddr(\"%@\")", [address escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWallet.archiveAddr(\"%@\")", [address escapeStringForJS]];
 }
 
 -(void)unArchiveAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.unArchiveAddr(\"%@\")", [address escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWallet.unArchiveAddr(\"%@\")", [address escapeStringForJS]];
 }
 
 -(void)removeAddress:(NSString*)address {
-    [self.webView executeJS:@"MyWallet.deleteAddress(\"%@\")", [address escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWallet.deleteAddress(\"%@\")", [address escapeStringForJS]];
 }
 
 -(uint64_t)getAddressBalance:(NSString*)address {
-    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance(\"%@\")", [address escapeDoubleQuotes]] longLongValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
 }
 
 -(BOOL)addKey:(NSString*)privateKeyString {
-    return [[self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeDoubleQuotes]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeStringForJS]] boolValue];
 }
 
 -(NSDictionary*)addressBook {
@@ -307,7 +306,7 @@
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
-    [self.webView executeJS:@"MyWalletPhone.addAddressBookEntry(\"%@\", \"%@\")", [address escapeDoubleQuotes], [label escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWalletPhone.addAddressBookEntry(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
 }
 
 -(void)clearLocalStorage {
@@ -525,11 +524,7 @@
     NSLog(@"did_set_guid");
     
     if (self.password) {
-        NSString * command = [NSString stringWithFormat:@"MyWalletPhone.setPassword(\"%@\")", [self.password addBackslashes]];
-        
-        NSLog(@"%@", command);
-        
-        [self.webView executeJS:command];
+        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
     }
 }
 
@@ -670,7 +665,86 @@
 }
 
 -(void)newAccount:(NSString*)__password {
-    [self.webView executeJS:@"MyWalletPhone.newAccount(\"%@\")", [__password escapeDoubleQuotes]];
+    [self.webView executeJS:@"MyWalletPhone.newAccount(\"%@\")", [__password escapeStringForJS]];
+}
+
+-(NSData*)_internal_crypto_scrypt:(id)_password salt:(id)_salt n:(uint64_t)N
+                   r:(uint32_t)r p:(uint32_t)p dkLen:(uint32_t)derivedKeyLen {
+    
+    uint8_t * _passwordBuff = NULL;
+    int _passwordBuffLen = 0;
+    if ([_password isKindOfClass:[NSArray class]]) {
+        _passwordBuff = alloca([_password count]);
+        _passwordBuffLen = [_password count];
+        
+        {
+            int ii = 0;
+            for (NSNumber * number in _password) {
+                _passwordBuff[ii] = [number shortValue];
+                ++ii;
+            }
+        }
+    } else if ([_password isKindOfClass:[NSString class]]) {
+         _passwordBuff = (uint8_t*)[_password UTF8String];
+        _passwordBuffLen = [_password length];
+    } else {
+        NSLog(@"Scrypt password unsupported type");
+        return nil;
+    }
+    
+    uint8_t * _saltBuff = NULL;
+    int _saltBuffLen = 0;
+
+    if ([_salt isKindOfClass:[NSArray class]]) {
+        _saltBuff = alloca([_salt count]);
+        _saltBuffLen = [_salt count];
+
+        {
+            int ii = 0;
+            for (NSNumber * number in _salt) {
+                _saltBuff[ii] = [number shortValue];
+                ++ii;
+            }
+        }
+    } else if ([_salt isKindOfClass:[NSString class]]) {
+        _saltBuff = (uint8_t*)[_password UTF8String];
+        _saltBuffLen = [_password length];
+    } else {
+        NSLog(@"Scrypt salt unsupported type");
+        return nil;
+    }
+    
+    uint8_t * derivedBytes = malloc(derivedKeyLen);
+    
+    if (crypto_scrypt((uint8_t*)_passwordBuff, _passwordBuffLen, (uint8_t*)_saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen) == -1) {
+        return nil;
+    }
+
+    return [NSData dataWithBytesNoCopy:derivedBytes length:derivedKeyLen];
+}
+
+-(void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N
+                   r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error {
+    
+    NSLog(@"crypto_scrypt:");
+    
+    [app setLoadingText:@"Decrypting Private Key"];
+    
+    [app networkActivityStart];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData * data = [self _internal_crypto_scrypt:_password salt:salt n:[N unsignedLongLongValue] r:[r unsignedIntegerValue] p:[p unsignedIntegerValue] dkLen:[derivedKeyLen unsignedIntegerValue]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [app networkActivityStop];
+
+            if (data) {
+                _success([data hexadecimalString]);
+            } else {
+                _error(@"Scrypt Error");
+            }
+        });
+    });
 }
 
 @end

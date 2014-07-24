@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appName">Keys</string>
+    <string name="server">Server</string>
+    <string name="addr">Address</string>
+    <string name="nif">Interface</string>
+    <string name="search">Search entries</string>
+    <string name="initTitle">Initialize</string>
+    <string name="initText">
+        keys uses the scrypt KDF to derive a symmetric key from your password. These scrypt
+        parameters may be altered to increase or decrease the cost of a brute-force attack.
+    </string>
+    <string name="initialize">Initialize</string>
+    <string name="certAndPassword">
+        Initialization complete. The following password and X.509 client certificate are
+        necessary to access the keys server on this device. Please place the certificate
+        in ~/.keys/client.pem.
+    </string>
+    <string name="samplePassword">sKgTrSdl1PjRZtY</string>
+    <string name="sampleCert">
+        -----BEGIN EC PARAMETERS-----\nBgUrgQQAIg==\n-----END EC PARAMETERS-----\n-----BEGIN PRIVATE KEY-----\nMIG2AgEAMBAGByqGSM49AgEGBSuBBAAiBIGeMIGbAgEBBDAJ3adw8P6wq9SL4BXK\nzvKc0gU6L15a8+zfHNgCs9elqj5jms1pzkIvgCjzGOfkyhmhZANiAARhdfA1Bf0I\nRQZQdCFBoz68rPWoG0Sb3iya+YuF7IL6HOVUlvNv+WdekYRvo0SZhDeZd1qSMqrA\nhg7MY6RKMK3HhTua3t4U4Loa6t4y3nc6k/5X3ECNI54kJg4h3Ku9nX0=\n-----END PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIBnTCCASOgAwIBAgIIELsXGyuMbfwwCgYIKoZIzj0EAwMwGTEXMBUGA1UEAxMO\nS2V5cyBDQS9TZXJ2ZXIwHhcNMTMwMzEwMDYwOTI0WhcNMjMwMzA4MDYwOTI0WjAZ\nMRcwFQYDVQQDEw5LZXlzIENBL1NlcnZlcjB2MBAGByqGSM49AgEGBSuBBAAiA2IA\nBKlSKl56Lpx+jlEDrwkfcTBtUMP/TL9/EsV65NgqTkmVLMe+c3bQcs2jQhUUSBfh\n5Asvq/HwsEXGDz5BZTuZkzVGM974bKLiTBSTORimk+HEVTGhZxh3Kki272KGDSS8\n5KM4MDYwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAYYwEwYDVR0lBAww\nCgYIKwYBBQUHAwEwCgYIKoZIzj0EAwMDaAAwZQIxAMZrLjBa3YWMEDEgWefs+zhz\nj0Z24XBuIVMGygNTFDCakQK3qwS89UWoTuywsUJDtAIweGXqSK7KFPeSPX+SozEQ\nBLRrCwW0TOgH8kheQgmiefYyWGSvzoPHHI4JDfuUVk89\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBlzCCAR2gAwIBAgIIbYcsRMFwMUAwCgYIKoZIzj0EAwMwGTEXMBUGA1UEAxMO\nS2V5cyBDQS9TZXJ2ZXIwHhcNMTMwMzEwMDYwOTI0WhcNMjMwMzA4MDYwOTI0WjAW\nMRQwEgYDVQQDEwtLZXlzIENsaWVudDB2MBAGByqGSM49AgEGBSuBBAAiA2IABGF1\n8DUF/QhFBlB0IUGjPrys9agbRJveLJr5i4Xsgvoc5VSW82/5Z16RhG+jRJmEN5l3\nWpIyqsCGDsxjpEowrceFO5re3hTguhrq3jLedzqT/lfcQI0jniQmDiHcq72dfaM1\nMDMwDAYDVR0TAQH/BAIwADAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYB\nBQUHAwIwCgYIKoZIzj0EAwMDaAAwZQIxAL4OOsbjy7hIebdP8hbGh/hVVNp5+eu1\nHgIVS6/Xx/kwfvB86VcmJizAVQSF5jNj6gIwUhkOLAH5WEQoTewfkdmrR80wBO/1\nRy+KyYonl89rrNLt60AycHsl0IQ6tRSVvRCj\n-----END CERTIFICATE-----\n
+    </string>
+    <string name="certIssued">
+        Certificate generation complete. The following X.509 client certificate may be used to
+        access the keys server on this device.
+    </string>
+    <string name="password">Password</string>
+    <string name="copy">Copy to SD Card</string>
+    <string name="ok">OK</string>
+    <string name="certCopied">Cert copied to %s</string>
+    <string name="serverActive">Keys server active</string>
+    <string name="certs">Certificates</string>
+    <string name="issue">Issue Certificate</string>
+    <string name="issueSummary">Issue new client certificate</string>
+    <string name="certificate">Certificate</string>
+    <string name="settings">Settings</string>
+    <string name="source">https://github.com/wg/keys</string>
+    <string name="license"><![CDATA[
+        <p><b>Copyright &copy; 2013 Will Glozer. All rights reserved.</b></p>
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License version 3 as published by
+        the Free Software Foundation.
+    ]]>
+    </string>
+    <string name="send">Send</string>
+    <string name="initializing">Initializing database</string>
+    <string name="generating">Generating certificate</string>
+</resources>

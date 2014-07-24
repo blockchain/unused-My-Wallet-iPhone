@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="keys" default="help">
+  <property file="local.properties" />
+  <property environment="env"/>
+
+  <condition property="sdk.dir" value="${env.ANDROID_HOME}">
+    <isset property="env.ANDROID_HOME"/>
+  </condition>
+
+  <loadproperties srcFile="project.properties"/>
+
+  <fail message="sdk.dir or ANDROID_HOME must be set" unless="sdk.dir"/>
+
+  <!-- version-tag: custom -->
+  <import file="${sdk.dir}/tools/ant/build.xml"/>
+</project>

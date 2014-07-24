@@ -138,9 +138,8 @@
 
 -(void)newAccount:(NSString*)password;
 
-// N, r, p
-
--(void)crypto_scrypt:(NSString *)password salt:(NSString*)salt n:(uint64_t)N
-r:(uint32_t)r p:(uint32_t)p dkLen:(uint32_t)dkLen;
+// BIP32 Paper Wallet scrypt functions
+-(void)crypto_scrypt:(NSString *)_password salt:(NSString*)salt n:(NSNumber*)N
+                   r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error;
 
 @end

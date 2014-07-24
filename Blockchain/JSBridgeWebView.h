@@ -44,12 +44,13 @@
 	comply with the JSBridgeWebViewDelegate.
  */
 @interface JSBridgeWebView : UIWebView <UIWebViewDelegate> {
-    NSMutableSet * usedIDs;
 }
 
 @property(nonatomic) BOOL isLoaded;
 @property(nonatomic, retain) NSMutableArray * pending_commands;
 @property(nonatomic, retain) NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate> * JSDelegate;
+@property(nonatomic, retain) NSMutableSet * usedIDs;
+
 -(void)reset;
 
 -(void)executeJS:(NSString*)formatString,  ...;

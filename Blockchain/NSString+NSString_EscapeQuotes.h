@@ -10,10 +10,6 @@
 
 @interface NSString (NSString_EscapeQuotes)
 
--(NSString*)escapeDoubleQuotes;
-
-- (NSString *)stringEscapedForJavasacript;
-
--(NSString*)escapeASCII;
+-(NSString *)escapeStringForJS;
 
 @end

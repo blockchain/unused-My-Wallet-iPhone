@@ -116,8 +116,6 @@ AppDelegate * app;
             self.wallet.delegate = self;
         }
     }
-    
-    return YES;
 }
 
 - (void)transitionToIndex:(NSInteger)newIndex

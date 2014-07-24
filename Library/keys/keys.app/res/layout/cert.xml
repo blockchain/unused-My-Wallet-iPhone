@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:columnCount="2">
+    <TextView
+            android:id="@+id/cert"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/buttons"
+            android:padding="10dp"
+            android:background="@drawable/border"
+            android:gravity="top"
+            android:textColor="@android:color/black"
+            android:textIsSelectable="true"
+            android:fontFamily="monospace"
+            android:textSize="7.7dp"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@id/buttons"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:orientation="vertical"
+                  android:gravity="center">
+        <Button android:id="@+id/ok"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/ok"/>
+    </LinearLayout>
+</RelativeLayout>
+

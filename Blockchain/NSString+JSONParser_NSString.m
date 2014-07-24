@@ -13,8 +13,6 @@
 -(id)getJSONObject {
     NSError * error = nil;
     
-    NSLog(@"%@", self);
-    
     id dict = [NSJSONSerialization JSONObjectWithData:[self dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingAllowFragments error: &error];
     
     if (error != NULL) {

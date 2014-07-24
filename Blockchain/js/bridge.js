@@ -113,20 +113,9 @@ var device = {
         }
         
         if (args) {
-            if (args.length >= 1) {
-                obj.addObject("arg1", args[0]);
-            }
             
-            if (args.length >= 2) {
-                obj.addObject("arg2", args[1]);
-            }
-        
-            if (args.length >= 3) {
-                obj.addObject("arg3", args[2]);
-            }
-            
-            if (args.length >= 4) {
-                obj.addObject("arg4", args[3]);
+            for (var i in args) {
+                obj.addObject("arg"+i, args[i]);
             }
         }
         

@@ -1,0 +1,118 @@
+keys - secure credential storage
+
+  keys is a client/server application designed to provide secure and
+  portable storage of sensitive information such as authentication
+  credentials, banking information, contact details, etc.
+
+  The keys client is a command line application which communicates with
+  a server, typically running on an Android phone. All data is stored
+  securely on the server and accessible to link-local clients with a
+  valid certificate and knowledge of the database password.
+
+  Users with stronger security requirements could run the server on a
+  hardened device with minimal IO ports and no permanent storage. keys
+  should run on most devices with a reasonably POSIX compatible OS.
+
+  keys uses IPv6 multicast and link-local addressing, so the client and
+  server must be on the same local, IPv6 capable, device or network.
+
+Security
+
+  All credential data is encrypted using a cascade of NaCl's XSalsa20
+  and Poly1305 secretbox followed by AES-256 in GCM mode. Each cipher
+  is keyed with half of the database key which is 64 bytes of random
+  data. The database key itself is encrypted with the same cascade,
+  AES256-GCM(k0, XSalsa20Poly1305(k1, ...)), with keys derived from
+  the user's password via the scrypt KDF.
+
+  Clients communicate with the server using TLS 1.2 with cipher suite
+  TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384. The server and client are
+  mutually authenticated with X.509 certificates and the corresponding
+  public and private keys are generated on the server device.
+
+  Please review the SECURITY file for details.
+
+  WARNING: the keys code has not been reviewed by any 3rd party and
+  the author makes no guarantee of fitness for any purpose.
+
+Initialization
+
+  When the keys mobile app is first started it initializes the database,
+  generates a random password, and generates client and server SSL
+  certificates. The certificates must be downloaded from the device and
+  stored on the client, typically in ~/.keys.
+
+  Alternatively the --init <dir> and --kdfp <N,r,p> options may be used
+  to initialize a local database which can then be accessed by running
+  keys with the --server option.
+
+Usage
+
+  When the keys server is running entries may be added, deleted, edited,
+  and retrieved. Each entry is a set of key/value fields and one value,
+  of the "name" field by convention, should uniquely identify the entry.
+
+  The default entry template has four fields, for example:
+
+        name: foo
+    username: bar
+    password: ovdI6emYcc
+       extra: baz
+
+  An entry may have an arbitrary number of fields and the values are
+  indexed for retrieval, however fields whose name begins with "pass"
+  are excluded from the index.
+
+Import/Export
+
+  The --export and --import options allow a keys database to be exported
+  to a single encrypted file and later imported. This is useful for
+  backups and when moving the database to a new or restored device.
+
+  The security of an export file may be increased by using a very strong
+  random password and harder scrypt KDF parameters.
+
+License
+
+  Copyright (C) 2013 Will Glozer
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+Acknowledgements
+
+  keys contains and/or links to code from a number of open source
+  projects including OpenSSL, Colin Percival's scrypt reference
+  implementation, and NaCl, the Networking and Cryptography library
+  by Daniel J. Bernstein, Tanja Lange, Peter Schwabe, et al.
+
+Cryptography Notice
+
+  This distribution includes cryptographic software. The country in
+  which you currently reside may have restrictions on the import,
+  possession, use, and/or re-export to another country, of encryption
+  software. BEFORE using any encryption software, please check your
+  country's laws, regulations and policies concerning the import,
+  possession, or use, and re-export of encryption software, to see if
+  this is permitted. See <http://www.wassenaar.org/> for more
+  information.
+
+  The U.S. Government Department of Commerce, Bureau of Industry and
+  Security (BIS), has classified this software as Export Commodity
+  Control Number (ECCN) 5D002.C.1, which includes information security
+  software using or performing cryptographic functions with asymmetric
+  algorithms. The form and manner of this distribution makes it
+  eligible for export under the License Exception ENC Technology
+  Software Unrestricted (TSU) exception (see the BIS Export
+  Administration Regulations, Section 740.13) for both object code and
+  source code.

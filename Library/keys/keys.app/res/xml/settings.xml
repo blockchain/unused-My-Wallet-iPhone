@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:key="server_settings" android:title="Server">
+    <CheckBoxPreference
+      android:key="start_on_boot"
+      android:title="Start on boot"
+      android:summary="Start server on boot"
+      android:defaultValue="true"/>
+    <CheckBoxPreference
+      android:key="start_on_connection"
+      android:title="Start on connection"
+      android:summary="Start server on successful connection to any network"
+      android:defaultValue="true"/>
+  </PreferenceCategory>
+
+  <PreferenceScreen android:key="about" android:title="About keys">
+    <Preference android:key="version" android:title="App Version" android:summary=""/>
+    <Preference android:key="openssl-version" android:title="OpenSSL Version" android:summary=""/>
+    <Preference android:key="license" android:title="License" android:summary="@string/license"/>
+    <Preference android:key="source" android:title="Source code" android:summary="@string/source"/>
+    <Preference android:key="oss" android:title="Open source licenses"/>
+  </PreferenceScreen>
+</PreferenceScreen>

@@ -72,7 +72,7 @@
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
+    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
     va_end(args);
     
     if (self.isLoaded) {
@@ -95,7 +95,7 @@
     
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
+    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
     va_end(args);
     
     if (!self.isLoaded) {
@@ -109,7 +109,7 @@
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
+    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
     va_end(args);
     
     if (self.isLoaded) {
@@ -135,7 +135,7 @@
 	{
         self.pending_commands = [NSMutableArray array];
         [self setDelegate:self];
-        usedIDs = [[NSMutableSet alloc] init];
+        self.usedIDs = [NSMutableSet set];
 	}
 	
 	return self;
@@ -145,7 +145,7 @@
 {
     self.pending_commands = [NSMutableArray array];
     [self setDelegate:self];
-    usedIDs = [[NSMutableSet alloc] init];
+    self.usedIDs = [NSMutableSet set];
 }
 
 /*
@@ -158,14 +158,14 @@
 	{
         self.pending_commands = [NSMutableArray array];
         [self setDelegate:self];
-        usedIDs = [NSMutableSet set];
+        self.usedIDs = [NSMutableSet set];
 	}
 	
 	return self;
 }
 
 -(void)reset {
-    usedIDs = [NSMutableSet set];
+    self.usedIDs = [NSMutableSet set];
 }
 
 
@@ -200,7 +200,7 @@
  */
 -(NSDictionary*) translateDictionary:(NSDictionary*) dictionary
 {
-	NSMutableDictionary* result = [NSMutableDictionary dictionaryWithCapacity:0];
+	NSMutableDictionary* result = [NSMutableDictionary dictionaryWithCapacity:[dictionary count]];
 	for (NSString* key in dictionary) {
 		NSDictionary* tempDic = [dictionary objectForKey:key];
 		
@@ -220,11 +220,13 @@
  */
 -(NSObject*) translateObject:(NSDictionary*) objDic
 {
-	NSString* type = [objDic objectForKey:@"type"];
-	NSObject* value = [objDic objectForKey:@"value"];
-	NSObject* result = nil;
+	//NSString* type = [objDic objectForKey:@"type"];
+	return [objDic objectForKey:@"value"];
 	
-	if ([type compare:@"string"] == NSOrderedSame) {
+	
+	/*
+     NSObject* result = nil;
+     if ([type compare:@"string"] == NSOrderedSame) {
 		
 		result = value;
 	} else if ([type compare:@"number"] == NSOrderedSame) {
@@ -248,7 +250,7 @@
 		result = [NSDictionary dictionaryWithDictionary:(NSDictionary*)value];
 	}
 	
-	return result;
+	return result;*/
 }
 
 
@@ -311,28 +313,16 @@
                 
                 int index = 2;
                 
-                if ([sig numberOfArguments] > index && componentsCount >= 1) {
-                    id arg1 = [dictionary objectForKey:@"arg1"];
-                    [invo setArgument:&arg1 atIndex:index];
-                    ++index;
-                }
-                
-                if ([sig numberOfArguments] > index && componentsCount >= 2) {
-                    id arg2 = [dictionary objectForKey:@"arg2"];
-                    [invo setArgument:&arg2 atIndex:index];
-                    ++index;
-                }
-                
-                if ([sig numberOfArguments] > index && componentsCount >= 3) {
-                    id arg3 = [dictionary objectForKey:@"arg3"];
-                    [invo setArgument:&arg3 atIndex:index];
-                    ++index;
-                }
-                
-                if ([sig numberOfArguments] > index && componentsCount >= 3) {
-                    id arg4 = [dictionary objectForKey:@"arg4"];
-                    [invo setArgument:&arg4 atIndex:index];
-                    ++index;
+                int ii = 0;
+                while (true) {
+                    if ([sig numberOfArguments] > index && componentsCount > ii) {
+                        id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
+                        [invo setArgument:&arg atIndex:index];
+                        ++index;
+                    } else {
+                        break;
+                    }
+                    ++ii;
                 }
                 
                 if (successArg) {
@@ -363,7 +353,7 @@
  */
 - (BOOL)webView:(UIWebView *)p_WebView  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
 {
-   NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
+   //NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
     
 	// Checks if it is a JS notification. It returns the ID ob the JSON object in the JS code. Returns nil if it is not.
 	NSArray * IDArray = [self getJSNotificationIds:[request URL]];
@@ -371,12 +361,12 @@
 	if([IDArray count] > 0)
 	{
             for (NSString * jsNotId in IDArray) {
-                if (![usedIDs containsObject:jsNotId]) {
-                    [usedIDs addObject:jsNotId];
+                if (![self.usedIDs containsObject:jsNotId]) {
+                    [self.usedIDs addObject:jsNotId];
                     
                     // Reads the JSON object to be communicated.
                     NSString* jsonStr = [p_WebView stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
-                    
+                                        
                     NSDictionary * jsonDic = [jsonStr getJSONObject];
                     
                     NSDictionary* dicTranslated = [self translateDictionary:jsonDic];
@@ -387,22 +377,16 @@
                         [self webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
                             if (success != nil) {
-                                NSString * function = [NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeDoubleQuotes]];
-                                
-                                [p_WebView stringByEvaluatingJavaScriptFromString:function];
+                                [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeStringForJS]];
                             } else {
-                                [p_WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId]];
+                                [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId];
                             }
                         } error:^(id error) {
                             //On Error
                             if (error != nil) {
-                                NSString * function = [NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, \"%@\", false);", jsNotId, [error escapeDoubleQuotes]];
-                                
-                                [p_WebView stringByEvaluatingJavaScriptFromString:function];
-                                
+                                [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", false);", jsNotId, [error escapeStringForJS]];
                             } else {
-                                [p_WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId]];
-
+                                [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId];
                             }
                         }];
                     }
@@ -411,7 +395,7 @@
         
             return FALSE;
         } else {
-            [usedIDs removeAllObjects];
+            [self.usedIDs removeAllObjects];
             
             // If it is not a JS notification, pass it to the delegate.
             return TRUE;

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="15dp"
+            android:stretchColumns="1"
+            android:columnCount="2">
+    <TextView
+            android:layout_height="wrap_content"
+            android:text="@string/server"
+            android:paddingBottom="15dp"
+            android:layout_width="100dp"
+            />
+    <Switch
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:onClick="startServer"
+            android:enabled="false"
+            android:checked="false"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nif"
+            android:paddingBottom="15dp"
+            />
+    <Spinner
+            android:id="@+id/interfaces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:textSize="12sp"
+            android:gravity="right"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addr"
+            />
+    <EditText
+            android:id="@+id/addr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:editable="false"
+            android:textSize="14sp"
+            android:inputType="none"
+            android:text=""
+            />
+</GridLayout>
+

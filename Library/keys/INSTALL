@@ -1,0 +1,49 @@
+Overview
+
+  keys should build & run on most devices with a reasonably POSIX
+  compatible operating system. Building requires GNU make, a C99
+  compiler, and a version of OpenSSL >= 1.0.1.
+
+  The Makefile attempts to determine the target platform from the output
+  of `uname -s`. Platform detection may be overriden by setting the
+  TARGET variable which is also necessary when cross compiling.
+
+  The OPENSSL variable may be used to specify the base path of an
+  OpenSSL installation.
+
+    make OPENSSL=/usr/local/openssl-1.0.1g
+
+  keys uses mlock() to lock sensitive data into RAM on all platforms
+  but Android. On some Unix platforms this means either the executable
+  must be run as root or the user must edit config.h and #define
+  mlock to a noop.
+
+Android
+
+  Building the Android version of keys requires the Android SDK and NDK,
+  as well as a version of OpenSSL compiled for the appropriate device
+  architecture. Architectures other than ARM require minor editing of
+  the Makefile to specify the correct arch, compiler, etc.
+
+  Required environment variables:
+
+    ANDROID_HOME - pointing to Android SDK installation
+    ANDROID_NDK  - pointing to Android NDK installation
+    PATH         - including SDK tools and NDK toolchain
+
+  On Android the core keys functionality resides in libkeys.so which
+  must be built and copied to an arch-specific native lib dir prior to
+  building the app.
+
+    $ make TARGET=android OPENSSL=... libkeys.so
+    $ cp libkeys.so keys.app/libs/armeabi
+
+  Once the shared library is built the Android APK can be built and
+  installed:
+
+    $ cd keys.app
+    $ ant debug
+    $ adb install bin/keys-debug.apk
+
+  Building a release APK requires creation of a local.properties file
+  containing keystore details. See the Android SDK docs for specifics.

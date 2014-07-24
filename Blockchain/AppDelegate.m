@@ -271,17 +271,19 @@ AppDelegate * app;
 
 -(void)walletFailedToDecrypt:(Wallet*)_wallet {    
     
-    _wallet.password = nil;
-    
-    //Clear the password and refetch the wallet data
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-    
-    //Cleare the checksum cache incase it has
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"checksum_cache"];
-
-    [self showModal:mainPasswordView isClosable:FALSE];
-    
-    [mainPasswordTextField becomeFirstResponder];
+    if ([self guid]) {
+        self.wallet.password = nil;
+        
+        //Clear the password and refetch the wallet data
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+        
+        [self showModal:mainPasswordView isClosable:FALSE];
+        
+        [mainPasswordTextField becomeFirstResponder];
+    } else {
+        //Called when bad password is entered when maually pairing
+        [app showWelcome];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -633,6 +635,11 @@ AppDelegate * app;
     NSString * guid = manualIdentifier.text;
     NSString * password = manualPassword.text;
     
+    if ([guid length] != 36) {
+        [app standardNotify:@"Please enter your 36 character wallet identifier correctly. It can be found in the welcome email on startup." title:@"Invalid Identifier" delegate:nil];
+        return;
+    }
+    
     self.wallet = [[[Wallet alloc] initWithGuid:guid password:password] autorelease];
     
     self.wallet.delegate = app;
@@ -655,7 +662,9 @@ AppDelegate * app;
             [app standardNotify:error];
         }];
     } else {
-        [self showModal:manualView isClosable:TRUE];
+        [self showModal:manualView isClosable:TRUE onDismiss:^() {
+            manualPassword.text = nil;
+        } onResume:nil];
     }
 }
 

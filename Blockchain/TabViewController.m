@@ -42,7 +42,9 @@ CGPoint arrowPositions[4] = {
 }
 
 -(void)responderMayHaveChanged {
-        
+    
+    NSLog(@"responderMayHaveChanged");
+    
 	UIView * responder = [app.window findFirstResponder];
     CGPoint offset = contentView.frame.origin;
     offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 29.0f;

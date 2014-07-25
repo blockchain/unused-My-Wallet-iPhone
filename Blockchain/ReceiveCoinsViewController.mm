@@ -103,9 +103,9 @@
         [app standardNotify:@"You must enter a label"];
         return;
     }
-    
+        
     NSString * addr = self.clickedAddress;
-   
+
     [app.wallet setLabel:labelTextField.text ForAddress:addr];
         
     [self reload];
@@ -178,7 +178,9 @@
 #warning do this
 //    [requestAmountTextField setKeyboardType:UIKeyboardTypeDecimalPad];
     
-    [app showModal:requestCoinsView isClosable:TRUE];
+    [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {
+        self.clickedAddress = nil;
+    } onResume:nil];
     [requestAmountTextField becomeFirstResponder];
 }
 
@@ -191,7 +193,9 @@
     else
         labelAddressLabel.text = addr;
 
-    [app showModal:labelAddressView isClosable:TRUE];
+    [app showModal:labelAddressView isClosable:TRUE onDismiss:^() {
+        self.clickedAddress = nil;
+    } onResume:nil];
     
     labelTextField.text = nil;
     
@@ -227,9 +231,7 @@
     else
         [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView isClosable:TRUE onDismiss:^() {
-        self.clickedAddress = nil;
-    } onResume:nil];
+    [app showModal:optionsModalView isClosable:TRUE];
     
     if (label)
         optionsTitleLabel.text = label;

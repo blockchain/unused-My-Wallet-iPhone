@@ -45,17 +45,19 @@ CGPoint arrowPositions[4] = {
 }
 
 -(void)responderMayHaveChanged {
-	UIView * responder = [app.window findFirstResponder];
+	UIView * responder = [contentView findFirstResponder];
     
-    CGRect responderRect = [app.window convertRect:responder.frame fromView:[responder superview]];
-    
-    float moveUpY = keyboardRect.size.height - (responderRect.origin.y  + 29.0f);
-    
-    if (moveUpY < 0) {
-        [UIView beginAnimations:@"MoveUp" context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y+moveUpY,  contentView.frame.size.width,  contentView.frame.size.height);
-        [UIView commitAnimations];
+    if (responder) {
+        CGRect responderRect = [app.window convertRect:responder.frame fromView:[responder superview]];
+        
+        float moveUpY = keyboardRect.size.height - (responderRect.origin.y  + 29.0f);
+        
+        if (moveUpY < 0) {
+            [UIView beginAnimations:@"MoveUp" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+            contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y+moveUpY,  contentView.frame.size.width,  contentView.frame.size.height);
+            [UIView commitAnimations];
+        }
     }
 }
 

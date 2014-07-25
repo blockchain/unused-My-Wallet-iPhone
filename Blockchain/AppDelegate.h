@@ -37,7 +37,7 @@
 
 @class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate, UIAlertViewDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
     
     SystemSoundID alertSoundID;

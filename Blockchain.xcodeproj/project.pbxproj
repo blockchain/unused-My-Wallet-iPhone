@@ -29,6 +29,7 @@
 		84FC0301198162AE00B97D5B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC02FF198162AE00B97D5B /* libcrypto.a */; };
 		84FC0302198162AE00B97D5B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC0300198162AE00B97D5B /* libssl.a */; };
 		84FC031A1981D76800B97D5B /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC03191981D76800B97D5B /* PrivateKeyReader.m */; };
+		84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
 		9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA115134C2C00CD945D /* button_red@2x.png */; };
 		9F0CBAA615134D3200CD945D /* button_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA415134D3200CD945D /* button_grey.png */; };
@@ -209,6 +210,8 @@
 		84FC0300198162AE00B97D5B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Library/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
 		84FC03181981D76800B97D5B /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		84FC03191981D76800B97D5B /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
+		84FC031B1981DEBA00B97D5B /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		9F0CBAA015134C2C00CD945D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		9F0CBAA115134C2C00CD945D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red@2x.png"; sourceTree = "<group>"; };
 		9F0CBAA415134D3200CD945D /* button_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey.png; sourceTree = "<group>"; };
@@ -469,6 +472,8 @@
 		9F1831F315176F2200FB3D52 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				84FC031B1981DEBA00B97D5B /* UIAlertView+Blocks.h */,
+				84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */,
 				9F1831E01516A39500FB3D52 /* NSData+Hex.h */,
 				9F1831E11516A39500FB3D52 /* NSData+Hex.m */,
 				9F6C8611153468610086C200 /* NSDate+Extensions.h */,
@@ -1085,6 +1090,7 @@
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				84FC02FD19815F1B00B97D5B /* crypto_scrypt-nosse.c in Sources */,
+				84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
 				84FC02FA1981452D00B97D5B /* NSString+JSONParser_NSString.m in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,

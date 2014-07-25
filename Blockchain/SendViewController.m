@@ -15,9 +15,7 @@
 #import "TabViewController.h"
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"
-
-#define kTagAlertLabelAddress 1
-#define kTagAlertConfirmPayment 2
+#import "UIAlertView+Blocks.h"
 
 @implementation SendViewController
 
@@ -78,7 +76,7 @@
 
         sendProgressModalText.text = @"Please Wait";
         
-        [app showModal:sendProgressModal isClosable:TRUE onDismiss:^() {
+        [app showModal:sendProgressModal isClosable:FALSE onDismiss:^() {
             [app.wallet cancelTxSigning];
         } onResume:nil];
     };
@@ -118,34 +116,6 @@
     [listener release];
 }
 
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([alertView tag] == kTagAlertLabelAddress)
-    {
-        // do nothing & proceed
-        if (buttonIndex == 0) {
-            [self confirmPayment];
-        }
-        // let user save address in addressbook
-        else if (buttonIndex == 1) {
-            labelAddressLabel.text = toField.text;
-            
-            [app showModal:labelAddressView isClosable:TRUE];
-            
-            [labelAddressTextField becomeFirstResponder];
-        }
-    }
-    else if ([alertView tag] == kTagAlertConfirmPayment)
-    {
-        if (buttonIndex == 1) {
-            [self reallyDoPayment];
-        }
-    }
-    else
-    {
-        NSLog(@"unknown alertview tag");
-    }
-}
-
 -(IBAction)sendPaymentClicked:(id)sender {
     
     // If user pasted an address into the toField, assign it to toAddress
@@ -181,8 +151,21 @@
                                                        delegate:nil 
                                               cancelButtonTitle:@"No" 
                                               otherButtonTitles:@"Yes", nil];
-        alert.delegate = self;
-        alert.tag = kTagAlertLabelAddress;
+        
+        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+            // do nothing & proceed
+            if (buttonIndex == 0) {
+                [self confirmPayment];
+            }
+            // let user save address in addressbook
+            else if (buttonIndex == 1) {
+                labelAddressLabel.text = toField.text;
+                
+                [app showModal:labelAddressView isClosable:TRUE];
+                
+                [labelAddressTextField becomeFirstResponder];
+            }
+        };
         
         [alert show];
         [alert release];
@@ -202,14 +185,17 @@
     }
     
     
-    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Payment"
                                                     message:messageString
                                                    delegate:self
                                           cancelButtonTitle:@"No"
                                           otherButtonTitles:@"Yes", nil];
-    alert.delegate = self;
-    alert.tag = kTagAlertConfirmPayment;
+    
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            [self reallyDoPayment];
+        }
+    };
     
     [alert show];
     [alert release];

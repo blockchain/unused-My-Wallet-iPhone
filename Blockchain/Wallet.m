@@ -167,11 +167,11 @@
 }
 
 
--(void)ask_for_private_key:(void(^)(id))_success error:(void(^)(id))_error {
+-(void)ask_for_private_key:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
     NSLog(@"ask_for_private_key:");
     
-    if ([delegate respondsToSelector:@selector(askForPrivateKey:error:)])
-        [delegate askForPrivateKey:_success error:_error];
+    if ([delegate respondsToSelector:@selector(askForPrivateKey:success:error:)])
+        [delegate askForPrivateKey:address success:_success error:_error];
 }
 
 - (void)didParsePairingCode:(NSDictionary *)dict
@@ -189,7 +189,6 @@
     if ([delegate respondsToSelector:@selector(errorParsingPairingCode:)])
         [delegate errorParsingPairingCode:message];
 }
-
 
 #pragma mark Init Methods
 
@@ -442,30 +441,21 @@
 }
 
 -(void)getPassword:(NSString*)selector success:(void(^)(id))_success {
+    [self getPassword:selector success:_success error:nil];
+}
+
+-(void)getPassword:(NSString*)selector success:(void(^)(id))_success error:(void(^)(id))_error {
     if ([selector isEqualToString:@"#second-password-modal"]) {
         [app getSecondPassword:^(NSString * _secondPassword) {
             _success(_secondPassword);
-        } error:nil];
+        } error:_error];
     } else if ([selector isEqualToString:@"#import-private-key-password"]) {
         [app getPrivateKeyPassword:^(NSString * _secondPassword) {
             _success(_secondPassword);
-        } error:nil];
+        } error:_error];
     } else {
         @throw [NSException exceptionWithName:@"Unknown Modal" reason:[NSString stringWithFormat:@"Unknown Modal Selector %@", selector] userInfo:nil];
     }
-}
-
--(void)getPassword:(NSString*)title success:(void(^)(id))_success error:(void(^)(id))_error {
-    [app getSecondPassword:^(NSString * _secondPassword) {
-        
-        NSLog(@"getPassword: Success");
-        
-        _success(_secondPassword);
-    } error:^(NSString * errorMessage) {
-        //NSLog(@"getPassword error %@", errorMessage);
-
-        _error(errorMessage);
-    }];
 }
 
 

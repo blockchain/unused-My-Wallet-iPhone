@@ -294,11 +294,15 @@
     if (successArg) {
         if ([function characterAtIndex:[function length]-1] == ':')
             function = [function stringByAppendingString:@"success:"];
+        else
+            function = [function stringByAppendingString:@":"];
     }
     
     if (errorArg) {
         if ([function characterAtIndex:[function length]-1] == ':')
             function = [function stringByAppendingString:@"error:"];
+        else
+            function = [function stringByAppendingString:@":"];
     }
     
     if (function != nil) {

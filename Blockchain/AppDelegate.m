@@ -26,7 +26,9 @@
 #import "UIDevice+Hardware.h"
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"
+#import "UIAlertView+Blocks.h"
 #import "PairingCodeParser.h"
+#import "PrivateKeyReader.h"
 
 AppDelegate * app;
 
@@ -676,8 +678,25 @@ AppDelegate * app;
     }
 }
 
--(void)askForPrivateKey:(void(^)(id))_success error:(void(^)(id))_error {
+-(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Scan Watch Only Address?"
+                                                    message:[NSString stringWithFormat:@"Wallet address %@ has funds available to spend. However the private key needs to be scanned from a paper wallet or QR Code. Would you like to scan the private key now?", address]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
     
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            _error(@"User Declined");
+        } else {
+            PrivateKeyReader * reader = [[[PrivateKeyReader alloc] init] autorelease];
+            
+            [reader readPrivateKey:_success error:_error];
+        }
+    };
+    
+    [alert show];
+    [alert release];
 }
 
 -(void)logout {

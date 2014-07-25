@@ -25,7 +25,7 @@
 
 @class Wallet, MultiValueField;
 
-@interface SendViewController : UIViewController <MultiValueFieldDataSource, ZBarReaderViewDelegate, AddressBookDelegate, UIAlertViewDelegate> {
+@interface SendViewController : UIViewController <MultiValueFieldDataSource, ZBarReaderViewDelegate, AddressBookDelegate> {
     IBOutlet MultiValueField * fromField;
     IBOutlet UITextField * toFieldContainerField;
     IBOutlet UITextField * toField;

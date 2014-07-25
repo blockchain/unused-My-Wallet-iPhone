@@ -59,7 +59,7 @@
 -(void)errorParsingPairingCode:(NSString*)message;
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 -(void)errorCreatingNewAccount:(NSString*)message;
--(void)askForPrivateKey:(void(^)(id))_success error:(void(^)(id))_error;
+-(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error;
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {

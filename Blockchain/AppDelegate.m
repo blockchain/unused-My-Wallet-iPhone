@@ -137,7 +137,7 @@ AppDelegate * app;
 }
 
 - (void)swipeLeft
-{
+{    
     if (tabViewController.selectedIndex < 3)
     {
         NSInteger newIndex = tabViewController.selectedIndex + 1;

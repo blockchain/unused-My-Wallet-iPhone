@@ -27,37 +27,34 @@ CGPoint arrowPositions[4] = {
 @synthesize activeViewController; 
 
 -(void) keyboardWillShow:(NSNotification *)note
-{		
+{
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardRect];
 }
 
 -(void) keyboardWillHide:(NSNotification *)note {	
-    
-    /*if (contentView.frame.origin.y != originalOffset.y) {
+    [self moveDown];
+}
+
+-(void)moveDown {
+    if (contentView.frame.origin.y != originalOffset.y) {
         [UIView beginAnimations:@"MoveUp" context:nil];
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
         contentView.frame =  CGRectMake(contentView.frame.origin.x, originalOffset.y,  contentView.frame.size.width,  contentView.frame.size.height);
         [UIView commitAnimations];
-    }*/
+    }
 }
 
 -(void)responderMayHaveChanged {
-    
-    NSLog(@"responderMayHaveChanged");
-    
 	UIView * responder = [app.window findFirstResponder];
-    CGPoint offset = contentView.frame.origin;
-    offset.y -= keyboardRect.size.height - (contentView.frame.size.height - responder.frame.origin.y) + 29.0f;
-
-    //    NSLog(@"Responder %@", responder);
-    //    printf("keyboard height : %f\n", keyboardRect.size.height);
-    //    printf("reponder y : %f\n", responder.frame.origin.y);
-    //    printf("y: %f\n", offset.y);
     
-    if (offset.y < 0) {
+    CGRect responderRect = [app.window convertRect:responder.frame fromView:[responder superview]];
+    
+    float moveUpY = keyboardRect.size.height - (responderRect.origin.y  + 29.0f);
+    
+    if (moveUpY < 0) {
         [UIView beginAnimations:@"MoveUp" context:nil];
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-        contentView.frame = CGRectMake(contentView.frame.origin.x, offset.y,  contentView.frame.size.width,  contentView.frame.size.height);
+        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y+moveUpY,  contentView.frame.size.width,  contentView.frame.size.height);
         [UIView commitAnimations];
     }
 }
@@ -105,7 +102,9 @@ CGPoint arrowPositions[4] = {
 	activeViewController.view.frame = CGRectMake(activeViewController.view.frame.origin.x, activeViewController.view.frame.origin.y, contentView.frame.size.width, activeViewController.view.frame.size.height);
 	
     [activeViewController.view setNeedsLayout];
-    
+}
+
+-(void)viewDidAppear:(BOOL)animated {
     originalOffset = contentView.frame.origin;
 }
 
@@ -127,8 +126,6 @@ CGPoint arrowPositions[4] = {
 	if (nviewcontroller == activeViewController)
 		return;
     
-	originalOffset = CGPointZero;
-	
 	self.oldViewController = activeViewController;
 
 	[activeViewController release];

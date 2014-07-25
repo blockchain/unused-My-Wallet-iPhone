@@ -118,7 +118,7 @@ AppDelegate * app;
             self.wallet.delegate = self;
         }
     }
-    
+
     return TRUE;
 }
 
@@ -509,9 +509,14 @@ AppDelegate * app;
     @try {        
         //Cannot re-display a modal which is already in the modalChain
         for (MyUIModalView * chainModal in self.modalChain) {
-            if (chainModal.modalContentView == contentView) {
+            if (([contentView superview] && [contentView superview] == chainModal.modalContentView) || chainModal.modalContentView == contentView) {
                 return;
             }
+        }
+        
+        //This modal is already being displayed
+        if ([contentView superview] && [contentView superview] == app.modalView.modalContentView) {
+            return;
         }
         
         if (modalView) {

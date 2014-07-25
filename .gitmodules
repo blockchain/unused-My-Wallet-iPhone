@@ -1,6 +1,3 @@
-[submodule "My-Wallet"]
-	path = My-Wallet
-	url = git@github.com:blockchain/My-Wallet.git
 [submodule "Submodules/My-Wallet"]
 	path = Submodules/My-Wallet
 	url = git@github.com:blockchain/My-Wallet.git

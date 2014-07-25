@@ -30,6 +30,9 @@
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
 
+#define kTagAlertForgetWallet 1
+#define kTagAlertPairOption 2
+
 AppDelegate * app;
 
 @implementation AppDelegate
@@ -38,6 +41,7 @@ AppDelegate * app;
 @synthesize wallet;
 @synthesize modalView;
 @synthesize latestResponse;
+
 
 #pragma mark - Lifecycle
 
@@ -817,6 +821,16 @@ AppDelegate * app;
             [app showWelcome];
         }
     }
+    if ([alertView tag] == kTagAlertPairOption) {
+        // Manually
+        if (buttonIndex == 0) {
+            [app showModal:manualView isClosable:TRUE];
+        }
+        // QR
+        else if (buttonIndex == 1) {
+            [app showModal:pairingInstructionsView isClosable:TRUE];
+        }
+    }
 }
 
 #pragma mark - Actions
@@ -865,9 +879,17 @@ AppDelegate * app;
         [alert release];
 
     }
-    // Welcome
+    // Do pair
     else {
-        [app showModal:pairingInstructionsView isClosable:TRUE];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"How would you like to pair?"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Manually"
+                                              otherButtonTitles:@"Automatically", nil];
+        alert.delegate = self;
+        alert.tag = kTagAlertPairOption;
+        [alert show];
+        [alert release];
     }
 }
 

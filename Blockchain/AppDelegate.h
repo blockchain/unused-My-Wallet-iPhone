@@ -35,8 +35,6 @@
 #define WebROOT @"https://blockchain.info/"
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
-#define kTagAlertForgetWallet 1
-
 @class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate, UIAlertViewDelegate> {

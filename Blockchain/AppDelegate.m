@@ -540,6 +540,8 @@ AppDelegate * app;
         
         modalView.isClosable = _isClosable;
         
+        modalView.frame = _window.frame;
+        
         self.modalView.onDismiss = onDismiss;
         self.modalView.onResume = onResume;
         
@@ -951,10 +953,6 @@ AppDelegate * app;
     } else {
         [self walletFailedToDecrypt:wallet];
     }
-}
-
--(IBAction)modalBackgroundClicked:(id)sender {
-    [modalView endEditing:FALSE];
 }
 
 #pragma mark - Accessors

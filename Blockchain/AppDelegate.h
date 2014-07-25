@@ -159,7 +159,6 @@
 
 -(void)showSendCoins;
 
--(IBAction)modalBackgroundClicked:(id)sender;
 -(IBAction)receiveCoinClicked:(UIButton *)sender;
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;

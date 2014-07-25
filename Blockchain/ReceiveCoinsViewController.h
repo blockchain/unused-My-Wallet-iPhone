@@ -20,9 +20,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Wallet.h"
-#import "ZBarSDK.h"
 
-@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, ZBarReaderViewDelegate> {
+@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
     IBOutlet UITableView * tableView;
     IBOutlet UIImageView * qrCodeImageView;
     IBOutlet UIButton * archiveUnarchiveButton;
@@ -50,7 +49,6 @@
 
 -(void)reload;
 
-@property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, retain) NSString * clickedAddress;
 
 -(IBAction)labelAddressClicked:(id)sender;

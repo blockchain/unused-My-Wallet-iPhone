@@ -59,6 +59,7 @@
 -(void)errorParsingPairingCode:(NSString*)message;
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 -(void)errorCreatingNewAccount:(NSString*)message;
+-(void)askForPrivateKey:(void(^)(id))_success error:(void(^)(id))_error;
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {
@@ -131,15 +132,13 @@
 
 -(void)parsePairingCode:(NSString*)code;
 
+-(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString;
+
 //Clear the retained delegates to prepare for dealloc
 -(void)clearDelegates;
 
 -(NSInteger)getWebsocketReadyState;
 
 -(void)newAccount:(NSString*)password email:(NSString *)email;
-
-// BIP32 Paper Wallet scrypt functions
--(void)crypto_scrypt:(NSString *)_password salt:(NSString*)salt n:(NSNumber*)N
-                   r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error;
 
 @end

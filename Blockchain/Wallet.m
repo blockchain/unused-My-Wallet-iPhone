@@ -166,6 +166,14 @@
     [self.webView executeJS:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeStringForJS]];
 }
 
+
+-(void)ask_for_private_key:(void(^)(id))_success error:(void(^)(id))_error {
+    NSLog(@"ask_for_private_key:");
+    
+    if ([delegate respondsToSelector:@selector(askForPrivateKey:error:)])
+        [delegate askForPrivateKey:_success error:_error];
+}
+
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
     NSLog(@"didParsePairingCode:");
@@ -313,11 +321,16 @@
     [self.webView executeJSSynchronous:@"localstorage.clear();"];
 }
 
+-(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString {
+   return [self.webView executeJSSynchronous:@"MyWalletPhone.detectPrivateKeyFormat(\"%@\")", [privateKeyString escapeStringForJS]];
+}
+
 // Calls from JS
 
 -(void)log:(NSString*)message {
     NSLog(@"console.log: %@", [message description]);
 }
+
 
 -(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
     
@@ -714,14 +727,19 @@
         return nil;
     }
     
+    
+    
     uint8_t * derivedBytes = malloc(derivedKeyLen);
     
+    //scrypt(_passwordBuff, _passwordBuffLen, _saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen);
+
     if (crypto_scrypt((uint8_t*)_passwordBuff, _passwordBuffLen, (uint8_t*)_saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen) == -1) {
         return nil;
     }
 
     return [NSData dataWithBytesNoCopy:derivedBytes length:derivedKeyLen];
 }
+
 
 -(void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N
                    r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error {

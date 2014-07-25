@@ -108,6 +108,10 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                     }
                                        
                     var obj = initNewTx();
+                       
+                    obj.ask_for_private_key = function(success, error) {
+                       device.execute('ask_for_private_key:', [], success, error);
+                    }
                                        
                     pendingTransactions[id] = obj;
 
@@ -272,6 +276,14 @@ MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
     MyWallet.addAddressBookEntry(bitcoinAddress, label);
     
     MyWallet.backupWallet();
+}
+
+MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
+    try {
+        return MyWallet.detectPrivateKeyFormat(privateKeyString);
+    } catch(e) {
+        return null;
+    }
 }
 
 //Wrapper Around localstorage

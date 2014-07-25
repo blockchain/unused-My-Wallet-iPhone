@@ -28,6 +28,7 @@
 		84FC02FE19815F1B00B97D5B /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FC02FC19815F1B00B97D5B /* sha256.c */; };
 		84FC0301198162AE00B97D5B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC02FF198162AE00B97D5B /* libcrypto.a */; };
 		84FC0302198162AE00B97D5B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC0300198162AE00B97D5B /* libssl.a */; };
+		84FC031A1981D76800B97D5B /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC03191981D76800B97D5B /* PrivateKeyReader.m */; };
 		9F0CBAA215134C2C00CD945D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA015134C2C00CD945D /* button_red.png */; };
 		9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA115134C2C00CD945D /* button_red@2x.png */; };
 		9F0CBAA615134D3200CD945D /* button_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA415134D3200CD945D /* button_grey.png */; };
@@ -206,6 +207,8 @@
 		84FC02FC19815F1B00B97D5B /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha256.c; path = Library/keys/src/sha256.c; sourceTree = "<group>"; };
 		84FC02FF198162AE00B97D5B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Library/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
 		84FC0300198162AE00B97D5B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Library/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
+		84FC03181981D76800B97D5B /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
+		84FC03191981D76800B97D5B /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		9F0CBAA015134C2C00CD945D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red.png; sourceTree = "<group>"; };
 		9F0CBAA115134C2C00CD945D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red@2x.png"; sourceTree = "<group>"; };
 		9F0CBAA415134D3200CD945D /* button_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey.png; sourceTree = "<group>"; };
@@ -661,6 +664,8 @@
 				9F7480E215140EA500BC4292 /* TabViewController.m */,
 				84F4BDF8197F21D700B7BF7B /* PairingCodeParser.h */,
 				84F4BDF9197F21D700B7BF7B /* PairingCodeParser.m */,
+				84FC03181981D76800B97D5B /* PrivateKeyReader.h */,
+				84FC03191981D76800B97D5B /* PrivateKeyReader.m */,
 				9F1831F315176F2200FB3D52 /* Categories */,
 				9F0CBAAB15135DF200CD945D /* JavaScript */,
 				9F765F3A14BC7C3100048EFB /* Models */,
@@ -1088,6 +1093,7 @@
 				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
 				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
+				84FC031A1981D76800B97D5B /* PrivateKeyReader.m in Sources */,
 				84B601CA197AD03800DA1829 /* UIModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* BCFadeView.m in Sources */,

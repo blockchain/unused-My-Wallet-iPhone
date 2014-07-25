@@ -676,6 +676,10 @@ AppDelegate * app;
     }
 }
 
+-(void)askForPrivateKey:(void(^)(id))_success error:(void(^)(id))_error {
+    
+}
+
 -(void)logout {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];

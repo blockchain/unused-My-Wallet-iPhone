@@ -11,10 +11,10 @@
 #import "QREncoder.h"
 #import "ReceiveTableCell.h"
 #import "Address.h"
+#import "PrivateKeyReader.h"
 
 @implementation ReceiveCoinsViewController
 
-@synthesize readerView;
 @synthesize activeKeys;
 @synthesize archivedKeys;
 
@@ -36,42 +36,13 @@
 }
 
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
-{
-    // do something useful with results
-    for(ZBarSymbol *sym in syms) {
-        NSString * privateKey = sym.data;
-        
-        [app.wallet addKey:privateKey];
-        
-        break;
-    }
-    
-    [app closeModal];
-    
-    [readerView stop];
-    
-    self.readerView = nil;
-}
-
 -(IBAction)scanKeyClicked:(id)sender {
-    [self initQRCodeView];
-}
-
--(void)initQRCodeView {
-    self.readerView = [[ZBarReaderView new] autorelease];
     
-    [readerView start];
+    PrivateKeyReader * reader = [[[PrivateKeyReader alloc] init] autorelease];
     
-    [readerView setReaderDelegate:self];
-    
-    [app showModal:readerView isClosable:TRUE onDismiss:^() {
-        [readerView stop];
-        
-        self.readerView = nil;
-        
-        [app.wallet cancelTxSigning];
-    } onResume:nil];
+    [reader readPrivateKey:^(NSString* privateKeyString) {
+        [app.wallet addKey:privateKeyString];
+    } error:nil];
 }
 
 -(void)viewDidLoad {

@@ -292,11 +292,13 @@
     };
     
     if (successArg) {
-        function = [function stringByAppendingString:@"success:"];
+        if ([function characterAtIndex:[function length]-1] == ':')
+            function = [function stringByAppendingString:@"success:"];
     }
     
     if (errorArg) {
-        function = [function stringByAppendingString:@"error:"];
+        if ([function characterAtIndex:[function length]-1] == ':')
+            function = [function stringByAppendingString:@"error:"];
     }
     
     if (function != nil) {

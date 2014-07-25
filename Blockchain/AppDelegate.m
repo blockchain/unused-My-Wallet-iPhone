@@ -46,7 +46,6 @@ AppDelegate * app;
     if (self = [super init]) {
          
         btcFormatter = [[NSNumberFormatter alloc] init];
-        [btcFormatter setMaximumSignificantDigits:5];
         [btcFormatter setMaximumFractionDigits:5];
         [btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         

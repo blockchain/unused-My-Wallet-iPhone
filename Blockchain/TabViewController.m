@@ -44,6 +44,7 @@ CGPoint arrowPositions[4] = {
     }
 }
 
+#warning do we still need this?
 -(void)responderMayHaveChanged {
 	UIView * responder = [contentView findFirstResponder];
     

@@ -449,7 +449,7 @@
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="588">
                     <rect key="frame" x="18" y="45" width="245" height="63"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <string key="text">You have chosed to pair manually (or automatic pairing is not supported with your device). Please enter your login details below.</string>
+                    <string key="text">You have chosen to pair manually (or automatic pairing is not supported with your device). Please enter your login details below.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>

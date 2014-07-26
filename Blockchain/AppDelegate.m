@@ -30,9 +30,6 @@
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
 
-#define kTagAlertForgetWallet 1
-#define kTagAlertPairOption 2
-
 AppDelegate * app;
 
 @implementation AppDelegate
@@ -49,7 +46,6 @@ AppDelegate * app;
     if (self = [super init]) {
          
         btcFormatter = [[NSNumberFormatter alloc] init];
-        [btcFormatter setMaximumSignificantDigits:5];
         [btcFormatter setMaximumFractionDigits:5];
         [btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
@@ -122,7 +118,7 @@ AppDelegate * app;
             self.wallet.delegate = self;
         }
     }
-    
+
     return TRUE;
 }
 
@@ -513,9 +509,14 @@ AppDelegate * app;
     @try {        
         //Cannot re-display a modal which is already in the modalChain
         for (MyUIModalView * chainModal in self.modalChain) {
-            if (chainModal.modalContentView == contentView) {
+            if (([contentView superview] && [contentView superview] == chainModal.modalContentView) || chainModal.modalContentView == contentView) {
                 return;
             }
+        }
+        
+        //This modal is already being displayed
+        if ([contentView superview] && [contentView superview] == app.modalView.modalContentView) {
+            return;
         }
         
         if (modalView) {
@@ -542,6 +543,8 @@ AppDelegate * app;
         [modalView.modalContentView addSubview:contentView];
         
         modalView.isClosable = _isClosable;
+        
+        modalView.frame = _window.frame;
         
         self.modalView.onDismiss = onDismiss;
         self.modalView.onResume = onResume;
@@ -804,35 +807,6 @@ AppDelegate * app;
 //    [_window bringSubviewToFront:self.pinEntryViewController.view];
 }
 
-#pragma mark - AlertView Delegate
-
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-
-    if ([alertView tag] == kTagAlertForgetWallet)
-    {
-        // Forget Wallet Cancelled
-        if (buttonIndex == 0) {
-        }
-        // Forget Wallet Confirmed
-        else if (buttonIndex == 1) {
-            NSLog(@"forgetting wallet");
-            [app closeModal];
-            [self forgetWallet];
-            [app showWelcome];
-        }
-    }
-    if ([alertView tag] == kTagAlertPairOption) {
-        // Manually
-        if (buttonIndex == 0) {
-            [app showModal:manualView isClosable:TRUE];
-        }
-        // QR
-        else if (buttonIndex == 1) {
-            [app showModal:pairingInstructionsView isClosable:TRUE];
-        }
-    }
-}
-
 #pragma mark - Actions
 
 -(IBAction)changePinClicked:(id)sender {
@@ -873,8 +847,19 @@ AppDelegate * app;
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Forget Wallet", nil];
-        alert.delegate = self;
-        alert.tag = kTagAlertForgetWallet;
+        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+            // Forget Wallet Cancelled
+            if (buttonIndex == 0) {
+            }
+            // Forget Wallet Confirmed
+            else if (buttonIndex == 1) {
+                NSLog(@"forgetting wallet");
+                [app closeModal];
+                [self forgetWallet];
+                [app showWelcome];
+            }
+        };
+        
         [alert show];
         [alert release];
 
@@ -886,8 +871,19 @@ AppDelegate * app;
                                                        delegate:self
                                               cancelButtonTitle:@"Manually"
                                               otherButtonTitles:@"Automatically", nil];
-        alert.delegate = self;
-        alert.tag = kTagAlertPairOption;
+
+        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+            // Manually
+            if (buttonIndex == 0) {
+                [app showModal:manualView isClosable:TRUE];
+            }
+            // QR
+            else if (buttonIndex == 1) {
+                [app showModal:pairingInstructionsView isClosable:TRUE];
+            }
+        };
+
+        
         [alert show];
         [alert release];
     }
@@ -961,10 +957,6 @@ AppDelegate * app;
     } else {
         [self walletFailedToDecrypt:wallet];
     }
-}
-
--(IBAction)modalBackgroundClicked:(id)sender {
-    [modalView endEditing:FALSE];
 }
 
 #pragma mark - Accessors

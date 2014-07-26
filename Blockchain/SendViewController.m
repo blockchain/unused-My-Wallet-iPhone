@@ -263,7 +263,7 @@
         [self doCurrencyConversion];
     }
     
-    [app.tabViewController responderMayHaveChanged];
+//    [app.tabViewController responderMayHaveChanged];
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

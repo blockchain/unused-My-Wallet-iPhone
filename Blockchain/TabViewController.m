@@ -44,7 +44,9 @@ CGPoint arrowPositions[4] = {
     }
 }
 
-#warning do we still need this?
+
+//Move contentview up when keyboard is covering the first responder
+//Useful on 3.5 inch screens
 -(void)responderMayHaveChanged {
 	UIView * responder = [contentView findFirstResponder];
     

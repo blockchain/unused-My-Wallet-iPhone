@@ -30,7 +30,7 @@
 }
 
 -(IBAction)closeModalClicked:(id)sender {
-    if (self.isClosable) {
+    if (self.isClosable || self.modalContentView == nil) {
         [app closeModal];
     }
 }

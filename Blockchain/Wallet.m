@@ -69,6 +69,10 @@
 }
 
 -(void)cancelTxSigning {
+    if (![self.webView isLoaded]) {
+        return;
+    }
+    
     [self.webView executeJSSynchronous:@"MyWalletPhone.cancelTxSigning();"];
 }
 
@@ -241,6 +245,10 @@
 }
 
 -(BOOL)validateSecondPassword:(NSString*)secondPassword {
+    if (![self.webView isLoaded]) {
+        return FALSE;
+    }
+    
     return [[self.webView executeJSSynchronous:@"MyWallet.validateSecondPassword(\"%@\")", [secondPassword escapeStringForJS]] boolValue];
 }
 
@@ -250,31 +258,54 @@
 
 
 -(NSString*)labelForAddress:(NSString*)address {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     return [self.webView executeJSSynchronous:@"MyWallet.getAddressLabel(\"%@\")", [address escapeStringForJS]];
 }
 
 -(NSInteger)tagForAddress:(NSString*)address {
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
     return [[self.webView executeJSSynchronous:@"MyWallet.getAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
 }
 
 -(BOOL)isValidAddress:(NSString*)string {
+    if (![self.webView isLoaded]) {
+        return FALSE;
+    }
+    
     return [[self.webView executeJSSynchronous:@"MyWalletPhone.isValidAddress(\"%@\");", [string escapeStringForJS]] boolValue];
 }
 
 -(NSArray*)allAddresses {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllAddresses())"];
     
-    return [allAddressesJSON getJSONObject];
+    return [allAddressesJSON getJSONObject];        
 }
 
-
 -(NSArray*)activeAddresses {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getActiveAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
 }
 
 -(NSArray*)archivedAddresses {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getArchivedAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
@@ -299,10 +330,18 @@
 }
 
 -(uint64_t)getAddressBalance:(NSString*)address {
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
     return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
 }
 
 -(BOOL)addKey:(NSString*)privateKeyString {
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
     return [[self.webView executeJSSynchronous:@"MyWalletPhone.addPrivateKey(\"%@\")", [privateKeyString escapeStringForJS]] boolValue];
 }
 
@@ -317,10 +356,18 @@
 }
 
 -(void)clearLocalStorage {
-    [self.webView executeJSSynchronous:@"localstorage.clear();"];
+    if (![self.webView isLoaded]) {
+        return;
+    }
+    
+    [self.webView executeJSSynchronous:@"localStorage.clear();"];
 }
 
 -(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
    return [self.webView executeJSSynchronous:@"MyWalletPhone.detectPrivateKeyFormat(\"%@\")", [privateKeyString escapeStringForJS]];
 }
 
@@ -464,6 +511,10 @@
 }
 
 -(uint64_t)parseBitcoinValue:(NSString*)input {
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
     return [[self.webView executeJSSynchronous:@"precisionToSatoshiBN(\"%@\").toString()", input] longLongValue];
 }
 
@@ -612,10 +663,18 @@
 }
 
 -(CurrencySymbol*)getLocalSymbol {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     return [CurrencySymbol symbolFromDict:[[webView executeJSSynchronous:@"JSON.stringify(symbol_local)"] getJSONObject]];
 }
 
 -(CurrencySymbol*)getBTCSymbol {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     return [CurrencySymbol symbolFromDict:[[webView executeJSSynchronous:@"JSON.stringify(symbol_btc)"] getJSONObject]];
 }
 

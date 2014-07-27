@@ -264,6 +264,7 @@ AppDelegate * app;
     [transactionsViewController reload];
     [receiveViewController reload];
     [sendViewController reload];
+
 }
 
 -(void)didSetLatestBlock:(LatestBlock*)block {
@@ -464,7 +465,6 @@ AppDelegate * app;
 
 -(void)closeModal {
     [modalView removeFromSuperview];
-    [modalView.modalContentView removeFromSuperview];
     
     CATransition *animation = [CATransition animation];
     [animation setDuration:ANIMATION_DURATION];
@@ -478,7 +478,6 @@ AppDelegate * app;
         self.modalView.onDismiss = nil;
     }
     
-    self.modalView.modalContentView = nil;
     self.modalView = nil;
     
     if ([self.modalChain count] > 0) {
@@ -514,8 +513,8 @@ AppDelegate * app;
             }
         }
         
-        //This modal is already being displayed
-        if ([contentView superview] && [contentView superview] == app.modalView.modalContentView) {
+        //This modal is already being displayed in another view
+        if ([contentView superview]) {
             return;
         }
         
@@ -523,14 +522,10 @@ AppDelegate * app;
             [modalView removeFromSuperview];
 
             if (modalView.isClosable) {
-                [modalView.modalContentView removeFromSuperview];
-
                 if (self.modalView.onDismiss) {
                     self.modalView.onDismiss();
                     self.modalView.onDismiss = nil;
                 }
-                
-                self.modalView.modalContentView = nil;
             } else {
                 [self.modalChain addObject:modalView];
             }

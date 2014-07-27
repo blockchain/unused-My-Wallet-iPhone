@@ -12,6 +12,6 @@
 
 @interface Input : NSObject {}
 
-@property(nonatomic, retain) Output * prev_out;
+@property(nonatomic, strong) Output * prev_out;
 
 @end

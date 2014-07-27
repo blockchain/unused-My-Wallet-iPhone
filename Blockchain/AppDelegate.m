@@ -44,15 +44,15 @@ AppDelegate * app;
 
 -(id)init {
     if (self = [super init]) {
-        self.btcFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+        self.btcFormatter = [[NSNumberFormatter alloc] init];
         [_btcFormatter setMaximumFractionDigits:5];
         [_btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
-        self.localCurrencyFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+        self.localCurrencyFormatter = [[NSNumberFormatter alloc] init];
         [_localCurrencyFormatter setMaximumFractionDigits:2];
         [_localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-        self.modalChain = [[[NSMutableArray alloc] init] autorelease];
+        self.modalChain = [[NSMutableArray alloc] init];
         
         app = self;
         
@@ -114,7 +114,7 @@ AppDelegate * app;
             //Prevent Retain cycle
             [self.wallet clearDelegates];
             
-            self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
+            self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
             
             self.wallet.delegate = self;
         }
@@ -227,7 +227,6 @@ AppDelegate * app;
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alert show];
-            [alert release];
         }
     });
 }
@@ -311,7 +310,7 @@ AppDelegate * app;
 -(void)playBeepSound {
     
 	if (beepSoundID == 0) {
-		AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"]], &beepSoundID);
+		AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"]], &beepSoundID);
 	}
 	
 	AudioServicesPlaySystemSound(beepSoundID);		
@@ -324,7 +323,7 @@ AppDelegate * app;
 		NSString * alert_sound = [[NSBundle mainBundle] pathForResource:@"alert-received" ofType:@"wav"];
 		
 		//Create the system sound
-		AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath: alert_sound], &alertSoundID);
+		AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: alert_sound], &alertSoundID);
 	}
 	
 	AudioServicesPlaySystemSound(alertSoundID);		
@@ -333,7 +332,7 @@ AppDelegate * app;
 
 // Only gets called when displaying a transaction hash
 -(void)pushWebViewController:(NSString*)url {
-    self.webViewController = [[[WebViewController alloc] init] autorelease];
+    self.webViewController = [[WebViewController alloc] init];
     [_webViewController viewDidLoad]; // ??
 
     [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
@@ -342,7 +341,7 @@ AppDelegate * app;
 }
 
 - (NSMutableDictionary *)parseQueryString:(NSString *)query {
-    NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithCapacity:6] autorelease];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6];
     NSArray *pairs = [query componentsSeparatedByString:@"&"];
     
     for (NSString *pair in pairs) {
@@ -581,7 +580,7 @@ AppDelegate * app;
     //Prevent Retain cycle
     [self.wallet clearDelegates];
     
-    self.wallet = [[[Wallet alloc] initWithGuid:[self guid] sharedKey:[self sharedKey] password:[self password]] autorelease];
+    self.wallet = [[Wallet alloc] initWithGuid:[self guid] sharedKey:[self sharedKey] password:[self password]];
     
     self.wallet.delegate = app;
 }
@@ -642,7 +641,7 @@ AppDelegate * app;
     //Prevent Retain cycle
     [self.wallet clearDelegates];
     
-    self.wallet = [[[Wallet alloc] initWithGuid:guid password:password] autorelease];
+    self.wallet = [[Wallet alloc] initWithGuid:guid password:password];
     
     self.wallet.delegate = app;
     
@@ -653,7 +652,7 @@ AppDelegate * app;
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        PairingCodeParser * parser = [[[PairingCodeParser alloc] init] autorelease];
+        PairingCodeParser * parser = [[PairingCodeParser alloc] init];
         
         [parser scanAndParse:^(NSDictionary*code) {
             NSLog(@"scanAndParse success");
@@ -670,7 +669,7 @@ AppDelegate * app;
             //Prevent Retain cycle
             [self.wallet clearDelegates];
             
-            self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
+            self.wallet = [[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
             
             self.wallet.delegate = self;
 
@@ -695,14 +694,13 @@ AppDelegate * app;
         if (buttonIndex == 0) {
             _error(@"User Declined");
         } else {
-            PrivateKeyReader * reader = [[[PrivateKeyReader alloc] init] autorelease];
+            PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
             
             [reader readPrivateKey:_success error:_error];
         }
     };
     
     [alert show];
-    [alert release];
 }
 
 -(void)logout {
@@ -860,7 +858,6 @@ AppDelegate * app;
         };
         
         [alert show];
-        [alert release];
 
     }
     // Do pair
@@ -884,7 +881,6 @@ AppDelegate * app;
 
         
         [alert show];
-        [alert release];
     }
 }
 
@@ -939,7 +935,7 @@ AppDelegate * app;
         //Prevent Retain cycle
         [self.wallet clearDelegates];
         
-        self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
+        self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
         
         self.wallet.delegate = self;
     }

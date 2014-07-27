@@ -15,12 +15,7 @@
     
     NSLog(@"Dealloc PairingCodeParser");
     
-    self.readerView = nil;
-    self.wallet = nil;
-    self.success = nil;
-    self.error = nil;
     
-    [super dealloc];
 }
 
 - (void)errorParsingPairingCode:(NSString *)message {
@@ -50,7 +45,7 @@
     self.success = __success;
     self.error = __error;
     
-    self.readerView = [[[ZBarReaderView alloc] init] autorelease];
+    self.readerView = [[ZBarReaderView alloc] init];
     
     [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
@@ -71,7 +66,7 @@
         //Prevent Retain cycle
         [self.wallet clearDelegates];
         
-        self.wallet = [[[Wallet alloc] init] autorelease];
+        self.wallet = [[Wallet alloc] init];
         
         self.wallet.delegate = self;
         

@@ -26,9 +26,9 @@
 @property(nonatomic, assign) uint64_t conversion;
 @property(nonatomic, assign) BOOL symbolappearsAfter;
 
-@property(nonatomic, retain) NSString * code;
-@property(nonatomic, retain) NSString * symbol;
-@property(nonatomic, retain) NSString * name;
+@property(nonatomic, strong) NSString * code;
+@property(nonatomic, strong) NSString * symbol;
+@property(nonatomic, strong) NSString * name;
 
 +(CurrencySymbol*)symbolFromDict:(NSDictionary*)dict;
 
@@ -39,7 +39,7 @@
 @property(nonatomic, assign) uint32_t height;
 @property(nonatomic, assign) uint64_t time;
 
-@property(nonatomic, retain) NSString * hash;
+@property(nonatomic, strong) NSString * hash;
 
 @end
 
@@ -50,9 +50,9 @@
 @property(nonatomic, assign) uint64_t final_balance;
 @property(nonatomic, assign) uint32_t n_transactions;
 
-@property(nonatomic, retain) NSArray * addresses;
-@property(nonatomic, retain) NSMutableArray * transactions;
-@property(nonatomic, retain) CurrencySymbol * symbol_btc;
-@property(nonatomic, retain) CurrencySymbol * symbol_local;
+@property(nonatomic, strong) NSArray * addresses;
+@property(nonatomic, strong) NSMutableArray * transactions;
+@property(nonatomic, strong) CurrencySymbol * symbol_btc;
+@property(nonatomic, strong) CurrencySymbol * symbol_local;
 
 @end

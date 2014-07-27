@@ -26,8 +26,8 @@
 	UIEvent * event;
 }
 
-@property(nonatomic, retain) NSTimer * timer;
-@property(nonatomic, retain) NSSet * touch;
-@property(nonatomic, retain) UIEvent * event;
+@property(nonatomic, strong) NSTimer * timer;
+@property(nonatomic, strong) NSSet * touch;
+@property(nonatomic, strong) UIEvent * event;
 
 @end

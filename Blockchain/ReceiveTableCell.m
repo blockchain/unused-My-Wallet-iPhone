@@ -15,12 +15,5 @@
 @synthesize addressLabel;
 @synthesize watchLabel;
 
--(void)dealloc {
-    [labelLabel release];
-    [balanceLabel release];
-    [watchLabel release];
-    [addressLabel release];
-    [super dealloc];
-}
 
 @end

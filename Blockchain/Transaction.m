@@ -16,9 +16,9 @@
 
 +(Transaction*)fromJSONDict:(NSDictionary*)transactionDict {
     
-    Transaction * transaction = [[[Transaction alloc] init] autorelease];
-    transaction.inputs = [[[NSMutableArray alloc] init] autorelease];
-    transaction.outputs = [[[NSMutableArray alloc] init] autorelease];
+    Transaction * transaction = [[Transaction alloc] init];
+    transaction.inputs = [[NSMutableArray alloc] init];
+    transaction.outputs = [[NSMutableArray alloc] init];
     transaction.hash = [transactionDict objectForKey:@"hash"];
     transaction.size = [[transactionDict objectForKey:@"size"] intValue];
     transaction.tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
@@ -31,8 +31,8 @@
     for (NSDictionary * inputDict in inputsJSONArray) {
         NSDictionary * prev_out_dict = [inputDict objectForKey:@"prev_out"];
         
-        Input * input = [[[Input alloc] init] autorelease];
-        Output * prev_out = [[[Output alloc] init] autorelease];
+        Input * input = [[Input alloc] init];
+        Output * prev_out = [[Output alloc] init];
         prev_out.value = [[prev_out_dict objectForKey:@"value"] longLongValue];
         prev_out.addr = [prev_out_dict objectForKey:@"addr"];
         input.prev_out = prev_out;
@@ -42,7 +42,7 @@
     
     NSArray * outputsJSONArray = [transactionDict objectForKey:@"out"];
     for (NSDictionary * outputDict in outputsJSONArray) {
-        Output * output = [[[Output alloc] init] autorelease];
+        Output * output = [[Output alloc] init];
         output.value = [[outputDict objectForKey:@"value"] longLongValue];
         output.addr = [outputDict objectForKey:@"addr"];
         [((NSMutableArray*)transaction.outputs) addObject:output];
@@ -60,12 +60,6 @@
     return transaction;
 }
 
--(void)dealloc {
-    self.inputs = nil;
-    self.outputs = nil;
-    self.hash = nil;
-    [super dealloc];
-}
 
 -(NSArray*)inputsNotFromAddresses:(NSArray*)addresses {
     NSMutableArray * array = [NSMutableArray array];

@@ -31,8 +31,8 @@
 
 -(IBAction)createAccountClicked:(id)sender;
 
-@property(nonatomic, retain) NSString * tmpPassword;
+@property(nonatomic, strong) NSString * tmpPassword;
 
-@property(nonatomic, retain) Wallet * wallet;
+@property(nonatomic, strong) Wallet * wallet;
 
 @end

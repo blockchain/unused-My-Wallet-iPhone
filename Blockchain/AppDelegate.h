@@ -87,20 +87,19 @@
 @property (strong, nonatomic) IBOutlet AccountViewController * accountViewController;
 @property (strong, nonatomic) WebViewController * webViewController;
 
-
 @property (strong, nonatomic) IBOutlet UIWindow *window;
-@property (retain, nonatomic) Wallet * wallet;
-@property (retain, nonatomic) MulitAddressResponse * latestResponse;
-@property (nonatomic, retain) NSString * loadingText;
+@property (strong, nonatomic) Wallet * wallet;
+@property (strong, nonatomic) MulitAddressResponse * latestResponse;
+@property (nonatomic, strong) NSString * loadingText;
 
 @property (nonatomic) BOOL disableBusyView;
 
-@property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
-@property (retain, nonatomic) NSMutableArray * modalChain;
-@property (nonatomic, retain) PEPinEntryController *pinEntryViewController;
+@property (strong, nonatomic) IBOutlet MyUIModalView * modalView;
+@property (strong, nonatomic) NSMutableArray * modalChain;
+@property (nonatomic, strong) PEPinEntryController *pinEntryViewController;
 
-@property(nonatomic, retain) NSNumberFormatter * btcFormatter;
-@property(nonatomic, retain) NSNumberFormatter * localCurrencyFormatter;
+@property(nonatomic, strong) NSNumberFormatter * btcFormatter;
+@property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;

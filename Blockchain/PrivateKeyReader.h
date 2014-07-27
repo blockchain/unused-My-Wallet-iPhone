@@ -14,7 +14,7 @@
 
 @property(nonatomic, copy) void (^success)(NSString*);
 @property(nonatomic, copy) void (^error)(NSString*);
-@property(nonatomic, retain) ZBarReaderView * readerView;
+@property(nonatomic, strong) ZBarReaderView * readerView;
 
 -(void)readPrivateKey:(void (^)(NSString*))success error:(void (^)(NSString*))error;
 

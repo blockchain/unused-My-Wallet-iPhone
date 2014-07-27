@@ -49,7 +49,6 @@
         free(self->data[y]);
     }
     free(self->data);
-    [super dealloc];
 }
 
 @end

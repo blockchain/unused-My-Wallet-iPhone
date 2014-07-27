@@ -12,9 +12,5 @@
 @implementation Address
 
 
--(void)dealloc {
-    self.address = nil;
-    [super dealloc];
-}
 
 @end

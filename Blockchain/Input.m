@@ -10,9 +10,5 @@
 
 @implementation Input
 
--(void)dealloc {
-    self.prev_out = nil;
-    [super dealloc];
-}
 
 @end

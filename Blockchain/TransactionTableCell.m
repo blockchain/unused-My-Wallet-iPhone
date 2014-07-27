@@ -69,7 +69,7 @@
         
         //Show the inouts i.e. where the coins are from
         for (Input * input in inputs) {
-            UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)] autorelease];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
             
             NSString * addressLabel = [app.wallet labelForAddress:[[input prev_out] addr]];
 
@@ -107,7 +107,7 @@
         }
         
         for (Output * output in outputs) {
-            UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)] autorelease];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
             
             NSString * addressLabel = [app.wallet labelForAddress:[output addr]];
             
@@ -173,14 +173,5 @@
     // Configure the view for the selected state
 }
 
--(void)dealloc {
-    [labels release];
-    
-    [typeImageView release];
-    [confirmationsButton release];
-    [hashButton release];
-    [transaction release];
-    [super dealloc];
-}
 
 @end

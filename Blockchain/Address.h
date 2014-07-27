@@ -12,7 +12,7 @@
 
 }
 
-@property(nonatomic, retain) NSString * address;
+@property(nonatomic, strong) NSString * address;
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;
 @property(nonatomic, assign) uint64_t final_balance;

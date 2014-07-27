@@ -73,7 +73,7 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     int result = sysctl(mib, namelen, buildBuffer, &bufferSize, NULL, 0);
     
     if (result >= 0) {
-        osBuildVersion = [[[NSString alloc] initWithBytes:buildBuffer length:bufferSize encoding:NSUTF8StringEncoding] autorelease]; 
+        osBuildVersion = [[NSString alloc] initWithBytes:buildBuffer length:bufferSize encoding:NSUTF8StringEncoding]; 
     }
     
     return osBuildVersion;   
@@ -120,7 +120,7 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     });
 	
 	UIAlertView *alert =
-		[[[UIAlertView alloc]
+		[[UIAlertView alloc]
 			initWithTitle:NSLocalizedString(@"Unhandled exception", nil)
 			message:[NSString stringWithFormat:NSLocalizedString(
 				@"You can try to continue but the application may be unstable.\n\n"
@@ -129,16 +129,15 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 				[[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]]
 			delegate:self
 			cancelButtonTitle:NSLocalizedString(@"Quit", nil)
-			otherButtonTitles:NSLocalizedString(@"Continue", nil), nil]
-		autorelease];
+			otherButtonTitles:NSLocalizedString(@"Continue", nil), nil];
 	[alert show];
 	
 	CFRunLoopRef runLoop = CFRunLoopGetCurrent();
 	CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
 	
 	while (!dismissed) {
-		for (NSString *mode in (NSArray *)allModes) {
-			CFRunLoopRunInMode((CFStringRef)mode, 0.001, false);
+		for (NSString *mode in (__bridge NSArray *)allModes) {
+			CFRunLoopRunInMode((__bridge CFStringRef)mode, 0.001, false);
 		}
 	}
 	
@@ -176,7 +175,7 @@ void HandleException(NSException *exception)
 		setObject:callStack
 		forKey:UncaughtExceptionHandlerAddressesKey];
 	
-	[[[[UncaughtExceptionHandler alloc] init] autorelease]
+	[[[UncaughtExceptionHandler alloc] init]
 		performSelectorOnMainThread:@selector(handleException:)
 		withObject:
 			[NSException
@@ -204,7 +203,7 @@ void SignalHandler(int signal)
 		setObject:callStack
 		forKey:UncaughtExceptionHandlerAddressesKey];
 	
-	[[[[UncaughtExceptionHandler alloc] init] autorelease]
+	[[[UncaughtExceptionHandler alloc] init]
 		performSelectorOnMainThread:@selector(handleException:)
 		withObject:
 			[NSException

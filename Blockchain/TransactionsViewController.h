@@ -32,8 +32,8 @@
     LatestBlock * latestBlock;
 }
 
-@property(nonatomic, retain) MulitAddressResponse * data;
-@property(nonatomic, retain) LatestBlock * latestBlock;
+@property(nonatomic, strong) MulitAddressResponse * data;
+@property(nonatomic, strong) LatestBlock * latestBlock;
 
 -(void)reload;
 -(void)setText;

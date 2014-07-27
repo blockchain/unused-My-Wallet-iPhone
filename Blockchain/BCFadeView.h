@@ -21,7 +21,7 @@
 
 @interface BCFadeView : UIView
 
-@property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, strong) IBOutlet UIView *containerView;
 
 - (void)fadeIn;
 - (void)fadeOut;

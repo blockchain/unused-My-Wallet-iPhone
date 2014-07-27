@@ -15,12 +15,12 @@
 {
 	NSString * string = [self stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 	
-    NSString *encoded = [(NSString *)CFURLCreateStringByAddingPercentEscapes(
+    NSString *encoded = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
 																			NULL,
 																			(CFStringRef)string,
 																			NULL,
 																			CFSTR(":/?#[]@!$&’()*+,;="),
-											 								kCFStringEncodingUTF8 ) autorelease];
+											 								kCFStringEncodingUTF8 ));
 	
 	return encoded;
 }

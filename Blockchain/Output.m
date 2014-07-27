@@ -10,9 +10,5 @@
 
 @implementation Output
 
--(void)dealloc {
-    self.addr = nil;
-    [super dealloc];
-}
 
 @end

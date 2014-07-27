@@ -173,44 +173,44 @@ NSDateFormatter * shortHandDateFormatterWithTime = nil;
 
 -(NSDate*)twoDaysAgo
 {
-	return [[[NSDate alloc] initWithTimeInterval:-(SECSINADAY*2) sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:-(SECSINADAY*2) sinceDate:self];
 }
 
 //Seven Days ago
 -(NSDate*)sevenDaysAgo
 {
-	return [[[NSDate alloc] initWithTimeInterval:-SECSINANWEEK sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:-SECSINANWEEK sinceDate:self];
 }
 
 //28 days ago
 -(NSDate*)twentyEightDaysAgo
 {
-	return [[[NSDate alloc] initWithTimeInterval:-SECSIN28DAYS sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:-SECSIN28DAYS sinceDate:self];
 }
 
 -(NSDate*)twentyEightDaysLater
 {
-	return [[[NSDate alloc] initWithTimeInterval:+SECSIN28DAYS sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:+SECSIN28DAYS sinceDate:self];
 }
 
 -(NSDate*)tenYearsLater 
 {
-	return [[[NSDate alloc] initWithTimeInterval:315569260 sinceDate:self] autorelease];	
+	return [[NSDate alloc] initWithTimeInterval:315569260 sinceDate:self];	
 }
 
 -(NSDate*)hourAgo
 {
-	return [[[NSDate alloc] initWithTimeInterval:-SECSINANHOUR sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:-SECSINANHOUR sinceDate:self];
 }
 
 -(NSDate*)nextDay
 {
-	return [[[NSDate alloc] initWithTimeInterval:SECSINADAY sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:SECSINADAY sinceDate:self];
 }
 
 -(NSDate*)prevDay
 {
-	return [[[NSDate alloc] initWithTimeInterval:-SECSINADAY sinceDate:self] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:-SECSINADAY sinceDate:self];
 }
 
 -(int)dayOfMonthN {

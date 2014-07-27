@@ -12,7 +12,7 @@
 
 }
 
-@property(nonatomic, retain) NSString * addr;
+@property(nonatomic, strong) NSString * addr;
 @property(nonatomic, assign) uint64_t value;
 
 

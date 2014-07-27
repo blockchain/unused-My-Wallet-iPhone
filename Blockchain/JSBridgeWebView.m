@@ -34,7 +34,7 @@
 #import "NSString+JSONParser_NSString.h"
 
 @interface JSCommandObject : NSObject
-@property(nonatomic, retain) NSString * command;
+@property(nonatomic, strong) NSString * command;
 @property(nonatomic, copy) void (^callback)(NSString * result);
 @end
 
@@ -61,19 +61,16 @@
 @implementation JSBridgeWebView
 
 -(void)dealloc {
-    self.pending_commands = nil;
 
     [self stopLoading];
     self.delegate = nil;
-    self.JSDelegate = nil;
-    [super dealloc];
 }
 
 -(void)executeJSWithCallback:(void (^)(NSString * result))callback command:(NSString*)formatString,  ...
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (self.isLoaded) {
@@ -82,7 +79,7 @@
         if (callback != NULL)
             callback(result);
     } else {
-        JSCommandObject * object = [[[JSCommandObject alloc] init] autorelease];
+        JSCommandObject * object = [[JSCommandObject alloc] init];
         
         object.command = contents;
         object.callback = callback;
@@ -95,7 +92,7 @@
     
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (!self.isLoaded) {
@@ -109,14 +106,14 @@
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (self.isLoaded) {
         [self stringByEvaluatingJavaScriptFromString:contents];
     } else {
         
-        JSCommandObject * object = [[[JSCommandObject alloc] init] autorelease];
+        JSCommandObject * object = [[JSCommandObject alloc] init];
         
         object.command = contents;
         object.callback = nil;
@@ -335,7 +332,6 @@
                     // Calls the delegate method with the notified object.
                     if(self.JSDelegate)
                     {
-                        [self retain];
                         
                         [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
@@ -345,7 +341,6 @@
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId];
                             }
                             
-                            [self release];
                         } error:^(id error) {
                             //On Error
                             if (error != nil) {
@@ -354,7 +349,6 @@
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId];
                             }
                             
-                            [self release];
                         }];
                     }
                 }

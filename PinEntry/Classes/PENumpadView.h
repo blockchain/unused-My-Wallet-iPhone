@@ -52,10 +52,10 @@ extern NSString *kPinEntryKeyboardCode;
 @interface PENumpadView : UIView
 {
 	int activeClip;
-	id <PENumpadViewDelegate> delegate;
+	id <PENumpadViewDelegate> __weak delegate;
 	NSString *detail;
 }
-@property (nonatomic, readwrite, assign) IBOutlet id <PENumpadViewDelegate> delegate;
+@property (nonatomic, readwrite, weak) IBOutlet id <PENumpadViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) NSUInteger detailButon;
 
 - (id)init;

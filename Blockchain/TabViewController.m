@@ -135,9 +135,7 @@ CGPoint arrowPositions[4] = {
     
 	self.oldViewController = activeViewController;
 
-	[activeViewController release];
 	activeViewController = nviewcontroller;
-	[activeViewController retain];
 
     [oldViewController viewWillDisappear:animated];
     [activeViewController viewWillAppear:animated];
@@ -293,17 +291,6 @@ CGPoint arrowPositions[4] = {
 		[(id)activeViewController backClicked:sender];	
 }
 
--(void)dealloc {
-    [arrow release];
-    [contentView release];
-    [footer release];
-    [header release];
-    [nextButton release];
-    [backButton release];
-	[oldViewController release];
-	[activeViewController release];
-	[super dealloc];
-}
 
 
 @end

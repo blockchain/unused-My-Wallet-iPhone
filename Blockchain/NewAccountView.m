@@ -67,6 +67,9 @@
         return;
     }
     
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
+    
     // Load the wallet (webview + js)
     self.wallet = [[[Wallet alloc] init] autorelease];
     
@@ -88,6 +91,11 @@
     [app clearPin];
     
     [app showPinModal];
+    
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
+    
+    self.wallet = nil;
     
     app.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
     

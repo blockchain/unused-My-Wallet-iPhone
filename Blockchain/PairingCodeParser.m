@@ -12,6 +12,9 @@
 @implementation PairingCodeParser
 
 -(void)dealloc {
+    
+    NSLog(@"Dealloc PairingCodeParser");
+    
     self.readerView = nil;
     self.wallet = nil;
     self.success = nil;
@@ -64,6 +67,10 @@
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {
+        
+        //Prevent Retain cycle
+        [self.wallet clearDelegates];
+        
         self.wallet = [[[Wallet alloc] init] autorelease];
         
         self.wallet.delegate = self;

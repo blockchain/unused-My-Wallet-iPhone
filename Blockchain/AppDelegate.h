@@ -51,15 +51,6 @@
 
     IBOutlet UIButton *createWalletButton;
 
-    IBOutlet TabViewcontroller * tabViewController;
-    IBOutlet TabViewcontroller * newTabViewController;
-    IBOutlet TabViewcontroller * oldTabViewController;
-
-    IBOutlet TransactionsViewController * transactionsViewController;
-    IBOutlet ReceiveCoinsViewController * receiveViewController;
-    IBOutlet SendViewController * sendViewController;
-    IBOutlet AccountViewController * accountViewController;
-    
     IBOutlet UIView * welcomeView;
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
@@ -80,8 +71,6 @@
     IBOutlet UITextField * manualIdentifier;
     IBOutlet UITextField * manualSharedKey;
     IBOutlet UITextField * manualPassword;
-
-    WebViewController * webViewController;
     
     int webScoketFailures;
     int myPin;    
@@ -90,6 +79,14 @@
     
     BOOL symbolLocal;
 }
+
+@property (strong, nonatomic) IBOutlet TabViewcontroller * tabViewController;
+@property (strong, nonatomic) IBOutlet TransactionsViewController * transactionsViewController;
+@property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
+@property (strong, nonatomic) IBOutlet SendViewController * sendViewController;
+@property (strong, nonatomic) IBOutlet AccountViewController * accountViewController;
+@property (strong, nonatomic) WebViewController * webViewController;
+
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
 @property (retain, nonatomic) Wallet * wallet;

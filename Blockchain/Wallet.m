@@ -382,7 +382,7 @@
     
     NSDictionary * dict = [latestBlockJSON getJSONObject];
     
-    LatestBlock * latestBlock = [[LatestBlock alloc] init];
+    LatestBlock * latestBlock = [[[LatestBlock alloc] init] autorelease];
     
     latestBlock.hash = [dict objectForKey:@"hash"];
     latestBlock.height = [[dict objectForKey:@"height"] intValue];
@@ -600,6 +600,7 @@
 }
 
 -(void)dealloc {
+    self.webView.JSDelegate = nil;
     self.guid = nil;
     self.sharedKey = nil;
     self.password = nil;

@@ -23,13 +23,13 @@
                 <outlet property="manualPassword" destination="592" id="6ur-us-fJU"/>
                 <outlet property="manualView" destination="585" id="598"/>
                 <outlet property="newAccountView" destination="355" id="373"/>
-                <outlet property="oldTabViewController" destination="273" id="690"/>
                 <outlet property="pairLogoutButton" destination="376" id="393"/>
                 <outlet property="pairingInstructionsView" destination="351" id="374"/>
                 <outlet property="powerButton" destination="271" id="272"/>
                 <outlet property="secondPasswordDescriptionLabel" destination="467" id="Yhk-8q-Q6W"/>
                 <outlet property="secondPasswordTextField" destination="469" id="475"/>
                 <outlet property="secondPasswordView" destination="463" id="473"/>
+                <outlet property="tabViewController" destination="273" id="1E4-G1-fqE"/>
                 <outlet property="transactionsViewController" destination="229" id="295"/>
                 <outlet property="welcomeInstructionsLabel" destination="378" id="bld-rf-dAc"/>
                 <outlet property="welcomeLabel" destination="380" id="0eQ-7B-QXV"/>

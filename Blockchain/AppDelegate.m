@@ -80,11 +80,9 @@ AppDelegate * app;
     
     [_window makeKeyAndVisible];
     
-    tabViewController = oldTabViewController;
+    [_window setRootViewController:_tabViewController];
     
-    [_window setRootViewController:tabViewController];
-    
-    [tabViewController setActiveViewController:transactionsViewController];
+    [_tabViewController setActiveViewController:_transactionsViewController];
 
     [_window.rootViewController.view addSubview:busyView];
     
@@ -112,6 +110,10 @@ AppDelegate * app;
 //        NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
         
         if (guid && sharedKey && password) {
+            
+            //Prevent Retain cycle
+            [self.wallet clearDelegates];
+            
             self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
             
             self.wallet.delegate = self;
@@ -137,18 +139,18 @@ AppDelegate * app;
 
 - (void)swipeLeft
 {    
-    if (tabViewController.selectedIndex < 3)
+    if (_tabViewController.selectedIndex < 3)
     {
-        NSInteger newIndex = tabViewController.selectedIndex + 1;
+        NSInteger newIndex = _tabViewController.selectedIndex + 1;
         [self transitionToIndex:newIndex];
     }
 }
 
 - (void)swipeRight
 {
-    if (tabViewController.selectedIndex)
+    if (_tabViewController.selectedIndex)
     {
-        NSInteger newIndex = tabViewController.selectedIndex - 1;
+        NSInteger newIndex = _tabViewController.selectedIndex - 1;
         [self transitionToIndex:newIndex];
     }
 }
@@ -161,8 +163,8 @@ AppDelegate * app;
 -(void)toggleSymbol {
     symbolLocal = !symbolLocal;
     
-    [transactionsViewController setText];
-    [[transactionsViewController tableView] reloadData];
+    [_transactionsViewController setText];
+    [[_transactionsViewController tableView] reloadData];
 }
 
 -(void)setDisableBusyView:(BOOL)__disableBusyView {
@@ -248,9 +250,9 @@ AppDelegate * app;
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
     
-    [transactionsViewController reload];
-    [receiveViewController reload];
-    [sendViewController reload];
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
     
     [app closeModal];
 }
@@ -258,15 +260,15 @@ AppDelegate * app;
 -(void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
     self.latestResponse = response;
 
-    transactionsViewController.data = response;
+    _transactionsViewController.data = response;
     
-    [transactionsViewController reload];
-    [receiveViewController reload];
-    [sendViewController reload];
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
 }
 
 -(void)didSetLatestBlock:(LatestBlock*)block {
-    transactionsViewController.latestBlock = block;
+    _transactionsViewController.latestBlock = block;
 }
 
 -(void)walletFailedToDecrypt:(Wallet*)_wallet {    
@@ -331,12 +333,12 @@ AppDelegate * app;
 
 // Only gets called when displaying a transaction hash
 -(void)pushWebViewController:(NSString*)url {
-    webViewController = [[WebViewController alloc] init];
-    [webViewController viewDidLoad]; // ??
+    self.webViewController = [[[WebViewController alloc] init] autorelease];
+    [_webViewController viewDidLoad]; // ??
 
-    [tabViewController setActiveViewController:webViewController animated:YES index:-1];
+    [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
 
-    [webViewController loadURL:url];
+    [_webViewController loadURL:url];
 }
 
 - (NSMutableDictionary *)parseQueryString:(NSString *)query {
@@ -382,20 +384,11 @@ AppDelegate * app;
 
     [self showSendCoins];
     
-    [sendViewController setToAddressFromUrlHandler:addr];
+    [_sendViewController setToAddressFromUrlHandler:addr];
     
-    [sendViewController setAmount:amount];
+    [_sendViewController setAmount:amount];
 
     return YES;
-}
-
-
--(TransactionsViewController*)transactionsViewController {
-    return transactionsViewController;
-}
-
--(TabViewcontroller*)tabViewController {
-    return tabViewController;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
@@ -577,12 +570,16 @@ AppDelegate * app;
     self.wallet = nil;
     self.latestResponse = nil;
     
-    transactionsViewController.data = nil;
-    [transactionsViewController reload];
-    [receiveViewController reload];
-    [sendViewController reload];
+    _transactionsViewController.data = nil;
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
     
-    [accountViewController emptyWebView];
+    [_accountViewController emptyWebView];
+    
+    
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
     
     self.wallet = [[[Wallet alloc] initWithGuid:[self guid] sharedKey:[self sharedKey] password:[self password]] autorelease];
     
@@ -590,9 +587,9 @@ AppDelegate * app;
 }
 
 -(void)didBackupWallet:(Wallet*)wallet {
-    [transactionsViewController reload];
-    [receiveViewController reload];
-    [sendViewController reload];
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
 }
 
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
@@ -641,6 +638,10 @@ AppDelegate * app;
         return;
     }
     
+    
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
+    
     self.wallet = [[[Wallet alloc] initWithGuid:guid password:password] autorelease];
     
     self.wallet.delegate = app;
@@ -655,6 +656,8 @@ AppDelegate * app;
         PairingCodeParser * parser = [[[PairingCodeParser alloc] init] autorelease];
         
         [parser scanAndParse:^(NSDictionary*code) {
+            NSLog(@"scanAndParse success");
+            
             [app forgetWallet];
             
             //If the user has no PIN set force them to create one now
@@ -663,6 +666,9 @@ AppDelegate * app;
             
                 [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
             }
+            
+            //Prevent Retain cycle
+            [self.wallet clearDelegates];
             
             self.wallet = [[[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]] autorelease];
             
@@ -708,11 +714,11 @@ AppDelegate * app;
     self.wallet = nil;
     self.latestResponse = nil;
     
-    transactionsViewController.data = nil;
-    [transactionsViewController reload];
-    [receiveViewController reload];
-    [sendViewController reload];
-    [accountViewController emptyWebView];
+    _transactionsViewController.data = nil;
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
+    [_accountViewController emptyWebView];
 }
 
 -(void)forgetWallet {
@@ -726,7 +732,7 @@ AppDelegate * app;
     
     self.wallet = nil;
     self.latestResponse = nil;
-    [transactionsViewController setData:nil];
+    [_transactionsViewController setData:nil];
 }
 
 #pragma mark - Show Screens
@@ -763,13 +769,13 @@ AppDelegate * app;
 
 -(void)showSendCoins {
     
-    if (!sendViewController) {
-        sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
+    if (!_sendViewController) {
+        _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
         
-        [sendViewController viewDidLoad];
+        [_sendViewController viewDidLoad];
     }
     
-    [tabViewController setActiveViewController:sendViewController  animated:TRUE index:2];
+    [_tabViewController setActiveViewController:_sendViewController  animated:TRUE index:2];
 }
 
 -(void)clearPin {
@@ -883,17 +889,17 @@ AppDelegate * app;
 }
 
 -(IBAction)receiveCoinClicked:(UIButton *)sender {
-    if (!receiveViewController) {
-        receiveViewController = [[ReceiveCoinsViewController alloc] initWithNibName:@"ReceiveCoins" bundle:[NSBundle mainBundle]];
+    if (!_receiveViewController) {
+        _receiveViewController = [[ReceiveCoinsViewController alloc] initWithNibName:@"ReceiveCoins" bundle:[NSBundle mainBundle]];
         
-        [receiveViewController viewDidLoad];
+        [_receiveViewController viewDidLoad];
     }
         
-    [tabViewController setActiveViewController:receiveViewController animated:TRUE index:1];
+    [_tabViewController setActiveViewController:_receiveViewController animated:TRUE index:1];
 }
 
 -(IBAction)transactionsClicked:(UIButton *)sender {
-    [tabViewController setActiveViewController:transactionsViewController animated:TRUE index:0];
+    [_tabViewController setActiveViewController:_transactionsViewController animated:TRUE index:0];
 }
 
 -(IBAction)sendCoinsClicked:(UIButton *)sender {
@@ -901,13 +907,13 @@ AppDelegate * app;
 }
 
 -(IBAction)infoClicked:(UIButton *)sender {
-    if (!accountViewController) {
-        accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
+    if (!_accountViewController) {
+        _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
         
-        [accountViewController viewDidLoad];
+        [_accountViewController viewDidLoad];
     }
     
-    [tabViewController setActiveViewController:accountViewController animated:TRUE index:3];
+    [_tabViewController setActiveViewController:_accountViewController animated:TRUE index:3];
 }
 
 -(IBAction)mainPasswordClicked:(id)sender {
@@ -929,6 +935,10 @@ AppDelegate * app;
     NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     
     if (guid && sharedKey && password) {
+        
+        //Prevent Retain cycle
+        [self.wallet clearDelegates];
+        
         self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];
         
         self.wallet.delegate = self;
@@ -976,7 +986,7 @@ AppDelegate * app;
     {
 		if(c.verifyOnly == YES)
         {
-			[tabViewController dismissViewControllerAnimated:YES completion:^{
+			[_tabViewController dismissViewControllerAnimated:YES completion:^{
             }];
 		}
         
@@ -996,13 +1006,13 @@ AppDelegate * app;
     NSLog(@"Saved new pin");
     
 	// Update your info to new pin code
-	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
 {
 	NSLog(@"Pin change cancelled!");
-	[tabViewController dismissViewControllerAnimated:YES completion:nil];
+	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Format helpers

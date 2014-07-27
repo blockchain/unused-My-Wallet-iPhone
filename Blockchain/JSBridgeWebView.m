@@ -235,39 +235,13 @@
     BOOL errorArg = [[dictionary objectForKey:@"error"] isEqualToString:@"TRUE"];
     
     int componentsCount = [[function componentsSeparatedByString:@":"] count]-1;
-
-    __block int retain = 0;
-
-    if (successArg) {
-        [webview retain];
-        [self.JSDelegate retain];
-        ++retain;
-    }
-    
-    if (errorArg) {
-        [webview retain];
-        [self.JSDelegate retain];
-        ++retain;
-    }
     
     __unsafe_unretained void (^_success)(id) = ^(id object) {
         success(object);
-        
-        if (retain > 0) {
-            [webview release];
-            [self.JSDelegate release];
-            --retain;
-        }
     };
     
     __unsafe_unretained void (^_error)(id) = ^(id object) {
         error(object);
-        
-        if (retain > 0) {
-            [webview release];
-            [self.JSDelegate release];
-            --retain;
-        }
     };
     
     if (successArg) {
@@ -352,7 +326,7 @@
                     [self.usedIDs addObject:jsNotId];
                     
                     // Reads the JSON object to be communicated.
-                    NSString* jsonStr = [p_WebView stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
+                    NSString* jsonStr = [self stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
                                         
                     NSDictionary * jsonDic = [jsonStr getJSONObject];
                     
@@ -361,13 +335,17 @@
                     // Calls the delegate method with the notified object.
                     if(self.JSDelegate)
                     {
-                        [self webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
+                        [self retain];
+                        
+                        [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
                             if (success != nil) {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeStringForJS]];
                             } else {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId];
                             }
+                            
+                            [self release];
                         } error:^(id error) {
                             //On Error
                             if (error != nil) {
@@ -375,6 +353,8 @@
                             } else {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId];
                             }
+                            
+                            [self release];
                         }];
                     }
                 }

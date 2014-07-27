@@ -226,8 +226,8 @@ void InstallUncaughtExceptionHandler()
 	signal(SIGABRT, SignalHandler);
 	signal(SIGILL, SignalHandler);
 	signal(SIGSEGV, SignalHandler);
-	signal(SIGFPE, SignalHandler);
-	signal(SIGBUS, SignalHandler);
-	signal(SIGPIPE, SignalHandler);
+	//signal(SIGFPE, SignalHandler);
+	//signal(SIGBUS, SignalHandler);
+	//signal(SIGPIPE, SignalHandler);
 }
 

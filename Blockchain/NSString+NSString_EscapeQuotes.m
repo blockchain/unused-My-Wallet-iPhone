@@ -13,7 +13,7 @@
 
 -(NSString *)escapeStringForJS {
     
-    NSMutableString * string = [self mutableCopy];
+    NSMutableString * string = [[self mutableCopy] autorelease];
     
     [string replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSLiteralSearch range:NSMakeRange(0, [string length])];
     [string replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:NSLiteralSearch range:NSMakeRange(0, [string length])];

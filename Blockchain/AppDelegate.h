@@ -37,15 +37,12 @@
 
 @class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
     
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
-    
-    NSNumberFormatter * btcFormatter;
-    NSNumberFormatter * localCurrencyFormatter;
 
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet BCFadeView * busyView;
@@ -104,6 +101,9 @@
 @property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
 @property (retain, nonatomic) NSMutableArray * modalChain;
 @property (nonatomic, retain) PEPinEntryController *pinEntryViewController;
+
+@property(nonatomic, retain) NSNumberFormatter * btcFormatter;
+@property(nonatomic, retain) NSNumberFormatter * localCurrencyFormatter;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;

@@ -44,14 +44,13 @@ AppDelegate * app;
 
 -(id)init {
     if (self = [super init]) {
-         
-        btcFormatter = [[NSNumberFormatter alloc] init];
-        [btcFormatter setMaximumFractionDigits:5];
-        [btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        self.btcFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+        [_btcFormatter setMaximumFractionDigits:5];
+        [_btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
-        localCurrencyFormatter = [[NSNumberFormatter alloc] init];
-        [localCurrencyFormatter setMaximumFractionDigits:2];
-        [localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        self.localCurrencyFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+        [_localCurrencyFormatter setMaximumFractionDigits:2];
+        [_localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         self.modalChain = [[[NSMutableArray alloc] init] autorelease];
         
@@ -1021,9 +1020,9 @@ AppDelegate * app;
             }
             
             if (negative)
-                return [@"-" stringByAppendingString:[latestResponse.symbol_local.symbol stringByAppendingString:[localCurrencyFormatter stringFromNumber:number]]];
+                return [@"-" stringByAppendingString:[latestResponse.symbol_local.symbol stringByAppendingString:[self.localCurrencyFormatter stringFromNumber:number]]];
             else
-                return [latestResponse.symbol_local.symbol stringByAppendingString:[localCurrencyFormatter stringFromNumber:number]];
+                return [latestResponse.symbol_local.symbol stringByAppendingString:[self.localCurrencyFormatter stringFromNumber:number]];
             
         } @catch (NSException * e) {
             NSLog(@"%@", e);
@@ -1031,7 +1030,7 @@ AppDelegate * app;
     } else if (latestResponse.symbol_btc) {
         NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];
         
-        NSString * string = [btcFormatter stringFromNumber:number];
+        NSString * string = [self.btcFormatter stringFromNumber:number];
         
         if ([string length] >= 8) {
             string = [string substringToIndex:8];
@@ -1042,7 +1041,7 @@ AppDelegate * app;
     
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:SATOSHI]];
     
-    NSString * string = [btcFormatter stringFromNumber:number];
+    NSString * string = [self.btcFormatter stringFromNumber:number];
     
     if ([string length] >= 8) {
         string = [string substringToIndex:8];

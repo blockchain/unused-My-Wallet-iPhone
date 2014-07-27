@@ -82,7 +82,7 @@
         if (callback != NULL)
             callback(result);
     } else {
-        JSCommandObject * object = [[JSCommandObject alloc] init];
+        JSCommandObject * object = [[[JSCommandObject alloc] init] autorelease];
         
         object.command = contents;
         object.callback = callback;
@@ -117,7 +117,7 @@
         [self stringByEvaluatingJavaScriptFromString:contents];
     } else {
         
-        JSCommandObject * object = [[JSCommandObject alloc] init];
+        JSCommandObject * object = [[[JSCommandObject alloc] init] autorelease];
         
         object.command = contents;
         object.callback = nil;

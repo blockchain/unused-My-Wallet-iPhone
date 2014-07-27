@@ -250,7 +250,7 @@
         ++retain;
     }
     
-    void (^_success)(id) = ^(id object) {
+    __unsafe_unretained void (^_success)(id) = ^(id object) {
         success(object);
         
         if (retain > 0) {
@@ -260,7 +260,7 @@
         }
     };
     
-    void (^_error)(id) = ^(id object) {
+    __unsafe_unretained void (^_error)(id) = ^(id object) {
         error(object);
         
         if (retain > 0) {
@@ -301,7 +301,7 @@
                 int ii = 0;
                 while (true) {
                     if ([sig numberOfArguments] > index && componentsCount > ii) {
-                        id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
+                        __unsafe_unretained id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
                         [invo setArgument:&arg atIndex:index];
                         ++index;
                     } else {
@@ -319,6 +319,8 @@
                     [invo setArgument:&_error atIndex:index];
                     ++index;
                 }
+                
+                [invo retainArguments];
                                 
                 [invo invoke];
             }
@@ -392,7 +394,6 @@
     NSLog(@"JSBridgeWebView Did Load");
 
     for (JSCommandObject * command in self.pending_commands) {
-        
         NSString * result = [self stringByEvaluatingJavaScriptFromString:command.command];
         
         if (command.callback != NULL)

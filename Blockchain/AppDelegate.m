@@ -69,6 +69,12 @@ AppDelegate * app;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+//    unsigned int x;
+//    unsigned int y;
+//    zbar_version(&x, &y);
+//    NSLog(@"zbar version: %d %d", x, y);
+    
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {

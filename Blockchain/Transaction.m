@@ -13,30 +13,18 @@
 
 @implementation Transaction
 
--(NSString*)hash {
-    return hash;
-}
-
--(NSArray*)inputs {
-    return inputs;
-}
-
--(NSArray*)outputs {
-    return outputs;
-}
-
 
 +(Transaction*)fromJSONDict:(NSDictionary*)transactionDict {
     
     Transaction * transaction = [[[Transaction alloc] init] autorelease];
-    transaction->inputs = [[NSMutableArray alloc] init];
-    transaction->outputs = [[NSMutableArray alloc] init];
-    transaction->hash = [[transactionDict objectForKey:@"hash"] retain];
-    transaction->size = [[transactionDict objectForKey:@"size"] intValue];
-    transaction->tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
+    transaction.inputs = [[[NSMutableArray alloc] init] autorelease];
+    transaction.outputs = [[[NSMutableArray alloc] init] autorelease];
+    transaction.hash = [transactionDict objectForKey:@"hash"];
+    transaction.size = [[transactionDict objectForKey:@"size"] intValue];
+    transaction.tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
     
-    transaction->time =[[transactionDict objectForKey:@"time"] longLongValue];
-    transaction->block_height = [[transactionDict objectForKey:@"blockHeight"] intValue];
+    transaction.time =[[transactionDict objectForKey:@"time"] longLongValue];
+    transaction.block_height = [[transactionDict objectForKey:@"blockHeight"] intValue];
     
     
     NSArray * inputsJSONArray = [transactionDict objectForKey:@"inputs"];
@@ -44,45 +32,44 @@
         NSDictionary * prev_out_dict = [inputDict objectForKey:@"prev_out"];
         
         Input * input = [[[Input alloc] init] autorelease];
-        Output * prev_out = [[Output alloc] init];
-        prev_out->value = [[prev_out_dict objectForKey:@"value"] longLongValue];
-        prev_out->addr = [[prev_out_dict objectForKey:@"addr"] retain];
-        input->prev_out = prev_out;
+        Output * prev_out = [[[Output alloc] init] autorelease];
+        prev_out.value = [[prev_out_dict objectForKey:@"value"] longLongValue];
+        prev_out.addr = [prev_out_dict objectForKey:@"addr"];
+        input.prev_out = prev_out;
         
-        [((NSMutableArray*)transaction->inputs) addObject:input];
+        [((NSMutableArray*)transaction.inputs) addObject:input];
     }
     
     NSArray * outputsJSONArray = [transactionDict objectForKey:@"out"];
     for (NSDictionary * outputDict in outputsJSONArray) {
         Output * output = [[[Output alloc] init] autorelease];
-        output->value = [[outputDict objectForKey:@"value"] longLongValue];
-        output->addr = [[outputDict objectForKey:@"addr"] retain];
-        [((NSMutableArray*)transaction->outputs) addObject:output];
+        output.value = [[outputDict objectForKey:@"value"] longLongValue];
+        output.addr = [outputDict objectForKey:@"addr"];
+        [((NSMutableArray*)transaction.outputs) addObject:output];
     }
     
     
     NSString * result = [transactionDict objectForKey:@"result"];
     if (result) {
-        transaction->result = [result longLongValue];
+        transaction.result = [result longLongValue];
     } else {
-        
-        for (Output * out in transaction->outputs) {
-            transaction->result += out->value;
+        for (Output * out in transaction.outputs) {
+            transaction.result += out.value;
         }
     }
     return transaction;
 }
 
 -(void)dealloc {
-    [inputs release];
-    [outputs release];
-    [hash release];
+    self.inputs = nil;
+    self.outputs = nil;
+    self.hash = nil;
     [super dealloc];
 }
 
 -(NSArray*)inputsNotFromAddresses:(NSArray*)addresses {
     NSMutableArray * array = [NSMutableArray array];
-    for (Input * input in inputs) {
+    for (Input * input in self.inputs) {
         if ([addresses containsObject:[[input prev_out] addr]])
             continue;
         
@@ -93,7 +80,7 @@
 
 -(NSArray*)outputsNotToAddresses:(NSArray*)addresses {
     NSMutableArray * array = [NSMutableArray array];
-    for (Output * output in outputs) {
+    for (Output * output in self.outputs) {
         if ([addresses containsObject:[output addr]])
             continue;
         

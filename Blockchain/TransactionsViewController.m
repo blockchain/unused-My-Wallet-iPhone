@@ -62,7 +62,7 @@
     
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
-    if (transaction->result < 0) {
+    if (transaction.result < 0) {
         NSArray * outputs = [transaction outputsNotToAddresses:data.addresses];
         
         if ([outputs count] == 0)

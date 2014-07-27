@@ -11,12 +11,9 @@
 
 @implementation Address
 
--(NSString*)getAddress {
-    return address;
-}
 
 -(void)dealloc {
-    [address release];
+    self.address = nil;
     [super dealloc];
 }
 

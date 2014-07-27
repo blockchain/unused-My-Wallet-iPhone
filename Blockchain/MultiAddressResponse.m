@@ -36,9 +36,10 @@
 }
 
 -(void)dealloc {
-    [code release];
-    [symbol release];
-    [name release];
+    self.code = nil;
+    self.name = nil;
+    self.symbol = nil;
+    
     [super dealloc];
 }
 @end
@@ -50,7 +51,7 @@
 @synthesize time;
 
 -(void)dealloc {
-    [hash release];
+    self.hash = nil;
     [super dealloc];
 }
 
@@ -67,9 +68,11 @@
 @synthesize symbol_btc;
 
 -(void)dealloc {
-    [transactions release];
-    [symbol_btc release];
-    [symbol_local release];
+    self.transactions = nil;
+    self.addresses = nil;
+    self.symbol_btc = nil;
+    self.symbol_local = nil;
+    
     [super dealloc];
 }
 

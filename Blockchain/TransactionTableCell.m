@@ -24,7 +24,7 @@
 
 
 -(IBAction)transactionHashClicked:(UIButton *)button {
-    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction->hash]];
+    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.hash]];
 }
 
 -(void)reload {   
@@ -34,23 +34,23 @@
     
     float y = 36;
  
-    if (transaction->time > 0)  {
+    if (transaction.time > 0)  {
         [hashButton setHidden:FALSE];
-        [hashButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction->time] shortHandDateWithTime] forState:UIControlStateNormal];
+        [hashButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction.time] shortHandDateWithTime] forState:UIControlStateNormal];
     } else {
         [hashButton setHidden:TRUE];
     }
     
-    [btcButton setTitle:[app formatMoney:transaction->result] forState:UIControlStateNormal];
+    [btcButton setTitle:[app formatMoney:transaction.result] forState:UIControlStateNormal];
         
     for (UILabel * label in labels) {
         [label removeFromSuperview];
     }
 
     //Payment Received
-    if (transaction->result >= 0) {
+    if (transaction.result >= 0) {
         
-        if (transaction->result == 0) {
+        if (transaction.result == 0) {
             [typeImageView setImage:[UIImage imageNamed:@"payment_moved.png"]];        
             [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [btcButton setBackgroundImage:[UIImage imageNamed:@"button_grey.png"] forState:UIControlStateNormal];
@@ -87,7 +87,7 @@
             
             y += 22;
         }
-    } else if (transaction->result < 0) {
+    } else if (transaction.result < 0) {
         
         NSArray * outputs = [transaction outputsNotToAddresses:[app transactionsViewController].data.addresses];
         
@@ -146,9 +146,9 @@
 
 -(void)seLatestBlock:(LatestBlock*)block {
     
-    int confirmations = block.height - transaction->block_height + 1;
+    int confirmations = block.height - transaction.block_height + 1;
 
-    if (confirmations <= 0 || transaction->block_height == 0) {
+    if (confirmations <= 0 || transaction.block_height == 0) {
         [confirmationsButton setHidden:FALSE];
 
         [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];

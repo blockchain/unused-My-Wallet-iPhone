@@ -22,34 +22,37 @@
 #import <Foundation/Foundation.h>
 
 @interface CurrencySymbol : NSObject
-@property(nonatomic, strong) NSString * code;
-@property(nonatomic, strong) NSString * symbol;
-@property(nonatomic, strong) NSString * name;
+
 @property(nonatomic, assign) uint64_t conversion;
 @property(nonatomic, assign) BOOL symbolappearsAfter;
+
+@property(nonatomic, retain) NSString * code;
+@property(nonatomic, retain) NSString * symbol;
+@property(nonatomic, retain) NSString * name;
 
 +(CurrencySymbol*)symbolFromDict:(NSDictionary*)dict;
 
 @end
 
 @interface LatestBlock : NSObject
-@property(nonatomic, strong) NSString * hash;
 @property(nonatomic, assign) uint32_t blockIndex;
 @property(nonatomic, assign) uint32_t height;
 @property(nonatomic, assign) uint64_t time;
+
+@property(nonatomic, retain) NSString * hash;
+
 @end
 
-@interface MulitAddressResponse : NSObject {
-}
+@interface MulitAddressResponse : NSObject
 
-@property(nonatomic, retain) NSArray * addresses;
-@property(nonatomic, retain) NSMutableArray * transactions;
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;
 @property(nonatomic, assign) uint64_t final_balance;
 @property(nonatomic, assign) uint32_t n_transactions;
 
-@property(nonatomic, strong) CurrencySymbol * symbol_btc;
-@property(nonatomic, strong) CurrencySymbol * symbol_local;
+@property(nonatomic, retain) NSArray * addresses;
+@property(nonatomic, retain) NSMutableArray * transactions;
+@property(nonatomic, retain) CurrencySymbol * symbol_btc;
+@property(nonatomic, retain) CurrencySymbol * symbol_local;
 
 @end

@@ -10,12 +10,10 @@
 
 @interface Output : NSObject {
 
-@public
-    uint64_t value;
-    NSString * addr;
 }
 
--(NSString*)addr;
--(uint64_t)value;
+@property(nonatomic, retain) NSString * addr;
+@property(nonatomic, assign) uint64_t value;
+
 
 @end

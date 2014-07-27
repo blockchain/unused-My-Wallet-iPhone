@@ -47,7 +47,7 @@
     self.success = __success;
     self.error = __error;
     
-    self.readerView = [[ZBarReaderView new] autorelease];
+    self.readerView = [[[ZBarReaderView alloc] init] autorelease];
     
     [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];

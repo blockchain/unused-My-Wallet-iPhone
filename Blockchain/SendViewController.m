@@ -281,7 +281,7 @@
 }
 
 -(void)initQRCodeView {
-    self.readerView = [[ZBarReaderView new] autorelease];
+    self.readerView = [[[ZBarReaderView alloc] init] autorelease];
     
     [self.readerView start];
     

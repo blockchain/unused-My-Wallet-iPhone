@@ -11,12 +11,8 @@
 @implementation Input
 
 -(void)dealloc {
-    [prev_out release];
+    self.prev_out = nil;
     [super dealloc];
-}
-
--(Output*)prev_out {
-    return prev_out;
 }
 
 @end

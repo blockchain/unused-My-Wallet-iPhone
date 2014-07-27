@@ -10,16 +10,8 @@
 
 @implementation Output
 
--(NSString*)addr {
-    return addr;
-}
-
--(uint64_t)value {
-    return value;
-}
-
 -(void)dealloc {
-    [addr release];
+    self.addr = nil;
     [super dealloc];
 }
 

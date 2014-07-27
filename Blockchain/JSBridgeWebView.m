@@ -34,8 +34,8 @@
 #import "NSString+JSONParser_NSString.h"
 
 @interface JSCommandObject : NSObject
-@property(nonatomic, strong) NSString * command;
-@property(nonatomic, strong) void (^callback)(NSString * result);
+@property(nonatomic, retain) NSString * command;
+@property(nonatomic, copy) void (^callback)(NSString * result);
 @end
 
 @implementation JSCommandObject
@@ -61,10 +61,11 @@
 @implementation JSBridgeWebView
 
 -(void)dealloc {
+    self.pending_commands = nil;
+
     [self stopLoading];
     self.delegate = nil;
     self.JSDelegate = nil;
-    [self.pending_commands release];
     [super dealloc];
 }
 
@@ -222,35 +223,6 @@
 {
 	//NSString* type = [objDic objectForKey:@"type"];
 	return [objDic objectForKey:@"value"];
-	
-	
-	/*
-     NSObject* result = nil;
-     if ([type compare:@"string"] == NSOrderedSame) {
-		
-		result = value;
-	} else if ([type compare:@"number"] == NSOrderedSame) {
-		
-		result = [NSNumber numberWithDouble:[((NSString*)value) doubleValue]];
-	} else if ([type compare:@"boolean"] == NSOrderedSame) {
-		
-		result = [NSNumber numberWithBool:[((NSString*)value) boolValue]];
-	} else if ([type compare:@"array"] == NSOrderedSame) {
-		
-		NSDictionary* arrayData = (NSDictionary*) value;
-		NSUInteger count = [arrayData count];
-		NSMutableArray* array = [NSMutableArray arrayWithCapacity:count];
-		
-		for (int i = 0; i < count; i++) {
-			[array addObject:[self translateObject:[arrayData objectForKey:[NSString stringWithFormat:@"obj%d", i]]]];
-		}
-		result = array;
-	} else if ([type compare:@"object"] == NSOrderedSame) {
-		
-		result = [NSDictionary dictionaryWithDictionary:(NSDictionary*)value];
-	}
-	
-	return result;*/
 }
 
 

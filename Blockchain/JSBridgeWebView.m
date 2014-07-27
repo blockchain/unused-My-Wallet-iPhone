@@ -91,7 +91,6 @@
     }
 }
 
-
 -(NSString*)executeJSSynchronous:(NSString*)formatString,  ... {
     
     va_list args;
@@ -239,7 +238,13 @@
 
     __block int retain = 0;
 
-    if (success || errorArg) {
+    if (successArg) {
+        [webview retain];
+        [self.JSDelegate retain];
+        ++retain;
+    }
+    
+    if (errorArg) {
         [webview retain];
         [self.JSDelegate retain];
         ++retain;
@@ -251,6 +256,7 @@
         if (retain > 0) {
             [webview release];
             [self.JSDelegate release];
+            --retain;
         }
     };
     
@@ -260,6 +266,7 @@
         if (retain > 0) {
             [webview release];
             [self.JSDelegate release];
+            --retain;
         }
     };
     

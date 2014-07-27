@@ -110,7 +110,7 @@ AppDelegate * app;
         NSString * sharedKey = [self sharedKey];
         NSString * password = [self password];
         
-        NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
+//        NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
         
         if (guid && sharedKey && password) {
             self.wallet = [[[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password] autorelease];

@@ -79,17 +79,28 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     return osBuildVersion;   
 }
 
++ (NSString *)appNameAndVersionNumberDisplayString {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *appDisplayName = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+    NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *minorVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
+    
+    return [NSString stringWithFormat:@"%@, Version %@ (%@)",
+            appDisplayName, majorVersion, minorVersion];
+}
+
 + (void)logException:(NSException*)exception
 {
-    NSString * store = @"App Store";
-    
-    NSString * message = [NSString stringWithFormat:@"<pre>%@\n\n%@\n\n%@\n%@ - %@ - %@</pre>",
+    NSString * message = [NSString stringWithFormat:@"<pre>Reason: %@\n\nStacktrace:%@\n\nApp Version: %@\nSystem Name: %@ -  System Version: %@\nActive View Controller: %@\nWallet State: JSLoaded = %@, isInitialized = %@</pre>",
                                                       [exception reason],
                                                       [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey],
-                                                      [self osVersionBuild],
+                                                      [self appNameAndVersionNumberDisplayString],
                                                       [[UIDevice currentDevice] systemName],
                                                       [[UIDevice currentDevice] systemVersion],
-                                                      store];
+                                                      [app.tabViewController.activeViewController class],
+                                                      [app.wallet.webView isLoaded] ? @"TRUE" : @"FALSE",
+                                                      [app.wallet isInitialized] ? @"TRUE" : @"FALSE"
+                                                      ];
     NSLog(@"Logging exception: %@", message);
 
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

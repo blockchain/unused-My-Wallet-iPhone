@@ -264,7 +264,6 @@ AppDelegate * app;
     [transactionsViewController reload];
     [receiveViewController reload];
     [sendViewController reload];
-
 }
 
 -(void)didSetLatestBlock:(LatestBlock*)block {

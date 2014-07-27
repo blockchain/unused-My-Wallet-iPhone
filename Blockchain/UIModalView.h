@@ -14,11 +14,11 @@
 
 @property(nonatomic, copy) void (^onDismiss)();
 @property(nonatomic, copy) void (^onResume)();
-@property(nonatomic, retain) IBOutlet UIView * modalContentView;
-@property(nonatomic, retain) IBOutlet UIView * closeButtonBackground;
+@property(nonatomic, strong) IBOutlet UIView * modalContentView;
+@property(nonatomic, strong) IBOutlet UIView * closeButtonBackground;
 
 @property(nonatomic) BOOL isClosable;
-@property(nonatomic, retain) IBOutlet UIButton * closeButton;
+@property(nonatomic, strong) IBOutlet UIButton * closeButton;
 
 -(IBAction)closeModalClicked:(id)sender;
 

@@ -35,7 +35,7 @@
 -(IBAction)transactionHashClicked:(UIButton *)button;
 -(IBAction)btcbuttonclicked:(id)sender;
 
-@property(nonatomic, retain)  Transaction * transaction;
+@property(nonatomic, strong)  Transaction * transaction;
 
 -(void)seLatestBlock:(LatestBlock*)block;
 

@@ -35,7 +35,7 @@
 
 @interface JSCommandObject : NSObject
 @property(nonatomic, strong) NSString * command;
-@property(nonatomic, strong) void (^callback)(NSString * result);
+@property(nonatomic, copy) void (^callback)(NSString * result);
 @end
 
 @implementation JSCommandObject
@@ -61,18 +61,16 @@
 @implementation JSBridgeWebView
 
 -(void)dealloc {
+
     [self stopLoading];
     self.delegate = nil;
-    self.JSDelegate = nil;
-    [self.pending_commands release];
-    [super dealloc];
 }
 
 -(void)executeJSWithCallback:(void (^)(NSString * result))callback command:(NSString*)formatString,  ...
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (self.isLoaded) {
@@ -90,12 +88,11 @@
     }
 }
 
-
 -(NSString*)executeJSSynchronous:(NSString*)formatString,  ... {
     
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (!self.isLoaded) {
@@ -109,7 +106,7 @@
 {
     va_list args;
     va_start(args, formatString);
-    NSString * contents = [[[NSString alloc] initWithFormat:formatString arguments:args] autorelease];
+    NSString * contents = [[NSString alloc] initWithFormat:formatString arguments:args];
     va_end(args);
     
     if (self.isLoaded) {
@@ -222,35 +219,6 @@
 {
 	//NSString* type = [objDic objectForKey:@"type"];
 	return [objDic objectForKey:@"value"];
-	
-	
-	/*
-     NSObject* result = nil;
-     if ([type compare:@"string"] == NSOrderedSame) {
-		
-		result = value;
-	} else if ([type compare:@"number"] == NSOrderedSame) {
-		
-		result = [NSNumber numberWithDouble:[((NSString*)value) doubleValue]];
-	} else if ([type compare:@"boolean"] == NSOrderedSame) {
-		
-		result = [NSNumber numberWithBool:[((NSString*)value) boolValue]];
-	} else if ([type compare:@"array"] == NSOrderedSame) {
-		
-		NSDictionary* arrayData = (NSDictionary*) value;
-		NSUInteger count = [arrayData count];
-		NSMutableArray* array = [NSMutableArray arrayWithCapacity:count];
-		
-		for (int i = 0; i < count; i++) {
-			[array addObject:[self translateObject:[arrayData objectForKey:[NSString stringWithFormat:@"obj%d", i]]]];
-		}
-		result = array;
-	} else if ([type compare:@"object"] == NSOrderedSame) {
-		
-		result = [NSDictionary dictionaryWithDictionary:(NSDictionary*)value];
-	}
-	
-	return result;*/
 }
 
 
@@ -264,31 +232,13 @@
     BOOL errorArg = [[dictionary objectForKey:@"error"] isEqualToString:@"TRUE"];
     
     int componentsCount = [[function componentsSeparatedByString:@":"] count]-1;
-
-    __block int retain = 0;
-
-    if (success || errorArg) {
-        [webview retain];
-        [self.JSDelegate retain];
-        ++retain;
-    }
     
-    void (^_success)(id) = ^(id object) {
+    __unsafe_unretained void (^_success)(id) = ^(id object) {
         success(object);
-        
-        if (retain > 0) {
-            [webview release];
-            [self.JSDelegate release];
-        }
     };
     
-    void (^_error)(id) = ^(id object) {
+    __unsafe_unretained void (^_error)(id) = ^(id object) {
         error(object);
-        
-        if (retain > 0) {
-            [webview release];
-            [self.JSDelegate release];
-        }
     };
     
     if (successArg) {
@@ -322,7 +272,7 @@
                 int ii = 0;
                 while (true) {
                     if ([sig numberOfArguments] > index && componentsCount > ii) {
-                        id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
+                        __unsafe_unretained id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
                         [invo setArgument:&arg atIndex:index];
                         ++index;
                     } else {
@@ -340,6 +290,8 @@
                     [invo setArgument:&_error atIndex:index];
                     ++index;
                 }
+                
+                [invo retainArguments];
                                 
                 [invo invoke];
             }
@@ -371,7 +323,7 @@
                     [self.usedIDs addObject:jsNotId];
                     
                     // Reads the JSON object to be communicated.
-                    NSString* jsonStr = [p_WebView stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
+                    NSString* jsonStr = [self stringByEvaluatingJavaScriptFromString:[NSString  stringWithFormat:@"JSBridge_getJsonStringForObjectWithId(%@)", jsNotId]];
                                         
                     NSDictionary * jsonDic = [jsonStr getJSONObject];
                     
@@ -380,13 +332,15 @@
                     // Calls the delegate method with the notified object.
                     if(self.JSDelegate)
                     {
-                        [self webView:p_WebView didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
+                        
+                        [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
                             if (success != nil) {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeStringForJS]];
                             } else {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId];
                             }
+                            
                         } error:^(id error) {
                             //On Error
                             if (error != nil) {
@@ -394,6 +348,7 @@
                             } else {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId];
                             }
+                            
                         }];
                     }
                 }
@@ -413,7 +368,6 @@
     NSLog(@"JSBridgeWebView Did Load");
 
     for (JSCommandObject * command in self.pending_commands) {
-        
         NSString * result = [self stringByEvaluatingJavaScriptFromString:command.command];
         
         if (command.callback != NULL)

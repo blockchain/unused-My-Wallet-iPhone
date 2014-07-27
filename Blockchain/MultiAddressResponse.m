@@ -24,7 +24,7 @@
 @synthesize symbolappearsAfter;
 
 +(CurrencySymbol*)symbolFromDict:(NSDictionary *)dict {
-    CurrencySymbol * symbol = [[[CurrencySymbol alloc] init] autorelease];
+    CurrencySymbol * symbol = [[CurrencySymbol alloc] init];
     
     symbol.code = [dict objectForKey:@"code"];
     symbol.symbol = [dict objectForKey:@"symbol"];
@@ -35,12 +35,6 @@
     return symbol;
 }
 
--(void)dealloc {
-    [code release];
-    [symbol release];
-    [name release];
-    [super dealloc];
-}
 @end
 
 @implementation LatestBlock
@@ -49,10 +43,6 @@
 @synthesize height;
 @synthesize time;
 
--(void)dealloc {
-    [hash release];
-    [super dealloc];
-}
 
 @end
 
@@ -66,12 +56,6 @@
 @synthesize symbol_local;
 @synthesize symbol_btc;
 
--(void)dealloc {
-    [transactions release];
-    [symbol_btc release];
-    [symbol_local release];
-    [super dealloc];
-}
 
 @end
 

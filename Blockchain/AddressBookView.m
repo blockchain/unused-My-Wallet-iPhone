@@ -41,14 +41,6 @@
     [app closeModal];
 }
 
--(void)dealloc {
-    [delegate release];
-    [wallet release];
-    [view release];
-    [addresses release];
-    [tableView release];
-    [super dealloc];
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [addresses count];
@@ -58,7 +50,7 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
     }
     
     NSString * addr =  [addresses objectAtIndex:[indexPath row]];

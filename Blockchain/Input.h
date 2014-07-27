@@ -10,12 +10,8 @@
 
 @class Output;
 
-@interface Input : NSObject {
+@interface Input : NSObject {}
 
-@public
-    Output * prev_out;
-}
-
--(Output*)prev_out;
+@property(nonatomic, strong) Output * prev_out;
 
 @end

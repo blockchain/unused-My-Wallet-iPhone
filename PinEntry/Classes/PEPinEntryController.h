@@ -46,9 +46,9 @@
 	NSUInteger pinStage;
 	NSUInteger pinEntry1;
 	PEViewController *pinController;
-	id <PEPinEntryControllerDelegate> pinDelegate;
+	id <PEPinEntryControllerDelegate> __weak pinDelegate;
 }
-@property (nonatomic, readwrite, assign) id <PEPinEntryControllerDelegate> pinDelegate;
+@property (nonatomic, readwrite, weak) id <PEPinEntryControllerDelegate> pinDelegate;
 @property (nonatomic, readonly) BOOL verifyOnly;
 
 + (PEPinEntryController *)pinVerifyController;

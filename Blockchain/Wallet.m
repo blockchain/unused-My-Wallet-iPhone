@@ -49,7 +49,7 @@
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
-    return [(NSString *)string autorelease];
+    return (__bridge NSString *)string;
 }
 
 -(BOOL)isInitialized {
@@ -200,7 +200,7 @@
 -(id)init {
     if ([super init]) {
         self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
         [webView setJSDelegate:self];
         
         [self loadJS];
@@ -213,7 +213,7 @@
 -(id)initWithGuid:(NSString *)_guid password:(NSString*)_password {
     if ([super init]) {
         self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
         
         [webView setJSDelegate:self];
         
@@ -229,7 +229,7 @@
     
     if ([super init]) {
         self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[[JSBridgeWebView alloc] initWithFrame:CGRectZero] autorelease];
+        self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
         
         [webView setJSDelegate:self];
         
@@ -399,7 +399,7 @@
     
     NSDictionary * dict = [multiAddrJSON getJSONObject];
     
-    MulitAddressResponse * response = [[[MulitAddressResponse alloc] init] autorelease];
+    MulitAddressResponse * response = [[MulitAddressResponse alloc] init];
     
     response.transactions = [NSMutableArray array];
 
@@ -600,14 +600,8 @@
 }
 
 -(void)dealloc {
-    self.guid = nil;
-    self.sharedKey = nil;
-    self.password = nil;
-    self.delegate = nil;
-    self.webView = nil;
-    self.transactionProgressListeners = nil;
+    self.webView.JSDelegate = nil;
     
-    [super dealloc];
 }
 
 //Callbacks from javascript localstorage
@@ -657,7 +651,6 @@
     
     [UncaughtExceptionHandler logException:exception];
     
-    [exception release];
     
     [app standardNotify:decription];
 }

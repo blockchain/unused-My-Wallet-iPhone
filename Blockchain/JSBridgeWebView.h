@@ -47,9 +47,9 @@
 }
 
 @property(nonatomic) BOOL isLoaded;
-@property(nonatomic, retain) NSMutableArray * pending_commands;
-@property(nonatomic, retain) NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate> * JSDelegate;
-@property(nonatomic, retain) NSMutableSet * usedIDs;
+@property(nonatomic, strong) NSMutableArray * pending_commands;
+@property(nonatomic, strong) NSObject<JSBridgeWebViewDelegate, UIWebViewDelegate> * JSDelegate;
+@property(nonatomic, strong) NSMutableSet * usedIDs;
 
 -(void)reset;
 

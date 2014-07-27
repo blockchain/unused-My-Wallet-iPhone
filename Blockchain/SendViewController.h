@@ -44,9 +44,9 @@
     IBOutlet UILabel * btcCodeLabel;
 }
 
-@property(nonatomic, retain) NSArray * fromAddresses;
-@property(nonatomic, retain) ZBarReaderView * readerView;
-@property(nonatomic, retain) NSString *toAddress;
+@property(nonatomic, strong) NSArray * fromAddresses;
+@property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, strong) NSString *toAddress;
 
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;

@@ -11,13 +11,6 @@
 
 @implementation Address
 
--(NSString*)getAddress {
-    return address;
-}
 
--(void)dealloc {
-    [address release];
-    [super dealloc];
-}
 
 @end

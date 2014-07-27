@@ -62,7 +62,7 @@
     
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
-    if (transaction->result < 0) {
+    if (transaction.result < 0) {
         NSArray * outputs = [transaction outputsNotToAddresses:data.addresses];
         
         if ([outputs count] == 0)
@@ -103,9 +103,7 @@
 }
 
 -(void)setLatestBlock:(LatestBlock *)_latestBlock {
-    [latestBlock release];
     latestBlock = _latestBlock;
-    [latestBlock retain];
     
     if (latestBlock && latestBlock.blockIndex != _latestBlock.blockIndex) {
         [tableView reloadData];
@@ -135,14 +133,5 @@
     [self reload];
 }
 
--(void)dealloc {
-    [latestBlock release];
-    [noTransactionsView release];
-    [finalBalanceLabel release];
-    [transactionCountLabel release];
-    [tableView release];
-    [data release];
-    [super dealloc];
-}
 
 @end

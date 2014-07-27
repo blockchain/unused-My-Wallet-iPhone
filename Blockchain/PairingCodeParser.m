@@ -12,12 +12,10 @@
 @implementation PairingCodeParser
 
 -(void)dealloc {
-    self.readerView = nil;
-    self.wallet = nil;
-    self.success = nil;
-    self.error = nil;
     
-    [super dealloc];
+    NSLog(@"Dealloc PairingCodeParser");
+    
+    
 }
 
 - (void)errorParsingPairingCode:(NSString *)message {
@@ -47,7 +45,7 @@
     self.success = __success;
     self.error = __error;
     
-    self.readerView = [[ZBarReaderView new] autorelease];
+    self.readerView = [[ZBarReaderView alloc] init];
     
     [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
@@ -64,7 +62,11 @@
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {
-        self.wallet = [[[Wallet alloc] init] autorelease];
+        
+        //Prevent Retain cycle
+        [self.wallet clearDelegates];
+        
+        self.wallet = [[Wallet alloc] init];
         
         self.wallet.delegate = self;
         

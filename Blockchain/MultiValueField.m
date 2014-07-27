@@ -18,13 +18,6 @@
 @synthesize currentLabel;
 @synthesize valueAlignment;
 
--(void)dealloc {
-    [currentLabel release];
-	[valueFont release];
-	[valueColor release];
-	[source release];
-	[super dealloc];
-}
 
 -(void)selectFirstValueMatchingString:(NSString*)string {	
 	for (int ii = 0; ii < [source countForValueField:self]; ++ii) {
@@ -40,8 +33,8 @@
     
 	if (self = [super initWithCoder:aDecoder]) {
 		valueAlignment = NSTextAlignmentCenter;
-		valueFont = [[UIFont systemFontOfSize:14.0f] retain];
-		valueColor = [[UIColor blackColor] retain];
+		valueFont = [UIFont systemFontOfSize:14.0f];
+		valueColor = [UIColor blackColor];
 	}
 	return self;
 }
@@ -68,17 +61,13 @@
 
 
 -(void)setValueFont:(UIFont *)nvfont {
-	[valueFont release];
 	valueFont = nvfont;
-	[valueFont retain];
 	
 	[self setCanvasNeedsDisplay];
 }
 
 -(void)setValueColor:(UIColor *)nvcolor {
-	[valueColor release];
 	valueColor = nvcolor;
-	[valueColor retain];
 	
 	[self setCanvasNeedsDisplay];
 }
@@ -97,7 +86,7 @@
     else
         index = findex;
     
-    UILabel * new = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)] autorelease];
+    UILabel * new = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 
     new.adjustsFontSizeToFitWidth = YES;
     [new setMinimumScaleFactor:.5f];

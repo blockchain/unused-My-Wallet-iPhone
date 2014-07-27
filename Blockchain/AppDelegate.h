@@ -37,15 +37,12 @@
 
 @class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
     
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
-    
-    NSNumberFormatter * btcFormatter;
-    NSNumberFormatter * localCurrencyFormatter;
 
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet BCFadeView * busyView;
@@ -54,15 +51,6 @@
 
     IBOutlet UIButton *createWalletButton;
 
-    IBOutlet TabViewcontroller * tabViewController;
-    IBOutlet TabViewcontroller * newTabViewController;
-    IBOutlet TabViewcontroller * oldTabViewController;
-
-    IBOutlet TransactionsViewController * transactionsViewController;
-    IBOutlet ReceiveCoinsViewController * receiveViewController;
-    IBOutlet SendViewController * sendViewController;
-    IBOutlet AccountViewController * accountViewController;
-    
     IBOutlet UIView * welcomeView;
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
@@ -83,8 +71,6 @@
     IBOutlet UITextField * manualIdentifier;
     IBOutlet UITextField * manualSharedKey;
     IBOutlet UITextField * manualPassword;
-
-    WebViewController * webViewController;
     
     int webScoketFailures;
     int myPin;    
@@ -94,16 +80,26 @@
     BOOL symbolLocal;
 }
 
+@property (strong, nonatomic) IBOutlet TabViewcontroller * tabViewController;
+@property (strong, nonatomic) IBOutlet TransactionsViewController * transactionsViewController;
+@property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
+@property (strong, nonatomic) IBOutlet SendViewController * sendViewController;
+@property (strong, nonatomic) IBOutlet AccountViewController * accountViewController;
+@property (strong, nonatomic) WebViewController * webViewController;
+
 @property (strong, nonatomic) IBOutlet UIWindow *window;
-@property (retain, nonatomic) Wallet * wallet;
-@property (retain, nonatomic) MulitAddressResponse * latestResponse;
-@property (nonatomic, retain) NSString * loadingText;
+@property (strong, nonatomic) Wallet * wallet;
+@property (strong, nonatomic) MulitAddressResponse * latestResponse;
+@property (nonatomic, strong) NSString * loadingText;
 
 @property (nonatomic) BOOL disableBusyView;
 
-@property (retain, nonatomic) IBOutlet MyUIModalView * modalView;
-@property (retain, nonatomic) NSMutableArray * modalChain;
-@property (nonatomic, retain) PEPinEntryController *pinEntryViewController;
+@property (strong, nonatomic) IBOutlet MyUIModalView * modalView;
+@property (strong, nonatomic) NSMutableArray * modalChain;
+@property (nonatomic, strong) PEPinEntryController *pinEntryViewController;
+
+@property(nonatomic, strong) NSNumberFormatter * btcFormatter;
+@property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;

@@ -14,11 +14,6 @@
 
 @implementation AccountViewController
 
--(void)dealloc {
-    [activity release];
-    [webView release];
-    [super dealloc];
-}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     

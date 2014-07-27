@@ -20,24 +20,9 @@
 @implementation SendViewController
 
 -(void)dealloc {
-    [btcCodeLabel release];
-    [sendPaymentButton release];
-    [amountKeyoboardAccessoryView release];
-    [currencyConversionLabel release];
-    [toField release];
-    [self.toAddress release];
-    [fromField release];
-    [labelAddressView release];
-    [labelAddressLabel release];
-    [labelAddressTextField release];
-    [sendProgressModal release];
-    [sendProgressModalText release];
-    [toFieldContainerField release];
+    self.toAddress;
     
-    self.readerView = nil;
-    self.fromAddresses = nil;
     
-    [super dealloc];
 }
 
 -(void)reload {
@@ -113,7 +98,6 @@
     
     [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
     
-    [listener release];
 }
 
 -(IBAction)sendPaymentClicked:(id)sender {
@@ -168,7 +152,6 @@
         };
         
         [alert show];
-        [alert release];
     } else {
         [self confirmPayment];
     }
@@ -198,7 +181,6 @@
     };
     
     [alert show];
-    [alert release];
 }
 
 -(void)doCurrencyConversion {
@@ -281,7 +263,7 @@
 }
 
 -(void)initQRCodeView {
-    self.readerView = [[ZBarReaderView new] autorelease];
+    self.readerView = [[ZBarReaderView alloc] init];
     
     [self.readerView start];
     
@@ -381,7 +363,6 @@
         [app.wallet cancelTxSigning];
     } onResume:nil];
     
-    [addressBookView release];
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender {

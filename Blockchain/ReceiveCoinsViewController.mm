@@ -18,27 +18,11 @@
 @synthesize activeKeys;
 @synthesize archivedKeys;
 
--(void)dealloc {
-    
-    [currencyConversionLabel release];
-    [amountKeyoboardAccessoryView release];
-    [optionsTitleLabel release];
-    [archiveUnarchiveButton release];
-    [optionsModalView release];
-    [requestCoinsView release];
-    [qrCodeImageView release];
-    [optionsAddressLabel release];
-    [activeKeys release];
-    [archivedKeys release];
-    [tableView release];
-    [requestAmountTextField release];
-    [super dealloc];
-}
 
 
 -(IBAction)scanKeyClicked:(id)sender {
     
-    PrivateKeyReader * reader = [[[PrivateKeyReader alloc] init] autorelease];
+    PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
     
     [reader readPrivateKey:^(NSString* privateKeyString) {
         [app.wallet addKey:privateKeyString];

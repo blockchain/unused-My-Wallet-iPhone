@@ -47,11 +47,5 @@
 	[super touchesCancelled:touches withEvent:_event];
 }
 
--(void)dealloc {
-	[event release];
-	[touch release];
-	[timer release];
-	[super dealloc];
-}
 
 @end

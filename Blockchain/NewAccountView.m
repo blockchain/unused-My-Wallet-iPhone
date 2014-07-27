@@ -13,15 +13,6 @@
 
 @synthesize wallet;
 
--(void)dealloc {
-    self.wallet = nil;
-    
-    [createButton release];
-    [activity release];
-    [passwordTextField release];
-    [password2TextField release];
-    [super dealloc];
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField {
     [aTextField resignFirstResponder];
@@ -67,8 +58,11 @@
         return;
     }
     
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
+    
     // Load the wallet (webview + js)
-    self.wallet = [[[Wallet alloc] init] autorelease];
+    self.wallet = [[Wallet alloc] init];
     
     // Get callback when wallet is done loading
     wallet.delegate = self;
@@ -88,6 +82,11 @@
     [app clearPin];
     
     [app showPinModal];
+    
+    //Prevent Retain cycle
+    [self.wallet clearDelegates];
+    
+    self.wallet = nil;
     
     app.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
     

@@ -35,12 +35,12 @@
 	NSTimeInterval lastValueChange;
 }
 
-@property(nonatomic, retain) IBOutlet id<MultiValueFieldDataSource> source;
+@property(nonatomic, strong) IBOutlet id<MultiValueFieldDataSource> source;
 @property(nonatomic, assign) int index;
-@property(nonatomic, retain) UIColor * valueColor;
-@property(nonatomic, retain) UIFont * valueFont;
+@property(nonatomic, strong) UIColor * valueColor;
+@property(nonatomic, strong) UIFont * valueFont;
 @property(nonatomic, assign) NSTextAlignment valueAlignment;
-@property(nonatomic, retain) UILabel * currentLabel;
+@property(nonatomic, strong) UILabel * currentLabel;
 
 -(int)nfields;
 -(NSString*)currentValue;

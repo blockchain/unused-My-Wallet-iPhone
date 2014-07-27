@@ -49,7 +49,7 @@
 
 -(void)reload;
 
-@property(nonatomic, retain) NSString * clickedAddress;
+@property(nonatomic, strong) NSString * clickedAddress;
 
 -(IBAction)labelAddressClicked:(id)sender;
 -(IBAction)archiveAddressClicked:(id)sender;

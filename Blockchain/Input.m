@@ -10,13 +10,5 @@
 
 @implementation Input
 
--(void)dealloc {
-    [prev_out release];
-    [super dealloc];
-}
-
--(Output*)prev_out {
-    return prev_out;
-}
 
 @end

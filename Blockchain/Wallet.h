@@ -66,18 +66,18 @@
 }
 
 //Core Wallet Init Properties
-@property(nonatomic, retain) NSString * guid;
-@property(nonatomic, retain) NSString * sharedKey;
-@property(nonatomic, retain) NSString * password;
+@property(nonatomic, strong) NSString * guid;
+@property(nonatomic, strong) NSString * sharedKey;
+@property(nonatomic, strong) NSString * password;
 
-@property(nonatomic, retain) id<WalletDelegate> delegate;
-@property(nonatomic, retain) JSBridgeWebView * webView;
+@property(nonatomic, strong) id<WalletDelegate> delegate;
+@property(nonatomic, strong) JSBridgeWebView * webView;
 
 @property(nonatomic) uint64_t final_balance;
 @property(nonatomic) uint64_t total_sent;
 @property(nonatomic) uint64_t total_received;
 
-@property(nonatomic, retain) NSMutableDictionary * transactionProgressListeners;
+@property(nonatomic, strong) NSMutableDictionary * transactionProgressListeners;
 
 #pragma mark Init Methods
 -(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;

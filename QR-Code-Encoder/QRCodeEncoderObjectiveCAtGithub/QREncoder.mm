@@ -44,7 +44,7 @@
     NSString* decryptedString = nil;
     if (status==kCCSuccess) {
         NSData* data = [NSData dataWithBytes:dataOut length:decryptedDataLength];
-        decryptedString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        decryptedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     free(dataOut);
     return decryptedString;
@@ -54,7 +54,7 @@
     CQR_Encode* encoder = new CQR_Encode;
     encoder->EncodeData(ecLevel, version, true, -1, cstring);
     int dimension = encoder->m_nSymbleSize;
-    DataMatrix* matrix = [[[DataMatrix alloc] initWith:dimension] autorelease];
+    DataMatrix* matrix = [[DataMatrix alloc] initWith:dimension];
     for (int y=0; y<dimension; y++) {
         for (int x=0; x<dimension; x++) {
             int v = encoder->m_byModuleData[y][x];

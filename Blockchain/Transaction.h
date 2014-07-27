@@ -12,24 +12,20 @@
 
 @interface Transaction : NSObject {
 
-@public
-    NSString * hash;
-    uint32_t size;
-    uint32_t tx_index;
-    int64_t result;
-    uint64_t time;
-    uint32_t block_height;
-    NSArray * inputs;
-    NSArray * outputs;
 }
-
--(NSString*)hash;
--(NSArray*)inputs;
--(NSArray*)outputs;
 
 -(NSArray*)inputsNotFromAddresses:(NSArray*)addresses;
 -(NSArray*)outputsNotToAddresses:(NSArray*)adresses;
 
 +(Transaction*)fromJSONDict:(NSDictionary*)dict;
- 
+
+@property(nonatomic, strong) NSString * hash;
+@property(nonatomic, strong) NSArray * inputs;
+@property(nonatomic, strong) NSArray * outputs;
+@property(nonatomic, assign) uint32_t size;
+@property(nonatomic, assign) uint32_t tx_index;
+@property(nonatomic, assign) int64_t result;
+@property(nonatomic, assign) uint64_t time;
+@property(nonatomic, assign) uint32_t block_height;
+
 @end

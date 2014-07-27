@@ -29,7 +29,7 @@
 - (void)setPin:(int)pin enabled:(BOOL)yes;
 - (void)redrawPins;
 
-@property (nonatomic, readwrite, retain) NSString *pin;
+@property (nonatomic, readwrite, strong) NSString *pin;
 
 @end
 
@@ -55,11 +55,6 @@
 }
 
 
-- (void)dealloc
-{
-	self.pin = nil;
-	[super dealloc];
-}
 
 - (void)setPin:(int)p enabled:(BOOL)yes
 {

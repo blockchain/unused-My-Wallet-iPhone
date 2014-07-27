@@ -87,10 +87,6 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 	}
 }
 
-- (void)dealloc
-{
-	[super dealloc];
-}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

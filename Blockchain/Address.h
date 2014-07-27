@@ -10,15 +10,12 @@
 
 @interface Address : NSObject {
 
-@public
-    NSString * address;
-    uint64_t total_received;
-    uint64_t total_sent;
-    uint64_t final_balance;
-    uint32_t n_transactions;
 }
 
--(NSString*)getAddress;
-
+@property(nonatomic, strong) NSString * address;
+@property(nonatomic, assign) uint64_t total_received;
+@property(nonatomic, assign) uint64_t total_sent;
+@property(nonatomic, assign) uint64_t final_balance;
+@property(nonatomic, assign) uint32_t n_transactions;
 
 @end

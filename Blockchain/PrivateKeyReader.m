@@ -11,19 +11,12 @@
 
 @implementation PrivateKeyReader
 
--(void)dealloc {
-    self.readerView = nil;
-    self.success = nil;
-    self.error = nil;
-    
-    [super dealloc];
-}
 
 -(void)readPrivateKey:(void (^)(NSString*))__success error:(void (^)(NSString*))__error {
     self.success = __success;
     self.error = __error;
     
-    self.readerView = [[ZBarReaderView new] autorelease];
+    self.readerView = [[ZBarReaderView alloc] init];
     
     [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];

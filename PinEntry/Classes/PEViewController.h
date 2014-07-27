@@ -31,6 +31,7 @@
 
 @required
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller;
+- (void)cancelController;
 
 @end
 
@@ -45,13 +46,13 @@
 	IBOutlet UILabel *promptLabel;
 	UIImageView *pins[4];
 	NSString *pin;
-	id <PEViewControllerDelegate> delegate;
+	id <PEViewControllerDelegate> __weak delegate;
 }
-@property (nonatomic, readonly, retain) NSString *pin;
+@property (nonatomic, readonly, strong) NSString *pin;
 @property (nonatomic, readwrite, copy) NSString *prompt;
-@property (nonatomic, readwrite, assign) id <PEViewControllerDelegate> delegate;
-@property (nonatomic, retain) IBOutlet UILabel *versionLabel;
-@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
+@property (nonatomic, readwrite, weak) id <PEViewControllerDelegate> delegate;
+@property (nonatomic, strong) IBOutlet UILabel *versionLabel;
+@property (nonatomic, strong) IBOutlet UIButton *cancelButton;
 
 - (void)resetPin;
 - (IBAction)cancelChangePin:(id)sender;

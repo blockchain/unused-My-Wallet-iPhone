@@ -332,7 +332,6 @@
                     // Calls the delegate method with the notified object.
                     if(self.JSDelegate)
                     {
-                        
                         [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
                             //On success
                             if (success != nil) {

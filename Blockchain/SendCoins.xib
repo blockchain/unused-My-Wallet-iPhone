@@ -109,7 +109,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="alert"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="vFU-ZK-iLQ"/>
                             </connections>

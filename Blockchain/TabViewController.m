@@ -54,9 +54,7 @@ CGPoint arrowPositions[4] = {
         CGRect responderRect = [app.window convertRect:responder.frame fromView:[responder superview]];
         
         float moveUpY = (app.window.frame.size.height - keyboardRect.size.height) - (responderRect.origin.y  + 65.0f);
-        
-        printf("%f", moveUpY);
-        
+                
         if (moveUpY < 0) {
             [UIView beginAnimations:@"MoveUp" context:nil];
             [UIView setAnimationCurve:UIViewAnimationCurveLinear];

@@ -54,7 +54,7 @@
 // called after user logs in
 - (void)loadWebView
 {
-    if (app.wallet)
+    if ([app guid] && [app sharedKey])
     {
         NSString *requestString = [NSString stringWithFormat:@"%@wallet/iphone-view?guid=%@&sharedKey=%@&device=iphone", WebROOT, [app guid], [app sharedKey]];
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:requestString]]];

@@ -101,8 +101,6 @@
 @property(nonatomic, strong) NSNumberFormatter * btcFormatter;
 @property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
 
-@property(nonatomic, strong) PairingCodeParser * pairingCodeParser;
-
 -(IBAction)manualPairClicked:(id)sender;
 -(IBAction)changePinClicked:(id)sender;
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;

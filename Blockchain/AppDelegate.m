@@ -74,6 +74,13 @@ AppDelegate * app;
 //    zbar_version(&x, &y);
 //    DLog(@"zbar version: %d %d", x, y);
     
+    
+    //Allocate the global wallet
+    self.wallet = [[Wallet alloc] init];
+    
+    self.wallet.delegate = self;
+    
+    
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
@@ -116,13 +123,7 @@ AppDelegate * app;
 //        DLog(@"didFinishLaunchingWithOptions GUID %@", guid);
         
         if (guid && sharedKey && password) {
-            
-            //Prevent Retain cycle
-            [self.wallet clearDelegates];
-            
-            self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
-            
-            self.wallet.delegate = self;
+            [self.wallet loadGuid:guid sharedKey:sharedKey password:password];
         }
     }
 
@@ -243,8 +244,6 @@ AppDelegate * app;
 -(void)didGenerateNewWallet:(Wallet*)_wallet password:(NSString*)password {
     
     [self forgetWallet];
-
-    self.wallet = _wallet;
     
     [[NSUserDefaults standardUserDefaults] setObject:wallet.guid forKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] setObject:wallet.sharedKey forKey:@"sharedKey"];
@@ -577,21 +576,11 @@ AppDelegate * app;
     
     [self.wallet cancelTxSigning];
     
-    self.wallet = nil;
-    self.latestResponse = nil;
-    
-    _transactionsViewController.data = nil;
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
     
-    [_accountViewController emptyWebView];
-    
-    
-    //Prevent Retain cycle
-    [self.wallet clearDelegates];
-    
-    self.wallet = [[Wallet alloc] initWithGuid:[self guid] sharedKey:[self sharedKey] password:[self password]];
+    [self.wallet loadGuid:[self guid] sharedKey:[self sharedKey] password:[self password]];
     
     self.wallet.delegate = app;
 }
@@ -649,10 +638,7 @@ AppDelegate * app;
     }
     
     
-    //Prevent Retain cycle
-    [self.wallet clearDelegates];
-    
-    self.wallet = [[Wallet alloc] initWithGuid:guid password:password];
+    [self.wallet loadGuid:guid password:password];
     
     self.wallet.delegate = app;
     
@@ -663,9 +649,9 @@ AppDelegate * app;
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        self.pairingCodeParser = [[PairingCodeParser alloc] init];
+        PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] init];
         
-        [_pairingCodeParser scanAndParse:^(NSDictionary*code) {
+        [pairingCodeParser scanAndParse:^(NSDictionary*code) {
             DLog(@"scanAndParse success");
             
             [app forgetWallet];
@@ -677,25 +663,13 @@ AppDelegate * app;
                 [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
             }
             
-            //Prevent Retain cycle
-            [self.wallet clearDelegates];
-            
-            self.wallet = [[Wallet alloc] initWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
+            [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
             
             self.wallet.delegate = self;
-
-            //Hack to prevent PairingCodeParser being released too early
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.pairingCodeParser = nil;
-            });
             
         } error:^(NSString*error) {
             [app standardNotify:error];
-            
-            //Hack to prevent PairingCodeParser being released too early
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.pairingCodeParser = nil;
-            });
+    
         }];
     } else {
         [self showModal:manualView isClosable:TRUE onDismiss:^() {
@@ -730,7 +704,8 @@ AppDelegate * app;
 
     [self.wallet cancelTxSigning];
 
-    self.wallet = nil;
+    [self.wallet loadJS];
+
     self.latestResponse = nil;
     
     _transactionsViewController.data = nil;
@@ -749,7 +724,8 @@ AppDelegate * app;
     
     [self.wallet clearLocalStorage];
     
-    self.wallet = nil;
+    [self.wallet loadJS];
+    
     self.latestResponse = nil;
     [_transactionsViewController setData:nil];
 }
@@ -953,10 +929,7 @@ AppDelegate * app;
     
     if (guid && sharedKey && password) {
         
-        //Prevent Retain cycle
-        [self.wallet clearDelegates];
-        
-        self.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
+        [self.wallet loadGuid:guid sharedKey:sharedKey password:password];
         
         self.wallet.delegate = self;
     }

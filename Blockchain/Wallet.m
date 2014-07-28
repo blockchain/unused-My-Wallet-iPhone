@@ -207,46 +207,26 @@
         self.transactionProgressListeners = [NSMutableDictionary dictionary];
         self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
         [webView setJSDelegate:self];
-        
-        [self loadJS];
     }
     
     return self;
 }
 
 //Called when entering guid manually
--(id)initWithGuid:(NSString *)_guid password:(NSString*)_password {
-    if ([super init]) {
-        self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
-        
-        [webView setJSDelegate:self];
-        
-        self.guid = _guid;
-        self.password = _password;
-      
-        [self loadJS];
-    }
-    return  self;
+-(void)loadGuid:(NSString *)_guid password:(NSString*)_password {
+    self.guid = _guid;
+    self.password = _password;
+  
+    [self loadJS];
 }
 
--(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
+-(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
+    self.password = _password;
+    self.guid = _guid;
+    self.sharedKey = _sharedKey;
     
-    if ([super init]) {
-        self.transactionProgressListeners = [NSMutableDictionary dictionary];
-        self.webView = [[JSBridgeWebView alloc] initWithFrame:CGRectZero];
-        
-        [webView setJSDelegate:self];
-        
-        self.password = _password;
-        self.guid = _guid;
-        self.sharedKey = _sharedKey;
-        
-        // Load the JS. Proceed in the webviewDidLoad callback
-        [self loadJS];
-    }
-    
-    return self;
+    // Load the JS. Proceed in the webviewDidLoad callback
+    [self loadJS];
 }
 
 -(BOOL)validateSecondPassword:(NSString*)secondPassword {
@@ -361,11 +341,7 @@
 }
 
 -(void)clearLocalStorage {
-    if (![self.webView isLoaded]) {
-        return;
-    }
-    
-    [self.webView executeJSSynchronous:@"localStorage.clear();"];
+    [self.webView executeJS:@"localStorage.clear();"];
 }
 
 -(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString {
@@ -695,13 +671,6 @@
 
     if ([delegate respondsToSelector:@selector(networkActivityStop)])
         [delegate networkActivityStop];
-}
-
--(void)clearDelegates {
-    self.webView.JSDelegate = nil;
-    self.webView.delegate = nil;
-    [self.webView stopLoading];
-    self.delegate = nil;
 }
 
 -(NSInteger)getWebsocketReadyState {

@@ -33,6 +33,4 @@
 
 @property(nonatomic, strong) NSString * tmpPassword;
 
-@property(nonatomic, strong) Wallet * wallet;
-
 @end

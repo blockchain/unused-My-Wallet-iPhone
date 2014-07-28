@@ -663,9 +663,9 @@ AppDelegate * app;
 -(IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
-        PairingCodeParser * parser = [[PairingCodeParser alloc] init];
+        self.pairingCodeParser = [[PairingCodeParser alloc] init];
         
-        [parser scanAndParse:^(NSDictionary*code) {
+        [_pairingCodeParser scanAndParse:^(NSDictionary*code) {
             DLog(@"scanAndParse success");
             
             [app forgetWallet];
@@ -684,8 +684,18 @@ AppDelegate * app;
             
             self.wallet.delegate = self;
 
+            //Hack to prevent PairingCodeParser being released too early
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.pairingCodeParser = nil;
+            });
+            
         } error:^(NSString*error) {
             [app standardNotify:error];
+            
+            //Hack to prevent PairingCodeParser being released too early
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.pairingCodeParser = nil;
+            });
         }];
     } else {
         [self showModal:manualView isClosable:TRUE onDismiss:^() {

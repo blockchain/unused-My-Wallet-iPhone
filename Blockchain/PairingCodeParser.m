@@ -11,31 +11,28 @@
 
 @implementation PairingCodeParser
 
--(void)dealloc {    
-    DLog(@"Dealloc PairingCodeParser");
-}
 
 - (void)errorParsingPairingCode:(NSString *)message {
     [app networkActivityStop];
 
+    [self.wallet clearDelegates];
+    self.wallet = nil;
+    
     if (self.error) {
         self.error(message);
     }
-    
-    [self.wallet clearDelegates];
-    self.wallet = nil;
 }
 
 -(void)didParsePairingCode:(NSDictionary *)dict {
     
     [app networkActivityStop];
 
+    [self.wallet clearDelegates];
+    self.wallet = nil;
+    
     if (self.success) {
         self.success(dict);
     }
-    
-    [self.wallet clearDelegates];
-    self.wallet = nil;
 }
 
 -(void)scanAndParse:(void (^)(NSDictionary*))__success error:(void (^)(NSString*))__error {

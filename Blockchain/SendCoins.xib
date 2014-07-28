@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="amountField" destination="52" id="54"/>
                 <outlet property="amountKeyoboardAccessoryView" destination="56" id="59"/>
-                <outlet property="btcCodeLabel" destination="51" id="gj1-f1-1IX"/>
+                <outlet property="btcCodeButton" destination="6zi-8R-Tmt" id="BHi-yx-iMF"/>
                 <outlet property="currencyConversionLabel" destination="57" id="58"/>
                 <outlet property="fromField" destination="43" id="44"/>
                 <outlet property="labelAddressLabel" destination="64" id="70"/>
@@ -168,13 +168,6 @@
                                 <outlet property="delegate" destination="-1" id="53"/>
                             </connections>
                         </textField>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="BTC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="51">
-                            <rect key="frame" x="244" y="16" width="63" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
-                            <color key="textColor" red="0.29301120923913049" green="0.29301120923913049" blue="0.29301120923913049" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Amount:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="7ho-GV-ikp">
                             <rect key="frame" x="7" y="16" width="51" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -182,6 +175,18 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="clip" id="6zi-8R-Tmt">
+                            <rect key="frame" x="259" y="11" width="50" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <state key="normal" title="BTC">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btcCodeClicked:" destination="-1" eventType="touchUpInside" id="waE-5p-NOp"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.94605553669999998" green="0.94605553669999998" blue="0.94605553669999998" alpha="1" colorSpace="calibratedRGB"/>
                 </view>

@@ -41,7 +41,9 @@
     IBOutlet UITextField * labelAddressTextField;
     IBOutlet UIView * sendProgressModal;
     IBOutlet UILabel * sendProgressModalText;
-    IBOutlet UILabel * btcCodeLabel;
+    IBOutlet UIButton * btcCodeButton;
+    
+    BOOL displayingLocalSymbol;
 }
 
 @property(nonatomic, strong) NSArray * fromAddresses;
@@ -50,6 +52,7 @@
 
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
+-(IBAction)btcCodeClicked:(id)sender;
 
 -(void)didSelectAddress:(NSString *)address;
 

@@ -19,18 +19,22 @@
 
 @implementation SendViewController
 
--(void)dealloc {
-    self.toAddress;
-    
-    
-}
-
 -(void)reload {
     self.fromAddresses = [app.wallet activeAddresses];
     
     [fromField reload];
     
     [fromField setIndex:0];
+    
+    if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
+        [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
+        displayingLocalSymbol = TRUE;
+    } else if (app.latestResponse.symbol_btc) {
+        [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
+        displayingLocalSymbol = FALSE;
+    }
+    
+    [self doCurrencyConversion];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
@@ -44,7 +48,7 @@
 }
 
 -(void)reallyDoPayment {
-    uint64_t satoshiValue = [app.wallet parseBitcoinValue:amountField.text];
+    uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
     NSString * to = self.toAddress;
     NSString * from = @"";
@@ -97,7 +101,10 @@
     };
     
     [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
-    
+}
+
+-(IBAction)btcCodeClicked:(id)sender {
+    [app toggleSymbol];
 }
 
 -(IBAction)sendPaymentClicked:(id)sender {
@@ -116,7 +123,7 @@
         return;
     }
             
-    uint64_t value = [app.wallet parseBitcoinValue:amountField.text];
+    uint64_t value = [self getInputAmountInSatoshi];
     if (value <= 0) {
         [app standardNotify:@"Invalid Send Value"];
         return;
@@ -157,11 +164,21 @@
     }
 }
 
+-(uint64_t)getInputAmountInSatoshi {
+    if (displayingLocalSymbol) {
+        return app.latestResponse.symbol_local.conversion * [amountField.text doubleValue];
+    } else {
+        return [app.wallet parseBitcoinValue:amountField.text];
+    }
+}
+
 - (void)confirmPayment {
     
-    NSString *amountString = [app formatMoney:[app.wallet parseBitcoinValue:amountField.text]];
+    NSString * amountBTCString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:FALSE];
     
-    NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ to %@", amountString, self.toAddress];
+    NSString * amountLocalString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:TRUE];
+
+    NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ (%@) to %@", amountBTCString, amountLocalString, self.toAddress];
     
     if (![toField.text isEqualToString:self.toAddress]) {
         [messageString appendFormat:@" (%@)", toField.text];
@@ -185,10 +202,16 @@
 
 -(void)doCurrencyConversion {
     uint64_t amount = SATOSHI;
-    if ([amountField.text length] > 0)
-        amount = [app.wallet parseBitcoinValue:amountField.text];
     
-    currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+    if ([amountField.text length] > 0) {
+        amount = [self getInputAmountInSatoshi];
+    }
+    
+    if (displayingLocalSymbol) {
+        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
+    } else {
+        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+    }
 
 }
 -(void)setToAddressFromUrlHandler:(NSString*)string {
@@ -223,10 +246,12 @@
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
         
+        
         NSDictionary * dict = [app parseURI:sym.data];
         toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
         self.toAddress = [dict objectForKey:@"address"];
         
+#pragma mark TODO
         amountField.text = [dict objectForKey:@"amount"];
         
         [view stop];
@@ -277,9 +302,6 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-    if (app.latestResponse.symbol_btc)
-        btcCodeLabel.text = app.latestResponse.symbol_btc.symbol;
-    
     sendProgressModalText.text = nil;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {

@@ -171,6 +171,7 @@ AppDelegate * app;
     
     [_transactionsViewController setText];
     [[_transactionsViewController tableView] reloadData];
+    [_sendViewController reload];
 }
 
 -(void)setDisableBusyView:(BOOL)__disableBusyView {

@@ -729,9 +729,6 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@""];
-
     
     [[NSUserDefaults standardUserDefaults] synchronize];   
     

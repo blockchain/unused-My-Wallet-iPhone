@@ -97,9 +97,14 @@
         [noTransactionsView removeFromSuperview];
     }
     
+    NSString * finalBalanceString = [app formatMoney:data.final_balance];
+    
+    //If the balance label is likely to overfla the transaction count hide it
+    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
+    
     [transactionCountLabel setText:[NSString stringWithFormat:@"%d Transactions", data.n_transactions]];
     
-    [finalBalanceLabel setText:[app formatMoney:data.final_balance]];
+    [finalBalanceLabel setText:finalBalanceString];
 }
 
 -(void)setLatestBlock:(LatestBlock *)_latestBlock {

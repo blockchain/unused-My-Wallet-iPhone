@@ -202,9 +202,11 @@
 
 -(void)doCurrencyConversion {
     uint64_t amount = SATOSHI;
-    
+
     if ([amountField.text length] > 0) {
         amount = [self getInputAmountInSatoshi];
+    } else if (displayingLocalSymbol) {
+        amount = app.latestResponse.symbol_local.conversion;
     }
     
     if (displayingLocalSymbol) {

@@ -169,10 +169,12 @@ AppDelegate * app;
 -(void)toggleSymbol {
     symbolLocal = !symbolLocal;
     
-    [_transactionsViewController setText];
-    [[_transactionsViewController tableView] reloadData];
+    [_transactionsViewController reload];
     [_sendViewController reload];
+    [_receiveViewController reload];
 }
+
+
 
 -(void)setDisableBusyView:(BOOL)__disableBusyView {
     _disableBusyView = __disableBusyView;
@@ -1047,20 +1049,12 @@ AppDelegate * app;
         
         NSString * string = [self.btcFormatter stringFromNumber:number];
         
-        if ([string length] >= 8) {
-            string = [string substringToIndex:8];
-        }
-        
         return [string stringByAppendingFormat:@" %@", latestResponse.symbol_btc.symbol];
     }
     
     NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:SATOSHI]];
     
     NSString * string = [self.btcFormatter stringFromNumber:number];
-    
-    if ([string length] >= 8) {
-        string = [string substringToIndex:8];
-    }
     
     return [string stringByAppendingString:@" BTC"];
 }

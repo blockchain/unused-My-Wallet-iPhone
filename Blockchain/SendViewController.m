@@ -246,13 +246,26 @@
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
         
+        //Make sure we are displaying the BTC symbol
+        //As amounts from uri's are in BTC
+        if (app->symbolLocal) {
+            [app toggleSymbol];
+        }
         
         NSDictionary * dict = [app parseURI:sym.data];
+        
         toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
         self.toAddress = [dict objectForKey:@"address"];
         
-#pragma mark TODO
-        amountField.text = [dict objectForKey:@"amount"];
+        NSString * amountString = [dict objectForKey:@"amount"];
+        
+        if (app.latestResponse.symbol_btc) {
+            double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
+            
+            amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
+        }
+        
+        amountField.text = amountString;
         
         [view stop];
         

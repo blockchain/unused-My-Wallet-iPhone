@@ -17,7 +17,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
-    //NSLog(@"%@", [request URL]);
+    //DLog(@"%@", [request URL]);
     
     return YES;
 }

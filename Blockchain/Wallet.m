@@ -172,7 +172,7 @@
 
 
 -(void)ask_for_private_key:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
-    NSLog(@"ask_for_private_key:");
+    DLog(@"ask_for_private_key:");
     
     if ([delegate respondsToSelector:@selector(askForPrivateKey:success:error:)])
         [delegate askForPrivateKey:address success:_success error:_error];
@@ -180,7 +180,7 @@
 
 - (void)didParsePairingCode:(NSDictionary *)dict
 {
-    NSLog(@"didParsePairingCode:");
+    DLog(@"didParsePairingCode:");
 
     if ([delegate respondsToSelector:@selector(didParsePairingCode:)])
         [delegate didParsePairingCode:dict];
@@ -188,7 +188,7 @@
 
 - (void)errorParsingPairingCode:(NSString *)message
 {
-    NSLog(@"errorParsingPairingCode:");
+    DLog(@"errorParsingPairingCode:");
     
     if ([delegate respondsToSelector:@selector(errorParsingPairingCode:)])
         [delegate errorParsingPairingCode:message];
@@ -374,7 +374,7 @@
 // Calls from JS
 
 -(void)log:(NSString*)message {
-    NSLog(@"console.log: %@", [message description]);
+    DLog(@"console.log: %@", [message description]);
 }
 
 
@@ -452,7 +452,7 @@
 }
 
 -(void)on_tx {
-    NSLog(@"on_tx");
+    DLog(@"on_tx");
 
     [app playBeepSound];
     
@@ -460,7 +460,7 @@
 }
 
 -(void)did_multiaddr {
-    NSLog(@"did_multiaddr");
+    DLog(@"did_multiaddr");
     
     [self getFinalBalance];
     
@@ -471,12 +471,12 @@
 
 
 -(void)on_block {
-    NSLog(@"on_block");
+    DLog(@"on_block");
 }
 
 -(void)did_set_latest_block {
     
-    NSLog(@"did_set_latest_block");
+    DLog(@"did_set_latest_block");
     
     [self.webView executeJSWithCallback:^(NSString* latestBlockJSON) {
         
@@ -519,19 +519,19 @@
 }
 
 -(void)on_generate_key:(NSString*)address {
-    NSLog(@"on_generate_key");
+    DLog(@"on_generate_key");
     
     [delegate didGenerateNewAddress:address];
 }
 
 -(void)error_restoring_wallet {
-    NSLog(@"error_restoring_wallet");
+    DLog(@"error_restoring_wallet");
     if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
         [delegate walletFailedToDecrypt:self];
 }
 
 -(void)did_decrypt {
-    NSLog(@"did_decrypt");
+    DLog(@"did_decrypt");
     
     self.sharedKey = [self.webView executeJSSynchronous:@"MyWallet.getSharedKey()"];
     self.guid = [self.webView executeJSSynchronous:@"MyWallet.getGuid()"];
@@ -542,7 +542,7 @@
 
 
 -(void)on_create_new_account:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
-    NSLog(@"on_create_new_account:");
+    DLog(@"on_create_new_account:");
     
     if ([delegate respondsToSelector:@selector(didCreateNewAccount:sharedKey:password:)])
         [delegate didCreateNewAccount:_guid sharedKey:_sharedKey password:_password];
@@ -556,14 +556,14 @@
 }
 
 -(void)on_backup_wallet_error {
-    NSLog(@"on_backup_wallet_error");
+    DLog(@"on_backup_wallet_error");
  
     if ([delegate respondsToSelector:@selector(didFailBackupWallet:)])
         [delegate didFailBackupWallet:self];
 }
 
 -(void)on_backup_wallet_success {
-    NSLog(@"on_backup_wallet_success");
+    DLog(@"on_backup_wallet_success");
     
     if ([delegate respondsToSelector:@selector(didBackupWallet:)])
         [delegate didBackupWallet:self];
@@ -571,11 +571,11 @@
 }
 
 -(void)did_fail_set_guid {
-    NSLog(@"did_fail_set_guid");
+    DLog(@"did_fail_set_guid");
 }
 
 -(void)did_set_guid {
-    NSLog(@"did_set_guid");
+    DLog(@"did_set_guid");
     
     if (self.password) {
         [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
@@ -583,17 +583,17 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"Start load");
+    DLog(@"Start load");
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    NSLog(@"did fail");
+    DLog(@"did fail");
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"webViewDidFinishLoad:");
+    DLog(@"webViewDidFinishLoad:");
     
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
@@ -608,13 +608,13 @@
 -(void)getKey:(NSString*)key success:(void (^)(NSString*))success {
     id value = [[NSUserDefaults standardUserDefaults] valueForKey:key];
     
-    NSLog(@"getKey:%@", key);
+    DLog(@"getKey:%@", key);
     
     success(value);
 }
 
 -(void)saveKey:(NSString*)key value:(NSString*)value {
-    NSLog(@"saveKey:%@", key);
+    DLog(@"saveKey:%@", key);
 
     [[NSUserDefaults standardUserDefaults] setValue:value forKey:key];
     
@@ -680,13 +680,13 @@
 }
 
 -(void)ajaxStart {
-    NSLog(@"ajaxStart");
+    DLog(@"ajaxStart");
     
     if ([delegate respondsToSelector:@selector(networkActivityStart)])
         [delegate networkActivityStart];
 }
 -(void)ajaxStop {
-    NSLog(@"ajaxStop");
+    DLog(@"ajaxStop");
 
     if ([delegate respondsToSelector:@selector(networkActivityStop)])
         [delegate networkActivityStop];
@@ -708,13 +708,13 @@
 }
 
 -(void)ws_on_close {
-    NSLog(@"ws_on_close");
+    DLog(@"ws_on_close");
 
     [app setStatus];
 }
 
 -(void)ws_on_open {
-    NSLog(@"ws_on_open");
+    DLog(@"ws_on_open");
     
     [app setStatus];
 }
@@ -743,7 +743,7 @@
          _passwordBuff = (uint8_t*)[_password UTF8String];
         _passwordBuffLen = [_password length];
     } else {
-        NSLog(@"Scrypt password unsupported type");
+        DLog(@"Scrypt password unsupported type");
         return nil;
     }
     
@@ -765,7 +765,7 @@
         _saltBuff = (uint8_t*)[_password UTF8String];
         _saltBuffLen = [_password length];
     } else {
-        NSLog(@"Scrypt salt unsupported type");
+        DLog(@"Scrypt salt unsupported type");
         return nil;
     }
     
@@ -786,7 +786,7 @@
 -(void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N
                    r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error {
     
-    NSLog(@"crypto_scrypt:");
+    DLog(@"crypto_scrypt:");
     
     [app setLoadingText:@"Decrypting Private Key"];
     

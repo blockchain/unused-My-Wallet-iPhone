@@ -12,7 +12,7 @@
         for (int y=0; y<self->dim; y++) {
             self->data[y] = (bool*)malloc(sizeof(bool) * self->dim);
             if (self->data[y]==NULL) {
-                NSLog(@"null!");
+                DLog(@"null!");
             }
         }
         

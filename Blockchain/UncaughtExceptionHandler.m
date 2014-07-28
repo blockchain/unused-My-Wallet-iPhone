@@ -101,7 +101,7 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
                                                       [app.wallet.webView isLoaded] ? @"TRUE" : @"FALSE",
                                                       [app.wallet isInitialized] ? @"TRUE" : @"FALSE"
                                                       ];
-    NSLog(@"Logging exception: %@", message);
+    DLog(@"Logging exception: %@", message);
 
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     

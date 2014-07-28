@@ -72,7 +72,7 @@ AppDelegate * app;
 //    unsigned int x;
 //    unsigned int y;
 //    zbar_version(&x, &y);
-//    NSLog(@"zbar version: %d %d", x, y);
+//    DLog(@"zbar version: %d %d", x, y);
     
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
@@ -113,7 +113,7 @@ AppDelegate * app;
         NSString * sharedKey = [self sharedKey];
         NSString * password = [self password];
         
-//        NSLog(@"didFinishLaunchingWithOptions GUID %@", guid);
+//        DLog(@"didFinishLaunchingWithOptions GUID %@", guid);
         
         if (guid && sharedKey && password) {
             
@@ -140,7 +140,7 @@ AppDelegate * app;
     else if (newIndex == 3)
         [self infoClicked:nil];
     else
-        NSLog(@"Unknown tab index: %d", newIndex);
+        DLog(@"Unknown tab index: %d", newIndex);
 }
 
 - (void)swipeLeft
@@ -251,7 +251,7 @@ AppDelegate * app;
 }
 
 -(void)walletDidLoad:(Wallet *)_wallet {      
-    NSLog(@"walletDidLoad");
+    DLog(@"walletDidLoad");
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
     
@@ -562,7 +562,7 @@ AppDelegate * app;
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
     } @catch (NSException * e) {
-        NSLog(@"Animation Exception %@", e);
+        DLog(@"Animation Exception %@", e);
     }
 }
 
@@ -661,7 +661,7 @@ AppDelegate * app;
         PairingCodeParser * parser = [[PairingCodeParser alloc] init];
         
         [parser scanAndParse:^(NSDictionary*code) {
-            NSLog(@"scanAndParse success");
+            DLog(@"scanAndParse success");
             
             [app forgetWallet];
             
@@ -729,6 +729,9 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@""];
+
     
     [[NSUserDefaults standardUserDefaults] synchronize];   
     
@@ -856,7 +859,7 @@ AppDelegate * app;
             }
             // Forget Wallet Confirmed
             else if (buttonIndex == 1) {
-                NSLog(@"forgetting wallet");
+                DLog(@"forgetting wallet");
                 [app closeModal];
                 [self forgetWallet];
                 [app showWelcome];
@@ -1005,7 +1008,7 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:pin] forKey:@"pin"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    NSLog(@"Saved new pin");
+    DLog(@"Saved new pin");
     
 	// Update your info to new pin code
 	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
@@ -1013,7 +1016,7 @@ AppDelegate * app;
 
 - (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
 {
-	NSLog(@"Pin change cancelled!");
+	DLog(@"Pin change cancelled!");
 	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1037,7 +1040,7 @@ AppDelegate * app;
                 return [latestResponse.symbol_local.symbol stringByAppendingString:[self.localCurrencyFormatter stringFromNumber:number]];
             
         } @catch (NSException * e) {
-            NSLog(@"%@", e);
+            DLog(@"%@", e);
         }
     } else if (latestResponse.symbol_btc) {
         NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];

@@ -16,7 +16,7 @@
     id dict = [NSJSONSerialization JSONObjectWithData:[self dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingAllowFragments error: &error];
     
     if (error != NULL) {
-        NSLog(@"Error Parsing JSON %@", error);
+        DLog(@"Error Parsing JSON %@", error);
         return nil;
     }
     

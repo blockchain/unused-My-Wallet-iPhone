@@ -224,7 +224,7 @@
 
 - (void)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary success:(void (^)(id))success error:(void (^)(id))error
 {
-    //NSLog(@"didReceiveJSNotificationWithDictionary: %@", dictionary);
+    //DLog(@"didReceiveJSNotificationWithDictionary: %@", dictionary);
     
     NSString * function = (NSString*)[dictionary objectForKey:@"function"];
         
@@ -296,7 +296,7 @@
                 [invo invoke];
             }
         } else {
-            NSLog(@"!!! JSdelegate does not respond to selector %@", function);
+            DLog(@"!!! JSdelegate does not respond to selector %@", function);
         }
     }
     
@@ -311,7 +311,7 @@
  */
 - (BOOL)webView:(UIWebView *)p_WebView  shouldStartLoadWithRequest:(NSURLRequest *)request  navigationType:(UIWebViewNavigationType)navigationType {
 {
-   //NSLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
+   //DLog(@"JSBridgeView shouldStartLoadWithRequest:%@", [request mainDocumentURL]);
     
 	// Checks if it is a JS notification. It returns the ID ob the JSON object in the JS code. Returns nil if it is not.
 	NSArray * IDArray = [self getJSNotificationIds:[request URL]];
@@ -364,7 +364,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"JSBridgeWebView Did Load");
+    DLog(@"JSBridgeWebView Did Load");
 
     for (JSCommandObject * command in self.pending_commands) {
         NSString * result = [self stringByEvaluatingJavaScriptFromString:command.command];
@@ -382,7 +382,7 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"JSBridgeWebView Did fail %@", error);
+    DLog(@"JSBridgeWebView Did fail %@", error);
     
     if ([self.JSDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)])
         [self.JSDelegate webView:webView didFailLoadWithError:error];

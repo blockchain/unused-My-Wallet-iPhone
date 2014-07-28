@@ -11,11 +11,8 @@
 
 @implementation PairingCodeParser
 
--(void)dealloc {
-    
-    NSLog(@"Dealloc PairingCodeParser");
-    
-    
+-(void)dealloc {    
+    DLog(@"Dealloc PairingCodeParser");
 }
 
 - (void)errorParsingPairingCode:(NSString *)message {

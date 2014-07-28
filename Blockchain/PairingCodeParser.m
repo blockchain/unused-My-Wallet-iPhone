@@ -16,6 +16,7 @@
     [app networkActivityStop];
 
     [self.wallet clearDelegates];
+    
     self.wallet = nil;
     
     if (self.error) {
@@ -28,6 +29,7 @@
     [app networkActivityStop];
 
     [self.wallet clearDelegates];
+    
     self.wallet = nil;
     
     if (self.success) {

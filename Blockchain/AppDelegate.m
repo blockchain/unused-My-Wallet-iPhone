@@ -577,6 +577,8 @@ AppDelegate * app;
     
     [self.wallet cancelTxSigning];
     
+    [self.wallet clearDelegates];
+    
     self.wallet = nil;
     self.latestResponse = nil;
     
@@ -730,6 +732,8 @@ AppDelegate * app;
 
     [self.wallet cancelTxSigning];
 
+    [self.wallet clearDelegates];
+
     self.wallet = nil;
     self.latestResponse = nil;
     
@@ -749,6 +753,8 @@ AppDelegate * app;
     
     [self.wallet clearLocalStorage];
     
+    [self.wallet clearDelegates];
+
     self.wallet = nil;
     self.latestResponse = nil;
     [_transactionsViewController setData:nil];

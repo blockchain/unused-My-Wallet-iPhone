@@ -2,13 +2,20 @@ Source Code License: LGPL v3
 
 Artwork & images remain Copyright Ben Reeves - Qkos Services Ltd 2012
 
-before building: 
+To Build:
 
+# setup submodules
 git submodule init
 git submodule update
-cd Submodules/My-Wallet git checkout master
-cd ../../
-
-git clone https://github.com/x2on/OpenSSL-for-iPhone.git Library/ #should replace this w/ a submodule
-cd Library/OpenSSL-for-iPhone git checkout master
+cd Submodules/My-Wallet 
+git checkout master
+cd ../OpenSSL-for-iPhone  
+git checkout master
 ./build-libssl.sh
+
+# open the project in xcode
+cd ../../
+open Blockchain.xcodeproj
+
+# build the project
+cmd-r

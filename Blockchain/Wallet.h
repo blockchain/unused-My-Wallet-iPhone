@@ -121,6 +121,7 @@
 -(BOOL)validateSecondPassword:(NSString*)secondPassword;
 
 -(void)getHistory;
+-(void)getWalletAndHistory;
 
 -(uint64_t)getAddressBalance:(NSString*)address;
 -(uint64_t)parseBitcoinValue:(NSString*)input;

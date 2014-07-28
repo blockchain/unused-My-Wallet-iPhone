@@ -201,6 +201,10 @@ MyWalletPhone.isValidAddress = function(addrstring) {
     }
 }
 
+MyWalletPhone.get_wallet_and_history = function() {
+    $('#refresh').click();
+}
+
 MyWalletPhone.setPassword = function(password) {
     $('#restore-password').val(password);
 
@@ -465,6 +469,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
 <input type="submit" id="restore-wallet-continue">
 
 <button id="new-addr"></button>
+<button id="refresh"></button>
 
 </body>
 </html>

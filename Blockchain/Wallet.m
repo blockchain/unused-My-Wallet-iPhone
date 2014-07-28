@@ -68,6 +68,11 @@
         [self.webView executeJS:@"MyWallet.get_history()"];
 }
 
+-(void)getWalletAndHistory {
+    if ([self isInitialized])
+        [self.webView executeJS:@"MyWalletPhone.get_wallet_and_history()"];
+}
+
 -(void)cancelTxSigning {
     if (![self.webView isLoaded]) {
         return;

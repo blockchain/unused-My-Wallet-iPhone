@@ -310,7 +310,7 @@ AppDelegate * app;
         [self walletFailedToDecrypt:wallet];
     }
 
-    [self.wallet getHistory];    
+    [self.wallet getWalletAndHistory];
 }
 
 -(void)playBeepSound {
@@ -961,7 +961,7 @@ AppDelegate * app;
     }
     
     if (wallet.password) {
-        [self.wallet getHistory];
+        [self.wallet getWalletAndHistory];
     } else {
         [self walletFailedToDecrypt:wallet];
     }

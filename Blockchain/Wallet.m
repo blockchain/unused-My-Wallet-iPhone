@@ -701,7 +701,6 @@
     self.webView.JSDelegate = nil;
     self.webView.delegate = nil;
     [self.webView stopLoading];
-    self.webView = nil;
     self.delegate = nil;
 }
 

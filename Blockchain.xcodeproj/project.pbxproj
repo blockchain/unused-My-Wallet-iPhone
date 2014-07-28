@@ -1225,13 +1225,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/Library/OpenSSL-for-iPhone/include",
+					"$(SRCROOT)/Submodules/OpenSSL-for-iPhone/include",
 				);
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/ZBarSDK",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/OpenSSL-for-iPhone/lib",
+					"$(PROJECT_DIR)/Submodules/OpenSSL-for-iPhone/lib",
 				);
 				PRODUCT_NAME = Blockchain;
 				PROVISIONING_PROFILE = "";
@@ -1256,13 +1256,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/Library/OpenSSL-for-iPhone/include",
+					"$(SRCROOT)/Submodules/OpenSSL-for-iPhone/include",
 				);
 				INFOPLIST_FILE = "Blockchain/Blockchain-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/ZBarSDK",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/OpenSSL-for-iPhone/lib",
+					"$(PROJECT_DIR)/Submodules/OpenSSL-for-iPhone/lib",
 				);
 				PRODUCT_NAME = Blockchain;
 				PROVISIONING_PROFILE = "";

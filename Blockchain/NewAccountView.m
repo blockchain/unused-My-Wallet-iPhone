@@ -11,8 +11,6 @@
 
 @implementation NewAccountView
 
-@synthesize wallet;
-
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField {
     [aTextField resignFirstResponder];
@@ -30,7 +28,7 @@
 
 # pragma mark - Wallet Delegate method
 -(void)walletJSReady {
-    [self.wallet newAccount:self.tmpPassword email:emailTextField.text];
+    [app.wallet newAccount:self.tmpPassword email:emailTextField.text];
 }
 
 // Get here from New Account and also when manually pairing
@@ -58,14 +56,10 @@
         return;
     }
     
-    //Prevent Retain cycle
-    [self.wallet clearDelegates];
-    
-    // Load the wallet (webview + js)
-    self.wallet = [[Wallet alloc] init];
+    [app.wallet loadJS];
     
     // Get callback when wallet is done loading
-    wallet.delegate = self;
+    app.wallet.delegate = self;
 }
 
 -(void)networkActivityStart {
@@ -83,12 +77,7 @@
     
     [app showPinModal];
     
-    //Prevent Retain cycle
-    [self.wallet clearDelegates];
-    
-    self.wallet = nil;
-    
-    app.wallet = [[Wallet alloc] initWithGuid:guid sharedKey:sharedKey password:password];
+    [app.wallet loadGuid:guid sharedKey:sharedKey password:password];
     
     app.wallet.delegate = app;
     

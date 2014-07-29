@@ -12,7 +12,6 @@
 
 @interface PairingCodeParser : NSObject<WalletDelegate, ZBarReaderViewDelegate>
 
-@property(nonatomic, strong) Wallet * wallet;
 @property(nonatomic, copy) void (^success)(NSDictionary*);
 @property(nonatomic, copy) void (^error)(NSString*);
 @property(nonatomic, strong) ZBarReaderView * readerView;

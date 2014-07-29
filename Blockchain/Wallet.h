@@ -79,10 +79,13 @@
 
 @property(nonatomic, strong) NSMutableDictionary * transactionProgressListeners;
 
+-(void)loadJS;
+
 #pragma mark Init Methods
--(id)initWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
--(id)initWithGuid:(NSString *)_guid password:(NSString*)_sharedKey; //Only Works if 2FA is disabled (manual pairing);
 -(id)init;
+
+-(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
+-(void)loadGuid:(NSString *)_guid password:(NSString*)_password;
 
 -(NSDictionary*)addressBook;
 
@@ -134,9 +137,6 @@
 -(void)parsePairingCode:(NSString*)code;
 
 -(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString;
-
-//Clear the retained delegates to prepare for dealloc
--(void)clearDelegates;
 
 -(NSInteger)getWebsocketReadyState;
 

@@ -145,6 +145,16 @@
     self.usedIDs = [NSMutableSet set];
 }
 
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
+    self.isLoaded = false;
+    
+    self.pending_commands = [NSMutableArray array];
+    self.usedIDs = [NSMutableSet set];
+    
+    [super loadHTMLString:string baseURL:baseURL];
+}
+
+
 /*
 	Init the JSBridgeWebView object. It sets the regular UIWebview delegate to self,
 	since the object will be listening to JS notifications.
@@ -304,7 +314,6 @@
         success(nil);
     }
 }
-
 /*
 	Listen to any try of page loading. This method checks, by the URL to be loaded, if
 	it is a JS notification.
@@ -333,6 +342,9 @@
                     if(self.JSDelegate)
                     {
                         [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
+                           if (!self.isLoaded)
+                               return;
+                            
                             //On success
                             if (success != nil) {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", true);", jsNotId, [success escapeStringForJS]];

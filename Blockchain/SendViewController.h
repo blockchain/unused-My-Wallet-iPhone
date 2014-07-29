@@ -31,7 +31,7 @@
     IBOutlet UITextField * toField;
     IBOutlet UITextField * amountField;
    
-    IBOutlet UIView * amountKeyoboardAccessoryView;
+    IBOutlet UIView * amountKeyboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
 
     
@@ -53,6 +53,7 @@
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;
+-(IBAction)closeKeyboardClicked:(id)sender;
 
 -(void)didSelectAddress:(NSString *)address;
 

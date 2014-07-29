@@ -19,6 +19,48 @@
 
 @implementation SendViewController
 
+#pragma mark - Lifecycle
+
+-(void)viewDidAppear:(BOOL)animated {
+    sendProgressModalText.text = nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
+        
+        sendProgressModalText.text = [notification object];
+    }];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
+        return FALSE;
+    }];
+    
+    fromField.valueFont = [UIFont systemFontOfSize:14];
+    fromField.valueColor = [UIColor darkGrayColor];
+
+    amountKeyboardAccessoryView.layer.borderWidth = 1;
+    amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithWhite:.8f alpha:1.0f] CGColor];
+    
+    amountField.inputAccessoryView = amountKeyboardAccessoryView;
+    
+    [toField setReturnKeyType:UIReturnKeyDone];
+    
+    if (APP_IS_IPHONE5) {
+        self.view.frame = CGRectMake(0, 0, 320, 450);
+    }
+    else {
+        self.view.frame = CGRectMake(0, 0, 320, 361);
+    }
+    
+    [self reload];
+}
+
 -(void)reload {
     self.fromAddresses = [app.wallet activeAddresses];
     
@@ -37,15 +79,7 @@
     [self doCurrencyConversion];
 }
 
--(IBAction)labelAddressClicked:(id)sender {
-    [app.wallet addToAddressBook:toField.text label:labelAddressTextField.text];
-
-    [app closeModal];
-    labelAddressTextField.text = @"";
-    
-    // Complete payment
-    [self confirmPayment];
-}
+#pragma mark - Payment
 
 -(void)reallyDoPayment {
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
@@ -103,67 +137,6 @@
     [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
 }
 
--(IBAction)btcCodeClicked:(id)sender {
-    [app toggleSymbol];
-}
-
--(IBAction)sendPaymentClicked:(id)sender {
-    
-    // If user pasted an address into the toField, assign it to toAddress
-    if ([self.toAddress length] == 0)
-        self.toAddress = toField.text;
-    
-    if ([self.toAddress length] == 0) {
-        [app standardNotify:@"You must enter a destination address"];
-        return;
-    }
-    
-    if (![app.wallet isValidAddress:self.toAddress]) {
-        [app standardNotify:@"Invalid to bitcoin address"];
-        return;
-    }
-            
-    uint64_t value = [self getInputAmountInSatoshi];
-    if (value <= 0) {
-        [app standardNotify:@"Invalid Send Value"];
-        return;
-    }
-    
-    int countPriv = [[app.wallet activeAddresses] count];
-    
-    if (countPriv == 0) {
-        [app standardNotify:@"You have no active bitcoin addresses available for sending"];
-        return;
-    }
-    
-    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?" 
-                                                        message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", self.toAddress]
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"No" 
-                                              otherButtonTitles:@"Yes", nil];
-        
-        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // do nothing & proceed
-            if (buttonIndex == 0) {
-                [self confirmPayment];
-            }
-            // let user save address in addressbook
-            else if (buttonIndex == 1) {
-                labelAddressLabel.text = toField.text;
-                
-                [app showModal:labelAddressView isClosable:TRUE];
-                
-                [labelAddressTextField becomeFirstResponder];
-            }
-        };
-        
-        [alert show];
-    } else {
-        [self confirmPayment];
-    }
-}
-
 -(uint64_t)getInputAmountInSatoshi {
     if (displayingLocalSymbol) {
         return app.latestResponse.symbol_local.conversion * [amountField.text doubleValue];
@@ -174,8 +147,7 @@
 
 - (void)confirmPayment {
     
-    NSString * amountBTCString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:FALSE];
-    
+    NSString * amountBTCString   = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:FALSE];
     NSString * amountLocalString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:TRUE];
 
     NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ (%@) to %@", amountBTCString, amountLocalString, self.toAddress];
@@ -200,6 +172,8 @@
     [alert show];
 }
 
+#pragma mark - UI Helpers
+
 -(void)doCurrencyConversion {
     uint64_t amount = SATOSHI;
 
@@ -208,14 +182,13 @@
     } else if (displayingLocalSymbol) {
         amount = app.latestResponse.symbol_local.conversion;
     }
-    
     if (displayingLocalSymbol) {
         currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
     } else {
         currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
     }
-
 }
+
 -(void)setToAddressFromUrlHandler:(NSString*)string {
     self.toAddress = string;
     toField.text = [self labelForAddress:self.toAddress];
@@ -279,6 +252,8 @@
     self.readerView = nil;
 }
 
+#pragma mark - Textfield Delegates
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
     if (textField == amountField) {
@@ -302,58 +277,12 @@
     return YES;
 }
 
--(void)initQRCodeView {
-    self.readerView = [[ZBarReaderView alloc] init];
-    
-    [self.readerView start];
-    
-    [self.readerView setReaderDelegate:self];
-    
-    [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
-        [self.readerView stop];
-        
-        self.readerView = nil;
-    } onResume:nil];
-}
 
--(void)viewDidAppear:(BOOL)animated {
-    sendProgressModalText.text = nil;
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
-        
-        sendProgressModalText.text = [notification object];
-    }];
-}
 
--(void)viewDidDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
--(void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
-        return FALSE;
-    }];
-    
-    fromField.valueFont = [UIFont systemFontOfSize:14];
-    fromField.valueColor = [UIColor darkGrayColor];
-    
-    amountField.inputAccessoryView = amountKeyoboardAccessoryView;
-#warning do this
-//    [amountField setKeyboardType:UIKeyboardTypeDecimalPad];
-    [amountField setReturnKeyType:UIReturnKeyDone];
-
-    [toField setReturnKeyType:UIReturnKeyDone];
-
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
-    }
-    
-    [self reload];
+# pragma mark- Addres book delegate
+-(void)didSelectAddress:(NSString *)address {
+    toField.text = [self labelForAddress:address];
+    self.toAddress = address;
 }
 
 -(NSUInteger)countForValueField:(MultiValueField*)valueField {
@@ -361,12 +290,6 @@
         return [self.fromAddresses count]+1;
     }
     return 0;
-}
-
-// Address Book Delegate Method
--(void)didSelectAddress:(NSString *)address {
-    toField.text = [self labelForAddress:address];
-    self.toAddress = address;
 }
 
 -(NSString*)titleForValueField:(MultiValueField*)valueField atIndex:(NSUInteger)index {
@@ -403,7 +326,95 @@
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender {
-    [self initQRCodeView];
+    self.readerView = [[ZBarReaderView alloc] init];
+    
+    [self.readerView start];
+    
+    [self.readerView setReaderDelegate:self];
+    
+    [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
+        [self.readerView stop];
+        
+        self.readerView = nil;
+    } onResume:nil];
 }
+
+-(IBAction)closeKeyboardClicked:(id)sender
+{
+    [amountField resignFirstResponder];
+}
+
+-(IBAction)labelAddressClicked:(id)sender {
+    [app.wallet addToAddressBook:toField.text label:labelAddressTextField.text];
+    
+    [app closeModal];
+    labelAddressTextField.text = @"";
+    
+    // Complete payment
+    [self confirmPayment];
+}
+
+
+-(IBAction)btcCodeClicked:(id)sender {
+    [app toggleSymbol];
+}
+
+-(IBAction)sendPaymentClicked:(id)sender {
+    
+    // If user pasted an address into the toField, assign it to toAddress
+    if ([self.toAddress length] == 0)
+        self.toAddress = toField.text;
+    
+    if ([self.toAddress length] == 0) {
+        [app standardNotify:@"You must enter a destination address"];
+        return;
+    }
+    
+    if (![app.wallet isValidAddress:self.toAddress]) {
+        [app standardNotify:@"Invalid to bitcoin address"];
+        return;
+    }
+    
+    uint64_t value = [self getInputAmountInSatoshi];
+    if (value <= 0) {
+        [app standardNotify:@"Invalid Send Value"];
+        return;
+    }
+    
+    int countPriv = [[app.wallet activeAddresses] count];
+    
+    if (countPriv == 0) {
+        [app standardNotify:@"You have no active bitcoin addresses available for sending"];
+        return;
+    }
+    
+    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add to Address book?"
+                                                        message:[NSString stringWithFormat:@"Would you like to add the bitcoin address %@ to your address book?", self.toAddress]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"No"
+                                              otherButtonTitles:@"Yes", nil];
+        
+        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+            // do nothing & proceed
+            if (buttonIndex == 0) {
+                [self confirmPayment];
+            }
+            // let user save address in addressbook
+            else if (buttonIndex == 1) {
+                labelAddressLabel.text = toField.text;
+                
+                [app showModal:labelAddressView isClosable:TRUE];
+                
+                [labelAddressTextField becomeFirstResponder];
+            }
+        };
+        
+        [alert show];
+    } else {
+        [self confirmPayment];
+    }
+}
+
 
 @end

@@ -350,8 +350,7 @@ AppDelegate * app;
 // Only gets called when displaying a transaction hash
 -(void)pushWebViewController:(NSString*)url {
     self.webViewController = [[WebViewController alloc] init];
-    [_webViewController viewDidLoad]; // ??
-
+    
     [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
 
     [_webViewController loadURL:url];
@@ -757,8 +756,6 @@ AppDelegate * app;
 -(void)showAccountSettings {
     if (!_accountViewController) {
         _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
-        
-        [_accountViewController viewDidLoad];
     }
     
     [_tabViewController setActiveViewController:_accountViewController];
@@ -768,8 +765,6 @@ AppDelegate * app;
     
     if (!_merchantViewController) {
         _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
-        
-        [_merchantViewController viewDidLoad];
     }
     
     [_tabViewController setActiveViewController:_merchantViewController  animated:TRUE index:3];
@@ -779,8 +774,6 @@ AppDelegate * app;
     
     if (!_sendViewController) {
         _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
-        
-        [_sendViewController viewDidLoad];
     }
     
     [_tabViewController setActiveViewController:_sendViewController  animated:TRUE index:2];
@@ -948,8 +941,6 @@ AppDelegate * app;
 -(IBAction)receiveCoinClicked:(UIButton *)sender {
     if (!_receiveViewController) {
         _receiveViewController = [[ReceiveCoinsViewController alloc] initWithNibName:@"ReceiveCoins" bundle:[NSBundle mainBundle]];
-        
-        [_receiveViewController viewDidLoad];
     }
         
     [_tabViewController setActiveViewController:_receiveViewController animated:TRUE index:1];

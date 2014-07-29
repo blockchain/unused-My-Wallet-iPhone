@@ -135,14 +135,8 @@ CGPoint arrowPositions[4] = {
 
 	activeViewController = nviewcontroller;
 
-    [oldViewController viewWillDisappear:animated];
-    [activeViewController viewWillAppear:animated];
-    
     [self insertActiveView];
    
-    [oldViewController viewDidDisappear:animated];
-    [activeViewController viewDidAppear:animated];
-    
     self.oldViewController = nil;
     
     if (animated) {

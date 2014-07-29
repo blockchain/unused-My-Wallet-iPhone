@@ -19,6 +19,11 @@
         <script type="text/javascript" src="shared.js"></script>
 
         <script type="text/javascript">
+            
+            google.maps.event.addDomListener(window, 'load', function() {                                             
+              device.execute('didLoadGoogleMaps');
+            });
+             
             function isEquivalent(a, b) {
                 // Create arrays of property names
                 var aProps = Object.getOwnPropertyNames(a);
@@ -273,6 +278,6 @@
     </head>
     
     <body>
-        <div id="map_canvas" style="width: 100%; height:100%;">map div</div>
+        <div id="map_canvas" style="width: 100%; height:100%;">Map Loading. Please check your internet connection...</div>
     </body>
 </html>

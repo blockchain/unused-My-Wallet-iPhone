@@ -29,7 +29,8 @@
 }
 
 -(void)viewDidLoad {
-
+    [super viewDidLoad];
+    
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);
     }

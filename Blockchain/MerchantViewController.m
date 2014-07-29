@@ -94,7 +94,7 @@
     if (lastLoadedMap > now-10.0f) {
         return;
     }
-    
+        
     lastLoadedMap = now;
     
     NSError * error = nil;
@@ -223,8 +223,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    NSLog(@"viewWillAppear %@", webView);
-
     [super viewWillAppear:animated];
     
     if (!didLoadGoogleMaps) {
@@ -244,8 +242,6 @@
     [super viewDidLoad];
         
     didLoadGoogleMaps = FALSE;
-    
-    NSLog(@"View Did Load %@", webView);
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

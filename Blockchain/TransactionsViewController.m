@@ -70,17 +70,19 @@
         
         if ([outputs count] == 0)
             outputs = transaction.outputs;
-        else if ([outputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
+        
+        if ([outputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
             baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
         else
             baseHeight += [outputs count] * 22;
-    } else {
+    } else if (transaction.result > 0){
         
         NSArray * inputs = [transaction inputsNotFromAddresses:data.addresses];
         
         if ([inputs count] == 0)
             inputs = transaction.inputs;
-        else if ([inputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
+        
+        if ([inputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
             baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
         else
             baseHeight += [inputs count] * 22;

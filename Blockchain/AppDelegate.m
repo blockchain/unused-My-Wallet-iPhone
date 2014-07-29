@@ -256,6 +256,8 @@ AppDelegate * app;
 
 -(void)walletDidLoad:(Wallet *)_wallet {      
     DLog(@"walletDidLoad");
+    
+    [self transitionToIndex:0];
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
     
@@ -879,7 +881,15 @@ AppDelegate * app;
 }
 
 -(IBAction)welcomeButton1Clicked:(id)sender {
-    [app showModal:newAccountView isClosable:TRUE];
+    //Wallet is already paired
+    if ([self guid] || [self sharedKey])  {
+        [app closeModal];
+        
+        [app showAccountSettings];
+    } else {
+    //No Wallet show New Wallet creation
+        [app showModal:newAccountView isClosable:TRUE];
+    }
 }
 
 -(IBAction)welcomeButton2Clicked:(id)sender {

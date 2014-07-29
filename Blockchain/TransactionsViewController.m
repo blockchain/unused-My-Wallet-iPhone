@@ -123,6 +123,8 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    [finalBalanceLabel setMinimumScaleFactor:.5f];
+    [finalBalanceLabel setAdjustsFontSizeToFitWidth:YES];
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

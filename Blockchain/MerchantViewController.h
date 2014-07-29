@@ -11,5 +11,4 @@
 @interface MerchantViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView * webView;
 }
--(void)loadURL:(NSString*)url;
 @end

@@ -77,29 +77,17 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
--(void)loadURL:(NSString*)url {
-    
-    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
-    [self addCookiesToRequest:request];
-    
-    [webView loadRequest:request];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    NSError * error = nil;
+    NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
-    webView.delegate = self;
     
-	[self.view addSubview:webView];
+    NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
     
-    // Hide the imageViews?
-    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) {
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
-    }
+    [webView loadHTMLString:merchantHTML baseURL:baseURL];
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

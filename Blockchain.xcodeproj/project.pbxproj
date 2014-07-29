@@ -14,6 +14,7 @@
 		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
 		84AEEC5D1987A830000E8DC8 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */; };
 		84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC611987B36B000E8DC8 /* MainWindow.xib */; };
+		84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC631987B5E9000E8DC8 /* merchant.html */; };
 		84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */; };
 		84B601CA197AD03800DA1829 /* UIModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C9197AD03800DA1829 /* UIModalView.m */; };
 		84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */; };
@@ -188,6 +189,7 @@
 		84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
 		84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MerchantMap.xib; sourceTree = "<group>"; };
 		84AEEC611987B36B000E8DC8 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		84AEEC631987B5E9000E8DC8 /* merchant.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = merchant.html; sourceTree = "<group>"; };
 		84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Blocks.h"; sourceTree = "<group>"; };
 		84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Blocks.m"; sourceTree = "<group>"; };
 		84B601C8197AD03800DA1829 /* UIModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModalView.h; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				C9C17A8B197FCE1900BF8A4E /* My-Wallet */,
 				844BC7AF1949BD710024160B /* bridge.js */,
 				9F0CBAAD15135DF200CD945D /* wallet.html */,
+				84AEEC631987B5E9000E8DC8 /* merchant.html */,
 			);
 			name = JavaScript;
 			path = js;
@@ -984,6 +987,7 @@
 				C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */,
 				C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
+				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
 				84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,

@@ -8,7 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SendViewController">
             <connections>
                 <outlet property="amountField" destination="52" id="54"/>
-                <outlet property="amountKeyoboardAccessoryView" destination="56" id="59"/>
+                <outlet property="amountKeyboardAccessoryView" destination="56" id="kgb-Ig-Yso"/>
                 <outlet property="btcCodeButton" destination="6zi-8R-Tmt" id="BHi-yx-iMF"/>
                 <outlet property="currencyConversionLabel" destination="57" id="58"/>
                 <outlet property="fromField" destination="43" id="44"/>
@@ -163,7 +163,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" keyboardAppearance="alert"/>
+                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="53"/>
                             </connections>
@@ -198,14 +198,25 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="5 BTC = $10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="57">
-                    <rect key="frame" x="7" y="4" width="303" height="21"/>
+                    <rect key="frame" x="91" y="4" width="221" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8LN-Tc-WVh">
+                    <rect key="frame" x="0.0" y="-11" width="69" height="51"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Close">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="closeKeyboardClicked:" destination="-1" eventType="touchUpInside" id="5P8-IL-lZJ"/>
+                    </connections>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
         </view>
         <view contentMode="scaleToFill" id="60" userLabel="Label Address View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="376"/>

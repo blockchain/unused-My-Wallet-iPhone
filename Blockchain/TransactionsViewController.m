@@ -100,7 +100,7 @@
     NSString * finalBalanceString = [app formatMoney:data.final_balance];
     
     //If the balance label is likely to overfla the transaction count hide it
-    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
+//    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
     
     [transactionCountLabel setText:[NSString stringWithFormat:@"%d Transactions", data.n_transactions]];
     
@@ -128,6 +128,8 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    [finalBalanceLabel setMinimumScaleFactor:.5f];
+    [finalBalanceLabel setAdjustsFontSizeToFitWidth:YES];
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

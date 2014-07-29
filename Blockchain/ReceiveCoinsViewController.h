@@ -38,10 +38,16 @@
     IBOutlet UIView * optionsModalView;
     IBOutlet UILabel * optionsTitleLabel;
     IBOutlet UILabel * optionsAddressLabel;
-    IBOutlet UITextField * requestAmountTextField;
     
+    //amount
+    IBOutlet UITextField * requestAmountTextField;
+    IBOutlet UIButton * btcCodeButton;
+    
+    //accessory
     IBOutlet UIView * amountKeyoboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
+    
+    BOOL displayingLocalSymbol;
 }
 
 @property(nonatomic, strong) NSArray * activeKeys;
@@ -57,5 +63,7 @@
 -(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
 -(IBAction)requestPaymentClicked:(id)sender;
+-(IBAction)closeKeyboardClicked:(id)sender;
+-(IBAction)btcCodeClicked:(id)sender;
 
 @end

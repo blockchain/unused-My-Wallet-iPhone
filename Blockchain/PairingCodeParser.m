@@ -15,23 +15,15 @@
 - (void)errorParsingPairingCode:(NSString *)message {
     [app networkActivityStop];
 
-    [self.wallet clearDelegates];
-    
-    self.wallet = nil;
-    
     if (self.error) {
         self.error(message);
     }
 }
 
 -(void)didParsePairingCode:(NSDictionary *)dict {
-    
+        
     [app networkActivityStop];
 
-    [self.wallet clearDelegates];
-    
-    self.wallet = nil;
-    
     if (self.success) {
         self.success(dict);
     }
@@ -58,15 +50,12 @@
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {
+
+        [app.wallet loadJS];
         
-        //Prevent Retain cycle
-        [self.wallet clearDelegates];
+        app.wallet.delegate = self;
         
-        self.wallet = [[Wallet alloc] init];
-        
-        self.wallet.delegate = self;
-        
-        [self.wallet parsePairingCode:sym.data];
+        [app.wallet parsePairingCode:sym.data];
         
         app.loadingText = @"Parsing Pairing Code";
         

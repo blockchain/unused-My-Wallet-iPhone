@@ -18,15 +18,14 @@
 @synthesize activeKeys;
 @synthesize archivedKeys;
 
+#pragma mark - Lifecycle
 
-
--(IBAction)scanKeyClicked:(id)sender {
-    
-    PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
-    
-    [reader readPrivateKey:^(NSString* privateKeyString) {
-        [app.wallet addKey:privateKeyString];
-    } error:nil];
+-(void)viewWillAppear:(BOOL)animated {
+    if ([[app.wallet activeAddresses] count] == 0) {
+        [noaddressesView setHidden:FALSE];
+    } else {
+        [noaddressesView setHidden:TRUE];
+    }
 }
 
 -(void)viewDidLoad {
@@ -51,21 +50,18 @@
         [noaddressesView removeFromSuperview];
     }
     
+    if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
+        [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
+        displayingLocalSymbol = TRUE;
+    } else if (app.latestResponse.symbol_btc) {
+        [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
+        displayingLocalSymbol = FALSE;
+    }
+    
     [tableView reloadData];
 }
 
--(IBAction)generateNewAddressClicked:(id)sender {
-    [app.wallet generateNewKey];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    int n = 0;
-    
-    if ([archivedKeys count]) ++n;
-    if ([activeKeys count]) ++n;
-
-    return n;
-}
+#pragma mark - Helpers
 
 -(NSString *)getAddress:(NSIndexPath*)indexPath {
     
@@ -75,9 +71,78 @@
         addr = [activeKeys objectAtIndex:[indexPath row]];
     else if ([indexPath section] == 1)
         addr = [archivedKeys objectAtIndex:[indexPath row]];
-
+    
     
     return addr;
+}
+
+-(NSString*)uriURL {
+    
+    double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
+    return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]]];
+}
+
+-(NSString*)blockchainUriURL {
+    
+    NSString * addr = self.clickedAddress;
+    
+    double amount = [requestAmountTextField.text doubleValue];
+    
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", addr, amount];
+}
+
+-(uint64_t)getInputAmountInSatoshi {
+    if (displayingLocalSymbol) {
+        return app.latestResponse.symbol_local.conversion * [requestAmountTextField.text doubleValue];
+    } else {
+        return [app.wallet parseBitcoinValue:requestAmountTextField.text];
+    }
+}
+
+-(void)doCurrencyConversion {
+    uint64_t amount = SATOSHI;
+    
+    if ([requestAmountTextField.text length] > 0) {
+        amount = [self getInputAmountInSatoshi];
+    } else if (displayingLocalSymbol) {
+        amount = app.latestResponse.symbol_local.conversion;
+    }
+    
+    if (displayingLocalSymbol) {
+        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
+    } else {
+        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+    }
+}
+
+-(void)setQR {
+    DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
+    
+    UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
+    
+    qrCodeImageView.image = image;
+    
+    [self doCurrencyConversion];
+}
+
+#pragma mark - Actions
+
+-(IBAction)generateNewAddressClicked:(id)sender {
+    [app.wallet generateNewKey];
+}
+
+-(IBAction)btcCodeClicked:(id)sender {
+    [app toggleSymbol];
+    [self setQR];
+}
+
+-(IBAction)scanKeyClicked:(id)sender {
+    
+    PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
+    
+    [reader readPrivateKey:^(NSString* privateKeyString) {
+        [app.wallet addKey:privateKeyString];
+    } error:nil];
 }
 
 -(IBAction)labelSaveClicked:(id)sender {
@@ -105,67 +170,22 @@
     [UIPasteboard generalPasteboard].string = addr;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[app.tabViewController responderMayHaveChanged];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
-{
-    [aTextField resignFirstResponder];
-    return YES;
-}
-
--(NSString*)uriURL {
-    
-    NSString * addr = self.clickedAddress;
-
-    double amount = [requestAmountTextField.text doubleValue];
-    
-    return [NSString stringWithFormat:@"bitcoin://%@?amount=%.8f", addr, amount];
-}
-
--(NSString*)blockchainUriURL {
-    
-    NSString * addr = self.clickedAddress;
-
-    double amount = [requestAmountTextField.text doubleValue];
-    
-    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", addr, amount];
-}
-
--(void)setQR {
-    DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
-    
-    UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
-    
-    qrCodeImageView.image = image;
-
-    uint64_t amount = SATOSHI;
-    if ([requestAmountTextField.text length] > 0)
-        amount = [app.wallet parseBitcoinValue:requestAmountTextField.text];
-    
-    currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
-    
-}
-
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
-    
-    return TRUE;
-}
-
 -(IBAction)requestPaymentClicked:(id)sender {
     [self setQR];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
-    [requestAmountTextField setReturnKeyType:UIReturnKeyDone];
-#warning do this
-//    [requestAmountTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+    amountKeyoboardAccessoryView.layer.borderWidth = 1;
+    amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithWhite:.8f alpha:1.0f] CGColor];
     
     [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     [requestAmountTextField becomeFirstResponder];
+}
+
+-(IBAction)closeKeyboardClicked:(id)sender
+{
+    [requestAmountTextField resignFirstResponder];
 }
 
 -(IBAction)labelAddressClicked:(id)sender {
@@ -201,15 +221,35 @@
     [app closeModal];
 }
 
+# pragma mark - UITextField delegates
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	[app.tabViewController responderMayHaveChanged];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+{
+    [aTextField resignFirstResponder];
+    return YES;
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
+    
+    return TRUE;
+}
+
+#pragma UITableview Delegates
+
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
     NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
     NSInteger tag =  [app.wallet tagForAddress:addr];
     NSString *label =  [app.wallet labelForAddress:addr];
-
+    
     self.clickedAddress = addr;
-
+    
     if (tag == 2)
         [archiveUnarchiveButton setTitle:@"Unarchive" forState:UIControlStateNormal];
     else
@@ -221,7 +261,7 @@
         optionsTitleLabel.text = label;
     else
         optionsTitleLabel.text = @"Bitcoin Address";
-        
+    
     optionsAddressLabel.text = addr;
 }
 
@@ -250,12 +290,13 @@
         return [archivedKeys count];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    if ([[app.wallet activeAddresses] count] == 0) {
-        [noaddressesView setHidden:FALSE];
-    } else {
-        [noaddressesView setHidden:TRUE];
-    }
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    int n = 0;
+    
+    if ([archivedKeys count]) ++n;
+    if ([activeKeys count]) ++n;
+    
+    return n;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -738,7 +738,6 @@ AppDelegate * app;
 
 #pragma mark - Show Screens
 
-
 -(void)showAccountSettings {
     if (!_accountViewController) {
         _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];

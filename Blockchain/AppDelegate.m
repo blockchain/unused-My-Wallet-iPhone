@@ -715,6 +715,8 @@ AppDelegate * app;
     [_receiveViewController reload];
     [_sendViewController reload];
     [_accountViewController emptyWebView];
+    
+    [self transitionToIndex:0];
 }
 
 -(void)forgetWallet {
@@ -730,6 +732,8 @@ AppDelegate * app;
 
     self.latestResponse = nil;
     [_transactionsViewController setData:nil];
+    
+    [self transitionToIndex:0];
 }
 
 #pragma mark - Show Screens

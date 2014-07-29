@@ -536,9 +536,24 @@
         [delegate errorCreatingNewAccount:message];
 }
 
+
+-(void)on_wallet_decrypt_start {
+    DLog(@"on_wallet_decrypt_start");
+    
+    if ([delegate respondsToSelector:@selector(didWalletDecryptStart:)])
+        [delegate didWalletDecryptStart:self];
+}
+
+-(void)on_wallet_decrypt_success {
+    DLog(@"on_wallet_decrypt_success");
+    
+    if ([delegate respondsToSelector:@selector(didWalletDecryptSuccess:)])
+        [delegate didWalletDecryptSuccess:self];
+}
+
 -(void)on_backup_wallet_error {
     DLog(@"on_backup_wallet_error");
- 
+    
     if ([delegate respondsToSelector:@selector(didFailBackupWallet:)])
         [delegate didFailBackupWallet:self];
 }

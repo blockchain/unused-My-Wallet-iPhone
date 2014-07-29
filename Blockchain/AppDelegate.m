@@ -190,6 +190,15 @@ AppDelegate * app;
     }
 }
 
+-(void)didWalletDecryptStart:(Wallet*)wallet {
+    [self networkActivityStart];
+}
+
+-(void)didWalletDecryptSuccess:(Wallet*)wallet {
+    [self networkActivityStop];
+}
+
+
 -(void)networkActivityStart {
     [busyView fadeIn];
 
@@ -575,6 +584,8 @@ AppDelegate * app;
 -(void)didFailBackupWallet:(Wallet*)wallet {
     //Don't know a safe way to recover
     //Just clear everything and restart
+    
+    [self networkActivityStop];
     
     [self.wallet cancelTxSigning];
     

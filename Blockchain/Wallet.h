@@ -60,6 +60,11 @@
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 -(void)errorCreatingNewAccount:(NSString*)message;
 -(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error;
+
+-(void)didWalletDecryptStart:(Wallet*)wallet;
+-(void)didWalletDecryptSuccess:(Wallet*)wallet;
+
+
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {

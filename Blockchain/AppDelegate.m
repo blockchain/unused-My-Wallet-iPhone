@@ -808,7 +808,7 @@ AppDelegate * app;
         // User is logged in
         if ([self password]) {
             welcomeLabel.text = @"Options";
-            welcomeInstructionsLabel.text = @"Logout or change your pin below.";
+            welcomeInstructionsLabel.text = @"Open Account Settings, Logout or change your pin below.";
             [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
             [welcomeButton2 setTitle:@"Logout" forState:UIControlStateNormal];

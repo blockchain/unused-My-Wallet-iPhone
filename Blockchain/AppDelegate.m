@@ -29,6 +29,7 @@
 #import "UIAlertView+Blocks.h"
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
+#import "MerchantViewController.h"
 
 AppDelegate * app;
 
@@ -138,7 +139,7 @@ AppDelegate * app;
     else if (newIndex == 2)
         [self sendCoinsClicked:nil];
     else if (newIndex == 3)
-        [self infoClicked:nil];
+        [self merchantClicked:nil];
     else
         DLog(@"Unknown tab index: %d", newIndex);
 }
@@ -255,6 +256,8 @@ AppDelegate * app;
 
 -(void)walletDidLoad:(Wallet *)_wallet {      
     DLog(@"walletDidLoad");
+    
+    [self transitionToIndex:0];
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
     
@@ -762,34 +765,26 @@ AppDelegate * app;
 
 #pragma mark - Show Screens
 
-// Modal menu
--(void)showWelcome {
-    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
+
+-(void)showAccountSettings {
+    if (!_accountViewController) {
+        _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
         
-        [changePINButton setHidden:![self isPINSet]];
+        [_accountViewController viewDidLoad];
+    }
+    
+    [_tabViewController setActiveViewController:_accountViewController];
+}
+
+-(void)showMerchant {
+    
+    if (!_merchantViewController) {
+        _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
         
-        // User is logged in
-        if ([self password]) {
-            welcomeLabel.text = @"Options";
-            welcomeInstructionsLabel.text = @"Logout or change your pin below.";
-            createWalletButton.hidden = YES;
-            [pairLogoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-        }
-        // Wallet paired, but no password
-        else if ([self guid] || [self sharedKey]) {
-            welcomeLabel.text = @"Welcome Back";
-            welcomeInstructionsLabel.text = @"";
-            createWalletButton.hidden = YES;
-            [pairLogoutButton setTitle:@"Forget Details" forState:UIControlStateNormal];
-        }
-        // User is completed logged out
-        else {
-            welcomeLabel.text = @"Welcome to Blockchain Wallet";
-            welcomeInstructionsLabel.text = @"If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.";
-            createWalletButton.hidden = NO;
-            [pairLogoutButton setTitle:@"Pair Device" forState:UIControlStateNormal];
-        }
-    }];
+        [_merchantViewController viewDidLoad];
+    }
+    
+    [_tabViewController setActiveViewController:_merchantViewController  animated:TRUE index:3];
 }
 
 -(void)showSendCoins {
@@ -831,28 +826,73 @@ AppDelegate * app;
 //    [_window bringSubviewToFront:self.pinEntryViewController.view];
 }
 
-#pragma mark - Actions
-
--(IBAction)changePinClicked:(id)sender {
-    PEPinEntryController *c = [PEPinEntryController pinChangeController];
-    c.pinDelegate = self;
-    c.navigationBarHidden = YES;
-    
-    PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0]; 
-    peViewController.cancelButton.hidden = NO;
-    
-    [self.tabViewController presentViewController:c animated:YES completion:nil];
+// Modal menu
+-(void)showWelcome {
+    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
+        
+        [welcomeButton3 setHidden:![self isPINSet]];
+        [welcomeButton3 setTitle:@"Change PIN" forState:UIControlStateNormal];
+        
+        // User is logged in
+        if ([self password]) {
+            welcomeLabel.text = @"Options";
+            welcomeInstructionsLabel.text = @"Logout or change your pin below.";
+            [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
+            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:@"Logout" forState:UIControlStateNormal];
+        }
+        // Wallet paired, but no password
+        else if ([self guid] || [self sharedKey]) {
+            welcomeLabel.text = @"Welcome Back";
+            welcomeInstructionsLabel.text = @"";
+            [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
+            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:@"Forget Details" forState:UIControlStateNormal];
+        }
+        // User is completed logged out
+        else {
+            welcomeLabel.text = @"Welcome to Blockchain Wallet";
+            welcomeInstructionsLabel.text = @"If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.";
+            
+            [welcomeButton1 setTitle:@"Create Wallet" forState:UIControlStateNormal];
+            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:@"Pair Device" forState:UIControlStateNormal];
+        }
+    }];
 }
+
+#pragma mark - Actions
 
 -(IBAction)powerClicked:(id)sender {
     [self showWelcome];
 }
 
--(IBAction)signupClicked:(id)sender {
-    [app showModal:newAccountView isClosable:TRUE];
+
+//Change PIN
+-(IBAction)welcomeButton3Clicked:(id)sender {
+    PEPinEntryController *c = [PEPinEntryController pinChangeController];
+    c.pinDelegate = self;
+    c.navigationBarHidden = YES;
+    
+    PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0];
+    peViewController.cancelButton.hidden = NO;
+    
+    [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
--(IBAction)loginClicked:(id)sender {
+-(IBAction)welcomeButton1Clicked:(id)sender {
+    //Wallet is already paired
+    if ([self guid] || [self sharedKey])  {
+        [app closeModal];
+        
+        [app showAccountSettings];
+    } else {
+    //No Wallet show New Wallet creation
+        [app showModal:newAccountView isClosable:TRUE];
+    }
+}
+
+-(IBAction)welcomeButton2Clicked:(id)sender {
     // Logout
     if ([self password]) {
         [self logout];
@@ -911,6 +951,12 @@ AppDelegate * app;
     }
 }
 
+
+-(IBAction)forgetWalletClicked:(id)sender {
+    [self welcomeButton2Clicked:sender];
+}
+
+
 -(IBAction)receiveCoinClicked:(UIButton *)sender {
     if (!_receiveViewController) {
         _receiveViewController = [[ReceiveCoinsViewController alloc] initWithNibName:@"ReceiveCoins" bundle:[NSBundle mainBundle]];
@@ -929,14 +975,12 @@ AppDelegate * app;
     [self showSendCoins];
 }
 
--(IBAction)infoClicked:(UIButton *)sender {
-    if (!_accountViewController) {
-        _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
-        
-        [_accountViewController viewDidLoad];
-    }
-    
-    [_tabViewController setActiveViewController:_accountViewController animated:TRUE index:3];
+-(IBAction)merchantClicked:(UIButton *)sender {
+    [self showMerchant];
+}
+
+-(IBAction)accountSettingsClicked:(UIButton *)sender {
+    [self showAccountSettings];
 }
 
 -(IBAction)mainPasswordClicked:(id)sender {

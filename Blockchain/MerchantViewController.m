@@ -77,17 +77,139 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    DLog(@"dlocationManager idFailWithError: %@", error);
+
+    [self displayError:[error description]];
+}
+
+-(void)setLocation:(float)latitude long:(float)longitude {
+    [webView executeJS:@"MerchantMap.setLocation(%f, %f)", latitude, longitude];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    DLog(@"locationManager didUpdateToLocation: %@", newLocation);
+    
+    CLLocation *currentLocation = newLocation;
+    
+    if (currentLocation != nil) {
+        [self setLocation:currentLocation.coordinate.latitude long:currentLocation.coordinate.longitude];
+    
+        //We only need to fetch the location once
+        locationManager.delegate = nil;
+        [locationManager stopUpdatingLocation];
+        locationManager = nil;
+    }
+}
+
+-(void)log:(NSString*)message {
+    DLog(@"console.log: %@", [message description]);
+}
+
+-(IBAction)coffeeClicked:(UIButton*)sender {
+    [sender setSelected:![sender isSelected]];
+    
+    [self setFilters];
+}
+
+-(IBAction)drinkClicked:(UIButton*)sender {
+    [sender setSelected:![sender isSelected]];
+    
+    [self setFilters];
+}
+
+-(IBAction)foodClicked:(UIButton*)sender {
+    [sender setSelected:![sender isSelected]];
+    
+    [self setFilters];
+}
+
+-(IBAction)spendClicked:(UIButton*)sender {
+    [sender setSelected:![sender isSelected]];
+    
+    [self setFilters];
+}
+
+-(IBAction)atmClicked:(UIButton*)sender {
+    [sender setSelected:![sender isSelected]];
+    
+    [self setFilters];
+}
+
+//Called From Javascript
+-(void)displayError:(NSString*)message {
+    [app standardNotify:message];
+}
+
+-(void)setFilters {
+    int HEADING_CAFE = 1;
+    int HEADING_BAR = 2;
+    int HEADING_RESTAURANT = 3;
+    int HEADING_SPEND = 4;
+    int HEADING_ATM = 5;
+    
+    NSMutableArray * array = [NSMutableArray array];
+    
+    if (![coffeeButton isSelected])
+        [array addObject:[NSNumber numberWithInt:HEADING_CAFE]];
+    
+    if (![drinkButton isSelected])
+        [array addObject:[NSNumber numberWithInt:HEADING_BAR]];
+
+    if (![foodButton isSelected])
+        [array addObject:[NSNumber numberWithInt:HEADING_RESTAURANT]];
+    
+    if (![spendButton isSelected])
+        [array addObject:[NSNumber numberWithInt:HEADING_SPEND]];
+    
+    if (![atmButton isSelected])
+        [array addObject:[NSNumber numberWithInt:HEADING_ATM]];
+    
+    NSMutableString * jsString = [NSMutableString stringWithString:@"["];
+   
+    for (NSNumber * filter in array) {
+        [jsString appendFormat:@"%@,", filter];
+    }
+    
+    if ([jsString characterAtIndex:[jsString length]-1] == ',') {
+        [jsString deleteCharactersInRange:NSMakeRange([jsString length]-1, 1)];
+    }
+    
+    [jsString appendString:@"]"];
+    
+    [webView executeJS:@"MerchantMap.setFilters(%@)", jsString];
+         
+}
+
+-(void)fetchLocation {
+    locationManager = [[CLLocationManager alloc] init];
+    
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [locationManager startUpdatingLocation];
+}
+
+-(void)refresh {
+    [self fetchLocation];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self fetchLocation];
+    
     NSError * error = nil;
     NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
-    
     
     NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
     
     [webView loadHTMLString:merchantHTML baseURL:baseURL];
+    
+    webView.JSDelegate = self;
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

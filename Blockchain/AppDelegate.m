@@ -1022,11 +1022,15 @@ AppDelegate * app;
         return;
     }
     
-    if (wallet.password) {
-        [self.wallet getWalletAndHistory];
+    //If displaying the merchant view controller refresh the map instead
+    if (_tabViewController.activeViewController == _merchantViewController) {
+        [_merchantViewController refresh];
+        
+    //Otherwise just fetch the transaction history again
     } else {
-        [self walletFailedToDecrypt:wallet];
+        [self.wallet getWalletAndHistory];
     }
+
 }
 
 #pragma mark - Accessors

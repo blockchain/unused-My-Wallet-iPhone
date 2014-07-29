@@ -15,16 +15,255 @@
         
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.5&sensor=false"></script>
         <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="bridge.js"></script>
+        <script type="text/javascript" src="shared.js"></script>
 
         <script type="text/javascript">
+            function isEquivalent(a, b) {
+                // Create arrays of property names
+                var aProps = Object.getOwnPropertyNames(a);
+                var bProps = Object.getOwnPropertyNames(b);
+
+                // If number of properties is different,
+                // objects are not equivalent
+                if (aProps.length != bProps.length) {
+                    return false;
+                }
+
+                for (var i = 0; i < aProps.length; i++) {
+                    var propName = aProps[i];
+
+                    // If values of same property are not equal,
+                    // objects are not equivalent
+                    if (a[propName] !== b[propName]) {
+                        return false;
+                    }
+                }
+
+                // If we made it this far, objects
+                // are considered equivalent
+                return true;
+            }
+        
+            var HEADING_CAFE = 1;
+            var HEADING_BAR = 2;
+            var HEADING_RESTAURANT = 3;
+            var HEADING_SPEND = 4;
+            var HEADING_ATM = 5;
+            
+            var map;
+            
+            console.log = function(message) {
+                device.execute("log:", [message]);
+            }
+
+            var MerchantMap = new function() {
+                var MerchantMap = this;
+                var hasLoadedMerchants = false;
+                var jsonData = {};
+                var filterArray = [HEADING_CAFE, HEADING_BAR, HEADING_RESTAURANT, HEADING_SPEND, HEADING_ATM];
+                var markersArray = [];
+                var infowindow = null;
+                
+                this.setFilters =  function(_filterArray) {
+                    filterArray = _filterArray;
+
+                    this.buildMarkers();
+                }
+                
+                this.makeMarkerBubbleContentHTML = function(marker) {
+                    var html = '<div><h3>'+marker.name+'</h3>';
+                    
+                    if (marker.desc && marker.desc.length > 0)
+                        html += '<p>'+marker.desc+'</p>';
+                        
+                    var tel = $.trim(marker.tel);
+                    if (tel.length > 0) {
+                        html += '<b>Tel:</b> ' + tel + '</br>';
+                    }
+                        
+                    var web = $.trim(marker.web);
+                    if (web.length > 0) {
+                        var a = document.createElement('a');
+                        a.href = web
+                        if (a.hostname)
+                          html += '<b>Web:</b> <a href="'+web+'">' + a.hostname + '</a></br>';
+                    }
+                
+                    var address = $.trim(marker.address);
+                    var city = $.trim(marker.city);
+                    var pcode = $.trim(marker.pcode);
+                    
+                    if (address.length > 0, city.length > 0, pcode.length > 0) {
+                        html += '<b>Address:</b><div>'+address + ' </br> ' + city + '</br>'+ pcode+'</div>';
+                    }
+                
+                    html += '</div>';
+                    
+                    return html;
+                }
+                
+                this.buildMarkers = function() {
+                    var self = this;
+                    
+                    //Delete all the exisitng markers
+                    for (var i = 0; i < markersArray.length; i++ ) {
+                        markersArray[i].setMap(null);
+                    }
+                    markersArray.length = 0;
+                                        
+                    for (var i in jsonData) {
+                       var merchantObj = jsonData[i];
+            
+                        var type = parseInt(merchantObj.hc);
+            
+                        if (filterArray.indexOf(type) == -1) {
+                            continue;
+                        }
+                        
+                        switch(type) {
+                           case HEADING_CAFE :
+                            var icon = 'marker_eat.png';
+                           break;
+                           case HEADING_BAR :
+                            var icon = 'marker_drink.png';
+                           break;
+                           case HEADING_RESTAURANT :
+                            var icon = 'marker_eat.png';
+                           break;
+                           case HEADING_SPEND :
+                            var icon = 'marker_spend.png';
+                           break;
+                           case HEADING_ATM :
+                            var icon = 'marker_atm.png';
+                           break;
+                       }
+                        
+                        var marker = new google.maps.Marker({
+                           position: new google.maps.LatLng(parseFloat(merchantObj.lat), parseFloat(merchantObj.lon)),
+                           map: map,
+                           title: merchantObj.name,
+                           icon : icon
+                        });
+                        
+                         //Copy all the properties from merchantObj to the Gmap marker
+                         $.extend(marker, merchantObj);
+                        
+                        //Add event handler to show bubble when marker is clicked
+                        (function(marker) {
+                             google.maps.event.addListener(marker, 'click', function() {
+                                if (infowindow) {
+                                   infowindow.close();
+                                }
+                                                           
+                                infowindow = new google.maps.InfoWindow({
+                                    content: self.makeMarkerBubbleContentHTML(marker),
+                                    maxWidth : 240
+                                });
+                                                           
+                                infowindow.open(map,marker);
+                             });
+                         }(marker));
+                      
+                        markersArray.push(marker);
+                   }
+                    
+                    
+                    var nVisible = this.countVisible();
+                    
+                    if (nVisible == 0) {
+                        map.setZoom(3);
+                    } else if (nVisible < 4) {
+                        map.setZoom(6);
+                    } else {
+                        map.setZoom(7);
+                    }
+                }
+                
+                this.countVisible = function() {
+                    var count = 0;
+                    for (var i = 0; i < markersArray.length; i++) {
+                        if (map.getBounds().contains(markersArray[i].getPosition()))
+                            ++count;
+                    }
+                    return count;
+                }
+                
+                this.restoreLocalCache = function() {
+                    var self = this;
+
+                    MyStore.get('merchant_json_cache', function(data) {
+                        if (data) {
+                            jsonData = $.parseJSON(data);
+                                
+                            self.buildMarkers();
+                        }
+                    });
+                }
+                
+                this.setLocation = function(lat, long) {
+                    map.setCenter(new google.maps.LatLng(lat, long));
+                    
+                    var self = this;
+                    
+                    if (self.hasLoadedMerchants) {
+                        return;
+                    }
+                    
+                    
+                    self.hasLoadedMerchants = true;
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: 'http://merchant-directory.blockchain.info/cgi-bin/btcd.pl',
+                        timeout: 60000,
+                        encoding:"UTF-8",
+                        dataType : 'json',
+                        data: {
+                            ULAT: lat,
+                            ULON: long,
+                            D: 40000,
+                            K: 1
+                        },
+                        success: function (response_json) {
+                           //Don't bother rebuilding if the response is the same as we alreayd have
+                           if (response_json.length == jsonData.length) {
+                                return;
+                           }
+                           
+                           jsonData = response_json;
+                           
+                           MyStore.put('merchant_json_cache', JSON.stringify(jsonData));
+                           
+                           self.buildMarkers();
+                        },
+                        error: function (res) {
+                           self.hasLoadedMerchants = false;
+                           
+                           if (!jsonData || jsonData.length == 0) {
+                                device.execute('displayError:', 'Error Loading Merchant Data');
+                           }
+                        }
+                    });
+                }
+            };
+        
             $(document).ready(function() {
                 var mapOptions = {
                     center: new google.maps.LatLng(-34.397, 150.644),
-                    zoom: 8
+                    zoom: 7,
+                    minZoom: 3,
+                    panControl: false,
+                    zoomControl: false,
+                    mapTypeControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    overviewMapControl: false
                 };
-            
-                var map = new google.maps.Map(document.getElementById("map_canvas"),
-                                                  mapOptions);
+                              
+                map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+                           
+                MerchantMap.restoreLocalCache();
             });
         </script>
     </head>

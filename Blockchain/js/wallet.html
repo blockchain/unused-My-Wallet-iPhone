@@ -32,8 +32,8 @@ window.onerror = function(errorMsg, url, lineNumber) {
 $(document).ajaxStart(function() {
     device.execute('ajaxStart');
 }).ajaxStop(function() {
-            device.execute('ajaxStop');
-        });
+    device.execute('ajaxStop');
+});
 
 console.log = function(message) {
     device.execute("log:", [message]);

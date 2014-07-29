@@ -81,7 +81,6 @@ AppDelegate * app;
     
     self.wallet.delegate = self;
     
-    
     [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
@@ -113,8 +112,6 @@ AppDelegate * app;
         [self showWelcome];
     } else if (![self password]) {
         [self showModal:mainPasswordView isClosable:FALSE];
-        
-        [mainPasswordTextField becomeFirstResponder];
     } else {
         
         NSString * guid = [self guid];

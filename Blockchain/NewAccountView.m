@@ -56,6 +56,8 @@
         return;
     }
     
+    app.wallet.password = nil;
+
     [app.wallet loadJS];
     
     // Get callback when wallet is done loading

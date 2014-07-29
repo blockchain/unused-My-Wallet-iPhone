@@ -717,6 +717,10 @@ AppDelegate * app;
 
     [self.wallet cancelTxSigning];
 
+    [self.wallet clearLocalStorage];
+
+    self.wallet.password = nil;
+    
     [self.wallet loadJS];
 
     self.latestResponse = nil;
@@ -737,8 +741,12 @@ AppDelegate * app;
     
     [[NSUserDefaults standardUserDefaults] synchronize];   
     
+    [self.wallet cancelTxSigning];
+
     [self.wallet clearLocalStorage];
     
+    self.wallet.password = nil;
+
     [self.wallet loadJS];
 
     self.latestResponse = nil;

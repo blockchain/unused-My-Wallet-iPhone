@@ -51,6 +51,8 @@
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {
 
+        app.wallet.password = nil;
+        
         [app.wallet loadJS];
         
         app.wallet.delegate = self;

@@ -194,9 +194,25 @@
     toField.text = [self labelForAddress:self.toAddress];
 }
 
--(void)setAmount:(NSString*)amount {
-    amountField.text = amount;
+-(void)setAmountFromUrlHandler:(NSString*)amountString {
     
+    double amountDouble = 0.0;
+    double displayValue = 0.0;
+
+    if (app->symbolLocal) {
+        [app toggleSymbol];
+    }
+
+    // get decimal bitcoin value
+    if (app.latestResponse.symbol_btc) {
+        displayValue = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
+    } else {
+        displayValue = amountDouble;
+    }
+    
+    amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:displayValue]];
+    amountField.text = amountString;
+
     [self doCurrencyConversion];
 }
 
@@ -232,7 +248,7 @@
         toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
         self.toAddress = [dict objectForKey:@"address"];
         
-        NSString * amountString = [dict objectForKey:@"amount"];
+        NSString *amountString = [dict objectForKey:@"amount"];
         
         if (app.latestResponse.symbol_btc) {
             double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;

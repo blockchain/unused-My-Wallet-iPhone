@@ -61,7 +61,7 @@
 -(IBAction)labelAddressClicked:(id)sender;
 
 -(void)setToAddressFromUrlHandler:(NSString*)string;
--(void)setAmount:(NSString*)amount;
+-(void)setAmountFromUrlHandler:(NSString*)amountString;
 
 -(void)reload;
 

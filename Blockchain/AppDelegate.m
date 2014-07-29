@@ -397,8 +397,7 @@ AppDelegate * app;
     [self showSendCoins];
     
     [_sendViewController setToAddressFromUrlHandler:addr];
-    
-    [_sendViewController setAmount:amount];
+    [_sendViewController setAmountFromUrlHandler:amount];
 
     return YES;
 }

@@ -306,28 +306,12 @@ AppDelegate * app;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
-    for (UIView *v in [[self window] subviews]) {
-        if ([v isKindOfClass:[UIAlertView class]]) {
-            DLog(@"found alertview");
-        }
-        DLog(@"class: %@", [v class]);
-    }
-
-    
     if ([self guid]) {
         [self showPinModal];
     }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    
-    for (UIView *v in [[self window] subviews]) {
-        if ([v isKindOfClass:[UIAlertView class]]) {
-            DLog(@"found alertview");
-        }
-        DLog(@"class: %@", [v class]);
-    }
-
     
     if (![self guid] || ![self sharedKey]) {
         [app showWelcome];

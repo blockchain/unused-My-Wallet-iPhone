@@ -86,6 +86,8 @@
 
 -(void)setLocation:(float)latitude long:(float)longitude {
     [webView executeJS:@"MerchantMap.setLocation(%f, %f)", latitude, longitude];
+    
+    [webView executeJS:@"MerchantMap.zoomToOptimimum()"];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
@@ -180,7 +182,6 @@
     [jsString appendString:@"]"];
     
     [webView executeJS:@"MerchantMap.setFilters(%@)", jsString];
-         
 }
 
 -(void)fetchLocation {

@@ -167,9 +167,15 @@
                       
                         markersArray.push(marker);
                    }
-                    
+                
+                }
+                
+                
+                this.zoomToOptimimum = function() {
                     
                     var nVisible = this.countVisible();
+                    
+                    console.log('nVisible ' + nVisible);
                     
                     if (nVisible == 0) {
                         map.setZoom(3);
@@ -197,6 +203,8 @@
                             jsonData = $.parseJSON(data);
                                 
                             self.buildMarkers();
+                                
+                            self.zoomToOptimimum();
                         }
                     });
                 }
@@ -236,6 +244,8 @@
                            MyStore.put('merchant_json_cache', JSON.stringify(jsonData));
                            
                            self.buildMarkers();
+                           
+                           self.zoomToOptimimum();
                         },
                         error: function (res) {
                            self.hasLoadedMerchants = false;

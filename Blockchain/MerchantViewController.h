@@ -7,9 +7,29 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import "JSBridgeWebView.h"
 
-@interface MerchantViewController : UIViewController <UIWebViewDelegate> {
-    IBOutlet UIWebView * webView;
+@interface MerchantViewController : UIViewController <UIWebViewDelegate, JSBridgeWebViewDelegate, CLLocationManagerDelegate> {
+    IBOutlet JSBridgeWebView * webView;
+    CLLocationManager *locationManager;
+    
+    
+    IBOutlet UIButton * coffeeButton;
+    IBOutlet UIButton * drinkButton;
+    IBOutlet UIButton * foodButton;
+    IBOutlet UIButton * spendButton;
+    IBOutlet UIButton * atmButton;
 }
--(void)loadURL:(NSString*)url;
+
+-(void)setLocation:(float)latitude long:(float)longitude;
+
+-(IBAction)coffeeClicked:(UIButton*)sender;
+-(IBAction)drinkClicked:(UIButton*)sender;
+-(IBAction)foodClicked:(UIButton*)sender;
+-(IBAction)spendClicked:(UIButton*)sender;
+-(IBAction)atmClicked:(UIButton*)sender;
+
+-(void)refresh;
+
 @end

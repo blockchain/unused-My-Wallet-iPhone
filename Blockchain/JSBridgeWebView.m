@@ -367,10 +367,18 @@
         
             return FALSE;
         } else {
-            [self.usedIDs removeAllObjects];
-            
-            // If it is not a JS notification, pass it to the delegate.
-            return TRUE;
+            if ([self.JSDelegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+                if ([self.JSDelegate webView:self shouldStartLoadWithRequest:request navigationType:navigationType]) {
+                    [self.usedIDs removeAllObjects];
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
+            } else {
+                [self.usedIDs removeAllObjects];
+                
+                return TRUE;
+            }
         }
     }
 }

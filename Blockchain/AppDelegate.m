@@ -726,6 +726,8 @@ AppDelegate * app;
     [_receiveViewController reload];
     [_sendViewController reload];
     [_accountViewController emptyWebView];
+    
+    [self transitionToIndex:0];
 }
 
 -(void)forgetWallet {
@@ -741,10 +743,11 @@ AppDelegate * app;
 
     self.latestResponse = nil;
     [_transactionsViewController setData:nil];
+    
+    [self transitionToIndex:0];
 }
 
 #pragma mark - Show Screens
-
 
 -(void)showAccountSettings {
     if (!_accountViewController) {
@@ -816,7 +819,7 @@ AppDelegate * app;
         // User is logged in
         if ([self password]) {
             welcomeLabel.text = @"Options";
-            welcomeInstructionsLabel.text = @"Logout or change your pin below.";
+            welcomeInstructionsLabel.text = @"Open Account Settings, Logout or change your pin below.";
             [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
             [welcomeButton2 setTitle:@"Logout" forState:UIControlStateNormal];
@@ -999,11 +1002,15 @@ AppDelegate * app;
         return;
     }
     
-    if (wallet.password) {
-        [self.wallet getWalletAndHistory];
+    //If displaying the merchant view controller refresh the map instead
+    if (_tabViewController.activeViewController == _merchantViewController) {
+        [_merchantViewController refresh];
+        
+    //Otherwise just fetch the transaction history again
     } else {
-        [self walletFailedToDecrypt:wallet];
+        [self.wallet getWalletAndHistory];
     }
+
 }
 
 #pragma mark - Accessors

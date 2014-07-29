@@ -204,6 +204,7 @@
                 }
                 
                 this.setLocation = function(lat, long) {
+                    
                     map.setCenter(new google.maps.LatLng(lat, long));
                     
                     var self = this;
@@ -253,7 +254,7 @@
         
             $(document).ready(function() {
                 var mapOptions = {
-                    center: new google.maps.LatLng(-34.397, 150.644),
+                    center: new google.maps.LatLng(51.5072, 0.1275),
                     zoom: 7,
                     minZoom: 3,
                     panControl: false,

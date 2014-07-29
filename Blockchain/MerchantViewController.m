@@ -82,6 +82,9 @@
     DLog(@"dlocationManager idFailWithError: %@", error);
 
     [self displayError:[error description]];
+    
+    //Default to London
+    [self setLocation:51.5072f long:0.1275f];
 }
 
 -(void)setLocation:(float)latitude long:(float)longitude {

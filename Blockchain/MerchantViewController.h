@@ -14,7 +14,6 @@
     IBOutlet JSBridgeWebView * webView;
     CLLocationManager *locationManager;
     
-    
     IBOutlet UIButton * coffeeButton;
     IBOutlet UIButton * drinkButton;
     IBOutlet UIButton * foodButton;

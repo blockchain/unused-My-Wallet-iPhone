@@ -158,7 +158,7 @@
     }
     
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Payment"
+    BCAlertView *alert = [[BCAlertView alloc] initWithTitle:@"Confirm Payment"
                                                     message:messageString
                                                    delegate:self
                                           cancelButtonTitle:@"No"

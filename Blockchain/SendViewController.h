@@ -22,6 +22,7 @@
 #import "MultiValueField.h"
 #import "ZBarSDK.h"
 #import "AddressBookView.h"
+#import "BCAlertView.h"
 
 @class Wallet, MultiValueField;
 

@@ -305,6 +305,7 @@ AppDelegate * app;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
     if ([self guid]) {
         [self showPinModal];
     }

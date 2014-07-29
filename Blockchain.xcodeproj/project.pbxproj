@@ -194,6 +194,7 @@
 		C9C17AA1197FD0C600BF8A4E /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A91197FCE4700BF8A4E /* shared.js */; };
 		C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A92197FCE4700BF8A4E /* signer.js */; };
 		C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A93197FCE4700BF8A4E /* wallet.js */; };
+		C9C3998319885FAC001B3922 /* BCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3998219885FAC001B3922 /* BCAlertView.m */; };
 		ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98A1959968F00255292 /* address-book-icon.png */; };
 		ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98B1959968F00255292 /* address-book-icon@2x.png */; };
 		ECE9A9901959968F00255292 /* camera-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98C1959968F00255292 /* camera-icon.png */; };
@@ -462,6 +463,8 @@
 		C9C17A91197FCE4700BF8A4E /* shared.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = shared.js; path = "Submodules/My-Wallet/shared.js"; sourceTree = SOURCE_ROOT; };
 		C9C17A92197FCE4700BF8A4E /* signer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = signer.js; path = "Submodules/My-Wallet/signer.js"; sourceTree = SOURCE_ROOT; };
 		C9C17A93197FCE4700BF8A4E /* wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = wallet.js; path = "Submodules/My-Wallet/wallet.js"; sourceTree = SOURCE_ROOT; };
+		C9C3998119885FAC001B3922 /* BCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCAlertView.h; sourceTree = "<group>"; };
+		C9C3998219885FAC001B3922 /* BCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCAlertView.m; sourceTree = "<group>"; };
 		ECE9A98A1959968F00255292 /* address-book-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon.png"; sourceTree = "<group>"; };
 		ECE9A98B1959968F00255292 /* address-book-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon@2x.png"; sourceTree = "<group>"; };
 		ECE9A98C1959968F00255292 /* camera-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon.png"; sourceTree = "<group>"; };
@@ -747,6 +750,8 @@
 				84F4BDF9197F21D700B7BF7B /* PairingCodeParser.m */,
 				84FC03181981D76800B97D5B /* PrivateKeyReader.h */,
 				84FC03191981D76800B97D5B /* PrivateKeyReader.m */,
+				C9C3998119885FAC001B3922 /* BCAlertView.h */,
+				C9C3998219885FAC001B3922 /* BCAlertView.m */,
 				9F1831F315176F2200FB3D52 /* Categories */,
 				9F0CBAAB15135DF200CD945D /* JavaScript */,
 				9F765F3A14BC7C3100048EFB /* Models */,
@@ -1223,6 +1228,7 @@
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
+				C9C3998319885FAC001B3922 /* BCAlertView.m in Sources */,
 				84FC02FE19815F1B00B97D5B /* sha256.c in Sources */,
 				84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */,
 			);

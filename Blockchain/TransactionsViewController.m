@@ -17,6 +17,8 @@
 @synthesize data;
 @synthesize latestBlock;
 
+#define MAX_ADDRESS_ROWS_PER_CELL 5
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [data.transactions count];
 }
@@ -63,20 +65,25 @@
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
     if (transaction.result < 0) {
+        
         NSArray * outputs = [transaction outputsNotToAddresses:data.addresses];
         
         if ([outputs count] == 0)
             outputs = transaction.outputs;
-
-        baseHeight += [outputs count] * 22;
+        else if ([outputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
+            baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
+        else
+            baseHeight += [outputs count] * 22;
     } else {
         
         NSArray * inputs = [transaction inputsNotFromAddresses:data.addresses];
         
         if ([inputs count] == 0)
             inputs = transaction.inputs;
-        
-        baseHeight += [inputs count] * 22;
+        else if ([inputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
+            baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
+        else
+            baseHeight += [inputs count] * 22;
     }
     
     if (!isfinite(baseHeight)) {        

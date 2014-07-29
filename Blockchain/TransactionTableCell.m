@@ -14,6 +14,8 @@
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
 
+#define MAX_ADDRESS_ROWS_PER_CELL 5
+
 @implementation TransactionTableCell
 
 @synthesize transaction;
@@ -66,23 +68,27 @@
             inputs = transaction.inputs;
         }
         
-        
         //Show the inouts i.e. where the coins are from
-        for (Input * input in inputs) {
+        for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
+        {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
-            
-            NSString * addressLabel = [app.wallet labelForAddress:[[input prev_out] addr]];
-
-            if ([addressLabel length] > 0)
-                [label setText:addressLabel];
-            else
-                [label setText:[[input prev_out] addr]];
-
             [label setFont:[UIFont systemFontOfSize:12]];
             [label setTextColor:hashButton.titleLabel.textColor];
             
+            if (i == MAX_ADDRESS_ROWS_PER_CELL) {
+                [label setText:[NSString stringWithFormat:@"%d more", [inputs count] - i]];
+            }
+            else {
+                Input *input = [inputs objectAtIndex:i];
+                NSString *addressString = [app.wallet labelForAddress:[[input prev_out] addr]];
+                
+                if ([addressString length] > 0)
+                    [label setText:addressString];
+                else
+                    [label setText:[[input prev_out] addr]];
+            }
+
             [labels addObject:label];
-            
             [self addSubview:label];
             
             y += 22;
@@ -105,22 +111,27 @@
         if ([outputs count] == 0) {
             outputs = transaction.outputs;
         }
-        
-        for (Output * output in outputs) {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
-            
-            NSString * addressLabel = [app.wallet labelForAddress:[output addr]];
-            
-            if ([addressLabel length] > 0)
-                [label setText:addressLabel];
-            else
-                [label setText:[output addr]];
 
+        // limit to MAX_ADDRESS_ROWS_PER_CELL outputs
+        for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
+        {
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
             [label setFont:[UIFont systemFontOfSize:12]];
             [label setTextColor:hashButton.titleLabel.textColor];
+
+            if (i == MAX_ADDRESS_ROWS_PER_CELL) {
+                [label setText:[NSString stringWithFormat:@"%d more", [outputs count] - i]];
+            } else {
+                Output *output = [outputs objectAtIndex:i];
+                NSString * addressString = [app.wallet labelForAddress:[output addr]];
+
+                if ([addressString length] > 0)
+                    [label setText:addressString];
+                else
+                    [label setText:[output addr]];
+            }
             
             [labels addObject:label];
-            
             [self addSubview:label];
             
             y += 22;

@@ -44,7 +44,9 @@
     }
     
     [btcButton setTitle:[app formatMoney:transaction.result] forState:UIControlStateNormal];
-        
+    [btcButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    [btcButton.titleLabel setMinimumScaleFactor:.5f];
+    
     for (UILabel * label in labels) {
         [label removeFromSuperview];
     }

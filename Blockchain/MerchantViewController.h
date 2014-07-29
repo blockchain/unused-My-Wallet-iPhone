@@ -19,6 +19,9 @@
     IBOutlet UIButton * foodButton;
     IBOutlet UIButton * spendButton;
     IBOutlet UIButton * atmButton;
+    
+    NSTimeInterval lastLoadedMap;
+    BOOL didLoadGoogleMaps;
 }
 
 -(void)setLocation:(float)latitude long:(float)longitude;

@@ -36,7 +36,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
         return FALSE;
     }];
@@ -136,6 +136,7 @@
     
     [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
 }
+
 
 -(uint64_t)getInputAmountInSatoshi {
     if (displayingLocalSymbol) {

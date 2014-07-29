@@ -446,7 +446,6 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
             }
         },
         error : function(data) {
-
             if (data.responseText)
                 MyWallet.makeNotice('error', 'misc-error', data.responseText);
             else

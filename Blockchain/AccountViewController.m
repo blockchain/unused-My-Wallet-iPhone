@@ -61,9 +61,7 @@
     }
 }
 
-
-- (void)viewDidLoad
-{
+-(void)viewDidLoad {
     [super viewDidLoad];
 	
     if (APP_IS_IPHONE5) {
@@ -74,9 +72,9 @@
     }
 
     // Remove Shadow
-//    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
-//        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
-//    }
+    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) {
+        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
+    }
 }
 
 @end

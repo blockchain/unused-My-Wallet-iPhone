@@ -43,7 +43,7 @@
     [app networkActivityStart];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView {    
     [app networkActivityStop];
 }
 
@@ -85,6 +85,32 @@
     
     //Default to London
     [self setLocation:51.5072f long:0.1275f];
+}
+
+-(void)loadMap {
+    
+    //Throttle load requests
+    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+    if (lastLoadedMap > now-10.0f) {
+        return;
+    }
+        
+    lastLoadedMap = now;
+    
+    NSError * error = nil;
+    NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    
+    NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
+    
+    webView.JSDelegate = self;
+
+    [webView loadHTMLString:merchantHTML baseURL:baseURL];
+
+    [self fetchLocation];
+}
+
+-(void)didLoadGoogleMaps {
+    didLoadGoogleMaps = TRUE;
 }
 
 -(void)setLocation:(float)latitude long:(float)longitude {
@@ -196,24 +222,26 @@
     [locationManager startUpdatingLocation];
 }
 
--(void)refresh {
-    [self fetchLocation];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (!didLoadGoogleMaps) {
+        [self loadMap];
+    }
 }
 
-- (void)viewDidLoad
-{
+-(void)refresh {
+    if (didLoadGoogleMaps) {
+        [self fetchLocation];
+    } else {
+        [self loadMap];
+    }
+}
+
+-(void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self fetchLocation];
-    
-    NSError * error = nil;
-    NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
-    
-    NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
-    
-    [webView loadHTMLString:merchantHTML baseURL:baseURL];
-    
-    webView.JSDelegate = self;
+        
+    didLoadGoogleMaps = FALSE;
     
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);

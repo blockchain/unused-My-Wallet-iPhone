@@ -35,7 +35,7 @@
 #define WebROOT @"https://blockchain.info/"
 #define MULTI_ADDR_TIME 60.0f //1 Minute
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser, MerchantViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
@@ -49,13 +49,13 @@
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
 
-    IBOutlet UIButton *createWalletButton;
-
     IBOutlet UIView * welcomeView;
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
-    IBOutlet UIButton * pairLogoutButton;
-    IBOutlet UIButton * changePINButton;
+
+    IBOutlet UIButton * welcomeButton1;
+    IBOutlet UIButton * welcomeButton2;
+    IBOutlet UIButton * welcomeButton3;
     
     BOOL validateSecondPassword;
     IBOutlet UILabel * secondPasswordDescriptionLabel;
@@ -85,6 +85,8 @@
 @property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
 @property (strong, nonatomic) IBOutlet SendViewController * sendViewController;
 @property (strong, nonatomic) IBOutlet AccountViewController * accountViewController;
+@property (strong, nonatomic) IBOutlet MerchantViewController * merchantViewController;
+
 @property (strong, nonatomic) WebViewController * webViewController;
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
@@ -104,7 +106,6 @@
 @property(nonatomic, strong) PairingCodeParser * pairingCodeParser;
 
 -(IBAction)manualPairClicked:(id)sender;
--(IBAction)changePinClicked:(id)sender;
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 
 -(void)didGenerateNewWallet:(Wallet*)wallet password:(NSString*)password;
@@ -160,15 +161,20 @@
 -(IBAction)receiveCoinClicked:(UIButton *)sender;
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;
--(IBAction)infoClicked:(UIButton *)sender;
+-(IBAction)merchantClicked:(UIButton *)sender;
+-(IBAction)accountSettingsClicked:(UIButton *)sender;
+-(IBAction)forgetWalletClicked:(id)sender;
 -(IBAction)powerClicked:(id)sender;
--(IBAction)signupClicked:(id)sender;
--(IBAction)loginClicked:(id)sender; 
 -(IBAction)scanAccountQRCodeclicked:(id)sender;
 -(IBAction)secondPasswordClicked:(id)sender;
 -(IBAction)mainPasswordClicked:(id)sender;
 -(IBAction)refreshClicked:(id)sender;
 -(IBAction)balanceTextClicked:(id)sender;
+
+//WelcomeMenu
+-(IBAction)welcomeButton1Clicked:(id)sender;
+-(IBAction)welcomeButton2Clicked:(id)sender;
+-(IBAction)welcomeButton3Clicked:(id)sender;
 
 -(void)setStatus;
 -(void)clearPin;

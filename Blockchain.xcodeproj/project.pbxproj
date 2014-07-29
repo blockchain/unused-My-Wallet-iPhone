@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
+		84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC551987A61C000E8DC8 /* 172-pricetag.png */; };
+		84AEEC581987A61C000E8DC8 /* 172-pricetag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC561987A61C000E8DC8 /* 172-pricetag@2x.png */; };
+		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
+		84AEEC5D1987A830000E8DC8 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */; };
+		84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC611987B36B000E8DC8 /* MainWindow.xib */; };
 		84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */; };
 		84B601CA197AD03800DA1829 /* UIModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C9197AD03800DA1829 /* UIModalView.m */; };
 		84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */; };
@@ -126,11 +131,9 @@
 		9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F91B60215161E1F00ACB32D /* circle@2x.png */; };
 		9F91B607151666EC00ACB32D /* NewAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F91B606151666EB00ACB32D /* NewAccountView.m */; };
 		9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */; };
-		9FB15B2714B60172009858ED /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FB15B2614B60172009858ED /* MainWindow.xib */; };
 		9FB3637614B60128004BEA02 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637514B60128004BEA02 /* UIKit.framework */; };
 		9FB3637814B60128004BEA02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637714B60128004BEA02 /* Foundation.framework */; };
 		9FB3637A14B60128004BEA02 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637914B60128004BEA02 /* CoreGraphics.framework */; };
-		9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9FB3637E14B60128004BEA02 /* InfoPlist.strings */; };
 		9FB3638214B60128004BEA02 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638114B60128004BEA02 /* main.m */; };
 		9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638514B60128004BEA02 /* AppDelegate.m */; };
 		9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */; };
@@ -179,6 +182,12 @@
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
+		84AEEC551987A61C000E8DC8 /* 172-pricetag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "172-pricetag.png"; sourceTree = "<group>"; };
+		84AEEC561987A61C000E8DC8 /* 172-pricetag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "172-pricetag@2x.png"; sourceTree = "<group>"; };
+		84AEEC591987A779000E8DC8 /* MerchantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantViewController.h; sourceTree = "<group>"; };
+		84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
+		84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MerchantMap.xib; sourceTree = "<group>"; };
+		84AEEC611987B36B000E8DC8 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Blocks.h"; sourceTree = "<group>"; };
 		84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Blocks.m"; sourceTree = "<group>"; };
 		84B601C8197AD03800DA1829 /* UIModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModalView.h; sourceTree = "<group>"; };
@@ -336,13 +345,11 @@
 		9F91B606151666EB00ACB32D /* NewAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAccountView.m; sourceTree = "<group>"; };
 		9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FirstResponder.h"; sourceTree = "<group>"; };
 		9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FirstResponder.m"; sourceTree = "<group>"; };
-		9FB15B2614B60172009858ED /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		9FB3637114B60128004BEA02 /* Blockchain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockchain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FB3637514B60128004BEA02 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9FB3637714B60128004BEA02 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9FB3637914B60128004BEA02 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9FB3637D14B60128004BEA02 /* Blockchain-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Blockchain-Info.plist"; sourceTree = "<group>"; };
-		9FB3637F14B60128004BEA02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9FB3638114B60128004BEA02 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blockchain-Prefix.pch"; sourceTree = "<group>"; };
 		9FB3638414B60128004BEA02 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -524,6 +531,8 @@
 		9F765EDC14BBBEC400048EFB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				84AEEC551987A61C000E8DC8 /* 172-pricetag.png */,
+				84AEEC561987A61C000E8DC8 /* 172-pricetag@2x.png */,
 				C92F761519803346007916F7 /* icon_512.png */,
 				84F4BE14197FB78D00B7BF7B /* receive-money.png */,
 				84F4BE15197FB78D00B7BF7B /* receive-money@2x.png */,
@@ -686,7 +695,6 @@
 			isa = PBXGroup;
 			children = (
 				9FB3637D14B60128004BEA02 /* Blockchain-Info.plist */,
-				9FB3637E14B60128004BEA02 /* InfoPlist.strings */,
 				9FB3638114B60128004BEA02 /* main.m */,
 				9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */,
 			);
@@ -706,6 +714,8 @@
 				9F765F3114BC622E00048EFB /* TransactionsViewController.m */,
 				9FCA4D371514A83400ECDFBE /* WebViewController.h */,
 				9FCA4D381514A83400ECDFBE /* WebViewController.m */,
+				84AEEC591987A779000E8DC8 /* MerchantViewController.h */,
+				84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -874,12 +884,13 @@
 			isa = PBXGroup;
 			children = (
 				C9B32CF9194F3F5800BDF3A0 /* Cells */,
-				9FB15B2614B60172009858ED /* MainWindow.xib */,
 				9F1831F115175BD900FB3D52 /* AccountViewController.xib */,
 				9F61B899151519690083C57A /* AddressBookView.xib */,
 				9FDAEF891514EE0000E92C90 /* ModalView.xib */,
 				9F61B89F151532A20083C57A /* ReceiveCoins.xib */,
 				9F45F82D1514E6BF00018AED /* SendCoins.xib */,
+				84AEEC611987B36B000E8DC8 /* MainWindow.xib */,
+				84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -976,8 +987,6 @@
 				84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,
-				9FB3638014B60128004BEA02 /* InfoPlist.strings in Resources */,
-				9FB15B2714B60172009858ED /* MainWindow.xib in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
@@ -988,6 +997,7 @@
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				ECE9A9911959968F00255292 /* camera-icon@2x.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
+				84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
@@ -1007,6 +1017,7 @@
 				9F0CBAA615134D3200CD945D /* button_grey.png in Resources */,
 				9F0CBAA715134D3200CD945D /* button_grey@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet.html in Resources */,
+				84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
 				9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */,
 				9F0CBAD11513BF9D00CD945D /* busy-background.png in Resources */,
@@ -1051,6 +1062,7 @@
 				9F91B60315161E1F00ACB32D /* circle.png in Resources */,
 				9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */,
 				9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */,
+				84AEEC581987A61C000E8DC8 /* 172-pricetag@2x.png in Resources */,
 				9F1831F215175BD900FB3D52 /* AccountViewController.xib in Resources */,
 				84F4BE12197FB72800B7BF7B /* send-money.png in Resources */,
 				84F4BE13197FB72800B7BF7B /* send-money@2x.png in Resources */,
@@ -1061,6 +1073,7 @@
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
+				84AEEC5D1987A830000E8DC8 /* MerchantMap.xib in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
 				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
 				9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */,
@@ -1100,6 +1113,7 @@
 				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
 				84FC031A1981D76800B97D5B /* PrivateKeyReader.m in Sources */,
+				84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */,
 				84B601CA197AD03800DA1829 /* UIModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* BCFadeView.m in Sources */,
@@ -1127,17 +1141,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		9FB3637E14B60128004BEA02 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9FB3637F14B60128004BEA02 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		9FB3638714B60128004BEA02 /* Debug */ = {

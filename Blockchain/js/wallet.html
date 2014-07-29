@@ -425,7 +425,6 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
         timeout: 60000,
         retryLimit: 2,
         success: function(obj) {
-
             if (obj.error != null) {
                 MyWallet.makeNotice('error', 'misc-error', obj.error);
             }

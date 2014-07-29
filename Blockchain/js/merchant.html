@@ -142,7 +142,6 @@
                         var marker = new google.maps.Marker({
                            position: new google.maps.LatLng(parseFloat(merchantObj.lat), parseFloat(merchantObj.lon)),
                            map: map,
-                           title: merchantObj.name,
                            icon : icon
                         });
                         
@@ -161,21 +160,16 @@
                                     maxWidth : 240
                                 });
                                                            
-                                infowindow.open(map,marker);
+                                infowindow.open(map, marker);
                              });
                          }(marker));
                       
                         markersArray.push(marker);
                    }
-                
                 }
                 
-                
                 this.zoomToOptimimum = function() {
-                    
                     var nVisible = this.countVisible();
-                    
-                    console.log('nVisible ' + nVisible);
                     
                     if (nVisible == 0) {
                         map.setZoom(3);
@@ -218,15 +212,14 @@
                         return;
                     }
                     
-                    
                     self.hasLoadedMerchants = true;
                     
                     $.ajax({
                         type: "GET",
                         url: 'http://merchant-directory.blockchain.info/cgi-bin/btcd.pl',
                         timeout: 60000,
-                        encoding:"UTF-8",
                         dataType : 'json',
+                        contentType: 'application/x-www-form-urlencoded; charset=ISO-8859-1',
                         data: {
                             ULAT: lat,
                             ULON: long,

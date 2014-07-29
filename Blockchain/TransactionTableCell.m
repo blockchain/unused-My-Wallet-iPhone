@@ -157,6 +157,12 @@
 
 -(void)seLatestBlock:(LatestBlock*)block {
     
+    // Hide confirmations if we're offline
+    if (!block) {
+        [confirmationsButton setHidden:TRUE];
+        return;
+    }
+
     int confirmations = block.height - transaction.block_height + 1;
 
     if (confirmations <= 0 || transaction.block_height == 0) {

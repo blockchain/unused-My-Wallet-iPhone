@@ -19,8 +19,7 @@
 	BOOL dismissed;
 }
 
-+ (void)logException:(NSException*)exception;
-
++ (void)logException:(NSException*)exception walletIsLoaded:(BOOL)walletIsLoaded walletIsInitialized:(BOOL)walletIsInitialized;
 @end
 
 void SignalHandler(int signal);

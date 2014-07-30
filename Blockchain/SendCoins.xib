@@ -158,7 +158,7 @@
                                 <action selector="sendPaymentClicked:" destination="-1" eventType="touchUpInside" id="aHu-Zy-1yz"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" clearsOnBeginEditing="YES" minimumFontSize="17" id="52" userLabel="Amount No Border Style Text Field - 0.00">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" minimumFontSize="17" id="52" userLabel="Amount No Border Style Text Field - 0.00">
                             <rect key="frame" x="67" y="13" width="189" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>

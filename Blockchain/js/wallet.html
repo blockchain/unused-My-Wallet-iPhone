@@ -185,6 +185,77 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
     return id;
 }
 
+MyWalletPhone.getKeyGetFromPinServer = function(key, pin) {
+    $.ajax({
+        type: "POST",
+        url: root + 'pin-store',
+        timeout: 60000,
+        dataType: 'json',
+        data: {
+           format: 'json',
+           method: 'get',
+           pin : pin,
+           key : key
+       },
+       success: function (responseObject) {
+           device.execute('on_pin_code_get_response:', responseObject)
+       },
+       error: function (res) {
+           if (!res.responseText && res.responseText.length > 0) {
+                device.execute('on_error_pin_code_get_error:', 'Unknown Error');
+           } else {
+                try {
+                    var responseObject = $.parseJSON(res.responseText);
+           
+                    if (!responseObject) {
+                        throw 'Response Object nil';
+                    }
+           
+                    device.execute('on_pin_code_get_response:', responseObject)
+                } catch (e) {
+                    evice.execute('on_error_pin_code_get_error:', res.responseText);
+                }
+           }
+       }
+    });
+}
+
+MyWalletPhone.pinServerPutKeyOnPinServer = function(key, value, pin) {
+    $.ajax({
+        type: "POST",
+        url: root + 'pin-store',
+        timeout: 60000,
+        data: {
+            format: 'plain',
+            method: 'put',
+            value : value,
+            pin : pin,
+            key : key
+        },
+        success: function (responseObject) {
+           device.execute('on_pin_code_put_response:', responseObject)
+        },
+        error: function (res) {
+            if (!res.responseText && res.responseText.length > 0) {
+                device.execute('on_error_pin_code_put_error:', 'Unknown Error');
+           } else {
+                try {
+                    var responseObject = $.parseJSON(res.responseText);
+           
+                    if (!responseObject) {
+                        throw 'Response Object nil';
+                    }
+           
+                    device.execute('on_pin_code_put_response:', responseObject)
+                } catch (e) {
+                    evice.execute('on_error_pin_code_put_error:', res.responseText);
+                }
+           }
+        }
+    });
+}
+
+
 MyWalletPhone.getWsReadyState = function() {
     if (!ws) return -1;
 

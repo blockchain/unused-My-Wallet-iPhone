@@ -16,15 +16,11 @@
 		84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC611987B36B000E8DC8 /* MainWindow.xib */; };
 		84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC631987B5E9000E8DC8 /* merchant.html */; };
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
-		84AEEC791987D5EC000E8DC8 /* marker_atm_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6A1987D5EC000E8DC8 /* marker_atm_off.png */; };
 		84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */; };
-		84AEEC7C1987D5EC000E8DC8 /* marker_cafe_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6D1987D5EC000E8DC8 /* marker_cafe_off.png */; };
 		84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */; };
 		84AEEC7F1987D5EC000E8DC8 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC701987D5EC000E8DC8 /* marker_drink_off.png */; };
 		84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC711987D5EC000E8DC8 /* marker_drink.png */; };
-		84AEEC821987D5EC000E8DC8 /* marker_eat_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC731987D5EC000E8DC8 /* marker_eat_off.png */; };
 		84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC741987D5EC000E8DC8 /* marker_eat.png */; };
-		84AEEC851987D5EC000E8DC8 /* marker_spend_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC761987D5EC000E8DC8 /* marker_spend_off.png */; };
 		84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC771987D5EC000E8DC8 /* marker_spend.png */; };
 		84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC871987D9C7000E8DC8 /* marker_atm@2x.png */; };
 		84AEEC8D1987D9C7000E8DC8 /* marker_cafe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC881987D9C7000E8DC8 /* marker_cafe@2x.png */; };
@@ -33,7 +29,6 @@
 		84AEEC901987D9C7000E8DC8 /* marker_spend@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC8B1987D9C7000E8DC8 /* marker_spend@2x.png */; };
 		84AEEC961987E4E8000E8DC8 /* marker_atm_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC911987E4E8000E8DC8 /* marker_atm_off.png */; };
 		84AEEC971987E4E8000E8DC8 /* marker_cafe_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC921987E4E8000E8DC8 /* marker_cafe_off.png */; };
-		84AEEC981987E4E8000E8DC8 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC931987E4E8000E8DC8 /* marker_drink_off.png */; };
 		84AEEC991987E4E8000E8DC8 /* marker_eat_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC941987E4E8000E8DC8 /* marker_eat_off.png */; };
 		84AEEC9A1987E4E8000E8DC8 /* marker_spend_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC951987E4E8000E8DC8 /* marker_spend_off.png */; };
 		84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */; };
@@ -1020,7 +1015,7 @@
 				ORGANIZATIONNAME = "Qkos Services Ltd";
 				TargetAttributes = {
 					9FB3637014B60128004BEA02 = {
-						DevelopmentTeam = C76FGYXTS5;
+						DevelopmentTeam = NZ6PH75U7K;
 					};
 				};
 			};
@@ -1053,7 +1048,6 @@
 				84AEEC9A1987E4E8000E8DC8 /* marker_spend_off.png in Resources */,
 				C9C17A9F197FD0C600BF8A4E /* import-export.js in Resources */,
 				C9C17AA0197FD0C600BF8A4E /* jquery.min.js in Resources */,
-				84AEEC851987D5EC000E8DC8 /* marker_spend_off.png in Resources */,
 				C9C17AA1197FD0C600BF8A4E /* shared.js in Resources */,
 				C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */,
 				84AEEC971987E4E8000E8DC8 /* marker_cafe_off.png in Resources */,
@@ -1061,7 +1055,6 @@
 				C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				84AEEC961987E4E8000E8DC8 /* marker_atm_off.png in Resources */,
-				84AEEC821987D5EC000E8DC8 /* marker_eat_off.png in Resources */,
 				84AEEC8E1987D9C7000E8DC8 /* marker_drink@2x.png in Resources */,
 				84AEEC901987D9C7000E8DC8 /* marker_spend@2x.png in Resources */,
 				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
@@ -1075,13 +1068,11 @@
 				9F765EF314BBC2C800048EFB /* divider.png in Resources */,
 				84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */,
 				9F765EF514BBC2CF00048EFB /* divider@2x.png in Resources */,
-				84AEEC791987D5EC000E8DC8 /* marker_atm_off.png in Resources */,
 				C9BE91801945D8F600FD516D /* PEKeyboard-1-dot.png in Resources */,
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				ECE9A9911959968F00255292 /* camera-icon@2x.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
 				84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */,
-				84AEEC7C1987D5EC000E8DC8 /* marker_cafe_off.png in Resources */,
 				9F765F2F14BC5CB100048EFB /* header@2x.png in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */,
@@ -1124,7 +1115,6 @@
 				9F7480DA151405B700BC4292 /* payment_received@2x.png in Resources */,
 				84F4BDF6197E71AF00B7BF7B /* header.png in Resources */,
 				9F7480DD151405D200BC4292 /* payment_sent@2x.png in Resources */,
-				84AEEC981987E4E8000E8DC8 /* marker_drink_off.png in Resources */,
 				C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */,
 				9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */,
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,

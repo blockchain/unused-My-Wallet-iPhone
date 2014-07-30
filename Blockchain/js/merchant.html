@@ -128,26 +128,26 @@
                         
                         switch(type) {
                            case HEADING_CAFE :
-                            var icon = 'marker_cafe.png';
+                            var icon = 'marker_cafe@2x.png';
                            break;
                            case HEADING_BAR :
-                            var icon = 'marker_drink.png';
+                            var icon = 'marker_drink@2x.png';
                            break;
                            case HEADING_RESTAURANT :
-                            var icon = 'marker_eat.png';
+                            var icon = 'marker_eat@2x.png';
                            break;
                            case HEADING_SPEND :
-                            var icon = 'marker_spend.png';
+                            var icon = 'marker_spend@2x.png';
                            break;
                            case HEADING_ATM :
-                            var icon = 'marker_atm.png';
+                            var icon = 'marker_atm@2x.png';
                            break;
                        }
                         
                         var marker = new google.maps.Marker({
                            position: new google.maps.LatLng(parseFloat(merchantObj.lat), parseFloat(merchantObj.lon)),
                            map: map,
-                           icon : icon
+                           icon : new google.maps.MarkerImage(icon, null, null, null, new google.maps.Size(36,36))
                         });
                         
                          //Copy all the properties from merchantObj to the Gmap marker

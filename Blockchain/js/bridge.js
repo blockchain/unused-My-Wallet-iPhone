@@ -149,11 +149,23 @@ function JSBridgeObj_SendObject(success, error)
  */
 function JSBridge_getJsonStringForObjectWithId(objId)
 {
-    var jsonStr = JSBridge_objArray[objId];
+    var jsonObject = JSBridge_objArray[objId];
 
     JSBridge_objArray[objId] = null;
     
-    return JSON.stringify(jsonStr);
+    var seen = [];
+    var jsonSring = JSON.stringify(jsonObject, function(key, val) {
+      if (val != null && typeof val == "object") {
+        if (seen.indexOf(val) >= 0)
+          return;
+                          
+        seen.push(val);
+      }
+      return val
+    });
+    seen = null;
+    
+    return jsonSring;
 }
 
 function JSBridge_setResponseWithId(objId, value, success)

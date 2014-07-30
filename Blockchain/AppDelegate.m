@@ -40,7 +40,6 @@ AppDelegate * app;
 @synthesize modalView;
 @synthesize latestResponse;
 
-
 #pragma mark - Lifecycle
 
 -(id)init {
@@ -513,59 +512,55 @@ AppDelegate * app;
 
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
     
-    @try {        
-        //Cannot re-display a modal which is already in the modalChain
-        for (MyUIModalView * chainModal in self.modalChain) {
-            if (([contentView superview] && [contentView superview] == chainModal.modalContentView) || chainModal.modalContentView == contentView) {
-                return;
-            }
-        }
-        
-        //This modal is already being displayed in another view
-        if ([contentView superview]) {
+    //Cannot re-display a modal which is already in the modalChain
+    for (MyUIModalView * chainModal in self.modalChain) {
+        if (([contentView superview] && [contentView superview] == chainModal.modalContentView) || chainModal.modalContentView == contentView) {
             return;
         }
-        
-        if (modalView) {
-            [modalView removeFromSuperview];
+    }
+    
+    //This modal is already being displayed in another view
+    if ([contentView superview]) {
+        return;
+    }
+    
+    if (modalView) {
+        [modalView removeFromSuperview];
 
-            if (modalView.isClosable) {
-                if (self.modalView.onDismiss) {
-                    self.modalView.onDismiss();
-                    self.modalView.onDismiss = nil;
-                }
-            } else {
-                [self.modalChain addObject:modalView];
+        if (modalView.isClosable) {
+            if (self.modalView.onDismiss) {
+                self.modalView.onDismiss();
+                self.modalView.onDismiss = nil;
             }
-            
-            self.modalView = nil;
+        } else {
+            [self.modalChain addObject:modalView];
         }
         
-        [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
-        
-        [modalView.modalContentView addSubview:contentView];
-        
-        modalView.isClosable = _isClosable;
-        
-        modalView.frame = _window.frame;
-        
-        self.modalView.onDismiss = onDismiss;
-        self.modalView.onResume = onResume;
-        
-        if (onResume) {
-            onResume();
-        }
-        
-        contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
-        
-        [_window.rootViewController.view addSubview:modalView];
-        
-        [_window.rootViewController.view bringSubviewToFront:busyView];
-        
-        [_window.rootViewController.view endEditing:TRUE];
-     } @catch (NSException * e) {
-         [UncaughtExceptionHandler logException:e];
-     }
+        self.modalView = nil;
+    }
+    
+    [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
+    
+    [modalView.modalContentView addSubview:contentView];
+    
+    modalView.isClosable = _isClosable;
+    
+    modalView.frame = _window.frame;
+    
+    self.modalView.onDismiss = onDismiss;
+    self.modalView.onResume = onResume;
+    
+    if (onResume) {
+        onResume();
+    }
+    
+    contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
+    
+    [_window.rootViewController.view addSubview:modalView];
+    
+    [_window.rootViewController.view bringSubviewToFront:busyView];
+    
+    [_window.rootViewController.view endEditing:TRUE];
     
     @try {
         CATransition *animation = [CATransition animation]; 

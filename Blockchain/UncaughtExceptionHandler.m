@@ -89,18 +89,19 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
             appDisplayName, majorVersion, minorVersion];
 }
 
-+ (void)logException:(NSException*)exception
++ (void)logException:(NSException*)exception walletIsLoaded:(BOOL)walletIsLoaded walletIsInitialized:(BOOL)walletIsInitialized
 {
     NSString * message = [NSString stringWithFormat:@"<pre>Reason: %@\n\nStacktrace:%@\n\nApp Version: %@\nSystem Name: %@ -  System Version: %@\nActive View Controller: %@\nWallet State: JSLoaded = %@, isInitialized = %@</pre>",
-                                                      [exception reason],
-                                                      [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey],
-                                                      [self appNameAndVersionNumberDisplayString],
-                                                      [[UIDevice currentDevice] systemName],
-                                                      [[UIDevice currentDevice] systemVersion],
-                                                      [app.tabViewController.activeViewController class],
-                                                      [app.wallet.webView isLoaded] ? @"TRUE" : @"FALSE",
-                                                      [app.wallet isInitialized] ? @"TRUE" : @"FALSE"
-                                                      ];
+      [exception reason],
+      [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey],
+      [self appNameAndVersionNumberDisplayString],
+      [[UIDevice currentDevice] systemName],
+      [[UIDevice currentDevice] systemVersion],
+      [app.tabViewController.activeViewController class],
+       walletIsLoaded ? @"TRUE" : @"FALSE",
+       walletIsInitialized? @"TRUE" : @"FALSE"
+    ];
+    
     DLog(@"Logging exception: %@", message);
 
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -115,47 +116,45 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 
 - (void)handleException:(NSException *)exception
 {
+    BOOL walletIsLoaded = [app.wallet.webView isLoaded];
+    BOOL walletIsInitialized = [app.wallet isInitialized];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        [UncaughtExceptionHandler logException:exception];
+        [UncaughtExceptionHandler logException:exception walletIsLoaded:walletIsLoaded walletIsInitialized:walletIsInitialized];
     });
 	
+    NSString * message = [NSString stringWithFormat:NSLocalizedString(
+                                                                      @"The application encountered a fatal error and will close shortly.\n\n"
+                                                                      @"Debug details follow:\n%@\n%@", nil),
+                          [exception reason],
+                          [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]];
+    
 	UIAlertView *alert =
-		[[UIAlertView alloc]
-			initWithTitle:NSLocalizedString(@"Unhandled exception", nil)
-			message:[NSString stringWithFormat:NSLocalizedString(
-				@"You can try to continue but the application may be unstable.\n\n"
-				@"Debug details follow:\n%@\n%@", nil),
-				[exception reason],
-				[[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]]
-			delegate:self
-			cancelButtonTitle:NSLocalizedString(@"Quit", nil)
-			otherButtonTitles:NSLocalizedString(@"Continue", nil), nil];
+    [[UIAlertView alloc]
+     initWithTitle:NSLocalizedString(@"Unhandled exception", nil)
+     message:message
+     delegate:self
+     cancelButtonTitle:nil
+     otherButtonTitles:nil];
 	[alert show];
 	
 	CFRunLoopRef runLoop = CFRunLoopGetCurrent();
 	CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
 	
+    NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
 	while (!dismissed) {
+        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+
 		for (NSString *mode in (__bridge NSArray *)allModes) {
 			CFRunLoopRunInMode((__bridge CFStringRef)mode, 0.001, false);
 		}
+        
+        if (now - start > 20.0f) {
+            break;
+        }
 	}
 	
 	CFRelease(allModes);
-
-	NSSetUncaughtExceptionHandler(NULL);
-	signal(SIGABRT, SIG_DFL);
-	signal(SIGILL, SIG_DFL);
-	signal(SIGSEGV, SIG_DFL);
-	signal(SIGFPE, SIG_DFL);
-	signal(SIGBUS, SIG_DFL);
-	signal(SIGPIPE, SIG_DFL);
-	
-	if ([[exception name] isEqual:UncaughtExceptionHandlerSignalExceptionName]) {
-		kill(getpid(), [[[exception userInfo] objectForKey:UncaughtExceptionHandlerSignalKey] intValue]);
-	} else {
-		[exception raise];
-	}
 }
 
 @end
@@ -182,7 +181,7 @@ void HandleException(NSException *exception)
 				exceptionWithName:[exception name]
 				reason:[exception reason]
 				userInfo:userInfo]
-		waitUntilDone:YES];
+        waitUntilDone:YES];
 }
 
 void SignalHandler(int signal)
@@ -222,11 +221,11 @@ void SignalHandler(int signal)
 void InstallUncaughtExceptionHandler()
 {
 	NSSetUncaughtExceptionHandler(&HandleException);
-	signal(SIGABRT, SignalHandler);
+	/*signal(SIGABRT, SignalHandler);
 	signal(SIGILL, SignalHandler);
 	signal(SIGSEGV, SignalHandler);
 	signal(SIGFPE, SignalHandler);
 	signal(SIGBUS, SignalHandler);
-	signal(SIGPIPE, SignalHandler);
+	signal(SIGPIPE, SignalHandler);*/
 }
 

@@ -568,7 +568,7 @@
 }
 
 -(void)on_pin_code_put_response:(NSDictionary*)responseObject {
-    DLog(@"on_pin_code_put_response:");
+    DLog(@"on_pin_code_put_response: %@", responseObject);
     
     if ([delegate respondsToSelector:@selector(didPutPinSuccess:)])
         [delegate didPutPinSuccess:responseObject];

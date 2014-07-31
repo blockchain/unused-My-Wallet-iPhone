@@ -132,7 +132,6 @@ AppDelegate * app;
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
         }
-
     }
 
     return TRUE;

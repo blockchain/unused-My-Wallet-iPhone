@@ -303,7 +303,7 @@ AppDelegate * app;
     [_receiveViewController reload];
     [_sendViewController reload];
     
-    [app closeModal];
+    [app closeAllModals];
     
     if (![app isPINSet]) {
         [app showPinModal];
@@ -354,25 +354,34 @@ AppDelegate * app;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    
+    [app closeAllModals];
+
     if ([wallet isInitialized]) {
+        [self closePINModal:NO]; //Close PIN Modal incase we are setting it
+        
+        if ([self isPINSet])
+            [self showPinModal];
+
         [self beginBackgroundUpdateTask];
 
         [self logout];
-        
-        [self showPinModal];
+    } else {
+        [self closePINModal:NO];
     }
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    
-    if (![self guid] || ![self sharedKey]) {
-        [app showWelcome];
+- (void)applicationWillEnterForeground:(UIApplication *)application {    
+    if (![wallet isInitialized]) {
+        [app showWelcome:FALSE];
+        
+        if ([self guid] && [self guid]) {
+            NSLog(@"Show Password");
+            [self showModal:mainPasswordView isClosable:FALSE];
+        }
     }
 }
 
 -(void)playBeepSound {
-    
 	if (beepSoundID == 0) {
 		AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"]], &beepSoundID);
 	}
@@ -516,6 +525,39 @@ AppDelegate * app;
     [secondPasswordTextField becomeFirstResponder];
 }
 
+
+-(void)closeAllModals {
+    [modalView removeFromSuperview];
+    
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:ANIMATION_DURATION];
+    [animation setType:kCATransitionFade];
+    
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [[_window layer] addAnimation:animation forKey:@"HideModal"];
+    
+    if (self.modalView.onDismiss) {
+        self.modalView.onDismiss();
+        self.modalView.onDismiss = nil;
+    }
+    
+    self.modalView = nil;
+    
+    for (MyUIModalView * modalChainView in self.modalChain) {
+        
+        for (UIView * subView in [modalChainView.modalContentView subviews]) {
+            [subView removeFromSuperview];
+        }
+        
+        [modalChainView.modalContentView removeFromSuperview];
+        
+        if (modalChainView.onDismiss) {
+            modalChainView.onDismiss();
+        }
+    }
+    
+    [self.modalChain removeAllObjects];
+}
 
 -(void)closeModal {
     [modalView removeFromSuperview];
@@ -696,12 +738,9 @@ AppDelegate * app;
             
             [app forgetWallet];
             
-            //If the user has no PIN set force them to create one now
-            if (![app isPINSet]) {
-                [app showPinModal];
+            [app clearPin];
             
-                [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
-            }
+            [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
             
             [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"]];
             
@@ -818,6 +857,11 @@ AppDelegate * app;
 
 -(BOOL)isPINSet {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"pinKey"] != nil && [[NSUserDefaults standardUserDefaults] objectForKey:@"encryptedPINPassword"] != nil;
+}
+
+-(void)closePINModal:(BOOL)animated
+{
+    [_tabViewController dismissViewControllerAnimated:animated completion:^{ }];
 }
 
 - (void)showPinModal
@@ -1098,7 +1142,7 @@ AppDelegate * app;
     
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 0) {
-            [_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
+            [self closePINModal:YES];
             
             [self showMainPasswordModalOrWelcomeMenu];
         } else if (buttonIndex == 1) {
@@ -1126,7 +1170,7 @@ AppDelegate * app;
         
         [self showMainPasswordModalOrWelcomeMenu];
         
-        [_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
+        [self closePINModal:YES];
     } else if ([code integerValue] == PIN_API_STATUS_PIN_INCORRECT) {
         [app standardNotify:error];
     } else if ([code intValue] == PIN_API_STATUS_OK) {
@@ -1147,9 +1191,7 @@ AppDelegate * app;
         
         app.wallet.password = decrypted;
         
-        if(self.pinEntryViewController.verifyOnly == YES) {
-			[_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
-		}
+        [self closePINModal:YES];
 
         pinSuccess = TRUE;
     } else {
@@ -1166,12 +1208,12 @@ AppDelegate * app;
 -(void)didFailPutPin:(NSString*)value {
     [app standardNotify:@"Error Saving PIN"];
     
-    [_tabViewController dismissViewControllerAnimated:YES completion:nil];
+    [self closePINModal:YES];
 }
 
 -(void)didPutPinSuccess:(NSDictionary*)dictionary {
     if (![app.wallet isInitialized] || !app.wallet.password) {
-        [app standardNotify:@"Cannot save PIN Code while wallet is not initialized or password is null"];
+        [self didFailPutPin:@"Cannot save PIN Code while wallet is not initialized or password is null"];
         return;
     }
     
@@ -1204,7 +1246,7 @@ AppDelegate * app;
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         // Update your info to new pin code
-        [_tabViewController dismissViewControllerAnimated:YES completion:nil];
+        [self closePINModal:YES];
         
         [app standardNotify:@"PIN Saved Successfully" title:@"Success" delegate:nil];
     }
@@ -1213,7 +1255,7 @@ AppDelegate * app;
 - (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)_pin
 {
     if (![app.wallet isInitialized] || !app.wallet.password) {
-        [app standardNotify:@"Cannot save PIN Code while wallet is not initialized or password is null"];
+        [self didFailPutPin:@"Cannot save PIN Code while wallet is not initialized or password is null"];
         return;
     }
     
@@ -1242,7 +1284,7 @@ AppDelegate * app;
 - (void)pinEntryControllerDidCancel:(PEPinEntryController *)c
 {
 	DLog(@"Pin change cancelled!");
-	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
+	[self closePINModal:YES];
 }
 
 #pragma mark - Format helpers

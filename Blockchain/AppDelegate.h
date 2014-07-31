@@ -111,7 +111,6 @@
 @property (nonatomic, copy) void (^pinViewControllerCallback)(BOOL);
 @property (nonatomic, assign) NSUInteger lastEnteredPIN;
 
-
 @property(nonatomic, strong) NSNumberFormatter * btcFormatter;
 @property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
 

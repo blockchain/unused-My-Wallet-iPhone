@@ -74,9 +74,7 @@
     [app forgetWallet];
     
     [app clearPin];
-    
-    [app showPinModal];
-    
+        
     [app.wallet loadGuid:guid sharedKey:sharedKey];
     
     app.wallet.password = password;

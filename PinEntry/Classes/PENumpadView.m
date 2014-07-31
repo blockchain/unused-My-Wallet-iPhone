@@ -57,12 +57,15 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 
 - (id)init
 {
+    self.isEnabled = TRUE;
+    
 	return [self initWithFrame:CGRectMake(0, 460-216, 320, 216)];
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
 	if( (self = [super initWithFrame:frame]) ) {
+        self.isEnabled = TRUE;
 		activeClip = -1;
 		self.detailButon = PEKeyboardDetailNone;
 	}
@@ -72,6 +75,8 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if( (self = [super initWithCoder:aDecoder]) ) {
+        self.isEnabled = TRUE;
+
 		activeClip = -1;
 		self.detailButon = PEKeyboardDetailNone;
 	}
@@ -90,6 +95,9 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.isEnabled)
+        return;
+    
 	UITouch *t = [touches anyObject];
 	CGPoint p = [t locationInView:self];
 	for(int i=0; i<12; ++i) {
@@ -103,6 +111,9 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.isEnabled)
+        return;
+    
 	[self touchesBegan:touches withEvent:event];
 }
 
@@ -114,6 +125,9 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.isEnabled)
+        return;
+    
 	if(activeClip >= 0) {
 		switch(activeClip) {
 			case 9:

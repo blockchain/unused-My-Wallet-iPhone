@@ -875,7 +875,8 @@ AppDelegate * app;
     self.pinEntryViewController.pinDelegate = self;
     
     [_window.rootViewController presentViewController:self.pinEntryViewController animated:NO completion:nil];
-//    [_window bringSubviewToFront:self.pinEntryViewController.view];
+    
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 }
 
 // Modal menu
@@ -1118,13 +1119,11 @@ AppDelegate * app;
     NSString * pinKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"pinKey"];
     NSString * pin = [NSString stringWithFormat:@"%d", _pin];
     
+    [self.pinEntryViewController setActivityIndicatorAnimated:TRUE];
+
     [app.wallet apiGetPINValue:pinKey pin:pin];
     
     self.pinViewControllerCallback = callback;
-}
-
--(void)didFailGetPin:(NSString*)value {
-    [self askIfUserWantsToResetPIN];
 }
 
 -(void)askIfUserWantsToResetPIN {
@@ -1148,7 +1147,16 @@ AppDelegate * app;
 
 }
 
+
+-(void)didFailGetPin:(NSString*)value {
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
+    
+    [self askIfUserWantsToResetPIN];
+}
+
 -(void)didGetPinSuccess:(NSDictionary*)dictionary {
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
+    
     NSNumber * code = [dictionary objectForKey:@"code"]; //This is a status code from the server
     NSString * error = [dictionary objectForKey:@"error"]; //This is an error string from the server or nil
     NSString * success = [dictionary objectForKey:@"success"]; //The PIN decryption value from the server
@@ -1200,12 +1208,16 @@ AppDelegate * app;
 }
 
 -(void)didFailPutPin:(NSString*)value {
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
+
     [app standardNotify:@"Error Saving PIN"];
     
     [self closePINModal:YES];
 }
 
 -(void)didPutPinSuccess:(NSDictionary*)dictionary {
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
+
     if (![app.wallet isInitialized] || !app.wallet.password) {
         [self didFailPutPin:@"Cannot save PIN Code while wallet is not initialized or password is null"];
         return;
@@ -1272,6 +1284,8 @@ AppDelegate * app;
     
     NSString * pin = [NSString stringWithFormat:@"%d", _pin];
     
+    [self.pinEntryViewController setActivityIndicatorAnimated:TRUE];
+
     [app.wallet pinServerPutKeyOnPinServerServer:key value:value pin:pin];
 }
 

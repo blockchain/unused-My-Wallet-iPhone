@@ -76,6 +76,7 @@ static PEViewController *VerifyController()
 	PEViewController *c = EnterController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
+    n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = YES;
 	return n;
@@ -87,6 +88,7 @@ static PEViewController *VerifyController()
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
 	c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
+    n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = NO;
 	return n;
@@ -97,9 +99,25 @@ static PEViewController *VerifyController()
 	PEViewController *c = NewController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
+    n->pinController = c;
 	n->pinStage = PS_ENTER1;
 	n->verifyOnly = NO;
 	return n;
+}
+
+-(void)setActivityIndicatorAnimated:(BOOL)animated {
+    
+    pinController->keyboard.isEnabled = !animated;
+    
+    pinController->pin0.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin1.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin2.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin3.alpha = animated ? 0.75f : 1.0f;
+
+    if (animated)
+        [pinController.activityIndicator startAnimating];
+    else
+        [pinController.activityIndicator stopAnimating];
 }
 
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller

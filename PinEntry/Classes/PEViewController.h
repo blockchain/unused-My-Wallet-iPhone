@@ -38,23 +38,26 @@
 
 @interface PEViewController : UIViewController <PENumpadViewDelegate>
 {
+@public
 	IBOutlet UIImageView *pin0;
 	IBOutlet UIImageView *pin1;
 	IBOutlet UIImageView *pin2;
 	IBOutlet UIImageView *pin3;
-	IBOutlet PENumpadView *keyboard;
 	IBOutlet UILabel *promptLabel;
 	UIImageView *pins[4];
 	NSString *pin;
 	id <PEViewControllerDelegate> __weak delegate;
+    IBOutlet PENumpadView *keyboard;
 }
 @property (nonatomic, readonly, strong) NSString *pin;
 @property (nonatomic, readwrite, copy) NSString *prompt;
 @property (nonatomic, readwrite, weak) id <PEViewControllerDelegate> delegate;
 @property (nonatomic, strong) IBOutlet UILabel *versionLabel;
 @property (nonatomic, strong) IBOutlet UIButton *cancelButton;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView * activityIndicator;
 
 - (void)resetPin;
 - (IBAction)cancelChangePin:(id)sender;
+- (void)setPin:(int)p enabled:(BOOL)yes;
 
 @end

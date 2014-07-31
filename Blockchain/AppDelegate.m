@@ -111,12 +111,28 @@ AppDelegate * app;
             [self showMainPasswordModalOrWelcomeMenu];
         }
         
+        
         NSString * guid = [self guid];
         NSString * sharedKey = [self sharedKey];
         
         if (guid && sharedKey) {
             [self.wallet loadGuid:guid sharedKey:sharedKey];
         }
+        
+        /* Old Password & PIN */
+        NSString * password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+        NSString * pin = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
+        
+        if (password && pin) {
+            self.wallet.password = password;
+            
+            [self savePIN:pin];
+            
+            //Remove now save
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
+        }
+
     }
 
     return TRUE;

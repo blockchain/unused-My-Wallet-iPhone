@@ -299,6 +299,13 @@ AppDelegate * app;
     
     [app closeAllModals];
     
+    //Becuase we are not storing the password on the device. We record the first few letters of the hashed password.
+    //With the hash prefix we can then figure out if the password changed
+    NSString * passwordPartHash = [[NSUserDefaults standardUserDefaults] objectForKey:@"passwordPartHash"];
+    if (![[[app.wallet.password SHA256] substringToIndex:MIN([app.wallet.password length], 5)] isEqualToString:passwordPartHash]) {
+        [self clearPin];
+    }
+    
     if (![app isPINSet]) {
         [app showPinModal];
     }
@@ -846,6 +853,7 @@ AppDelegate * app;
 
 -(void)clearPin {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"encryptedPINPassword"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"passwordPartHash"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pinKey"];
 }
 
@@ -1052,7 +1060,7 @@ AppDelegate * app;
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([mainPasswordTextField.text length] < 10) {
-        [app standardNotify:@"Passowrd must be 10 or more characters in length"];
+        [app standardNotify:@"Password must be 10 or more characters in length"];
         return;
     }
     
@@ -1060,6 +1068,7 @@ AppDelegate * app;
     NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     
     if (guid && sharedKey && password) {
+        
         [self.wallet loadGuid:guid sharedKey:sharedKey];
 
         self.wallet.password = password;
@@ -1247,7 +1256,7 @@ AppDelegate * app;
         }
         
         [[NSUserDefaults standardUserDefaults] setValue:encrypted forKey:@"encryptedPINPassword"];
-        
+        [[NSUserDefaults standardUserDefaults] setValue:[[app.wallet.password SHA256] substringToIndex:MIN([app.wallet.password length], 5)] forKey:@"passwordPartHash"];
         [[NSUserDefaults standardUserDefaults] setValue:key forKey:@"pinKey"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         

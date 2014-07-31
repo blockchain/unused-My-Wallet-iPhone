@@ -70,12 +70,6 @@ AppDelegate * app;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-//    unsigned int x;
-//    unsigned int y;
-//    zbar_version(&x, &y);
-//    DLog(@"zbar version: %d %d", x, y);
-    
-    
     //Allocate the global wallet
     self.wallet = [[Wallet alloc] init];
     
@@ -359,9 +353,10 @@ AppDelegate * app;
     if ([wallet isInitialized]) {
         [self closePINModal:NO]; //Close PIN Modal incase we are setting it
         
-        if ([self isPINSet])
+        if ([self isPINSet]) {
             [self showPinModal];
-
+        }
+        
         [self beginBackgroundUpdateTask];
 
         [self logout];
@@ -370,12 +365,11 @@ AppDelegate * app;
     }
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {    
+- (void)applicationWillEnterForeground:(UIApplication *)application {
     if (![wallet isInitialized]) {
         [app showWelcome:FALSE];
         
         if ([self guid] && [self guid]) {
-            NSLog(@"Show Password");
             [self showModal:mainPasswordView isClosable:FALSE];
         }
     }

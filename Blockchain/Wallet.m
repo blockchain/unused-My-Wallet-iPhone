@@ -553,7 +553,7 @@
 }
 
 -(void)on_error_creating_new_account:(NSString*)message {
-    //NSLog(@"on_error_creating_new_account:%@", message);
+    DLog(@"on_error_creating_new_account:");
     
     if ([delegate respondsToSelector:@selector(errorCreatingNewAccount:)])
         [delegate errorCreatingNewAccount:message];

@@ -203,7 +203,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
            device.execute('on_pin_code_get_response:', [responseObject])
        },
        error: function (res) {
-           if (!res.responseText && res.responseText.length > 0) {
+           if (!res.responseText || res.responseText.length == 0) {
                 device.execute('on_error_pin_code_get_error:', ['Unknown Error']);
            } else {
                 try {
@@ -243,7 +243,7 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
            device.execute('on_pin_code_put_response:', [responseObject])
         },
         error: function (res) {
-            if (!res.responseText && res.responseText.length > 0) {
+            if (!res.responseText || res.responseText.length == 0) {
                 device.execute('on_error_pin_code_put_error:', ['Unknown Error']);
            } else {
                 try {

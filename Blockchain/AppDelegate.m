@@ -1236,7 +1236,7 @@ AppDelegate * app;
 -(void)didFailPutPin:(NSString*)value {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 
-    [app standardNotify:@"Error Saving PIN"];
+    [app standardNotify:value];
     
     [self closePINModal:YES];
 }
@@ -1244,7 +1244,7 @@ AppDelegate * app;
 -(void)didPutPinSuccess:(NSDictionary*)dictionary {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 
-    if (![app.wallet isInitialized] || !app.wallet.password) {
+    if (!app.wallet.password) {
         [self didFailPutPin:@"Cannot save PIN Code while wallet is not initialized or password is null"];
         return;
     }

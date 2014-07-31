@@ -105,20 +105,23 @@ static PEViewController *VerifyController()
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller
 {
 	switch (pinStage) {
-		case PS_VERIFY:
-			if(![self.pinDelegate pinEntryController:self shouldAcceptPin:[controller.pin intValue]]) {
-				controller.prompt = @"Incorrect pin. Please retry.";
-				[controller resetPin];
-			} else {
-				if(verifyOnly == NO) {
-					PEViewController *c = NewController();
-					c.delegate = self;
-					pinStage = PS_ENTER1;
-					[[self navigationController] pushViewController:c animated:YES];
-					self.viewControllers = [NSArray arrayWithObject:c];
-				}
-			}
+		case PS_VERIFY: {
+			[self.pinDelegate pinEntryController:self shouldAcceptPin:[controller.pin intValue] callback:^(BOOL yes) {
+                if (yes) {
+                    if(verifyOnly == NO) {
+                        PEViewController *c = NewController();
+                        c.delegate = self;
+                        pinStage = PS_ENTER1;
+                        [[self navigationController] pushViewController:c animated:YES];
+                        self.viewControllers = [NSArray arrayWithObject:c];
+                    }
+                } else {
+                    controller.prompt = @"Incorrect pin. Please retry.";
+                    [controller resetPin];
+                }
+            }];
 			break;
+        }
 		case PS_ENTER1: {
 			pinEntry1 = [controller.pin intValue];
 			PEViewController *c = VerifyController();

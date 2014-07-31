@@ -30,6 +30,7 @@
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
 #import "MerchantViewController.h"
+#import "NSData+Hex.h"
 
 AppDelegate * app;
 
@@ -100,27 +101,27 @@ AppDelegate * app;
     
     busyView.frame = _window.frame;
     busyView.alpha = 0.0f;
-
-    if ([self guid]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showPinModal];
-        });
-    }
     
-    if (![self guid] || ![self sharedKey]) {
-        [self showWelcome];
-    } else if (![self password]) {
-        [self showModal:mainPasswordView isClosable:FALSE];
-    } else {
+    [self showWelcome:FALSE];
+
+    //If either of this is nil we are not properyl paired
+    if ([self guid] && [self sharedKey]) {
+        //We are properly paired here
+        //If the PIN is set show the entry modal
+        if ([self isPINSet]) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self showPinModal];
+            });
+        } else {
+            //No PIN set we need to ask for the main password
+            [self showMainPasswordModalOrWelcomeMenu];
+        }
         
         NSString * guid = [self guid];
         NSString * sharedKey = [self sharedKey];
-        NSString * password = [self password];
         
-//        DLog(@"didFinishLaunchingWithOptions GUID %@", guid);
-        
-        if (guid && sharedKey && password) {
-            [self.wallet loadGuid:guid sharedKey:sharedKey password:password];
+        if (guid && sharedKey) {
+            [self.wallet loadGuid:guid sharedKey:sharedKey];
         }
     }
 
@@ -186,11 +187,11 @@ AppDelegate * app;
     }
 }
 
--(void)didWalletDecryptStart:(Wallet*)wallet {
+-(void)didWalletDecryptStart {
     [self networkActivityStart];
 }
 
--(void)didWalletDecryptSuccess:(Wallet*)wallet {
+-(void)didWalletDecryptFinish {
     [self networkActivityStop];
 }
 
@@ -247,29 +248,66 @@ AppDelegate * app;
     });
 }
 
--(void)didGenerateNewWallet:(Wallet*)_wallet password:(NSString*)password {
-    
-    [self forgetWallet];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:wallet.guid forKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] setObject:wallet.sharedKey forKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
+-(void)walletDidLoad {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self endBackgroundUpdateTask];
+    });
 }
 
--(void)walletDidLoad:(Wallet *)_wallet {      
-    DLog(@"walletDidLoad");
+-(void)walletFailedToLoad {
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //If the PIN View controller is visible don't dislay the error yet
+        if ([_tabViewController presentedViewController] == self.pinEntryViewController) {
+            return;
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed To Load Wallet"
+                                                        message:[NSString stringWithFormat:@"An error was encountered loading your wallet. You may be offline or Blockchain is experiencing difficulties. Please close the application and try again later or re-pair you device."]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Forget Wallet"
+                                              otherButtonTitles:@"Close App", nil];
+        
+        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                UIApplication *app = [UIApplication sharedApplication];
+                
+                [app performSelector:@selector(suspend)];
+            } else {
+                [self forgetWalletAlert:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    // Forget Wallet Cancelled
+                    if (buttonIndex == 0) {
+                        [self walletFailedToLoad];
+                    }
+                    // Forget Wallet Confirmed
+                    else if (buttonIndex == 1) {
+                        [self forgetWallet];
+                        [app showWelcome];
+                    }
+                }];
+            }
+        };
+        
+        [alert show];
+    });
+}
+
+-(void)walletDidDecrypt {
+    DLog(@"walletDidDecrypt");
     
     [self transitionToIndex:0];
 
-    [self setAccountData:wallet.guid sharedKey:wallet.sharedKey password:wallet.password];
+    [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
     
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
     
     [app closeModal];
+    
+    if (![app isPINSet]) {
+        [app showPinModal];
+    }
 }
 
 -(void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
@@ -286,14 +324,13 @@ AppDelegate * app;
     _transactionsViewController.latestBlock = block;
 }
 
--(void)walletFailedToDecrypt:(Wallet*)_wallet {    
+-(void)walletFailedToDecrypt {
+    [self showMainPasswordModalOrWelcomeMenu];
+}
+
+-(void)showMainPasswordModalOrWelcomeMenu {
     
-    if ([self guid]) {
-        self.wallet.password = nil;
-        
-        //Clear the password and refetch the wallet data
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-        
+    if ([self guid]) {        
         [self showModal:mainPasswordView isClosable:FALSE];
         
         [mainPasswordTextField becomeFirstResponder];
@@ -303,9 +340,26 @@ AppDelegate * app;
     }
 }
 
+- (void) beginBackgroundUpdateTask
+{
+    self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [self endBackgroundUpdateTask];
+    }];
+}
+
+- (void) endBackgroundUpdateTask
+{
+    [[UIApplication sharedApplication] endBackgroundTask: self.backgroundUpdateTask];
+    self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+}
+
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
-    if ([self guid]) {
+    if ([wallet isInitialized]) {
+        [self beginBackgroundUpdateTask];
+
+        [self logout];
+        
         [self showPinModal];
     }
 }
@@ -314,14 +368,7 @@ AppDelegate * app;
     
     if (![self guid] || ![self sharedKey]) {
         [app showWelcome];
-        return;
     }
-    
-    if (!wallet.password) {
-        [self walletFailedToDecrypt:wallet];
-    }
-
-    [self.wallet getWalletAndHistory];
 }
 
 -(void)playBeepSound {
@@ -511,16 +558,14 @@ AppDelegate * app;
 }
 
 -(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
-    
-    //Cannot re-display a modal which is already in the modalChain
-    for (MyUIModalView * chainModal in self.modalChain) {
-        if (([contentView superview] && [contentView superview] == chainModal.modalContentView) || chainModal.modalContentView == contentView) {
-            return;
-        }
-    }
-    
+
     //This modal is already being displayed in another view
     if ([contentView superview]) {
+        if (self.modalView.modalContentView == [contentView superview]) {
+            if (self.modalView.onResume)
+                self.modalView.onResume();
+        }
+        
         return;
     }
     
@@ -573,30 +618,25 @@ AppDelegate * app;
     }
 }
 
--(void)didFailBackupWallet:(Wallet*)wallet {
-    //Don't know a safe way to recover
-    //Just clear everything and restart
+-(void)didFailBackupWallet {
     
+#pragma mark why is this needed?
     [self networkActivityStop];
     
+    //Cancel any tx signing just incase
     [self.wallet cancelTxSigning];
     
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reload];
-    
-    [self.wallet loadGuid:[self guid] sharedKey:[self sharedKey] password:[self password]];
-    
-    self.wallet.delegate = app;
+    //Refresh the wallet and history
+    [self.wallet getWalletAndHistory];
 }
 
--(void)didBackupWallet:(Wallet*)wallet {
+-(void)didBackupWallet {
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
 }
 
--(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
+-(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey {
 
     if ([guid length] != 36) {
         [app standardNotify:@"Invalid GUID"];
@@ -608,14 +648,8 @@ AppDelegate * app;
         return;
     }
     
-    if ([password length] < 10) {
-        [app standardNotify:@"Password should be 10 characters in length or more"];
-        return;
-    }
-    
     [[NSUserDefaults standardUserDefaults] setObject:guid forKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] setObject:sharedKey forKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -642,10 +676,11 @@ AppDelegate * app;
         return;
     }
     
+    [self.wallet loadGuid:guid];
     
-    [self.wallet loadGuid:guid password:password];
+    self.wallet.password = password;
     
-    self.wallet.delegate = app;
+    self.wallet.delegate = self;
     
     [app closeModal];
 }
@@ -668,7 +703,9 @@ AppDelegate * app;
                 [app standardNotify:[NSString stringWithFormat:@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app."] title:@"Wallet Paired Successfully." delegate:nil];
             }
             
-            [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
+            [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"]];
+            
+            self.wallet.password = [code objectForKey:@"password"];
             
             self.wallet.delegate = self;
             
@@ -685,11 +722,11 @@ AppDelegate * app;
 
 -(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Scan Watch Only Address?"
-                                                    message:[NSString stringWithFormat:@"Wallet address %@ has funds available to spend. However the private key needs to be scanned from a paper wallet or QR Code. Would you like to scan the private key now?", address]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"No"
-                                          otherButtonTitles:@"Yes", nil];
-    
+                                            message:[NSString stringWithFormat:@"Wallet address %@ has funds available to spend. However the private key needs to be scanned from a paper wallet or QR Code. Would you like to scan the private key now?", address]
+                                           delegate:nil
+                                  cancelButtonTitle:@"No"
+                                  otherButtonTitles:@"Yes", nil];
+
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             _error(@"User Declined");
@@ -704,20 +741,14 @@ AppDelegate * app;
 }
 
 -(void)logout {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     [self.wallet cancelTxSigning];
-
-    [self.wallet clearLocalStorage];
-
-    self.wallet.password = nil;
     
-    [self.wallet loadJS];
+    [self.wallet loadBlankWallet];
 
     self.latestResponse = nil;
     
     _transactionsViewController.data = nil;
+    
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
@@ -727,22 +758,27 @@ AppDelegate * app;
 }
 
 -(void)forgetWallet {
+    
+    [self clearPin];
+    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-    
     [[NSUserDefaults standardUserDefaults] synchronize];   
     
     [self.wallet cancelTxSigning];
 
     [self.wallet clearLocalStorage];
     
-    self.wallet.password = nil;
-
-    [self.wallet loadJS];
+    [self.wallet loadBlankWallet];
 
     self.latestResponse = nil;
+    
     [_transactionsViewController setData:nil];
+    
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    [_sendViewController reload];
+    [_accountViewController emptyWebView];
     
     [self transitionToIndex:0];
 }
@@ -776,11 +812,12 @@ AppDelegate * app;
 }
 
 -(void)clearPin {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"encryptedPINPassword"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pinKey"];
 }
 
 -(BOOL)isPINSet {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"] != nil;
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"pinKey"] != nil && [[NSUserDefaults standardUserDefaults] objectForKey:@"encryptedPINPassword"] != nil;
 }
 
 - (void)showPinModal
@@ -805,13 +842,17 @@ AppDelegate * app;
 
 // Modal menu
 -(void)showWelcome {
-    [app showModal:welcomeView isClosable:[self guid] != nil onDismiss:nil onResume:^() {
+    [self showWelcome:[self guid] && [self sharedKey]];
+}
+
+-(void)showWelcome:(BOOL)isClosable {
+    [app showModal:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
         
         [welcomeButton3 setHidden:![self isPINSet]];
         [welcomeButton3 setTitle:@"Change PIN" forState:UIControlStateNormal];
         
         // User is logged in
-        if ([self password]) {
+        if ([self.wallet isInitialized]) {
             welcomeLabel.text = @"Options";
             welcomeInstructionsLabel.text = @"Open Account Settings, Logout or change your pin below.";
             [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
@@ -819,7 +860,7 @@ AppDelegate * app;
             [welcomeButton2 setTitle:@"Logout" forState:UIControlStateNormal];
         }
         // Wallet paired, but no password
-        else if ([self guid] || [self sharedKey]) {
+        else if ([self guid] && [self sharedKey]) {
             welcomeLabel.text = @"Welcome Back";
             welcomeInstructionsLabel.text = @"";
             [welcomeButton1 setTitle:@"Account Settings" forState:UIControlStateNormal];
@@ -845,8 +886,7 @@ AppDelegate * app;
 }
 
 
-//Change PIN
--(IBAction)welcomeButton3Clicked:(id)sender {
+-(void)changePIN {
     PEPinEntryController *c = [PEPinEntryController pinChangeController];
     c.pinDelegate = self;
     c.navigationBarHidden = YES;
@@ -855,6 +895,11 @@ AppDelegate * app;
     peViewController.cancelButton.hidden = NO;
     
     [self.tabViewController presentViewController:c animated:YES completion:nil];
+}
+
+//Change PIN
+-(IBAction)welcomeButton3Clicked:(id)sender {
+    [self changePIN];
 }
 
 -(IBAction)welcomeButton1Clicked:(id)sender {
@@ -869,26 +914,33 @@ AppDelegate * app;
     }
 }
 
+-(void)forgetWalletAlert:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning!!!"
+                                                    message:@"This will erase all wallet data on this device. Please confirm you have your wallet information saved elsewhere otherwise any bitcoins in this wallet will be inaccessible!!"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Forget Wallet", nil];
+    alert.tapBlock = tapBlock;
+    
+    [alert show];
+
+}
+
 -(IBAction)welcomeButton2Clicked:(id)sender {
     // Logout
-    if ([self password]) {
+    if (self.wallet.password) {
         [self logout];
         
         [app closeModal];
         
-        [self walletFailedToDecrypt:wallet]; // misleading method name
+        [self showMainPasswordModalOrWelcomeMenu]; // misleading method name
     }
     // Forget wallet
-    else if ([self guid] || [self sharedKey]) {
+    else if ([self guid] && [self sharedKey]) {
         
         // confirm forget wallet
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning!!!"
-                                                        message:@"This will erase all wallet data on this device. Please confirm you have your wallet information saved elsewhere otherwise any bitcoins in this wallet will be inaccessible!!"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Forget Wallet", nil];
-        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        [self forgetWalletAlert:^(UIAlertView *alertView, NSInteger buttonIndex) {
             // Forget Wallet Cancelled
             if (buttonIndex == 0) {
             }
@@ -899,9 +951,7 @@ AppDelegate * app;
                 [self forgetWallet];
                 [app showWelcome];
             }
-        };
-        
-        [alert show];
+        }];
 
     }
     // Do pair
@@ -960,25 +1010,20 @@ AppDelegate * app;
 
 -(IBAction)mainPasswordClicked:(id)sender {
     
-    NSString * password = mainPasswordTextField.text;
-    
-    password = [password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([mainPasswordTextField.text length] < 10) {
         [app standardNotify:@"Passowrd must be 10 or more characters in length"];
         return;
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"password"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     NSString * guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
     NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     
     if (guid && sharedKey && password) {
-        
-        [self.wallet loadGuid:guid sharedKey:sharedKey password:password];
+        [self.wallet loadGuid:guid sharedKey:sharedKey];
+
+        self.wallet.password = password;
         
         self.wallet.delegate = self;
     }
@@ -1007,10 +1052,6 @@ AppDelegate * app;
 
 #pragma mark - Accessors
 
--(NSString*)password {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
-}
-
 -(NSString*)guid {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
 }
@@ -1021,35 +1062,181 @@ AppDelegate * app;
 
 #pragma mark - Pin Entry Delegates
 
-- (BOOL)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin
+- (void)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)_pin callback:(void(^)(BOOL))callback
 {
-    NSNumber *pinObj = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
-    
-	if(pinObj && pin == [pinObj intValue])
+    if(c.verifyOnly != YES)
     {
-		if(c.verifyOnly == YES)
-        {
-			[_tabViewController dismissViewControllerAnimated:YES completion:^{
-            }];
-		}
+        callback(YES);
+        return;
+    };
         
-		return YES;
-	}
-    else
-    {
-		return NO;
-	}
+    self.lastEnteredPIN = _pin;
+
+    if (!app.wallet) {
+        [self askIfUserWantsToResetPIN];
+        return;
+    }
+    
+    NSString * pinKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"pinKey"];
+    NSString * pin = [NSString stringWithFormat:@"%d", _pin];
+    
+    [app.wallet apiGetPINValue:pinKey pin:pin];
+    
+    self.pinViewControllerCallback = callback;
 }
 
-- (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)pin
+-(void)didFailGetPin:(NSString*)value {
+    [self askIfUserWantsToResetPIN];
+}
+
+-(void)askIfUserWantsToResetPIN {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"PIN Validation Error"
+                                                    message:@"An error occured validating your PIN code with the remote server. You may be offline or blockchain may be experiencing difficulties. Would you like retry validation or instead enter your password manually?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Enter Password"
+                                          otherButtonTitles:@"Retry Validation", nil];
+    
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            [_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
+            
+            [self showMainPasswordModalOrWelcomeMenu];
+        } else if (buttonIndex == 1) {
+            [self pinEntryController:self.pinEntryViewController shouldAcceptPin:self.lastEnteredPIN callback:self.pinViewControllerCallback];
+        }
+    };
+    
+    [alert show];
+
+}
+
+-(void)didGetPinSuccess:(NSDictionary*)dictionary {
+    NSNumber * code = [dictionary objectForKey:@"code"]; //This is a status code from the server
+    NSString * error = [dictionary objectForKey:@"error"]; //This is an error string from the server or nil
+    NSString * success = [dictionary objectForKey:@"success"]; //The PIN decryption value from the server
+    NSString * encryptedPINPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"encryptedPINPassword"];
+    
+    BOOL pinSuccess = FALSE;
+    if (code == nil) {
+        [app standardNotify:[NSString stringWithFormat:@"Server Returned Null Status Code"]];
+    } else if ([code intValue] == PIN_API_STATUS_CODE_DELETED) {
+        [app standardNotify:@"PIN Validation cannot be completed. Please enter your wallet password manually."];
+        
+        [self clearPin];
+        
+        [self showMainPasswordModalOrWelcomeMenu];
+        
+        [_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
+    } else if ([code integerValue] == PIN_API_STATUS_PIN_INCORRECT) {
+        [app standardNotify:error];
+    } else if ([code intValue] == PIN_API_STATUS_OK) {
+        
+        if ([success length] == 0) {
+            [app standardNotify:@"PIN Response Object success length 0"];
+            [self askIfUserWantsToResetPIN];
+            return;
+        }
+        
+        NSString * decrypted = [app.wallet decrypt:encryptedPINPassword password:success pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
+        
+        if ([decrypted length] == 0) {
+            [app standardNotify:@"Decrypted PIN Password length 0"];
+            [self askIfUserWantsToResetPIN];
+            return;
+        }
+        
+        app.wallet.password = decrypted;
+        
+        if(self.pinEntryViewController.verifyOnly == YES) {
+			[_tabViewController dismissViewControllerAnimated:YES completion:^{ }];
+		}
+
+        pinSuccess = TRUE;
+    } else {
+        //Unknown error
+        [self askIfUserWantsToResetPIN];
+    }
+    
+    if (self.pinViewControllerCallback) {
+        self.pinViewControllerCallback(pinSuccess);
+        self.pinViewControllerCallback = nil;
+    }
+}
+
+-(void)didFailPutPin:(NSString*)value {
+    [app standardNotify:@"Error Saving PIN"];
+    
+    [_tabViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)didPutPinSuccess:(NSDictionary*)dictionary {
+    if (![app.wallet isInitialized] || !app.wallet.password) {
+        [app standardNotify:@"Cannot save PIN Code while wallet is not initialized or password is null"];
+        return;
+    }
+    
+    NSNumber * code = [dictionary objectForKey:@"code"]; //This is a status code from the server
+    NSString * error = [dictionary objectForKey:@"error"]; //This is an error string from the server or nil
+    NSString * key = [dictionary objectForKey:@"key"]; //This is our pin code lookup key
+    NSString * value = [dictionary objectForKey:@"value"]; //This is our encryption string
+
+    if (error != nil) {
+        [self didFailPutPin:error];
+    } else if (code == nil || [code intValue] != PIN_API_STATUS_OK) {
+        [self didFailPutPin:[NSString stringWithFormat:@"Invalid Status Code Returned %@", code]];
+    } else if ([key length] == 0 || [value length] == 0) {
+        [self didFailPutPin:@"PIN Response Object key or value length 0"];
+    } else {
+        //Encrypt the wallet password with the random value
+        NSString * encrypted = [app.wallet encrypt:app.wallet.password password:value pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
+
+        //Store the encrypted result and discard the value
+        value = nil;
+
+        if (!encrypted) {
+            [self didFailPutPin:@"PIN Encrypted String is nil"];
+            return;
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setValue:encrypted forKey:@"encryptedPINPassword"];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:key forKey:@"pinKey"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // Update your info to new pin code
+        [_tabViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        [app standardNotify:@"PIN Saved Successfully" title:@"Success" delegate:nil];
+    }
+}
+
+- (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)_pin
 {
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:pin] forKey:@"pin"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (![app.wallet isInitialized] || !app.wallet.password) {
+        [app standardNotify:@"Cannot save PIN Code while wallet is not initialized or password is null"];
+        return;
+    }
     
-    DLog(@"Saved new pin");
+    uint8_t data[32];
+    int err = 0;
     
-	// Update your info to new pin code
-	[_tabViewController dismissViewControllerAnimated:YES completion:nil];
+    //32 Random bytes for key
+    err = SecRandomCopyBytes(kSecRandomDefault, 32, data);
+    if(err != noErr)
+        @throw [NSException exceptionWithName:@"..." reason:@"..." userInfo:nil];
+    
+    NSString * key = [[[NSData alloc] initWithBytes:data length:32] hexadecimalString];
+    
+    //32 random bytes for value
+    err = SecRandomCopyBytes(kSecRandomDefault, 32, data);
+    if(err != noErr)
+        @throw [NSException exceptionWithName:@"..." reason:@"..." userInfo:nil];
+    
+    NSString * value = [[[NSData alloc] initWithBytes:data length:32] hexadecimalString];
+    
+    NSString * pin = [NSString stringWithFormat:@"%d", _pin];
+    
+    [app.wallet pinServerPutKeyOnPinServerServer:key value:value pin:pin];
 }
 
 - (void)pinEntryControllerDidCancel:(PEPinEntryController *)c

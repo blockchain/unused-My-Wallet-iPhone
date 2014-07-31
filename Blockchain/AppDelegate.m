@@ -355,24 +355,24 @@ AppDelegate * app;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
     [app closeAllModals];
 
+    [self closePINModal:NO]; //Close PIN Modal incase we are setting it
+
     if ([wallet isInitialized]) {
-        [self closePINModal:NO]; //Close PIN Modal incase we are setting it
-        
-        if ([self isPINSet]) {
-            [self showPinModal];
-        }
-        
         [self beginBackgroundUpdateTask];
 
         [self logout];
-    } else {
-        [self closePINModal:NO];
     }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    if ([self isPINSet]) {
+        [self showPinModal];
+    }
+    
     if (![wallet isInitialized]) {
         [app showWelcome:FALSE];
         
@@ -976,6 +976,8 @@ AppDelegate * app;
 -(IBAction)welcomeButton2Clicked:(id)sender {
     // Logout
     if (self.wallet.password) {
+        [self clearPin];
+
         [self logout];
         
         [app closeModal];
@@ -1056,7 +1058,7 @@ AppDelegate * app;
 }
 
 -(IBAction)mainPasswordClicked:(id)sender {
-    
+
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([mainPasswordTextField.text length] < 10) {
@@ -1274,6 +1276,14 @@ AppDelegate * app;
         return;
     }
     
+    NSString * pin = [NSString stringWithFormat:@"%d", _pin];
+    
+    [self.pinEntryViewController setActivityIndicatorAnimated:TRUE];
+
+    [self savePIN:pin];
+}
+
+- (void)savePIN:(NSString*)pin {
     uint8_t data[32];
     int err = 0;
     
@@ -1291,10 +1301,6 @@ AppDelegate * app;
     
     NSString * value = [[[NSData alloc] initWithBytes:data length:32] hexadecimalString];
     
-    NSString * pin = [NSString stringWithFormat:@"%d", _pin];
-    
-    [self.pinEntryViewController setActivityIndicatorAnimated:TRUE];
-
     [app.wallet pinServerPutKeyOnPinServerServer:key value:value pin:pin];
 }
 

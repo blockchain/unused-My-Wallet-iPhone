@@ -130,7 +130,7 @@ static PEViewController *VerifyController()
                         PEViewController *c = NewController();
                         c.delegate = self;
                         pinStage = PS_ENTER1;
-                        [[self navigationController] pushViewController:c animated:YES];
+                        [[self navigationController] pushViewController:c animated:NO];
                         self.viewControllers = [NSArray arrayWithObject:c];
                     }
                 } else {
@@ -144,7 +144,7 @@ static PEViewController *VerifyController()
 			pinEntry1 = [controller.pin intValue];
 			PEViewController *c = VerifyController();
 			c.delegate = self;
-			[[self navigationController] pushViewController:c animated:YES];
+			[[self navigationController] pushViewController:c animated:NO];
 			self.viewControllers = [NSArray arrayWithObject:c];
 			pinStage = PS_ENTER2;
 			break;
@@ -154,7 +154,7 @@ static PEViewController *VerifyController()
 				PEViewController *c = NewController();
 				c.delegate = self;
 				self.viewControllers = [NSArray arrayWithObjects:c, [self.viewControllers objectAtIndex:0], nil];
-				[self popViewControllerAnimated:YES];
+				[self popViewControllerAnimated:NO];
 			} else {
 				[self.pinDelegate pinEntryController:self changedPin:[controller.pin intValue]];
 			}

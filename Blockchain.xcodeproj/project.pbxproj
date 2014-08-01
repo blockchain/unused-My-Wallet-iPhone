@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2245F724198C1C640075B19F /* check_mark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71D198C1C640075B19F /* check_mark@2x.png */; };
+		2245F725198C1C640075B19F /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71E198C1C640075B19F /* done@2x.png */; };
+		2245F726198C1C640075B19F /* drop_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71F198C1C640075B19F /* drop_down@2x.png */; };
+		2245F727198C1C640075B19F /* DropDownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F721198C1C640075B19F /* DropDownListView.m */; };
+		2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F723198C1C640075B19F /* DropDownViewCell.m */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC551987A61C000E8DC8 /* 172-pricetag.png */; };
@@ -197,6 +202,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2245F71D198C1C640075B19F /* check_mark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_mark@2x.png"; sourceTree = "<group>"; };
+		2245F71E198C1C640075B19F /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "done@2x.png"; sourceTree = "<group>"; };
+		2245F71F198C1C640075B19F /* drop_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "drop_down@2x.png"; sourceTree = "<group>"; };
+		2245F720198C1C640075B19F /* DropDownListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownListView.h; sourceTree = "<group>"; };
+		2245F721198C1C640075B19F /* DropDownListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownListView.m; sourceTree = "<group>"; };
+		2245F722198C1C640075B19F /* DropDownViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownViewCell.h; sourceTree = "<group>"; };
+		2245F723198C1C640075B19F /* DropDownViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownViewCell.m; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -494,6 +506,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2245F71C198C1C640075B19F /* kDropDown */ = {
+			isa = PBXGroup;
+			children = (
+				2245F71D198C1C640075B19F /* check_mark@2x.png */,
+				2245F71E198C1C640075B19F /* done@2x.png */,
+				2245F71F198C1C640075B19F /* drop_down@2x.png */,
+				2245F720198C1C640075B19F /* DropDownListView.h */,
+				2245F721198C1C640075B19F /* DropDownListView.m */,
+				2245F722198C1C640075B19F /* DropDownViewCell.h */,
+				2245F723198C1C640075B19F /* DropDownViewCell.m */,
+			);
+			path = kDropDown;
+			sourceTree = "<group>";
+		};
 		84C25678198109AF00F901D1 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
@@ -917,6 +943,7 @@
 		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				2245F71C198C1C640075B19F /* kDropDown */,
 				84C25678198109AF00F901D1 /* Keys */,
 				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
 				C9BE91651945D8F600FD516D /* PinEntry */,
@@ -1060,10 +1087,12 @@
 				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
 				84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
+				2245F726198C1C640075B19F /* drop_down@2x.png in Resources */,
 				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
+				2245F725198C1C640075B19F /* done@2x.png in Resources */,
 				C9BE91831945D8F600FD516D /* PEKeyboard-1.png in Resources */,
 				9F765EF314BBC2C800048EFB /* divider.png in Resources */,
 				84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */,
@@ -1099,6 +1128,7 @@
 				9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */,
 				84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */,
 				9F0CBAD11513BF9D00CD945D /* busy-background.png in Resources */,
+				2245F724198C1C640075B19F /* check_mark@2x.png in Resources */,
 				9F0CBAD21513BF9D00CD945D /* busy-background@2x.png in Resources */,
 				9F7480B11513E98700BC4292 /* power-orange.png in Resources */,
 				84F4BE0A197FB4D700B7BF7B /* 573-money.png in Resources */,
@@ -1202,11 +1232,13 @@
 				9F0CBAD81513CA2600CD945D /* BCFadeView.m in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
 				9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */,
+				2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */,
 				9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */,
 				9FCA4D391514A83400ECDFBE /* WebViewController.m in Sources */,
 				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
 				9F91B607151666EC00ACB32D /* NewAccountView.m in Sources */,
+				2245F727198C1C640075B19F /* DropDownListView.m in Sources */,
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,
 				9F1831E51516A45700FB3D52 /* NSString+SHA256.m in Sources */,
 				9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */,

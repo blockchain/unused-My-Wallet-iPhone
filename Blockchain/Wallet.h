@@ -47,10 +47,12 @@
 @optional
 -(void)didSetLatestBlock:(LatestBlock*)block;
 -(void)didGetMultiAddressResponse:(MulitAddressResponse*)response;
--(void)walletDidLoad:(Wallet*)wallet;
--(void)walletFailedToDecrypt:(Wallet*)wallet;
--(void)didBackupWallet:(Wallet*)wallet;
--(void)didFailBackupWallet:(Wallet*)wallet;
+-(void)walletDidDecrypt;
+-(void)walletFailedToDecrypt;
+-(void)walletDidLoad;
+-(void)walletFailedToLoad;
+-(void)didBackupWallet;
+-(void)didFailBackupWallet;
 -(void)walletJSReady;
 -(void)didGenerateNewAddress:(NSString*)address;
 -(void)networkActivityStart;
@@ -60,10 +62,12 @@
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
 -(void)errorCreatingNewAccount:(NSString*)message;
 -(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error;
-
--(void)didWalletDecryptStart:(Wallet*)wallet;
--(void)didWalletDecryptSuccess:(Wallet*)wallet;
-
+-(void)didWalletDecryptStart;
+-(void)didWalletDecryptFinish;
+-(void)didFailPutPin:(NSString*)value;
+-(void)didPutPinSuccess:(NSDictionary*)dictionary;
+-(void)didFailGetPin:(NSString*)value;
+-(void)didGetPinSuccess:(NSDictionary*)dictionary;
 
 @end
 
@@ -84,13 +88,12 @@
 
 @property(nonatomic, strong) NSMutableDictionary * transactionProgressListeners;
 
--(void)loadJS;
-
 #pragma mark Init Methods
 -(id)init;
 
--(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
--(void)loadGuid:(NSString *)_guid password:(NSString*)_password;
+-(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey;
+-(void)loadGuid:(NSString *)_guid;
+-(void)loadBlankWallet;
 
 -(NSDictionary*)addressBook;
 
@@ -125,6 +128,7 @@
 
 -(BOOL)isDoubleEncrypted;
 -(BOOL)isInitialized;
+-(BOOL)hasEncryptedWalletData;
 
 -(BOOL)validateSecondPassword:(NSString*)secondPassword;
 
@@ -147,4 +151,11 @@
 
 -(void)newAccount:(NSString*)password email:(NSString *)email;
 
+-(void)pinServerPutKeyOnPinServerServer:(NSString*)key value:(NSString*)value pin:(NSString*)pin;
+-(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin;
+
+-(NSString*)encrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
+-(NSString*)decrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
+
+    
 @end

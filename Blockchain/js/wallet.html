@@ -185,11 +185,13 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
     return id;
 }
 
-MyWalletPhone.getKeyGetFromPinServer = function(key, pin) {
+MyWalletPhone.apiGetPINValue = function(key, pin) {
+    MyWallet.setLoadingText('Retreiving PIN Code');
+
     $.ajax({
         type: "POST",
         url: root + 'pin-store',
-        timeout: 60000,
+        timeout: 30000,
         dataType: 'json',
         data: {
            format: 'json',
@@ -198,11 +200,11 @@ MyWalletPhone.getKeyGetFromPinServer = function(key, pin) {
            key : key
        },
        success: function (responseObject) {
-           device.execute('on_pin_code_get_response:', responseObject)
+           device.execute('on_pin_code_get_response:', [responseObject])
        },
        error: function (res) {
-           if (!res.responseText && res.responseText.length > 0) {
-                device.execute('on_error_pin_code_get_error:', 'Unknown Error');
+           if (!res || !res.responseText || res.responseText.length == 0) {
+                device.execute('on_error_pin_code_get_error:', ['Unknown Error']);
            } else {
                 try {
                     var responseObject = $.parseJSON(res.responseText);
@@ -211,20 +213,22 @@ MyWalletPhone.getKeyGetFromPinServer = function(key, pin) {
                         throw 'Response Object nil';
                     }
            
-                    device.execute('on_pin_code_get_response:', responseObject)
+                    device.execute('on_pin_code_get_response:', [responseObject])
                 } catch (e) {
-                    evice.execute('on_error_pin_code_get_error:', res.responseText);
+                    device.execute('on_error_pin_code_get_error:', [res.responseText]);
                 }
            }
        }
     });
 }
 
-MyWalletPhone.pinServerPutKeyOnPinServer = function(key, value, pin) {
+MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
+    MyWallet.setLoadingText('Saving PIN Code');
+    
     $.ajax({
         type: "POST",
         url: root + 'pin-store',
-        timeout: 60000,
+        timeout: 30000,
         data: {
             format: 'plain',
             method: 'put',
@@ -233,28 +237,35 @@ MyWalletPhone.pinServerPutKeyOnPinServer = function(key, value, pin) {
             key : key
         },
         success: function (responseObject) {
-           device.execute('on_pin_code_put_response:', responseObject)
+           responseObject.key = key;
+           responseObject.value = value;
+           
+           device.execute('on_pin_code_put_response:', [responseObject])
         },
         error: function (res) {
-            if (!res.responseText && res.responseText.length > 0) {
-                device.execute('on_error_pin_code_put_error:', 'Unknown Error');
+            if (!res || !res.responseText || res.responseText.length == 0) {
+                device.execute('on_error_pin_code_put_error:', ['Unknown Error']);
            } else {
                 try {
                     var responseObject = $.parseJSON(res.responseText);
            
-                    if (!responseObject) {
-                        throw 'Response Object nil';
-                    }
-           
-                    device.execute('on_pin_code_put_response:', responseObject)
+                    responseObject.key = key;
+                    responseObject.value = value;
+
+                    device.execute('on_pin_code_put_response:', [responseObject])
                 } catch (e) {
-                    evice.execute('on_error_pin_code_put_error:', res.responseText);
+                    device.execute('on_error_pin_code_put_error:', [res.responseText]);
                 }
            }
         }
     });
 }
 
+MyWalletPhone.hasEncryptedWalletData = function() {
+    var data = MyWallet.getEncryptedWalletData();
+    
+    return data && data.length > 0;
+}
 
 MyWalletPhone.getWsReadyState = function() {
     if (!ws) return -1;
@@ -390,6 +401,10 @@ MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
 
 MyWallet.showNotification = function() { }
 
+MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
+    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
+}
+
 MyWalletPhone.parsePairingCode = function (raw_code) {
 
     var success = function (pairing_code) {
@@ -459,7 +474,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
                 }
             },
             error: function (res) {
-                error('Pairing Code Server Error ' + res.responseText);
+                error('Pairing Code Server Error');
             }
         });
     } catch (e) {

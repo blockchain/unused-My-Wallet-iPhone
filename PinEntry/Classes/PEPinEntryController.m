@@ -76,6 +76,7 @@ static PEViewController *VerifyController()
 	PEViewController *c = EnterController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
+    n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = YES;
 	return n;
@@ -87,6 +88,7 @@ static PEViewController *VerifyController()
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
 	c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
+    n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = NO;
 	return n;
@@ -97,33 +99,52 @@ static PEViewController *VerifyController()
 	PEViewController *c = NewController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
+    n->pinController = c;
 	n->pinStage = PS_ENTER1;
 	n->verifyOnly = NO;
 	return n;
 }
 
+-(void)setActivityIndicatorAnimated:(BOOL)animated {
+    
+    pinController->keyboard.isEnabled = !animated;
+    
+    pinController->pin0.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin1.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin2.alpha = animated ? 0.75f : 1.0f;
+    pinController->pin3.alpha = animated ? 0.75f : 1.0f;
+
+    if (animated)
+        [pinController.activityIndicator startAnimating];
+    else
+        [pinController.activityIndicator stopAnimating];
+}
+
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller
 {
 	switch (pinStage) {
-		case PS_VERIFY:
-			if(![self.pinDelegate pinEntryController:self shouldAcceptPin:[controller.pin intValue]]) {
-				controller.prompt = @"Incorrect pin. Please retry.";
-				[controller resetPin];
-			} else {
-				if(verifyOnly == NO) {
-					PEViewController *c = NewController();
-					c.delegate = self;
-					pinStage = PS_ENTER1;
-					[[self navigationController] pushViewController:c animated:YES];
-					self.viewControllers = [NSArray arrayWithObject:c];
-				}
-			}
+		case PS_VERIFY: {
+			[self.pinDelegate pinEntryController:self shouldAcceptPin:[controller.pin intValue] callback:^(BOOL yes) {
+                if (yes) {
+                    if(verifyOnly == NO) {
+                        PEViewController *c = NewController();
+                        c.delegate = self;
+                        pinStage = PS_ENTER1;
+                        [[self navigationController] pushViewController:c animated:NO];
+                        self.viewControllers = [NSArray arrayWithObject:c];
+                    }
+                } else {
+                    controller.prompt = @"Incorrect pin. Please retry.";
+                    [controller resetPin];
+                }
+            }];
 			break;
+        }
 		case PS_ENTER1: {
 			pinEntry1 = [controller.pin intValue];
 			PEViewController *c = VerifyController();
 			c.delegate = self;
-			[[self navigationController] pushViewController:c animated:YES];
+			[[self navigationController] pushViewController:c animated:NO];
 			self.viewControllers = [NSArray arrayWithObject:c];
 			pinStage = PS_ENTER2;
 			break;
@@ -133,7 +154,7 @@ static PEViewController *VerifyController()
 				PEViewController *c = NewController();
 				c.delegate = self;
 				self.viewControllers = [NSArray arrayWithObjects:c, [self.viewControllers objectAtIndex:0], nil];
-				[self popViewControllerAnimated:YES];
+				[self popViewControllerAnimated:NO];
 			} else {
 				[self.pinDelegate pinEntryController:self changedPin:[controller.pin intValue]];
 			}

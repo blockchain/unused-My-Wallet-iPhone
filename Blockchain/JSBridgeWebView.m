@@ -306,7 +306,7 @@
                 [invo invoke];
             }
         } else {
-            DLog(@"!!! JSdelegate does not respond to selector %@", function);
+            DLog(@"!!! JSdelegate (%@) does not respond to selector %@", [self.JSDelegate class], function);
         }
     }
     

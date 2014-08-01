@@ -56,9 +56,7 @@
         return;
     }
     
-    app.wallet.password = nil;
-
-    [app.wallet loadJS];
+    [app.wallet loadBlankWallet];
     
     // Get callback when wallet is done loading
     app.wallet.delegate = self;
@@ -76,10 +74,10 @@
     [app forgetWallet];
     
     [app clearPin];
+        
+    [app.wallet loadGuid:guid sharedKey:sharedKey];
     
-    [app showPinModal];
-    
-    [app.wallet loadGuid:guid sharedKey:sharedKey password:password];
+    app.wallet.password = password;
     
     app.wallet.delegate = app;
     

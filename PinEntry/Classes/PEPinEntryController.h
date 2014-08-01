@@ -30,7 +30,7 @@
 @protocol PEPinEntryControllerDelegate
 
 @required
-- (BOOL)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin;
+- (void)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)pin callback:(void(^)(BOOL))callback;
 - (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)pin;
 - (void)pinEntryControllerDidCancel:(PEPinEntryController *)c;
 
@@ -50,6 +50,8 @@
 }
 @property (nonatomic, readwrite, weak) id <PEPinEntryControllerDelegate> pinDelegate;
 @property (nonatomic, readonly) BOOL verifyOnly;
+
+-(void)setActivityIndicatorAnimated:(BOOL)animated;
 
 + (PEPinEntryController *)pinVerifyController;
 + (PEPinEntryController *)pinChangeController;

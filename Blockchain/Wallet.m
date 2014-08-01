@@ -153,7 +153,8 @@
     [self.webView executeJS:@"MyWalletPhone.generateNewKey()"];
 }
 
--(void)loadJS {
+
+-(void)loadJS {    
     NSError * error = nil;
     NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
@@ -161,16 +162,16 @@
                        
     walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${resource_url}" withString:[baseURL absoluteString]];
         
-    if (self.guid && self.sharedKey && self.password) {
+    if (self.guid && self.sharedKey) {
         walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\" data-sharedkey=\"%@\">", self.guid, self.sharedKey]];
-    } else if (self.guid && self.password) {
+    } else if (self.guid) {
         walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\">", self.guid]];
     }
     
     [webView loadHTMLString:walletHTML baseURL:baseURL];
 }
 
--(void)parsePairingCode:(NSString*)code {
+-(void)parsePairingCode:(NSString*)code {    
     [self.webView executeJS:@"MyWalletPhone.parsePairingCode(\"%@\");", [code escapeStringForJS]];
 }
 
@@ -212,19 +213,38 @@
 }
 
 //Called when entering guid manually
--(void)loadGuid:(NSString *)_guid password:(NSString*)_password {
+-(void)loadGuid:(NSString *)_guid  {
+    
+    if (![self.guid isEqualToString:_guid]) {
+        self.sharedKey = nil;
+        self.password = nil;
+    }
+    
     self.guid = _guid;
-    self.password = _password;
-  
+
     [self loadJS];
 }
 
--(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password {
-    self.password = _password;
+//Normal load with sharedKey to skip two factor
+-(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey {
+    
+    if (![self.guid isEqualToString:_guid]) {
+        self.password = nil;
+    }
+    
     self.guid = _guid;
     self.sharedKey = _sharedKey;
     
     // Load the JS. Proceed in the webviewDidLoad callback
+    [self loadJS];
+}
+
+//Load the blank wallet login page
+-(void)loadBlankWallet {
+    self.guid = nil;
+    self.password = nil;
+    self.sharedKey = nil;
+    
     [self loadJS];
 }
 
@@ -237,6 +257,10 @@
 }
 
 -(BOOL)isWatchOnlyAddress:(NSString*)address {
+    if (![self.webView isLoaded]) {
+        return FALSE;
+    }
+    
     return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeStringForJS]] boolValue];
 }
 
@@ -506,8 +530,8 @@
 
 -(void)error_restoring_wallet {
     DLog(@"error_restoring_wallet");
-    if ([delegate respondsToSelector:@selector(walletFailedToDecrypt:)])
-        [delegate walletFailedToDecrypt:self];
+    if ([delegate respondsToSelector:@selector(walletFailedToDecrypt)])
+        [delegate walletFailedToDecrypt];
 }
 
 -(void)did_decrypt {
@@ -516,8 +540,8 @@
     self.sharedKey = [self.webView executeJSSynchronous:@"MyWallet.getSharedKey()"];
     self.guid = [self.webView executeJSSynchronous:@"MyWallet.getGuid()"];
 
-    if ([delegate respondsToSelector:@selector(walletDidLoad:)])
-        [delegate walletDidLoad:self];
+    if ([delegate respondsToSelector:@selector(walletDidDecrypt)])
+        [delegate walletDidDecrypt];
 }
 
 
@@ -529,50 +553,101 @@
 }
 
 -(void)on_error_creating_new_account:(NSString*)message {
-    //NSLog(@"on_error_creating_new_account:%@", message);
+    DLog(@"on_error_creating_new_account:");
     
     if ([delegate respondsToSelector:@selector(errorCreatingNewAccount:)])
         [delegate errorCreatingNewAccount:message];
 }
 
 
+-(void)on_error_pin_code_put_error:(NSString*)message {
+    DLog(@"on_error_pin_code_put_error:");
+    
+    if ([delegate respondsToSelector:@selector(didFailPutPin:)])
+        [delegate didFailPutPin:message];
+}
+
+-(void)on_pin_code_put_response:(NSDictionary*)responseObject {
+    DLog(@"on_pin_code_put_response: %@", responseObject);
+    
+    if ([delegate respondsToSelector:@selector(didPutPinSuccess:)])
+        [delegate didPutPinSuccess:responseObject];
+}
+
+-(void)on_error_pin_code_get_error:(NSString*)message {
+    DLog(@"on_error_pin_code_get_error:");
+    
+    if ([delegate respondsToSelector:@selector(didFailGetPin:)])
+        [delegate didFailGetPin:message];
+}
+
+-(void)on_pin_code_get_response:(NSDictionary*)responseObject {
+    DLog(@"on_pin_code_get_response:");
+    
+    if ([delegate respondsToSelector:@selector(didGetPinSuccess:)])
+        [delegate didGetPinSuccess:responseObject];
+}
+
+
 -(void)on_wallet_decrypt_start {
     DLog(@"on_wallet_decrypt_start");
     
-    if ([delegate respondsToSelector:@selector(didWalletDecryptStart:)])
-        [delegate didWalletDecryptStart:self];
+    if ([delegate respondsToSelector:@selector(didWalletDecryptStart)])
+        [delegate didWalletDecryptStart];
 }
 
--(void)on_wallet_decrypt_success {
-    DLog(@"on_wallet_decrypt_success");
+-(void)on_wallet_decrypt_finish {
+    DLog(@"on_wallet_decrypt_finish");
     
-    if ([delegate respondsToSelector:@selector(didWalletDecryptSuccess:)])
-        [delegate didWalletDecryptSuccess:self];
+    if ([delegate respondsToSelector:@selector(didWalletDecryptFinish)])
+        [delegate didWalletDecryptFinish];
 }
 
 -(void)on_backup_wallet_error {
     DLog(@"on_backup_wallet_error");
     
-    if ([delegate respondsToSelector:@selector(didFailBackupWallet:)])
-        [delegate didFailBackupWallet:self];
+    if ([delegate respondsToSelector:@selector(didFailBackupWallet)])
+        [delegate didFailBackupWallet];
 }
 
 -(void)on_backup_wallet_success {
     DLog(@"on_backup_wallet_success");
     
-    if ([delegate respondsToSelector:@selector(didBackupWallet:)])
-        [delegate didBackupWallet:self];
+    if ([delegate respondsToSelector:@selector(didBackupWallet)])
+        [delegate didBackupWallet];
 
 }
 
 -(void)did_fail_set_guid {
     DLog(@"did_fail_set_guid");
+    
+    if ([delegate respondsToSelector:@selector(walletFailedToLoad)])
+        [delegate walletFailedToLoad];
 }
 
 -(void)did_set_guid {
     DLog(@"did_set_guid");
     
     if (self.password) {
+        DLog(@"Setting Password");
+        
+        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
+    }
+    
+    if ([delegate respondsToSelector:@selector(walletDidLoad)])
+        [delegate walletDidLoad];
+}
+
+-(BOOL)hasEncryptedWalletData {
+    return [[self.webView executeJSSynchronous:@"MyWalletPhone.hasEncryptedWalletData()"] boolValue];
+}
+
+-(void)setPassword:(NSString *)pw {
+    password = pw;
+    
+    if (password && [self.webView isLoaded] && [self hasEncryptedWalletData]) {
+        DLog(@"Setting Password");
+        
         [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
     }
 }
@@ -757,12 +832,8 @@
         return nil;
     }
     
-    
-    
     uint8_t * derivedBytes = malloc(derivedKeyLen);
     
-    //scrypt(_passwordBuff, _passwordBuffLen, _saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen);
-
     if (crypto_scrypt((uint8_t*)_passwordBuff, _passwordBuffLen, (uint8_t*)_saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen) == -1) {
         return nil;
     }
@@ -773,9 +844,7 @@
 
 -(void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N
                    r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error {
-    
-    DLog(@"crypto_scrypt:");
-    
+        
     [app setLoadingText:@"Decrypting Private Key"];
     
     [app networkActivityStart];
@@ -793,6 +862,22 @@
             }
         });
     });
+}
+
+-(void)pinServerPutKeyOnPinServerServer:(NSString*)key value:(NSString*)value pin:(NSString*)pin {
+    [self.webView executeJS:@"MyWalletPhone.pinServerPutKeyOnPinServerServer(\"%@\", \"%@\", \"%@\")", key, value, pin];
+}
+
+-(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin {
+    [self.webView executeJS:@"MyWalletPhone.apiGetPINValue(\"%@\", \"%@\")", key, pin];
+}
+
+-(NSString*)encrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations {
+    return [self.webView executeJSSynchronous:@"MyWallet.encrypt(\"%@\", \"%@\", %d)", data, _password, pbkdf2_iterations];
+}
+
+-(NSString*)decrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations {
+    return [self.webView executeJSSynchronous:@"MyWalletPhone.decrypt(\"%@\", \"%@\", %d)", data, _password, pbkdf2_iterations];
 }
 
 @end

@@ -57,6 +57,7 @@ extern NSString *kPinEntryKeyboardCode;
 }
 @property (nonatomic, readwrite, weak) IBOutlet id <PENumpadViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) NSUInteger detailButon;
+@property (nonatomic, assign) BOOL isEnabled;
 
 - (id)init;
 

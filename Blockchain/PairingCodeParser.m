@@ -12,7 +12,7 @@
 @implementation PairingCodeParser
 
 
-- (void)errorParsingPairingCode:(NSString *)message {
+- (void)errorParsingPairingCode:(NSString *)message {    
     [app networkActivityStop];
 
     if (self.error) {
@@ -21,7 +21,6 @@
 }
 
 -(void)didParsePairingCode:(NSDictionary *)dict {
-        
     [app networkActivityStop];
 
     if (self.success) {
@@ -50,10 +49,8 @@
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {
-
-        app.wallet.password = nil;
         
-        [app.wallet loadJS];
+        [app.wallet loadBlankWallet];
         
         app.wallet.delegate = self;
         

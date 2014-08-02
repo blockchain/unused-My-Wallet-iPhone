@@ -31,6 +31,7 @@
 #import "PrivateKeyReader.h"
 #import "MerchantViewController.h"
 #import "NSData+Hex.h"
+#import <AVFoundation/AVFoundation.h>
 
 AppDelegate * app;
 
@@ -642,6 +643,15 @@ AppDelegate * app;
         self.modalView = nil;
     }
     
+    if ([contentView isKindOfClass:[ZBarReaderView class]]) {
+        self.readerViewTapSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                             contentView.frame.size.width,
+                                                                             contentView.frame.size.height)];
+        UITapGestureRecognizer* tapScanner = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(focusAtPoint:)];
+        [self.readerViewTapSubView addGestureRecognizer:tapScanner];
+        [contentView addSubview:self.readerViewTapSubView];
+    }
+    
     [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
     
     [modalView.modalContentView addSubview:contentView];
@@ -676,8 +686,50 @@ AppDelegate * app;
     }
 }
 
--(void)didFailBackupWallet {
+- (void)focusAtPoint:(id) sender {
     
+    CGPoint touchPoint = [(UITapGestureRecognizer*)sender locationInView:self.readerViewTapSubView];
+    double focus_x = touchPoint.x/self.readerViewTapSubView.frame.size.width;
+    double focus_y = (touchPoint.y+66)/self.readerViewTapSubView.frame.size.height;
+    NSError *error;
+    NSArray *devices = [AVCaptureDevice devices];
+    for (AVCaptureDevice *device in devices){
+        if ([device hasMediaType:AVMediaTypeVideo]) {
+            if ([device position] == AVCaptureDevicePositionBack) {
+                CGPoint point = CGPointMake(focus_y, 1-focus_x);
+                if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus] && [device lockForConfiguration:&error]){
+                    [device setFocusPointOfInterest:point];
+                    CGRect rect = CGRectMake(touchPoint.x-30, touchPoint.y-30, 60, 60);
+                    UIView *focusRect = [[UIView alloc] initWithFrame:rect];
+                    focusRect.layer.borderColor = [UIColor whiteColor].CGColor;
+                    focusRect.layer.borderWidth = 2;
+                    focusRect.tag = 99;
+                    [self.readerViewTapSubView addSubview:focusRect];
+                    [NSTimer scheduledTimerWithTimeInterval: 1
+                                                     target: self
+                                                   selector: @selector(dismissFocusRect)
+                                                   userInfo: nil
+                                                    repeats: NO];
+                    [device setFocusMode:AVCaptureFocusModeAutoFocus];
+                    [device unlockForConfiguration];
+                }
+            }
+        }
+    }
+}
+
+- (void) dismissFocusRect {
+    for (UIView *subView in self.readerViewTapSubView.subviews)
+    {
+        if (subView.tag == 99)
+        {
+            [subView removeFromSuperview];
+        }
+    }
+}
+
+-(void)didFailBackupWallet {
+
 #pragma mark why is this needed?
     [self networkActivityStop];
     

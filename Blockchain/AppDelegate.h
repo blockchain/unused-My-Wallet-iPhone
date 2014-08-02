@@ -104,6 +104,7 @@
 @property (nonatomic) BOOL disableBusyView;
 
 @property (strong, nonatomic) IBOutlet MyUIModalView * modalView;
+@property(nonatomic, strong) UIView * readerViewTapSubView;
 @property (strong, nonatomic) NSMutableArray * modalChain;
 
 //PIN Entry

@@ -123,6 +123,10 @@
 
         app.disableBusyView = FALSE;
         
+        // Clear fields
+        toField.text = @"";
+        amountField.text = @"";
+        
         [app closeModal];
     };
     

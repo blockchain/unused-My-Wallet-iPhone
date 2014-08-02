@@ -44,12 +44,14 @@
     IBOutlet UIView * sendProgressModal;
     IBOutlet UILabel * sendProgressModalText;
     IBOutlet UIButton * btcCodeButton;
-    DropDownListView * dropobj;
+    DropDownListView * fromAddressDropDown;
+    DropDownListView * addressBookdropDown;
 
     BOOL displayingLocalSymbol;
 }
 
 @property(nonatomic, strong) NSString *selectedAddress;
+@property(nonatomic, strong) NSArray * addressBookAddress;
 @property(nonatomic, strong) NSArray * fromAddresses;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, strong) NSString *toAddress;

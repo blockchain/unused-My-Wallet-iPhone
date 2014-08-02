@@ -41,8 +41,8 @@
         return FALSE;
     }];
     
-    fromField.valueFont = [UIFont systemFontOfSize:14];
-    fromField.valueColor = [UIColor darkGrayColor];
+    [selectAddressButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    self.selectedAddress = @"";
 
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
@@ -64,10 +64,6 @@
 -(void)reload {
     self.fromAddresses = [app.wallet activeAddresses];
     
-    [fromField reload];
-    
-    [fromField setIndex:0];
-    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
         [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;
@@ -79,16 +75,21 @@
     [self doCurrencyConversion];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    
+    if ([touch.view isKindOfClass:[UIView class]]) {
+        [dropobj fadeOut];
+    }
+}
+
 #pragma mark - Payment
 
 -(void)reallyDoPayment {
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
     NSString * to = self.toAddress;
-    NSString * from = @"";
-    if ([fromField index] > 0) {
-        from = [self.fromAddresses objectAtIndex:[fromField index]-1];
-    }
+    NSString * from = self.selectedAddress;
     
     transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
     
@@ -298,7 +299,35 @@
     return YES;
 }
 
+-(void)showPopUpWithTitle:(NSString*)popupTitle withOption:(NSArray*)arrOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple{
+    
+    dropobj = [[DropDownListView alloc] initWithTitle:popupTitle options:arrOptions xy:point size:size isMultiple:isMultiple];
+    dropobj.delegate = self;
+    [dropobj showInView:self.view animated:YES];
+    
+    [dropobj SetBackGroundDropDwon_R:0.0 G:108.0 B:194.0 alpha:0.70];
+}
 
+# pragma mark- kDropDownListView delegate
+
+- (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex {
+    if (anIndex > 0) {
+        NSString* address = [self.fromAddresses objectAtIndex:anIndex-1];
+        NSString * label = [app.wallet labelForAddress:address];
+        if (label && ![label isEqualToString:@""]) {
+            [selectAddressButton setTitle:label forState:UIControlStateNormal];
+        } else {
+            [selectAddressButton setTitle:address forState:UIControlStateNormal];
+        }
+        self.selectedAddress = address;
+    } else {
+        self.selectedAddress = @"";
+        [selectAddressButton setTitle:@"Any Address" forState:UIControlStateNormal];
+    }
+}
+
+- (void)DropDownListView:(DropDownListView *)dropdownListView Datalist:(NSMutableArray*)ArryData {}
+- (void)DropDownListViewDidCancel {}
 
 # pragma mark- Addres book delegate
 -(void)didSelectAddress:(NSString *)address {
@@ -306,32 +335,29 @@
     self.toAddress = address;
 }
 
--(NSUInteger)countForValueField:(MultiValueField*)valueField {
-    if (valueField == fromField) {
-        return [self.fromAddresses count]+1;
-    }
-    return 0;
-}
+#pragma mark - Actions
 
--(NSString*)titleForValueField:(MultiValueField*)valueField atIndex:(NSUInteger)index {
-    if (valueField == fromField) {
-        if (index == 0) {
-            return @"Any Address";
-        }
-        
-        NSString * address = [self.fromAddresses objectAtIndex:index-1];
+- (IBAction)dropDownSingle:(id)sender {
+    [dropobj fadeOut];
+    NSMutableArray* displayedSelectAddress = [[NSMutableArray alloc] init];
+    [displayedSelectAddress addObject:@"Any Address"];
+    
+    for (NSString* address in self.fromAddresses) {
         NSString * label = [app.wallet labelForAddress:address];
         if (label && ![label isEqualToString:@""]) {
-            return label;
+            [displayedSelectAddress addObject:label];
         } else {
-            return address;
+            [displayedSelectAddress addObject:address];
         }
     }
     
-    return @"";
+    //point below label "From:"
+    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    
+    [self showPopUpWithTitle:@"Select Address" withOption:displayedSelectAddress xy:xy size:CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200) isMultiple:NO];
 }
 
-#pragma mark - Actions
+
 -(IBAction)addressBookClicked:(id)sender {
     AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
     addressBookView.delegate = self;

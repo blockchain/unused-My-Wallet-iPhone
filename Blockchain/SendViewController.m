@@ -355,7 +355,7 @@
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
-    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Select Address" options:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
+    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
     fromAddressDropDown.delegate = self;
     [fromAddressDropDown showInView:self.view animated:YES];
     [fromAddressDropDown SetBackGroundDropDwon_R:0.0 G:108.0 B:194.0 alpha:0.70];
@@ -374,7 +374,7 @@
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
-    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Address Book" options:displayedAddressBookAddresses xy:xy size:dropDownSize isMultiple:NO];
+    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses xy:xy size:dropDownSize isMultiple:NO];
     addressBookdropDown.delegate = self;
     [addressBookdropDown showInView:self.view animated:YES];
     [addressBookdropDown SetBackGroundDropDwon_R:0.0 G:108.0 B:194.0 alpha:0.70];

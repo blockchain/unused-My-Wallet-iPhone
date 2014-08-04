@@ -163,7 +163,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="dropDownSingle:" destination="-1" eventType="touchUpInside" id="V46-rK-0sl"/>
+                        <action selector="selectAddressClicked:" destination="-1" eventType="touchUpInside" id="CBQ-ut-Yph"/>
                     </connections>
                 </button>
             </subviews>

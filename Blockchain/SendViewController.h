@@ -57,7 +57,7 @@
 @property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, strong) NSString *toAddress;
 
-- (IBAction)dropDownSingle:(id)sender;
+- (IBAction)selectAddressClicked:(id)sender;
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;

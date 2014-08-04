@@ -341,7 +341,7 @@
 
 #pragma mark - Actions
 
-- (IBAction)dropDownSingle:(id)sender {
+- (IBAction)selectAddressClicked:(id)sender {
     if (fromAddressDropDown != nil)
         [fromAddressDropDown fadeOut];
 

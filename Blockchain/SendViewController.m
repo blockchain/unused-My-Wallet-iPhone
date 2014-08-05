@@ -375,16 +375,17 @@
     if (addressBookdropDown != nil)
         [addressBookdropDown fadeOut];
     NSMutableArray* displayedAddressBookAddresses = [[NSMutableArray alloc] init];
+    NSMutableArray* displayedAddressBookLabel = [[NSMutableArray alloc] init];
     self.addressBookAddress = [app.wallet.addressBook allKeys];
-    for (NSString * addr in self.addressBookAddress) {
-        NSString* labelAndAddress = [NSString stringWithFormat:@"%@ %@", [app.wallet.addressBook objectForKey:addr], addr];
-        [displayedAddressBookAddresses addObject:labelAndAddress];
+    for (NSString * label in self.addressBookAddress) {
+        [displayedAddressBookAddresses addObject:[app.wallet.addressBook objectForKey:label]];
+        [displayedAddressBookLabel addObject:label];
     }
     
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
-    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses xy:xy size:dropDownSize isMultiple:NO];
+    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses detailsText:displayedAddressBookLabel xy:xy size:dropDownSize isMultiple:NO];
     addressBookdropDown.delegate = self;
     [addressBookdropDown showInView:self.view animated:YES];
     const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);

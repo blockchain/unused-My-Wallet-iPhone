@@ -17,6 +17,8 @@
         self.backgroundColor = [UIColor clearColor];
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.font = [UIFont fontWithName:@"Helvetica" size:12.];
+        self.detailTextLabel.textColor = [UIColor whiteColor];
+        self.detailTextLabel.font = [UIFont fontWithName:@"Helvetica" size:10.];
     }
     return self;
 }
@@ -24,8 +26,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.imageView.frame = CGRectOffset(self.imageView.frame, 6, 0);
-    self.textLabel.frame = CGRectOffset(self.textLabel.frame, 6, 0);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

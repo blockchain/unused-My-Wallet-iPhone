@@ -13,14 +13,18 @@
     UITableView *_kTableView;
     NSString *_kTitleText;
     NSArray *_kDropDownOption;
+    NSArray *_kdetailsText;
     CGFloat R,G,B,A;
     BOOL isMultipleSelection;
+    BOOL isWithDetails;
 }
 @property(nonatomic,strong)NSMutableArray *arryData;
 @property (nonatomic, assign) id<kDropDownListViewDelegate> delegate;
 - (void)fadeOut;
 // The options is a NSArray, contain some NSDictionaries, the NSDictionary contain 2 keys, one is "img", another is "text".
 - (id)initWithTitle:(NSString *)aTitle options:(NSArray *)aOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple;
+- (id)initWithTitle:(NSString *)aTitle options:(NSArray *)aOptions detailsText:(NSArray *)detailsText xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple;
+
 // If animated is YES, PopListView will be appeared with FadeIn effect.
 - (void)showInView:(UIView *)aView animated:(BOOL)animated;
 -(void)SetBackGroundDropDwon_R:(CGFloat)r G:(CGFloat)g B:(CGFloat)b alpha:(CGFloat)alph;

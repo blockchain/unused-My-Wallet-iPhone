@@ -32,6 +32,7 @@
 #import "MerchantViewController.h"
 #import "NSData+Hex.h"
 #import <AVFoundation/AVFoundation.h>
+#import "KeychainItemWrapper.h"
 
 AppDelegate * app;
 
@@ -41,6 +42,7 @@ AppDelegate * app;
 @synthesize wallet;
 @synthesize modalView;
 @synthesize latestResponse;
+@synthesize keychainItem;
 
 #pragma mark - Lifecycle
 
@@ -55,6 +57,8 @@ AppDelegate * app;
         [_localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         self.modalChain = [[NSMutableArray alloc] init];
+        
+        self.keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Wallet" accessGroup:nil];
         
         app = self;
         
@@ -98,6 +102,24 @@ AppDelegate * app;
     busyView.alpha = 0.0f;
     
     [self showWelcome:FALSE];
+    
+    // Move old NSUserDefault entries into the keychain:
+    
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
+        NSString *guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
+        NSString *sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+        
+        if (guid && sharedKey) {
+            [self.keychainItem setObject:guid forKey:(__bridge id)(kSecAttrAccount)];
+            [self.keychainItem setObject:sharedKey forKey:(__bridge id)(kSecValueData)];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+    }
+
 
     //If either of this is nil we are not properyl paired
     if ([self guid] && [self sharedKey]) {
@@ -758,11 +780,9 @@ AppDelegate * app;
         return;
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:guid forKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] setObject:sharedKey forKey:@"sharedKey"];
+    [self.keychainItem setObject:guid forKey:(__bridge id)(kSecAttrAccount)];
+    [self.keychainItem setObject:sharedKey forKey:(__bridge id)(kSecValueData)];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     [app closeModal];
 }
 
@@ -868,9 +888,7 @@ AppDelegate * app;
     
     [self clearPin];
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] synchronize];   
+    [self.keychainItem resetKeychainItem];
     
     [self.wallet cancelTxSigning];
 
@@ -1133,8 +1151,8 @@ AppDelegate * app;
         return;
     }
     
-    NSString * guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
-    NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    NSString * guid = [self guid];
+    NSString * sharedKey = [self sharedKey];
     
     if (guid && sharedKey && password) {
         
@@ -1170,11 +1188,23 @@ AppDelegate * app;
 #pragma mark - Accessors
 
 -(NSString*)guid {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
+    NSString *result = [self.keychainItem objectForKey:(__bridge id)(kSecAttrAccount)];
+    
+    if ([result isEqualToString:@""]) {
+        return nil;
+    }
+    
+    return result;
 }
 
 -(NSString*)sharedKey {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    NSString *result = [self.keychainItem objectForKey:(__bridge id)(kSecValueData)];
+    
+    if ([result isEqualToString:@""]) {
+        return nil;
+    }
+    
+    return result;
 }
 
 #pragma mark - Pin Entry Delegates

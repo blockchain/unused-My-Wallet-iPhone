@@ -111,7 +111,7 @@
     //If the balance label is likely to overfla the transaction count hide it
 //    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
     
-    [transactionCountLabel setText:[NSString stringWithFormat:@"%d Transactions", data.n_transactions]];
+    [transactionCountLabel setText:[NSString stringWithFormat:BC_TRANSACTIONS_COUNT, data.n_transactions]];
     
     [finalBalanceLabel setText:finalBalanceString];
 }

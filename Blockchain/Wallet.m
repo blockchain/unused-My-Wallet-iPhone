@@ -707,9 +707,9 @@
 
 -(void)makeNotice:(NSString*)type id:(NSString*)_id message:(NSString*)message {
     if ([type isEqualToString:@"error"]) {
-        [app standardNotify:message title:@"Error" delegate:nil];
+        [app standardNotify:message title:BC_ERROR delegate:nil];
     } else if ([type isEqualToString:@"info"]) {
-        [app standardNotify:message title:@"Information" delegate:nil];
+        [app standardNotify:message title:BC_INFORMATION delegate:nil];
     }
 }
 
@@ -743,7 +743,7 @@
 }
 
 -(void)on_add_private_key:(NSString*)address {
-    [app standardNotify:[NSString stringWithFormat:@"Imported Private Key %@", address] title:@"Success" delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:BC_IMPORTED_PRIVATE_KEY, address] title:BC_SUCCESS delegate:nil];
 }
 
 -(void)on_error_adding_private_key:(NSString*)error {
@@ -845,7 +845,7 @@
 -(void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N
                    r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error {
         
-    [app setLoadingText:@"Decrypting Private Key"];
+    [app setLoadingText:BC_DECRYPTING_PRIVATE_KEY];
     
     [app networkActivityStart];
     

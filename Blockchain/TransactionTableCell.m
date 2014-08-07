@@ -78,7 +78,7 @@
             [label setTextColor:hashButton.titleLabel.textColor];
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
-                [label setText:[NSString stringWithFormat:@"%d more", [inputs count] - i]];
+                [label setText:[NSString stringWithFormat:BC_COUNT_MORE, [inputs count] - i]];
             }
             else {
                 Input *input = [inputs objectAtIndex:i];
@@ -122,7 +122,7 @@
             [label setTextColor:hashButton.titleLabel.textColor];
 
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
-                [label setText:[NSString stringWithFormat:@"%d more", [outputs count] - i]];
+                [label setText:[NSString stringWithFormat:BC_COUNT_MORE, [outputs count] - i]];
             } else {
                 Output *output = [outputs objectAtIndex:i];
                 NSString * addressString = [app.wallet labelForAddress:[output addr]];
@@ -171,14 +171,14 @@
         [confirmationsButton setHidden:FALSE];
 
         [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:@"Unconfirmed" forState:UIControlStateNormal];
+        [confirmationsButton setTitle:BC_UNCONFIRMED forState:UIControlStateNormal];
         
        
     } else if (confirmations < 100) { 
         [confirmationsButton setHidden:FALSE];
 
         [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:[NSString stringWithFormat:@"%d Confirmations", confirmations] forState:UIControlStateNormal];
+        [confirmationsButton setTitle:[NSString stringWithFormat:BC_COUNT_CONFIRMATIONS, confirmations] forState:UIControlStateNormal];
         
     } else {
         [confirmationsButton setHidden:YES];

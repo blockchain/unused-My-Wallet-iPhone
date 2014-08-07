@@ -43,7 +43,7 @@
 
 #define PIN_PBKDF2_ITERATIONS 1 //This does not need to be large because the key is already 256 bits
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser, MerchantViewController;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser, MerchantViewController, KeychainItemWrapper;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
@@ -114,6 +114,8 @@
 
 @property(nonatomic, strong) NSNumberFormatter * btcFormatter;
 @property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
+
+@property (nonatomic, strong) KeychainItemWrapper *keychainItem;
 
 -(IBAction)manualPairClicked:(id)sender;
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey;

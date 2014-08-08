@@ -345,21 +345,25 @@
         [fromAddressDropDown fadeOut];
 
     NSMutableArray* displayedSelectAddress = [[NSMutableArray alloc] init];
-    [displayedSelectAddress addObject:@"Any Address"];
+    NSMutableArray* displayedSelectAddressLabel = [[NSMutableArray alloc] init];
+    [displayedSelectAddressLabel addObject:@"Any Address"];
+    [displayedSelectAddress addObject:@""];
     
     for (NSString* address in self.fromAddresses) {
         NSString * label = [app.wallet labelForAddress:address];
         if (label && ![label isEqualToString:@""]) {
-            [displayedSelectAddress addObject:label];
-        } else {
             [displayedSelectAddress addObject:address];
+            [displayedSelectAddressLabel addObject:label];
+        } else {
+            [displayedSelectAddressLabel addObject:address];
+            [displayedSelectAddress addObject:@""];
         }
     }
     
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
-    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
+    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddressLabel detailsText:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
     fromAddressDropDown.delegate = self;
     [fromAddressDropDown showInView:self.view animated:YES];
     const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);

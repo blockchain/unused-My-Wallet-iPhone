@@ -93,10 +93,12 @@
 }
 
 -(uint64_t)getInputAmountInSatoshi {
+    NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
     if (displayingLocalSymbol) {
-        return app.latestResponse.symbol_local.conversion * [requestAmountTextField.text doubleValue];
+        return app.latestResponse.symbol_local.conversion * [requestedAmountString doubleValue];
     } else {
-        return [app.wallet parseBitcoinValue:requestAmountTextField.text];
+        return [app.wallet parseBitcoinValue:requestedAmountString];
     }
 }
 
@@ -236,12 +238,20 @@
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSArray  *points = [newString componentsSeparatedByString:@"."];
+    NSArray  *commas = [newString componentsSeparatedByString:@","];
+    
+    if ([points count] > 2 || [commas count] > 2)
+        return NO;
+    
     [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
     
-    return TRUE;
+    return YES;
 }
 
-#pragma UITableview Delegates
+#pragma mark - UITableview Delegates
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     

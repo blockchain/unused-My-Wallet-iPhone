@@ -167,10 +167,6 @@
 
     NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ (%@) to %@", amountBTCString, amountLocalString, self.toAddress];
     
-//    if (![toField.text isEqualToString:self.toAddress]) {
-//        [messageString appendFormat:@" (Labeled: %@)", toField.text];
-//    }
-    
     BCAlertView *alert = [[BCAlertView alloc] initWithTitle:@"Confirm Payment"
                                                     message:messageString
                                                    delegate:self

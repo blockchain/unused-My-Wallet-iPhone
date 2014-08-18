@@ -48,7 +48,7 @@
     amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
     amountField.inputAccessoryView = amountKeyboardAccessoryView;
-    
+
     [toField setReturnKeyType:UIReturnKeyDone];
     
     if (APP_IS_IPHONE5) {
@@ -151,10 +151,12 @@
 
 
 -(uint64_t)getInputAmountInSatoshi {
+    NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
     if (displayingLocalSymbol) {
-        return app.latestResponse.symbol_local.conversion * [amountField.text doubleValue];
+        return app.latestResponse.symbol_local.conversion * [amountString doubleValue];
     } else {
-        return [app.wallet parseBitcoinValue:amountField.text];
+        return [app.wallet parseBitcoinValue:amountString];
     }
 }
 

@@ -1252,6 +1252,11 @@ AppDelegate * app;
         
         [self closePINModal:YES];
     } else if ([code integerValue] == PIN_API_STATUS_PIN_INCORRECT) {
+        
+        if (error == nil) {
+            error = @"PIN Code Incorrect. Unknown Error Message.";
+        }
+        
         [app standardNotify:error];
     } else if ([code intValue] == PIN_API_STATUS_OK) {
         

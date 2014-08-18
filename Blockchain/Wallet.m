@@ -639,13 +639,16 @@
 }
 
 -(BOOL)hasEncryptedWalletData {
-    return [[self.webView executeJSSynchronous:@"MyWalletPhone.hasEncryptedWalletData()"] boolValue];
+    if ([self.webView isLoaded])
+        return [[self.webView executeJSSynchronous:@"MyWalletPhone.hasEncryptedWalletData()"] boolValue];
+    else
+        return NO;
 }
 
 -(void)setPassword:(NSString *)pw {
     password = pw;
     
-    if (password && [self.webView isLoaded] && [self hasEncryptedWalletData]) {
+    if (password) {
         DLog(@"Setting Password");
         
         [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];

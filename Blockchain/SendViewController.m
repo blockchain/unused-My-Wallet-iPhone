@@ -364,7 +364,7 @@
     
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
-    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
     fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddressLabel detailsText:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
     fromAddressDropDown.delegate = self;
     [fromAddressDropDown showInView:self.view animated:YES];
@@ -389,7 +389,7 @@
     
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
-    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
     addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses detailsText:displayedAddressBookLabel xy:xy size:dropDownSize isMultiple:NO];
     addressBookdropDown.delegate = self;
     [addressBookdropDown showInView:self.view animated:YES];

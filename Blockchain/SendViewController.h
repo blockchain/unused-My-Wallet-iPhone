@@ -37,6 +37,7 @@
     
     IBOutlet UILabel *fromLabel;
     IBOutlet UIButton *selectAddressButton;
+    IBOutlet UIButton *addressBookButton;
     IBOutlet UIButton * sendPaymentButton;
     IBOutlet UIView * labelAddressView;
     IBOutlet UILabel * labelAddressLabel;
@@ -44,17 +45,19 @@
     IBOutlet UIView * sendProgressModal;
     IBOutlet UILabel * sendProgressModalText;
     IBOutlet UIButton * btcCodeButton;
-    DropDownListView * dropobj;
+    DropDownListView * fromAddressDropDown;
+    DropDownListView * addressBookdropDown;
 
     BOOL displayingLocalSymbol;
 }
 
 @property(nonatomic, strong) NSString *selectedAddress;
+@property(nonatomic, strong) NSArray * addressBookAddress;
 @property(nonatomic, strong) NSArray * fromAddresses;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, strong) NSString *toAddress;
 
-- (IBAction)dropDownSingle:(id)sender;
+- (IBAction)selectAddressClicked:(id)sender;
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;

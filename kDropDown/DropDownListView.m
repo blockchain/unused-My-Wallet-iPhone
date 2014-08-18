@@ -30,6 +30,7 @@
 }
 - (id)initWithTitle:(NSString *)aTitle options:(NSArray *)aOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple
 {
+    isWithDetails = NO;
     isMultipleSelection=isMultiple;
     CGRect rect = CGRectMake(point.x, point.y,size.width,size.height);
     if (self = [super initWithFrame:rect])
@@ -59,6 +60,42 @@
     }
     return self;
 }
+
+- (id)initWithTitle:(NSString *)aTitle options:(NSArray *)aOptions detailsText:(NSArray *)detailsText
+                 xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple {
+    isWithDetails = YES;
+    isMultipleSelection=isMultiple;
+    CGRect rect = CGRectMake(point.x, point.y,size.width,size.height);
+    if (self = [super initWithFrame:rect])
+    {
+        self.backgroundColor = [UIColor clearColor];
+        _kTitleText = [aTitle copy];
+        _kDropDownOption = [aOptions copy];
+        _kdetailsText = [detailsText copy];
+        self.arryData=[[NSMutableArray alloc]init];
+        _kTableView = [[UITableView alloc] initWithFrame:CGRectMake(DROPDOWNVIEW_SCREENINSET,
+                                                                    DROPDOWNVIEW_SCREENINSET + DROPDOWNVIEW_HEADER_HEIGHT,
+                                                                    rect.size.width - 2 * DROPDOWNVIEW_SCREENINSET,
+                                                                    rect.size.height - 2 * DROPDOWNVIEW_SCREENINSET - DROPDOWNVIEW_HEADER_HEIGHT - RADIUS)];
+        _kTableView.separatorColor = [UIColor colorWithWhite:1 alpha:.2];
+        _kTableView.backgroundColor = [UIColor clearColor];
+        _kTableView.dataSource = self;
+        _kTableView.delegate = self;
+        [self addSubview:_kTableView];
+        if (isMultipleSelection) {
+            UIButton *btnDone=[UIButton  buttonWithType:UIButtonTypeCustom];
+            [btnDone setFrame:CGRectMake(rect.origin.x+182,rect.origin.y-45, 82, 31)];
+            [btnDone setImage:[UIImage imageNamed:@"done@2x.png"] forState:UIControlStateNormal];
+            [btnDone addTarget:self action:@selector(Click_Done) forControlEvents: UIControlEventTouchUpInside];
+            [self addSubview:btnDone];
+        }
+        
+        
+    }
+    return self;
+}
+
+
 -(void)Click_Done{
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(DropDownListView:Datalist:)]) {
@@ -119,9 +156,13 @@
     static NSString *cellIdentity = @"DropDownViewCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentity];
-    cell = [[DropDownViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
-    
     int row = [indexPath row];
+    if (isWithDetails) {
+        cell = [[DropDownViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentity];
+        cell.detailTextLabel.text = [_kdetailsText objectAtIndex:row];
+    } else
+        cell = [[DropDownViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
+    
     UIImageView *imgarrow=[[UIImageView alloc]init ];
     
     if([self.arryData containsObject:indexPath]){

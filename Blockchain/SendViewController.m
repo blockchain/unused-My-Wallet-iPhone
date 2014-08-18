@@ -76,10 +76,17 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    
-    if ([touch.view isKindOfClass:[UIView class]]) {
-        [dropobj fadeOut];
+    if (fromAddressDropDown != nil) {
+        [fromAddressDropDown fadeOut];
+        [addressBookButton setEnabled:YES];
+        [selectAddressButton setEnabled:YES];
+        fromAddressDropDown = nil;
+    }
+    if (addressBookdropDown != nil) {
+        [addressBookdropDown fadeOut];
+        [addressBookButton setEnabled:YES];
+        [selectAddressButton setEnabled:YES];
+        addressBookdropDown = nil;
     }
 }
 
@@ -158,10 +165,9 @@
 
     NSMutableString *messageString = [NSMutableString stringWithFormat:@"Confirm payment of %@ (%@) to %@", amountBTCString, amountLocalString, self.toAddress];
     
-    if (![toField.text isEqualToString:self.toAddress]) {
-        [messageString appendFormat:@" (%@)", toField.text];
-    }
-    
+//    if (![toField.text isEqualToString:self.toAddress]) {
+//        [messageString appendFormat:@" (Labeled: %@)", toField.text];
+//    }
     
     BCAlertView *alert = [[BCAlertView alloc] initWithTitle:@"Confirm Payment"
                                                     message:messageString
@@ -299,30 +305,27 @@
     return YES;
 }
 
--(void)showPopUpWithTitle:(NSString*)popupTitle withOption:(NSArray*)arrOptions xy:(CGPoint)point size:(CGSize)size isMultiple:(BOOL)isMultiple{
-    
-    dropobj = [[DropDownListView alloc] initWithTitle:popupTitle options:arrOptions xy:point size:size isMultiple:isMultiple];
-    dropobj.delegate = self;
-    [dropobj showInView:self.view animated:YES];
-    
-    [dropobj SetBackGroundDropDwon_R:0.0 G:108.0 B:194.0 alpha:0.70];
-}
-
 # pragma mark- kDropDownListView delegate
 
 - (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex {
-    if (anIndex > 0) {
-        NSString* address = [self.fromAddresses objectAtIndex:anIndex-1];
-        NSString * label = [app.wallet labelForAddress:address];
-        if (label && ![label isEqualToString:@""]) {
-            [selectAddressButton setTitle:label forState:UIControlStateNormal];
+    [selectAddressButton setEnabled:YES];
+    [addressBookButton setEnabled:YES];
+    if (dropdownListView == fromAddressDropDown) {
+        if (anIndex > 0) {
+            NSString* address = [self.fromAddresses objectAtIndex:anIndex-1];
+            NSString * label = [app.wallet labelForAddress:address];
+            if (label && ![label isEqualToString:@""]) {
+                [selectAddressButton setTitle:label forState:UIControlStateNormal];
+            } else {
+                [selectAddressButton setTitle:address forState:UIControlStateNormal];
+            }
+            self.selectedAddress = address;
         } else {
-            [selectAddressButton setTitle:address forState:UIControlStateNormal];
+            self.selectedAddress = @"";
+            [selectAddressButton setTitle:@"Any Address" forState:UIControlStateNormal];
         }
-        self.selectedAddress = address;
-    } else {
-        self.selectedAddress = @"";
-        [selectAddressButton setTitle:@"Any Address" forState:UIControlStateNormal];
+    } else if (dropdownListView == addressBookdropDown) {
+        [self didSelectAddress: [self.addressBookAddress objectAtIndex:anIndex]];
     }
 }
 
@@ -337,39 +340,62 @@
 
 #pragma mark - Actions
 
-- (IBAction)dropDownSingle:(id)sender {
-    [dropobj fadeOut];
+- (IBAction)selectAddressClicked:(id)sender {
+    if (fromAddressDropDown != nil)
+        [fromAddressDropDown fadeOut];
+
     NSMutableArray* displayedSelectAddress = [[NSMutableArray alloc] init];
-    [displayedSelectAddress addObject:@"Any Address"];
+    NSMutableArray* displayedSelectAddressLabel = [[NSMutableArray alloc] init];
+    [displayedSelectAddressLabel addObject:@"Any Address"];
+    [displayedSelectAddress addObject:@""];
     
     for (NSString* address in self.fromAddresses) {
         NSString * label = [app.wallet labelForAddress:address];
         if (label && ![label isEqualToString:@""]) {
-            [displayedSelectAddress addObject:label];
-        } else {
             [displayedSelectAddress addObject:address];
+            [displayedSelectAddressLabel addObject:label];
+        } else {
+            [displayedSelectAddressLabel addObject:address];
+            [displayedSelectAddress addObject:@""];
         }
     }
     
     //point below label "From:"
     CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
-    
-    [self showPopUpWithTitle:@"Select Address" withOption:displayedSelectAddress xy:xy size:CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200) isMultiple:NO];
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
+    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddressLabel detailsText:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
+    fromAddressDropDown.delegate = self;
+    [fromAddressDropDown showInView:self.view animated:YES];
+    const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);
+    [fromAddressDropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
+
+    [addressBookButton setEnabled:NO];
+    [selectAddressButton setEnabled:NO];
 }
 
 
 -(IBAction)addressBookClicked:(id)sender {
-    AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
-    addressBookView.delegate = self;
-
-    [app showModal:addressBookView isClosable:TRUE onDismiss:^() {
-        [self.readerView stop];
-        
-        self.readerView = nil;
-        
-        [app.wallet cancelTxSigning];
-    } onResume:nil];
+    if (addressBookdropDown != nil)
+        [addressBookdropDown fadeOut];
+    NSMutableArray* displayedAddressBookAddresses = [[NSMutableArray alloc] init];
+    NSMutableArray* displayedAddressBookLabel = [[NSMutableArray alloc] init];
+    self.addressBookAddress = [app.wallet.addressBook allKeys];
+    for (NSString * label in self.addressBookAddress) {
+        [displayedAddressBookAddresses addObject:[app.wallet.addressBook objectForKey:label]];
+        [displayedAddressBookLabel addObject:label];
+    }
     
+    //point below label "From:"
+    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, self.view.frame.size.height-200);
+    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses detailsText:displayedAddressBookLabel xy:xy size:dropDownSize isMultiple:NO];
+    addressBookdropDown.delegate = self;
+    [addressBookdropDown showInView:self.view animated:YES];
+    const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);
+    [addressBookdropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
+    
+    [addressBookButton setEnabled:NO];
+    [selectAddressButton setEnabled:NO];
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender {

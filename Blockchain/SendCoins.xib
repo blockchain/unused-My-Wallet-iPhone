@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SendViewController">
             <connections>
+                <outlet property="addressBookButton" destination="12" id="1GM-9f-yiA"/>
                 <outlet property="amountField" destination="52" id="54"/>
                 <outlet property="amountKeyboardAccessoryView" destination="56" id="kgb-Ig-Yso"/>
                 <outlet property="btcCodeButton" destination="6zi-8R-Tmt" id="BHi-yx-iMF"/>
@@ -162,7 +163,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="dropDownSingle:" destination="-1" eventType="touchUpInside" id="V46-rK-0sl"/>
+                        <action selector="selectAddressClicked:" destination="-1" eventType="touchUpInside" id="CBQ-ut-Yph"/>
                     </connections>
                 </button>
             </subviews>

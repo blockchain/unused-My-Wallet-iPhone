@@ -39,7 +39,9 @@
 @end
 
 @implementation JSCommandObject
+@end
 
+@implementation SuccessErrorCallbackContainer
 @end
 
 /*
@@ -232,7 +234,7 @@
 }
 
 
-- (void)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary success:(void (^)(id))success error:(void (^)(id))error
+- (void)webView:(UIWebView*) webview didReceiveJSNotificationWithDictionary:(NSDictionary*) dictionary successErrorContainer:(SuccessErrorCallbackContainer*)container
 {
     //DLog(@"didReceiveJSNotificationWithDictionary: %@", dictionary);
     
@@ -242,14 +244,6 @@
     BOOL errorArg = [[dictionary objectForKey:@"error"] isEqualToString:@"TRUE"];
     
     int componentsCount = [[function componentsSeparatedByString:@":"] count]-1;
-    
-    __unsafe_unretained void (^_success)(id) = ^(id object) {
-        success(object);
-    };
-    
-    __unsafe_unretained void (^_error)(id) = ^(id object) {
-        error(object);
-    };
     
     if (successArg) {
         if ([function characterAtIndex:[function length]-1] == ':')
@@ -282,7 +276,7 @@
                 int ii = 0;
                 while (true) {
                     if ([sig numberOfArguments] > index && componentsCount > ii) {
-                        __unsafe_unretained id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
+                        __weak id arg = [dictionary objectForKey:[NSString stringWithFormat:@"arg%d", ii]];
                         [invo setArgument:&arg atIndex:index];
                         ++index;
                     } else {
@@ -292,11 +286,15 @@
                 }
                 
                 if (successArg) {
+                    void (^_success)(id) = container.success;
+                    
                     [invo setArgument:&_success atIndex:index];
                     ++index;
                 }
                 
                 if (errorArg) {
+                    void (^_error)(id) = container.error;
+
                     [invo setArgument:&_error atIndex:index];
                     ++index;
                 }
@@ -311,7 +309,7 @@
     }
     
     if (!successArg && !errorArg) {
-        success(nil);
+        container.success(nil);
     }
 }
 /*
@@ -341,9 +339,12 @@
                     // Calls the delegate method with the notified object.
                     if(self.JSDelegate)
                     {
-                        [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated success:^(id success) {
-                           if (!self.isLoaded)
-                               return;
+                        
+                        SuccessErrorCallbackContainer * container = [SuccessErrorCallbackContainer new];
+
+                        container.success = ^(id success) {
+                            if (!self.isLoaded)
+                                return;
                             
                             //On success
                             if (success != nil) {
@@ -352,7 +353,13 @@
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, true);", jsNotId];
                             }
                             
-                        } error:^(id error) {
+                            //Delibertly reference container here
+                            //So it is strongly retained
+                            container.success = nil;
+                            container.error = nil;
+                        };
+                        
+                        container.error = ^(id error) {
                             //On Error
                             if (error != nil) {
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, \"%@\", false);", jsNotId, [error escapeStringForJS]];
@@ -360,7 +367,13 @@
                                 [self executeJSSynchronous:@"JSBridge_setResponseWithId(%@, null, false);", jsNotId];
                             }
                             
-                        }];
+                            //Delibertly reference container here
+                            //So it is strongly retained
+                            container.success = nil;
+                            container.error = nil;
+                        };
+                        
+                        [self webView:self didReceiveJSNotificationWithDictionary: dicTranslated successErrorContainer:container];
                     }
                 }
             }

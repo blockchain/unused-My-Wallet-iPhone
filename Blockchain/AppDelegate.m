@@ -392,7 +392,7 @@ AppDelegate * app;
     if (![wallet isInitialized]) {
         [app showWelcome:FALSE];
         
-        if ([self guid] && [self guid]) {
+        if ([self guid] && [self sharedKey]) {
             [self showModal:mainPasswordView isClosable:FALSE];
         }
     }

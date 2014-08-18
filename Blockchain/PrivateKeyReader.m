@@ -49,7 +49,7 @@
             
                 [app closeModal];
             } else {
-                [app standardNotify:BC_UNSUPPORTED_PRIVATE_KEY_FORMAT];
+                [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
             }
             
             break;

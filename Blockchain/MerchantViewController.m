@@ -38,7 +38,7 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    app.loadingText = BC_LOADING_EXTERNAL_PAGE;
+    app.loadingText = BC_STRING_LOADING_EXTERNAL_PAGE;
     
     [app networkActivityStart];
 }

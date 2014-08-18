@@ -97,7 +97,7 @@
     listener.on_start = ^() {
         app.disableBusyView = TRUE;
 
-        sendProgressModalText.text = BC_PLEASE_WAIT;
+        sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
         
         [app showModal:sendProgressModal isClosable:FALSE onDismiss:^() {
             [app.wallet cancelTxSigning];
@@ -105,19 +105,19 @@
     };
     
     listener.on_begin_signing = ^() {
-        sendProgressModalText.text = BC_SIGNING_INPUTS;
+        sendProgressModalText.text = BC_STRING_SIGNING_INPUTS;
     };
     
     listener.on_sign_progress = ^(int input) {
-        sendProgressModalText.text = [NSString stringWithFormat:BC_SIGNING_INPUT, input];
+        sendProgressModalText.text = [NSString stringWithFormat:BC_STRING_SIGNING_INPUT, input];
     };
     
     listener.on_finish_signing = ^() {
-        sendProgressModalText.text = BC_FINISHED_SIGNING_INPUTS;
+        sendProgressModalText.text = BC_STRING_FINISHED_SIGNING_INPUTS;
     };
     
     listener.on_success = ^() {
-        [app standardNotify:BC_PAYMENT_SENT title:BC_SUCCESS delegate:nil];
+        [app standardNotify:BC_STRING_PAYMENT_SENT title:BC_STRING_SUCCESS delegate:nil];
         
         [sendPaymentButton setEnabled:TRUE];
 
@@ -155,18 +155,18 @@
     NSString * amountBTCString   = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:FALSE];
     NSString * amountLocalString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:TRUE];
 
-    NSMutableString *messageString = [NSMutableString stringWithFormat:BC_CONFIRM_PAYMENT_OF, amountBTCString, amountLocalString, self.toAddress];
+    NSMutableString *messageString = [NSMutableString stringWithFormat:BC_STRING_CONFIRM_PAYMENT_OF, amountBTCString, amountLocalString, self.toAddress];
     
     if (![toField.text isEqualToString:self.toAddress]) {
         [messageString appendFormat:@" (%@)", toField.text];
     }
     
     
-    BCAlertView *alert = [[BCAlertView alloc] initWithTitle:BC_CONFIRM_PAYMENT
+    BCAlertView *alert = [[BCAlertView alloc] initWithTitle:BC_STRING_CONFIRM_PAYMENT
                                                     message:messageString
                                                    delegate:self
-                                          cancelButtonTitle:BC_NO
-                                          otherButtonTitles:BC_YES, nil];
+                                          cancelButtonTitle:BC_STRING_NO
+                                          otherButtonTitles:BC_STRING_YES, nil];
     
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 1) {
@@ -385,34 +385,34 @@
         self.toAddress = toField.text;
     
     if ([self.toAddress length] == 0) {
-        [app standardNotify:BC_YOU_MUST_ENTER_DESTINATION_ADDRESS];
+        [app standardNotify:BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS];
         return;
     }
     
     if (![app.wallet isValidAddress:self.toAddress]) {
-        [app standardNotify:BC_INVALID_TO_BITCOIN_ADDRESS];
+        [app standardNotify:BC_STRING_INVALID_TO_BITCOIN_ADDRESS];
         return;
     }
     
     uint64_t value = [self getInputAmountInSatoshi];
     if (value <= 0) {
-        [app standardNotify:BC_INVALID_SEND_VALUE];
+        [app standardNotify:BC_STRING_INVALID_SEND_VALUE];
         return;
     }
     
     int countPriv = [[app.wallet activeAddresses] count];
     
     if (countPriv == 0) {
-        [app standardNotify:BC_NO_ACTIVE_BITCOIN_ADDRESSES_AVAILABLE];
+        [app standardNotify:BC_STRING_NO_ACTIVE_BITCOIN_ADDRESSES_AVAILABLE];
         return;
     }
     
     if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_ADD_TO_ADDRESS_BOOK
-                                                        message:[NSString stringWithFormat:BC_ASK_TO_ADD_TO_ADDRESS_BOOK, self.toAddress]
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ADD_TO_ADDRESS_BOOK
+                                                        message:[NSString stringWithFormat:BC_STRING_ASK_TO_ADD_TO_ADDRESS_BOOK, self.toAddress]
                                                        delegate:nil
-                                              cancelButtonTitle:BC_NO
-                                              otherButtonTitles:BC_YES, nil];
+                                              cancelButtonTitle:BC_STRING_NO
+                                              otherButtonTitles:BC_STRING_YES, nil];
         
         alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
             // do nothing & proceed

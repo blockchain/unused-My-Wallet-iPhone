@@ -764,7 +764,6 @@
 				9FB3637D14B60128004BEA02 /* Blockchain-Info.plist */,
 				9FB3638114B60128004BEA02 /* main.m */,
 				9FB3638314B60128004BEA02 /* Blockchain-Prefix.pch */,
-				22DC501D1992A20B00383A56 /* LocalizationConstants.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

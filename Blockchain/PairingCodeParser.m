@@ -56,7 +56,7 @@
         
         [app.wallet parsePairingCode:sym.data];
         
-        app.loadingText = BC_PARSING_PAIRING_CODE;
+        app.loadingText = BC_STRING_PARSING_PAIRING_CODE;
         
         [app networkActivityStart];
         

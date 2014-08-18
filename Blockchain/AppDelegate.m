@@ -240,19 +240,19 @@ AppDelegate * app;
 
 - (void)standardNotify:(NSString*)message
 {
-	[self standardNotify:message title:BC_ERROR delegate:nil];
+	[self standardNotify:message title:BC_STRING_ERROR delegate:nil];
 }
 
 - (void)standardNotify:(NSString*)message delegate:(id)fdelegate
 {
-	[self standardNotify:message title:BC_ERROR delegate:fdelegate];
+	[self standardNotify:message title:BC_STRING_ERROR delegate:fdelegate];
 }
 
 - (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:BC_OK otherButtonTitles: nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message  delegate:fdelegate cancelButtonTitle:BC_STRING_OK otherButtonTitles: nil];
             [alert show];
         }
     });
@@ -272,11 +272,11 @@ AppDelegate * app;
             return;
         }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_FAILED_TO_LOAD_WALLET_TITLE
-                                                        message:[NSString stringWithFormat:BC_FAILED_TO_LOAD_WALLET_DETAIL]
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_FAILED_TO_LOAD_WALLET_TITLE
+                                                        message:[NSString stringWithFormat:BC_STRING_FAILED_TO_LOAD_WALLET_DETAIL]
                                                        delegate:nil
-                                              cancelButtonTitle:BC_FORGET_WALLET
-                                              otherButtonTitles:BC_CLOSE_APP, nil];
+                                              cancelButtonTitle:BC_STRING_FORGET_WALLET
+                                              otherButtonTitles:BC_STRING_CLOSE_APP, nil];
         
         alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex == 1) {
@@ -491,13 +491,13 @@ AppDelegate * app;
     
     validateSecondPassword = FALSE;
     
-    secondPasswordDescriptionLabel.text = BC_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
+    secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
 
     [app showModal:secondPasswordView isClosable:TRUE onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
-            if (error) error(BC_NO_PASSWORD_ENTERED);
+            if (error) error(BC_STRING_NO_PASSWORD_ENTERED);
         } else {
             if (success) success(password);
         }
@@ -514,14 +514,14 @@ AppDelegate * app;
     if (!validateSecondPassword || [wallet validateSecondPassword:password]) {
         [app closeModal];
     } else {
-        [app standardNotify:BC_SECOND_PASSWORD_INCORRECT];
+        [app standardNotify:BC_STRING_SECOND_PASSWORD_INCORRECT];
         secondPasswordTextField.text = nil;
     }
 }
 
 -(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
     
-    secondPasswordDescriptionLabel.text = BC_ACTION_REQUIRES_SECOND_PASSWORD;
+    secondPasswordDescriptionLabel.text = BC_STRING_ACTION_REQUIRES_SECOND_PASSWORD;
     
     validateSecondPassword = TRUE;
     
@@ -529,9 +529,9 @@ AppDelegate * app;
         NSString * password = secondPasswordTextField.text;
                     
         if ([password length] == 0) {
-            if (error) error(BC_NO_PASSWORD_ENTERED);
+            if (error) error(BC_STRING_NO_PASSWORD_ENTERED);
         } else if(![wallet validateSecondPassword:password]) {
-            if (error) error(BC_SECOND_PASSWORD_INCORRECT);
+            if (error) error(BC_STRING_SECOND_PASSWORD_INCORRECT);
         } else {
             if (success) success(password);
         }
@@ -749,12 +749,12 @@ AppDelegate * app;
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey {
 
     if ([guid length] != 36) {
-        [app standardNotify:BC_INVALID_GUID];
+        [app standardNotify:BC_STRING_INVALID_GUID];
         return;
     }
     
     if ([sharedKey length] != 36) {
-        [app standardNotify:BC_INVALID_SHARED_KEY];
+        [app standardNotify:BC_STRING_INVALID_SHARED_KEY];
         return;
     }
     
@@ -782,7 +782,7 @@ AppDelegate * app;
     NSString * password = manualPassword.text;
     
     if ([guid length] != 36) {
-        [app standardNotify:BC_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER title:BC_INVALID_IDENTIFIER delegate:nil];
+        [app standardNotify:BC_STRING_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER title:BC_STRING_INVALID_IDENTIFIER delegate:nil];
         return;
     }
     
@@ -808,7 +808,7 @@ AppDelegate * app;
             
             [app clearPin];
             
-            [app standardNotify:[NSString stringWithFormat:BC_WALLET_PAIRED_SUCCESSFULLY_DETAIL] title:BC_WALLET_PAIRED_SUCCESSFULLY_TITLE delegate:nil];
+            [app standardNotify:[NSString stringWithFormat:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_DETAIL] title:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_TITLE delegate:nil];
             
             [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"]];
             
@@ -828,15 +828,15 @@ AppDelegate * app;
 }
 
 -(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_ASK_FOR_PRIVATE_KEY_TITLE
-                                            message:[NSString stringWithFormat:BC_ASK_FOR_PRIVATE_KEY_DETAIL, address]
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ASK_FOR_PRIVATE_KEY_TITLE
+                                            message:[NSString stringWithFormat:BC_STRING_ASK_FOR_PRIVATE_KEY_DETAIL, address]
                                            delegate:nil
-                                  cancelButtonTitle:BC_NO
-                                  otherButtonTitles:BC_YES, nil];
+                                  cancelButtonTitle:BC_STRING_NO
+                                  otherButtonTitles:BC_STRING_YES, nil];
 
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 0) {
-            _error(BC_USER_DECLINED);
+            _error(BC_STRING_USER_DECLINED);
         } else {
             PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
             
@@ -963,32 +963,32 @@ AppDelegate * app;
     [app showModal:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
         
         [welcomeButton3 setHidden:![self isPINSet]];
-        [welcomeButton3 setTitle:BC_CHANGE_PIN forState:UIControlStateNormal];
+        [welcomeButton3 setTitle:BC_STRING_CHANGE_PIN forState:UIControlStateNormal];
         
         // User is logged in
         if ([self.wallet isInitialized]) {
-            welcomeLabel.text = BC_OPTIONS;
-            welcomeInstructionsLabel.text = BC_OPEN_ACCOUNT_SETTINGS;
-            [welcomeButton1 setTitle:BC_ACCOUNT_SETTINGS forState:UIControlStateNormal];
+            welcomeLabel.text = BC_STRING_OPTIONS;
+            welcomeInstructionsLabel.text = BC_STRING_OPEN_ACCOUNT_SETTINGS;
+            [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
-            [welcomeButton2 setTitle:BC_LOGOUT forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:BC_STRING_LOGOUT forState:UIControlStateNormal];
         }
         // Wallet paired, but no password
         else if ([self guid] && [self sharedKey]) {
-            welcomeLabel.text = BC_WELCOME_BACK;
+            welcomeLabel.text = BC_STRING_WELCOME_BACK;
             welcomeInstructionsLabel.text = @"";
-            [welcomeButton1 setTitle:BC_ACCOUNT_SETTINGS forState:UIControlStateNormal];
+            [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
-            [welcomeButton2 setTitle:BC_FORGET_DETAILS forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:BC_STRING_FORGET_DETAILS forState:UIControlStateNormal];
         }
         // User is completed logged out
         else {
-            welcomeLabel.text = BC_WELCOME_TO_BLOCKCHAIN_WALLET;
-            welcomeInstructionsLabel.text = BC_WELCOME_INSTRUCTIONS;
+            welcomeLabel.text = BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET;
+            welcomeInstructionsLabel.text = BC_STRING_WELCOME_INSTRUCTIONS;
             
-            [welcomeButton1 setTitle:BC_CREATE_WALLET forState:UIControlStateNormal];
+            [welcomeButton1 setTitle:BC_STRING_CREATE_WALLET forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
-            [welcomeButton2 setTitle:BC_PAIR_DEVICE forState:UIControlStateNormal];
+            [welcomeButton2 setTitle:BC_STRING_PAIR_DEVICE forState:UIControlStateNormal];
         }
     }];
 }
@@ -1029,11 +1029,11 @@ AppDelegate * app;
 }
 
 -(void)forgetWalletAlert:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_WARNING
-                                                    message:BC_FORGET_WALLET_DETAILS
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_WARNING
+                                                    message:BC_STRING_FORGET_WALLET_DETAILS
                                                    delegate:self
-                                          cancelButtonTitle:BC_CANCEL
-                                          otherButtonTitles:BC_FORGET_WALLET, nil];
+                                          cancelButtonTitle:BC_STRING_CANCEL
+                                          otherButtonTitles:BC_STRING_FORGET_WALLET, nil];
     alert.tapBlock = tapBlock;
     
     [alert show];
@@ -1072,11 +1072,11 @@ AppDelegate * app;
     }
     // Do pair
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_HOW_WOULD_YOU_LIKE_TO_PAIR
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_HOW_WOULD_YOU_LIKE_TO_PAIR
                                                         message:nil
                                                        delegate:self
-                                              cancelButtonTitle:BC_MANUALLY
-                                              otherButtonTitles:BC_AUTOMATICALLY, nil];
+                                              cancelButtonTitle:BC_STRING_MANUALLY
+                                              otherButtonTitles:BC_STRING_AUTOMATICALLY, nil];
 
         alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
             // Manually
@@ -1129,7 +1129,7 @@ AppDelegate * app;
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([mainPasswordTextField.text length] < 10) {
-        [app standardNotify:BC_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
+        [app standardNotify:BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
         return;
     }
     
@@ -1205,10 +1205,10 @@ AppDelegate * app;
 }
 
 -(void)askIfUserWantsToResetPIN {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_PIN_VALIDATION_ERROR
-                                                    message:BC_PIN_VALIDATION_ERROR_DETAIL
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_PIN_VALIDATION_ERROR
+                                                    message:BC_STRING_PIN_VALIDATION_ERROR_DETAIL
                                                    delegate:self
-                                          cancelButtonTitle:BC_ENTER_PASSWORD
+                                          cancelButtonTitle:BC_STRING_ENTER_PASSWORD
                                           otherButtonTitles:RETRY_VALIDATION, nil];
     
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -1242,9 +1242,9 @@ AppDelegate * app;
     
     BOOL pinSuccess = FALSE;
     if (code == nil) {
-        [app standardNotify:[NSString stringWithFormat:BC_SERVER_RETURNED_NULL_STATUS_CODE]];
+        [app standardNotify:[NSString stringWithFormat:BC_STRING_SERVER_RETURNED_NULL_STATUS_CODE]];
     } else if ([code intValue] == PIN_API_STATUS_CODE_DELETED) {
-        [app standardNotify:BC_PIN_VALIDATION_CANNOT_BE_COMPLETED];
+        [app standardNotify:BC_STRING_PIN_VALIDATION_CANNOT_BE_COMPLETED];
         
         [self clearPin];
         
@@ -1256,7 +1256,7 @@ AppDelegate * app;
     } else if ([code intValue] == PIN_API_STATUS_OK) {
         
         if ([success length] == 0) {
-            [app standardNotify:BC_PIN_RESPONSE_OBJECT_SUCCESS_LENGTH_0];
+            [app standardNotify:BC_STRING_PIN_RESPONSE_OBJECT_SUCCESS_LENGTH_0];
             [self askIfUserWantsToResetPIN];
             return;
         }
@@ -1264,7 +1264,7 @@ AppDelegate * app;
         NSString * decrypted = [app.wallet decrypt:encryptedPINPassword password:success pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
         
         if ([decrypted length] == 0) {
-            [app standardNotify:BC_DECRYPTED_PIN_PASSWORD_LENGTH_0];
+            [app standardNotify:BC_STRING_DECRYPTED_PIN_PASSWORD_LENGTH_0];
             [self askIfUserWantsToResetPIN];
             return;
         }
@@ -1297,7 +1297,7 @@ AppDelegate * app;
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 
     if (!app.wallet.password) {
-        [self didFailPutPin:BC_CANNOT_SAVE_PIN_CODE_WHILE];
+        [self didFailPutPin:BC_STRING_CANNOT_SAVE_PIN_CODE_WHILE];
         return;
     }
     
@@ -1309,9 +1309,9 @@ AppDelegate * app;
     if (error != nil) {
         [self didFailPutPin:error];
     } else if (code == nil || [code intValue] != PIN_API_STATUS_OK) {
-        [self didFailPutPin:[NSString stringWithFormat:BC_INVALID_STATUS_CODE_RETURNED, code]];
+        [self didFailPutPin:[NSString stringWithFormat:BC_STRING_INVALID_STATUS_CODE_RETURNED, code]];
     } else if ([key length] == 0 || [value length] == 0) {
-        [self didFailPutPin:BC_PIN_RESPONSE_OBJECT_KEY_OR_VALUE_LENGTH_0];
+        [self didFailPutPin:BC_STRING_PIN_RESPONSE_OBJECT_KEY_OR_VALUE_LENGTH_0];
     } else {
         //Encrypt the wallet password with the random value
         NSString * encrypted = [app.wallet encrypt:app.wallet.password password:value pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
@@ -1320,7 +1320,7 @@ AppDelegate * app;
         value = nil;
 
         if (!encrypted) {
-            [self didFailPutPin:BC_PIN_ENCRYPTED_STRING_IS_NIL];
+            [self didFailPutPin:BC_STRING_PIN_ENCRYPTED_STRING_IS_NIL];
             return;
         }
         
@@ -1332,14 +1332,14 @@ AppDelegate * app;
         // Update your info to new pin code
         [self closePINModal:YES];
         
-        [app standardNotify:BC_PIN_SAVED_SUCCESSFULLY title:BC_SUCCESS delegate:nil];
+        [app standardNotify:BC_STRING_PIN_SAVED_SUCCESSFULLY title:BC_STRING_SUCCESS delegate:nil];
     }
 }
 
 - (void)pinEntryController:(PEPinEntryController *)c changedPin:(NSUInteger)_pin
 {
     if (![app.wallet isInitialized] || !app.wallet.password) {
-        [self didFailPutPin:BC_CANNOT_SAVE_PIN_CODE_WHILE];
+        [self didFailPutPin:BC_STRING_CANNOT_SAVE_PIN_CODE_WHILE];
         return;
     }
     

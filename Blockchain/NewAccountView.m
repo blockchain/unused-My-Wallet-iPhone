@@ -37,22 +37,22 @@
     self.tmpPassword = passwordTextField.text;
     
     if ([self.tmpPassword length] < 10 || [self.tmpPassword length] > 255) {
-        [app standardNotify:BC_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
+        [app standardNotify:BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
         return;
     }
     
     if (![self.tmpPassword isEqualToString:[password2TextField text]]) {
-        [app standardNotify:BC_PASSWORDS_DO_NOT_MATCH];
+        [app standardNotify:BC_STRING_PASSWORDS_DO_NOT_MATCH];
         return;
     }
 
     if ([emailTextField.text isEqualToString:@""]) {
-        [app standardNotify:BC_PLEASE_PROVIDE_AN_EMAIL_ADDRESS];
+        [app standardNotify:BC_STRING_PLEASE_PROVIDE_AN_EMAIL_ADDRESS];
         return;
     }
 
     if ([emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
-        [app standardNotify:BC_INVALID_EMAIL_ADDRESS];
+        [app standardNotify:BC_STRING_INVALID_EMAIL_ADDRESS];
         return;
     }
     
@@ -81,7 +81,7 @@
     
     app.wallet.delegate = app;
     
-    [app standardNotify:[NSString stringWithFormat:BC_DID_CREATE_NEW_ACCOUNT_DETAIL] title:BC_DID_CREATE_NEW_ACCOUNT_TITLE delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:BC_STRING_DID_CREATE_NEW_ACCOUNT_DETAIL] title:BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

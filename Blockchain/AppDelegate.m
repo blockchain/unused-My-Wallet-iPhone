@@ -1274,6 +1274,13 @@ AppDelegate * app;
             return;
         }
         
+        NSString * guid = [self guid];
+        NSString * sharedKey = [self sharedKey];
+        
+        if (guid && sharedKey) {
+            [self.wallet loadGuid:guid sharedKey:sharedKey];
+        }
+        
         app.wallet.password = decrypted;
         
         [self closePINModal:YES];

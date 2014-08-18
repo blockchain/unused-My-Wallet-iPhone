@@ -263,7 +263,9 @@
         if (app.latestResponse.symbol_btc) {
             double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
             
+            app.btcFormatter.usesGroupingSeparator = NO;
             amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
+            app.btcFormatter.usesGroupingSeparator = YES;
         }
         
         amountField.text = amountString;
@@ -291,10 +293,20 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField == amountField) {
+
+        NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        NSArray  *points = [newString componentsSeparatedByString:@"."];
+        NSArray  *commas = [newString componentsSeparatedByString:@","];
+        
+        if ([points count] > 2 || [commas count] > 2)
+            return NO;
+
         [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+        
+        return YES;
     }
     
-    return TRUE;
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField

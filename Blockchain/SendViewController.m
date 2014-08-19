@@ -351,6 +351,9 @@
 #pragma mark - Actions
 
 - (IBAction)selectAddressClicked:(id)sender {
+    [toField resignFirstResponder];
+    [amountField resignFirstResponder];
+
     if (fromAddressDropDown != nil)
         [fromAddressDropDown fadeOut];
 
@@ -385,6 +388,9 @@
 
 
 -(IBAction)addressBookClicked:(id)sender {
+    [toField resignFirstResponder];
+    [amountField resignFirstResponder];
+    
     if (addressBookdropDown != nil)
         [addressBookdropDown fadeOut];
     NSMutableArray* displayedAddressBookAddresses = [[NSMutableArray alloc] init];

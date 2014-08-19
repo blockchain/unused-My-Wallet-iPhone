@@ -38,6 +38,13 @@
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // reload wallet
+    [app.wallet getWalletAndHistory];
+}
+
 -(void)viewWillAppear:(BOOL)animated {
         
     [webView stopLoading];

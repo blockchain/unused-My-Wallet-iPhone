@@ -922,6 +922,7 @@ AppDelegate * app;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"encryptedPINPassword"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"passwordPartHash"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pinKey"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(BOOL)isPINSet {

@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 220ADA6819A3796200EB7599 /* Localizable.strings */; };
+		220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375119A3604500E06996 /* ReceiveCoins.xib */; };
+		220E375419A3612F00E06996 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375619A3612F00E06996 /* ModalView.xib */; };
+		220E375719A3613600E06996 /* AddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* AddressBookView.xib */; };
+		220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375C19A3613D00E06996 /* AccountViewController.xib */; };
+		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
+		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
+		220E376319A3615400E06996 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376519A3615400E06996 /* MerchantMap.xib */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC551987A61C000E8DC8 /* 172-pricetag.png */; };
 		84AEEC581987A61C000E8DC8 /* 172-pricetag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC561987A61C000E8DC8 /* 172-pricetag@2x.png */; };
 		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
-		84AEEC5D1987A830000E8DC8 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */; };
-		84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC611987B36B000E8DC8 /* MainWindow.xib */; };
 		84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC631987B5E9000E8DC8 /* merchant.html */; };
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
 		84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */; };
@@ -71,7 +77,6 @@
 		9F1831EB1516AE3500FB3D52 /* NSString+URLEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1831EA1516ADDB00FB3D52 /* NSString+URLEncode.m */; };
 		9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1831ED151744EB00FB3D52 /* ReceiveTableCell.m */; };
 		9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831EF151744FC00FB3D52 /* ReceiveCell.xib */; };
-		9F1831F215175BD900FB3D52 /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831F115175BD900FB3D52 /* AccountViewController.xib */; };
 		9F1831F91517884C00FB3D52 /* button_red_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831F71517884C00FB3D52 /* button_red_large.png */; };
 		9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831F81517884C00FB3D52 /* button_red_large@2x.png */; };
 		9F1831FD1517912900FB3D52 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F1831FB1517912800FB3D52 /* beep.wav */; };
@@ -91,7 +96,6 @@
 		9F45F82A1514E35200018AED /* button_grey_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F8281514E35200018AED /* button_grey_large.png */; };
 		9F45F82B1514E35200018AED /* button_grey_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F8291514E35200018AED /* button_grey_large@2x.png */; };
 		9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */; };
-		9F45F82E1514E6C000018AED /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F82D1514E6BF00018AED /* SendCoins.xib */; };
 		9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F48B3651534C78F00305059 /* 78-stopwatch.png */; };
 		9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */; };
 		9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */; };
@@ -99,9 +103,7 @@
 		9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E3F151BED0100128830 /* QR_Encode.cpp */; };
 		9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E42151BED0100128830 /* QRCodeEncoderDemoViewController.mm */; };
 		9F5F3E5A151BED0100128830 /* QREncoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5F3E46151BED0100128830 /* QREncoder.mm */; };
-		9F61B89B151519690083C57A /* AddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F61B899151519690083C57A /* AddressBookView.xib */; };
 		9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F61B89D151519EF0083C57A /* AddressBookView.m */; };
-		9F61B8A0151532A30083C57A /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F61B89F151532A20083C57A /* ReceiveCoins.xib */; };
 		9F6C86131534689D0086C200 /* NSDate+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C8612153468610086C200 /* NSDate+Extensions.m */; };
 		9F6FA3531536E7EB005BA19C /* 01-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6FA3511536E7EB005BA19C /* 01-refresh.png */; };
 		9F6FA3541536E7EB005BA19C /* 01-refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6FA3521536E7EB005BA19C /* 01-refresh@2x.png */; };
@@ -162,7 +164,6 @@
 		9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */; };
 		9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF851514EDF500E92C90 /* modal_background_large.png */; };
 		9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */; };
-		9FDAEF8A1514EE0000E92C90 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FDAEF891514EE0000E92C90 /* ModalView.xib */; };
 		C92F761619803346007916F7 /* icon_512.png in Resources */ = {isa = PBXBuildFile; fileRef = C92F761519803346007916F7 /* icon_512.png */; };
 		C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE91681945D8F600FD516D /* PENumpadView.m */; };
 		C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE916A1945D8F600FD516D /* PEPinEntryController.m */; };
@@ -197,6 +198,278 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		220ADA6919A3796200EB7599 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA6B19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA6C19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA6D19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA6E19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA6F19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADA7019A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADA7119A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADA7219A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA7319A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA7419A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA7519A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA7619A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA7719A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADA7819A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADA7919A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADA7A19A3799500EB7599 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA7B19A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/AccountViewController.strings"; sourceTree = "<group>"; };
+		220ADA7C19A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/AddressBookView.strings"; sourceTree = "<group>"; };
+		220ADA7D19A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ModalView.strings"; sourceTree = "<group>"; };
+		220ADA7E19A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ReceiveCoins.strings"; sourceTree = "<group>"; };
+		220ADA7F19A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SendCoins.strings"; sourceTree = "<group>"; };
+		220ADA8019A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MainWindow.strings"; sourceTree = "<group>"; };
+		220ADA8119A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MerchantMap.strings"; sourceTree = "<group>"; };
+		220ADA8219A379AB00EB7599 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		220ADA8319A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA8419A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA8519A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA8619A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA8719A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADA8819A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADA8919A379B500EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADA8A19A379B600EB7599 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA8B19A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA8C19A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA8D19A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA8E19A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA8F19A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADA9019A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADA9119A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADA9219A379C500EB7599 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA9319A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA9419A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA9519A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA9619A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA9719A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADA9819A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADA9919A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADA9A19A379CA00EB7599 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADA9B19A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADA9C19A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADA9D19A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADA9E19A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADA9F19A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAA019A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAA119A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAA219A379D400EB7599 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAA319A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAA419A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAA519A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAA619A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAA719A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAA819A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAA919A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAAA19A379DA00EB7599 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAAB19A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/AccountViewController.strings"; sourceTree = "<group>"; };
+		220ADAAC19A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/AddressBookView.strings"; sourceTree = "<group>"; };
+		220ADAAD19A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/ModalView.strings"; sourceTree = "<group>"; };
+		220ADAAE19A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/ReceiveCoins.strings"; sourceTree = "<group>"; };
+		220ADAAF19A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/SendCoins.strings"; sourceTree = "<group>"; };
+		220ADAB019A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MainWindow.strings"; sourceTree = "<group>"; };
+		220ADAB119A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MerchantMap.strings"; sourceTree = "<group>"; };
+		220ADAB219A379FA00EB7599 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		220ADAB319A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAB419A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAB519A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAB619A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAB719A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAB819A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAB919A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADABA19A379FF00EB7599 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADABB19A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/AccountViewController.strings"; sourceTree = "<group>"; };
+		220ADABC19A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/AddressBookView.strings"; sourceTree = "<group>"; };
+		220ADABD19A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/ModalView.strings"; sourceTree = "<group>"; };
+		220ADABE19A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/ReceiveCoins.strings"; sourceTree = "<group>"; };
+		220ADABF19A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/SendCoins.strings"; sourceTree = "<group>"; };
+		220ADAC019A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/MainWindow.strings"; sourceTree = "<group>"; };
+		220ADAC119A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/MerchantMap.strings"; sourceTree = "<group>"; };
+		220ADAC219A37A0300EB7599 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		220ADAC319A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAC419A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAC519A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAC619A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAC719A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAC819A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAC919A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADACA19A37A0700EB7599 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADACB19A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADACC19A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADACD19A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADACE19A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADACF19A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAD019A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAD119A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAD219A37A0C00EB7599 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAD319A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAD419A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAD519A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAD619A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAD719A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAD819A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAD919A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADADA19A37A1200EB7599 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADADB19A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADADC19A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADADD19A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADADE19A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADADF19A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAE019A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAE119A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAE219A37A1800EB7599 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAE319A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAE419A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAE519A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAE619A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAE719A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAE819A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAE919A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAEA19A37A1E00EB7599 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAEB19A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAEC19A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAED19A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAEE19A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAEF19A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAF019A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAF119A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAF219A37A2300EB7599 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAF319A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAF419A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAF519A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAF619A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAF719A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADAF819A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADAF919A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADAFA19A37A2800EB7599 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADAFB19A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADAFC19A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADAFD19A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADAFE19A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADAFF19A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB0019A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB0119A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB0219A37A2C00EB7599 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB0319A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB0419A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB0519A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB0619A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB0719A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB0819A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB0919A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB0A19A37A3600EB7599 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB0B19A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB0C19A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB0D19A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB0E19A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB0F19A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB1019A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB1119A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB1219A37A3D00EB7599 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB1319A37A4200EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB1419A37A4200EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB1519A37A4200EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB1619A37A4200EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB1719A37A4300EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB1819A37A4300EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB1919A37A4300EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB1A19A37A4300EB7599 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB1B19A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB1C19A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB1D19A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB1E19A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB1F19A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB2019A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB2119A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB2219A37A5000EB7599 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB2319A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB2419A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB2519A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB2619A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB2719A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB2819A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB2919A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB2A19A37A5600EB7599 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB2B19A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB2C19A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB2D19A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB2E19A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB2F19A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB3019A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB3119A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB3219A37A5B00EB7599 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB3319A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB3419A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB3519A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB3619A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB3719A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB3819A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB3919A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB3A19A37A6000EB7599 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB3B19A37A6500EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB3C19A37A6500EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB3D19A37A6500EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB3E19A37A6500EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB3F19A37A6600EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB4019A37A6600EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB4119A37A6600EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB4219A37A6600EB7599 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB4319A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB4419A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB4519A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB4619A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB4719A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB4819A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB4919A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB4A19A37A6A00EB7599 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB4B19A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB4C19A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB4D19A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB4E19A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB4F19A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB5019A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB5119A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB5219A37A7100EB7599 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB5319A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB5419A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB5519A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB5619A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB5719A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB5819A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB5919A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB5A19A37A7600EB7599 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB5B19A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB5C19A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB5D19A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB5E19A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB5F19A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB6019A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB6119A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB6219A37A7A00EB7599 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB6319A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB6419A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB6519A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB6619A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB6719A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB6819A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB6919A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB6A19A37A7F00EB7599 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220ADB6B19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AccountViewController.strings; sourceTree = "<group>"; };
+		220ADB6C19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AddressBookView.strings; sourceTree = "<group>"; };
+		220ADB6D19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ModalView.strings; sourceTree = "<group>"; };
+		220ADB6E19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
+		220ADB6F19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SendCoins.strings; sourceTree = "<group>"; };
+		220ADB7019A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainWindow.strings; sourceTree = "<group>"; };
+		220ADB7119A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MerchantMap.strings; sourceTree = "<group>"; };
+		220ADB7219A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		220E375019A3604500E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ReceiveCoins.xib; sourceTree = "<group>"; };
+		220E375519A3612F00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ModalView.xib; sourceTree = "<group>"; };
+		220E375819A3613600E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddressBookView.xib; sourceTree = "<group>"; };
+		220E375B19A3613D00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AccountViewController.xib; sourceTree = "<group>"; };
+		220E375E19A3614900E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SendCoins.xib; sourceTree = "<group>"; };
+		220E376119A3614F00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		220E376419A3615400E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MerchantMap.xib; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -204,8 +477,6 @@
 		84AEEC561987A61C000E8DC8 /* 172-pricetag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "172-pricetag@2x.png"; sourceTree = "<group>"; };
 		84AEEC591987A779000E8DC8 /* MerchantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantViewController.h; sourceTree = "<group>"; };
 		84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
-		84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MerchantMap.xib; sourceTree = "<group>"; };
-		84AEEC611987B36B000E8DC8 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		84AEEC631987B5E9000E8DC8 /* merchant.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = merchant.html; sourceTree = "<group>"; };
 		84AEEC651987C49A000E8DC8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84AEEC6A1987D5EC000E8DC8 /* marker_atm_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_atm_off.png; sourceTree = "<group>"; };
@@ -286,7 +557,6 @@
 		9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiveTableCell.h; sourceTree = "<group>"; };
 		9F1831ED151744EB00FB3D52 /* ReceiveTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiveTableCell.m; sourceTree = "<group>"; };
 		9F1831EF151744FC00FB3D52 /* ReceiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiveCell.xib; sourceTree = "<group>"; };
-		9F1831F115175BD900FB3D52 /* AccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountViewController.xib; sourceTree = "<group>"; };
 		9F1831F71517884C00FB3D52 /* button_red_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_red_large.png; sourceTree = "<group>"; };
 		9F1831F81517884C00FB3D52 /* button_red_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_red_large@2x.png"; sourceTree = "<group>"; };
 		9F1831FB1517912800FB3D52 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
@@ -310,7 +580,6 @@
 		9F45F81F1514D8C300018AED /* 21-circle-east@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "21-circle-east@2x.png"; sourceTree = "<group>"; };
 		9F45F8281514E35200018AED /* button_grey_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grey_large.png; sourceTree = "<group>"; };
 		9F45F8291514E35200018AED /* button_grey_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_grey_large@2x.png"; sourceTree = "<group>"; };
-		9F45F82D1514E6BF00018AED /* SendCoins.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendCoins.xib; sourceTree = "<group>"; };
 		9F48B3651534C78F00305059 /* 78-stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch.png"; sourceTree = "<group>"; };
 		9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch@2x.png"; sourceTree = "<group>"; };
 		9F4A5090152F585E00F9ED9D /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
@@ -325,10 +594,8 @@
 		9F5F3E44151BED0100128830 /* QREncoder-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QREncoder-Prefix.pch"; sourceTree = "<group>"; };
 		9F5F3E45151BED0100128830 /* QREncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QREncoder.h; sourceTree = "<group>"; };
 		9F5F3E46151BED0100128830 /* QREncoder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QREncoder.mm; sourceTree = "<group>"; };
-		9F61B899151519690083C57A /* AddressBookView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressBookView.xib; sourceTree = "<group>"; };
 		9F61B89C151519EF0083C57A /* AddressBookView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressBookView.h; sourceTree = "<group>"; };
 		9F61B89D151519EF0083C57A /* AddressBookView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookView.m; sourceTree = "<group>"; };
-		9F61B89F151532A20083C57A /* ReceiveCoins.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiveCoins.xib; sourceTree = "<group>"; };
 		9F6C8611153468610086C200 /* NSDate+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extensions.h"; sourceTree = "<group>"; };
 		9F6C8612153468610086C200 /* NSDate+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Extensions.m"; sourceTree = "<group>"; };
 		9F6FA3511536E7EB005BA19C /* 01-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh.png"; sourceTree = "<group>"; };
@@ -428,7 +695,6 @@
 		9FDAEF761514EB5200E92C90 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
-		9FDAEF891514EE0000E92C90 /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
 		C92F761519803346007916F7 /* icon_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512.png; sourceTree = "<group>"; };
 		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
 		C9BE91681945D8F600FD516D /* PENumpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENumpadView.m; sourceTree = "<group>"; };
@@ -494,6 +760,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		220ADA6019A3786200EB7599 /* localizations */ = {
+			isa = PBXGroup;
+			children = (
+				220ADA6819A3796200EB7599 /* Localizable.strings */,
+			);
+			name = localizations;
+			sourceTree = "<group>";
+		};
 		84C25678198109AF00F901D1 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
@@ -931,6 +1205,7 @@
 		C9D4B2AF193E023C00EDA9EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				220ADA6019A3786200EB7599 /* localizations */,
 				9F765EDC14BBBEC400048EFB /* Images */,
 				C9D4B2B0193E024700EDA9EA /* Sounds */,
 				C9D4B2B1193E026500EDA9EA /* Xibs */,
@@ -951,13 +1226,13 @@
 			isa = PBXGroup;
 			children = (
 				C9B32CF9194F3F5800BDF3A0 /* Cells */,
-				9F1831F115175BD900FB3D52 /* AccountViewController.xib */,
-				9F61B899151519690083C57A /* AddressBookView.xib */,
-				9FDAEF891514EE0000E92C90 /* ModalView.xib */,
-				9F61B89F151532A20083C57A /* ReceiveCoins.xib */,
-				9F45F82D1514E6BF00018AED /* SendCoins.xib */,
-				84AEEC611987B36B000E8DC8 /* MainWindow.xib */,
-				84AEEC5C1987A830000E8DC8 /* MerchantMap.xib */,
+				220E375C19A3613D00E06996 /* AccountViewController.xib */,
+				220E375919A3613600E06996 /* AddressBookView.xib */,
+				220E375619A3612F00E06996 /* ModalView.xib */,
+				220E375119A3604500E06996 /* ReceiveCoins.xib */,
+				220E375F19A3614900E06996 /* SendCoins.xib */,
+				220E376219A3614F00E06996 /* MainWindow.xib */,
+				220E376519A3615400E06996 /* MerchantMap.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -1025,6 +1300,39 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				es,
+				Base,
+				de,
+				"zh-Hans",
+				ja,
+				it,
+				nl,
+				ko,
+				"zh-Hant",
+				pt,
+				"pt-PT",
+				da,
+				fi,
+				nb,
+				sv,
+				ru,
+				pl,
+				tr,
+				ar,
+				th,
+				cs,
+				hu,
+				ca,
+				hr,
+				el,
+				he,
+				ro,
+				sk,
+				uk,
+				id,
+				ms,
+				vi,
 			);
 			mainGroup = 9FB3636614B60128004BEA02;
 			productRefGroup = 9FB3637214B60128004BEA02 /* Products */;
@@ -1094,7 +1402,7 @@
 				9F0CBAA615134D3200CD945D /* button_grey.png in Resources */,
 				9F0CBAA715134D3200CD945D /* button_grey@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet.html in Resources */,
-				84AEEC621987B36B000E8DC8 /* MainWindow.xib in Resources */,
+				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
 				9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */,
 				84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */,
@@ -1127,36 +1435,37 @@
 				84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */,
 				9F45F82B1514E35200018AED /* button_grey_large@2x.png in Resources */,
 				84F4BE0E197FB5B800B7BF7B /* account-settings.png in Resources */,
-				9F45F82E1514E6C000018AED /* SendCoins.xib in Resources */,
+				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
 				9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */,
 				9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */,
-				9FDAEF8A1514EE0000E92C90 /* ModalView.xib in Resources */,
+				220E375419A3612F00E06996 /* ModalView.xib in Resources */,
 				9F1740211514FAAE00CF1186 /* close-container.png in Resources */,
 				9F1740221514FAAE00CF1186 /* close-container@2x.png in Resources */,
 				84F4BE0B197FB4D700B7BF7B /* 573-money@2x.png in Resources */,
 				9F1740261514FAB800CF1186 /* 31-circle-x.png in Resources */,
 				9F1740271514FAB800CF1186 /* 31-circle-x@2x.png in Resources */,
 				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
-				9F61B89B151519690083C57A /* AddressBookView.xib in Resources */,
-				9F61B8A0151532A30083C57A /* ReceiveCoins.xib in Resources */,
+				220E375719A3613600E06996 /* AddressBookView.xib in Resources */,
+				220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */,
 				84F4BE0F197FB5B800B7BF7B /* account-settings@2x.png in Resources */,
 				9F91B60315161E1F00ACB32D /* circle.png in Resources */,
 				9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */,
 				9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */,
 				84AEEC581987A61C000E8DC8 /* 172-pricetag@2x.png in Resources */,
-				9F1831F215175BD900FB3D52 /* AccountViewController.xib in Resources */,
+				220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */,
 				84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */,
 				84F4BE12197FB72800B7BF7B /* send-money.png in Resources */,
 				84F4BE13197FB72800B7BF7B /* send-money@2x.png in Resources */,
 				84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */,
 				9F1831F91517884C00FB3D52 /* button_red_large.png in Resources */,
+				220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */,
 				9F1831FA1517884C00FB3D52 /* button_red_large@2x.png in Resources */,
 				C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
-				84AEEC5D1987A830000E8DC8 /* MerchantMap.xib in Resources */,
+				220E376319A3615400E06996 /* MerchantMap.xib in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
 				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
 				9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */,
@@ -1225,6 +1534,337 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		220ADA6819A3796200EB7599 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220ADA6919A3796200EB7599 /* Base */,
+				220ADA7219A3798A00EB7599 /* fr */,
+				220ADA7A19A3799500EB7599 /* de */,
+				220ADA8219A379AB00EB7599 /* zh-Hans */,
+				220ADA8A19A379B600EB7599 /* ja */,
+				220ADA9219A379C500EB7599 /* es */,
+				220ADA9A19A379CA00EB7599 /* it */,
+				220ADAA219A379D400EB7599 /* nl */,
+				220ADAAA19A379DA00EB7599 /* ko */,
+				220ADAB219A379FA00EB7599 /* zh-Hant */,
+				220ADABA19A379FF00EB7599 /* pt */,
+				220ADAC219A37A0300EB7599 /* pt-PT */,
+				220ADACA19A37A0700EB7599 /* da */,
+				220ADAD219A37A0C00EB7599 /* fi */,
+				220ADADA19A37A1200EB7599 /* nb */,
+				220ADAE219A37A1800EB7599 /* sv */,
+				220ADAEA19A37A1E00EB7599 /* ru */,
+				220ADAF219A37A2300EB7599 /* pl */,
+				220ADAFA19A37A2800EB7599 /* tr */,
+				220ADB0219A37A2C00EB7599 /* ar */,
+				220ADB0A19A37A3600EB7599 /* th */,
+				220ADB1219A37A3D00EB7599 /* cs */,
+				220ADB1A19A37A4300EB7599 /* hu */,
+				220ADB2219A37A5000EB7599 /* ca */,
+				220ADB2A19A37A5600EB7599 /* hr */,
+				220ADB3219A37A5B00EB7599 /* el */,
+				220ADB3A19A37A6000EB7599 /* he */,
+				220ADB4219A37A6600EB7599 /* ro */,
+				220ADB4A19A37A6A00EB7599 /* sk */,
+				220ADB5219A37A7100EB7599 /* uk */,
+				220ADB5A19A37A7600EB7599 /* id */,
+				220ADB6219A37A7A00EB7599 /* ms */,
+				220ADB6A19A37A7F00EB7599 /* vi */,
+				220ADB7219A37B3700EB7599 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		220E375119A3604500E06996 /* ReceiveCoins.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E375019A3604500E06996 /* Base */,
+				220ADA6E19A3798A00EB7599 /* fr */,
+				220ADA7619A3799500EB7599 /* de */,
+				220ADA7E19A379AB00EB7599 /* zh-Hans */,
+				220ADA8619A379B500EB7599 /* ja */,
+				220ADA8E19A379C500EB7599 /* es */,
+				220ADA9619A379CA00EB7599 /* it */,
+				220ADA9E19A379D400EB7599 /* nl */,
+				220ADAA619A379DA00EB7599 /* ko */,
+				220ADAAE19A379FA00EB7599 /* zh-Hant */,
+				220ADAB619A379FF00EB7599 /* pt */,
+				220ADABE19A37A0300EB7599 /* pt-PT */,
+				220ADAC619A37A0700EB7599 /* da */,
+				220ADACE19A37A0C00EB7599 /* fi */,
+				220ADAD619A37A1200EB7599 /* nb */,
+				220ADADE19A37A1800EB7599 /* sv */,
+				220ADAE619A37A1E00EB7599 /* ru */,
+				220ADAEE19A37A2300EB7599 /* pl */,
+				220ADAF619A37A2800EB7599 /* tr */,
+				220ADAFE19A37A2C00EB7599 /* ar */,
+				220ADB0619A37A3600EB7599 /* th */,
+				220ADB0E19A37A3D00EB7599 /* cs */,
+				220ADB1619A37A4200EB7599 /* hu */,
+				220ADB1E19A37A5000EB7599 /* ca */,
+				220ADB2619A37A5600EB7599 /* hr */,
+				220ADB2E19A37A5B00EB7599 /* el */,
+				220ADB3619A37A6000EB7599 /* he */,
+				220ADB3E19A37A6500EB7599 /* ro */,
+				220ADB4619A37A6A00EB7599 /* sk */,
+				220ADB4E19A37A7100EB7599 /* uk */,
+				220ADB5619A37A7600EB7599 /* id */,
+				220ADB5E19A37A7A00EB7599 /* ms */,
+				220ADB6619A37A7F00EB7599 /* vi */,
+				220ADB6E19A37B3700EB7599 /* en */,
+			);
+			name = ReceiveCoins.xib;
+			sourceTree = "<group>";
+		};
+		220E375619A3612F00E06996 /* ModalView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E375519A3612F00E06996 /* Base */,
+				220ADA6D19A3798A00EB7599 /* fr */,
+				220ADA7519A3799500EB7599 /* de */,
+				220ADA7D19A379AB00EB7599 /* zh-Hans */,
+				220ADA8519A379B500EB7599 /* ja */,
+				220ADA8D19A379C500EB7599 /* es */,
+				220ADA9519A379CA00EB7599 /* it */,
+				220ADA9D19A379D400EB7599 /* nl */,
+				220ADAA519A379DA00EB7599 /* ko */,
+				220ADAAD19A379FA00EB7599 /* zh-Hant */,
+				220ADAB519A379FF00EB7599 /* pt */,
+				220ADABD19A37A0300EB7599 /* pt-PT */,
+				220ADAC519A37A0700EB7599 /* da */,
+				220ADACD19A37A0C00EB7599 /* fi */,
+				220ADAD519A37A1200EB7599 /* nb */,
+				220ADADD19A37A1800EB7599 /* sv */,
+				220ADAE519A37A1E00EB7599 /* ru */,
+				220ADAED19A37A2300EB7599 /* pl */,
+				220ADAF519A37A2800EB7599 /* tr */,
+				220ADAFD19A37A2C00EB7599 /* ar */,
+				220ADB0519A37A3600EB7599 /* th */,
+				220ADB0D19A37A3D00EB7599 /* cs */,
+				220ADB1519A37A4200EB7599 /* hu */,
+				220ADB1D19A37A5000EB7599 /* ca */,
+				220ADB2519A37A5600EB7599 /* hr */,
+				220ADB2D19A37A5B00EB7599 /* el */,
+				220ADB3519A37A6000EB7599 /* he */,
+				220ADB3D19A37A6500EB7599 /* ro */,
+				220ADB4519A37A6A00EB7599 /* sk */,
+				220ADB4D19A37A7100EB7599 /* uk */,
+				220ADB5519A37A7600EB7599 /* id */,
+				220ADB5D19A37A7A00EB7599 /* ms */,
+				220ADB6519A37A7F00EB7599 /* vi */,
+				220ADB6D19A37B3700EB7599 /* en */,
+			);
+			name = ModalView.xib;
+			sourceTree = "<group>";
+		};
+		220E375919A3613600E06996 /* AddressBookView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E375819A3613600E06996 /* Base */,
+				220ADA6C19A3798A00EB7599 /* fr */,
+				220ADA7419A3799500EB7599 /* de */,
+				220ADA7C19A379AB00EB7599 /* zh-Hans */,
+				220ADA8419A379B500EB7599 /* ja */,
+				220ADA8C19A379C500EB7599 /* es */,
+				220ADA9419A379CA00EB7599 /* it */,
+				220ADA9C19A379D400EB7599 /* nl */,
+				220ADAA419A379DA00EB7599 /* ko */,
+				220ADAAC19A379FA00EB7599 /* zh-Hant */,
+				220ADAB419A379FF00EB7599 /* pt */,
+				220ADABC19A37A0300EB7599 /* pt-PT */,
+				220ADAC419A37A0700EB7599 /* da */,
+				220ADACC19A37A0C00EB7599 /* fi */,
+				220ADAD419A37A1200EB7599 /* nb */,
+				220ADADC19A37A1800EB7599 /* sv */,
+				220ADAE419A37A1E00EB7599 /* ru */,
+				220ADAEC19A37A2300EB7599 /* pl */,
+				220ADAF419A37A2800EB7599 /* tr */,
+				220ADAFC19A37A2C00EB7599 /* ar */,
+				220ADB0419A37A3600EB7599 /* th */,
+				220ADB0C19A37A3D00EB7599 /* cs */,
+				220ADB1419A37A4200EB7599 /* hu */,
+				220ADB1C19A37A5000EB7599 /* ca */,
+				220ADB2419A37A5600EB7599 /* hr */,
+				220ADB2C19A37A5B00EB7599 /* el */,
+				220ADB3419A37A6000EB7599 /* he */,
+				220ADB3C19A37A6500EB7599 /* ro */,
+				220ADB4419A37A6A00EB7599 /* sk */,
+				220ADB4C19A37A7100EB7599 /* uk */,
+				220ADB5419A37A7600EB7599 /* id */,
+				220ADB5C19A37A7A00EB7599 /* ms */,
+				220ADB6419A37A7F00EB7599 /* vi */,
+				220ADB6C19A37B3700EB7599 /* en */,
+			);
+			name = AddressBookView.xib;
+			sourceTree = "<group>";
+		};
+		220E375C19A3613D00E06996 /* AccountViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E375B19A3613D00E06996 /* Base */,
+				220ADA6B19A3798A00EB7599 /* fr */,
+				220ADA7319A3799500EB7599 /* de */,
+				220ADA7B19A379AB00EB7599 /* zh-Hans */,
+				220ADA8319A379B500EB7599 /* ja */,
+				220ADA8B19A379C500EB7599 /* es */,
+				220ADA9319A379CA00EB7599 /* it */,
+				220ADA9B19A379D400EB7599 /* nl */,
+				220ADAA319A379DA00EB7599 /* ko */,
+				220ADAAB19A379FA00EB7599 /* zh-Hant */,
+				220ADAB319A379FF00EB7599 /* pt */,
+				220ADABB19A37A0300EB7599 /* pt-PT */,
+				220ADAC319A37A0700EB7599 /* da */,
+				220ADACB19A37A0C00EB7599 /* fi */,
+				220ADAD319A37A1200EB7599 /* nb */,
+				220ADADB19A37A1800EB7599 /* sv */,
+				220ADAE319A37A1E00EB7599 /* ru */,
+				220ADAEB19A37A2300EB7599 /* pl */,
+				220ADAF319A37A2800EB7599 /* tr */,
+				220ADAFB19A37A2C00EB7599 /* ar */,
+				220ADB0319A37A3600EB7599 /* th */,
+				220ADB0B19A37A3D00EB7599 /* cs */,
+				220ADB1319A37A4200EB7599 /* hu */,
+				220ADB1B19A37A5000EB7599 /* ca */,
+				220ADB2319A37A5600EB7599 /* hr */,
+				220ADB2B19A37A5B00EB7599 /* el */,
+				220ADB3319A37A6000EB7599 /* he */,
+				220ADB3B19A37A6500EB7599 /* ro */,
+				220ADB4319A37A6A00EB7599 /* sk */,
+				220ADB4B19A37A7100EB7599 /* uk */,
+				220ADB5319A37A7600EB7599 /* id */,
+				220ADB5B19A37A7A00EB7599 /* ms */,
+				220ADB6319A37A7F00EB7599 /* vi */,
+				220ADB6B19A37B3700EB7599 /* en */,
+			);
+			name = AccountViewController.xib;
+			sourceTree = "<group>";
+		};
+		220E375F19A3614900E06996 /* SendCoins.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E375E19A3614900E06996 /* Base */,
+				220ADA6F19A3798A00EB7599 /* fr */,
+				220ADA7719A3799500EB7599 /* de */,
+				220ADA7F19A379AB00EB7599 /* zh-Hans */,
+				220ADA8719A379B500EB7599 /* ja */,
+				220ADA8F19A379C500EB7599 /* es */,
+				220ADA9719A379CA00EB7599 /* it */,
+				220ADA9F19A379D400EB7599 /* nl */,
+				220ADAA719A379DA00EB7599 /* ko */,
+				220ADAAF19A379FA00EB7599 /* zh-Hant */,
+				220ADAB719A379FF00EB7599 /* pt */,
+				220ADABF19A37A0300EB7599 /* pt-PT */,
+				220ADAC719A37A0700EB7599 /* da */,
+				220ADACF19A37A0C00EB7599 /* fi */,
+				220ADAD719A37A1200EB7599 /* nb */,
+				220ADADF19A37A1800EB7599 /* sv */,
+				220ADAE719A37A1E00EB7599 /* ru */,
+				220ADAEF19A37A2300EB7599 /* pl */,
+				220ADAF719A37A2800EB7599 /* tr */,
+				220ADAFF19A37A2C00EB7599 /* ar */,
+				220ADB0719A37A3600EB7599 /* th */,
+				220ADB0F19A37A3D00EB7599 /* cs */,
+				220ADB1719A37A4300EB7599 /* hu */,
+				220ADB1F19A37A5000EB7599 /* ca */,
+				220ADB2719A37A5600EB7599 /* hr */,
+				220ADB2F19A37A5B00EB7599 /* el */,
+				220ADB3719A37A6000EB7599 /* he */,
+				220ADB3F19A37A6600EB7599 /* ro */,
+				220ADB4719A37A6A00EB7599 /* sk */,
+				220ADB4F19A37A7100EB7599 /* uk */,
+				220ADB5719A37A7600EB7599 /* id */,
+				220ADB5F19A37A7A00EB7599 /* ms */,
+				220ADB6719A37A7F00EB7599 /* vi */,
+				220ADB6F19A37B3700EB7599 /* en */,
+			);
+			name = SendCoins.xib;
+			sourceTree = "<group>";
+		};
+		220E376219A3614F00E06996 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E376119A3614F00E06996 /* Base */,
+				220ADA7019A3798A00EB7599 /* fr */,
+				220ADA7819A3799500EB7599 /* de */,
+				220ADA8019A379AB00EB7599 /* zh-Hans */,
+				220ADA8819A379B500EB7599 /* ja */,
+				220ADA9019A379C500EB7599 /* es */,
+				220ADA9819A379CA00EB7599 /* it */,
+				220ADAA019A379D400EB7599 /* nl */,
+				220ADAA819A379DA00EB7599 /* ko */,
+				220ADAB019A379FA00EB7599 /* zh-Hant */,
+				220ADAB819A379FF00EB7599 /* pt */,
+				220ADAC019A37A0300EB7599 /* pt-PT */,
+				220ADAC819A37A0700EB7599 /* da */,
+				220ADAD019A37A0C00EB7599 /* fi */,
+				220ADAD819A37A1200EB7599 /* nb */,
+				220ADAE019A37A1800EB7599 /* sv */,
+				220ADAE819A37A1E00EB7599 /* ru */,
+				220ADAF019A37A2300EB7599 /* pl */,
+				220ADAF819A37A2800EB7599 /* tr */,
+				220ADB0019A37A2C00EB7599 /* ar */,
+				220ADB0819A37A3600EB7599 /* th */,
+				220ADB1019A37A3D00EB7599 /* cs */,
+				220ADB1819A37A4300EB7599 /* hu */,
+				220ADB2019A37A5000EB7599 /* ca */,
+				220ADB2819A37A5600EB7599 /* hr */,
+				220ADB3019A37A5B00EB7599 /* el */,
+				220ADB3819A37A6000EB7599 /* he */,
+				220ADB4019A37A6600EB7599 /* ro */,
+				220ADB4819A37A6A00EB7599 /* sk */,
+				220ADB5019A37A7100EB7599 /* uk */,
+				220ADB5819A37A7600EB7599 /* id */,
+				220ADB6019A37A7A00EB7599 /* ms */,
+				220ADB6819A37A7F00EB7599 /* vi */,
+				220ADB7019A37B3700EB7599 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		220E376519A3615400E06996 /* MerchantMap.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220E376419A3615400E06996 /* Base */,
+				220ADA7119A3798A00EB7599 /* fr */,
+				220ADA7919A3799500EB7599 /* de */,
+				220ADA8119A379AB00EB7599 /* zh-Hans */,
+				220ADA8919A379B500EB7599 /* ja */,
+				220ADA9119A379C500EB7599 /* es */,
+				220ADA9919A379CA00EB7599 /* it */,
+				220ADAA119A379D400EB7599 /* nl */,
+				220ADAA919A379DA00EB7599 /* ko */,
+				220ADAB119A379FA00EB7599 /* zh-Hant */,
+				220ADAB919A379FF00EB7599 /* pt */,
+				220ADAC119A37A0300EB7599 /* pt-PT */,
+				220ADAC919A37A0700EB7599 /* da */,
+				220ADAD119A37A0C00EB7599 /* fi */,
+				220ADAD919A37A1200EB7599 /* nb */,
+				220ADAE119A37A1800EB7599 /* sv */,
+				220ADAE919A37A1E00EB7599 /* ru */,
+				220ADAF119A37A2300EB7599 /* pl */,
+				220ADAF919A37A2800EB7599 /* tr */,
+				220ADB0119A37A2C00EB7599 /* ar */,
+				220ADB0919A37A3600EB7599 /* th */,
+				220ADB1119A37A3D00EB7599 /* cs */,
+				220ADB1919A37A4300EB7599 /* hu */,
+				220ADB2119A37A5000EB7599 /* ca */,
+				220ADB2919A37A5600EB7599 /* hr */,
+				220ADB3119A37A5B00EB7599 /* el */,
+				220ADB3919A37A6000EB7599 /* he */,
+				220ADB4119A37A6600EB7599 /* ro */,
+				220ADB4919A37A6A00EB7599 /* sk */,
+				220ADB5119A37A7100EB7599 /* uk */,
+				220ADB5919A37A7600EB7599 /* id */,
+				220ADB6119A37A7A00EB7599 /* ms */,
+				220ADB6919A37A7F00EB7599 /* vi */,
+				220ADB7119A37B3700EB7599 /* en */,
+			);
+			name = MerchantMap.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		9FB3638714B60128004BEA02 /* Debug */ = {

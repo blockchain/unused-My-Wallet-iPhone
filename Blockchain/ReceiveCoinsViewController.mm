@@ -80,23 +80,23 @@
 -(NSString*)uriURL {
     
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
-    return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]]];
-}
 
--(NSString*)blockchainUriURL {
-    
-    NSString * addr = self.clickedAddress;
-    
-    double amount = [requestAmountTextField.text doubleValue];
-    
-    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", addr, amount];
+    app.btcFormatter.usesGroupingSeparator = NO;
+    NSString *amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]];
+    app.btcFormatter.usesGroupingSeparator = YES;
+
+    amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
+    return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
 }
 
 -(uint64_t)getInputAmountInSatoshi {
+    NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
     if (displayingLocalSymbol) {
-        return app.latestResponse.symbol_local.conversion * [requestAmountTextField.text doubleValue];
+        return app.latestResponse.symbol_local.conversion * [requestedAmountString doubleValue];
     } else {
-        return [app.wallet parseBitcoinValue:requestAmountTextField.text];
+        return [app.wallet parseBitcoinValue:requestedAmountString];
     }
 }
 
@@ -236,12 +236,20 @@
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSArray  *points = [newString componentsSeparatedByString:@"."];
+    NSArray  *commas = [newString componentsSeparatedByString:@","];
+    
+    if ([points count] > 2 || [commas count] > 2)
+        return NO;
+    
     [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
     
-    return TRUE;
+    return YES;
 }
 
-#pragma UITableview Delegates
+#pragma mark - UITableview Delegates
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     

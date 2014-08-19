@@ -39,6 +39,11 @@
 @protocol JSBridgeWebViewDelegate
 @end
 
+@interface SuccessErrorCallbackContainer : NSObject
+@property(nonatomic, strong) void (^success)(id);
+@property(nonatomic, strong) void (^error)(id);
+@end
+
 /*
 	JSBridgeWebView class is responsible for identifying javascript notifications. Its delegate must 
 	comply with the JSBridgeWebViewDelegate.

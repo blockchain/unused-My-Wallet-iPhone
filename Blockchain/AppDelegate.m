@@ -392,7 +392,7 @@ AppDelegate * app;
     if (![wallet isInitialized]) {
         [app showWelcome:FALSE];
         
-        if ([self guid] && [self guid]) {
+        if ([self guid] && [self sharedKey]) {
             [self showModal:mainPasswordView isClosable:FALSE];
         }
     }
@@ -1252,6 +1252,11 @@ AppDelegate * app;
         
         [self closePINModal:YES];
     } else if ([code integerValue] == PIN_API_STATUS_PIN_INCORRECT) {
+        
+        if (error == nil) {
+            error = @"PIN Code Incorrect. Unknown Error Message.";
+        }
+        
         [app standardNotify:error];
     } else if ([code intValue] == PIN_API_STATUS_OK) {
         
@@ -1267,6 +1272,13 @@ AppDelegate * app;
             [app standardNotify:BC_STRING_DECRYPTED_PIN_PASSWORD_LENGTH_0];
             [self askIfUserWantsToResetPIN];
             return;
+        }
+        
+        NSString * guid = [self guid];
+        NSString * sharedKey = [self sharedKey];
+        
+        if (guid && sharedKey) {
+            [self.wallet loadGuid:guid sharedKey:sharedKey];
         }
         
         app.wallet.password = decrypted;

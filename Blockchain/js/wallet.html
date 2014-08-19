@@ -293,6 +293,19 @@ MyWalletPhone.setPassword = function(password) {
     $('#restore-wallet-continue').click();
 }
 
+MyStore.get_old = MyStore.get;
+MyStore.get = function(key, callback) {
+    
+    //Disallow fetching of the guid
+    if (key == 'guid') {
+        callback();
+        return;
+    }
+    
+    MyStore.get_old(key, callback);
+}
+
+
 MyWalletPhone.newAccount = function(password, email) {
     loadScript('wallet-signup', function() {
         MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {

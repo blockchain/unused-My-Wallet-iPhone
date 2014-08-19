@@ -41,14 +41,14 @@
         return FALSE;
     }];
     
-    fromField.valueFont = [UIFont systemFontOfSize:14];
-    fromField.valueColor = [UIColor darkGrayColor];
+    [selectAddressButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    self.selectedAddress = @"";
 
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
     amountField.inputAccessoryView = amountKeyboardAccessoryView;
-    
+
     [toField setReturnKeyType:UIReturnKeyDone];
     
     if (APP_IS_IPHONE5) {
@@ -64,10 +64,6 @@
 -(void)reload {
     self.fromAddresses = [app.wallet activeAddresses];
     
-    [fromField reload];
-    
-    [fromField setIndex:0];
-    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
         [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;
@@ -79,16 +75,28 @@
     [self doCurrencyConversion];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (fromAddressDropDown != nil) {
+        [fromAddressDropDown fadeOut];
+        [addressBookButton setEnabled:YES];
+        [selectAddressButton setEnabled:YES];
+        fromAddressDropDown = nil;
+    }
+    if (addressBookdropDown != nil) {
+        [addressBookdropDown fadeOut];
+        [addressBookButton setEnabled:YES];
+        [selectAddressButton setEnabled:YES];
+        addressBookdropDown = nil;
+    }
+}
+
 #pragma mark - Payment
 
 -(void)reallyDoPayment {
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
     NSString * to = self.toAddress;
-    NSString * from = @"";
-    if ([fromField index] > 0) {
-        from = [self.fromAddresses objectAtIndex:[fromField index]-1];
-    }
+    NSString * from = self.selectedAddress;
     
     transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
     
@@ -143,10 +151,12 @@
 
 
 -(uint64_t)getInputAmountInSatoshi {
+    NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
     if (displayingLocalSymbol) {
-        return app.latestResponse.symbol_local.conversion * [amountField.text doubleValue];
+        return app.latestResponse.symbol_local.conversion * [amountString doubleValue];
     } else {
-        return [app.wallet parseBitcoinValue:amountField.text];
+        return [app.wallet parseBitcoinValue:amountString];
     }
 }
 
@@ -156,11 +166,6 @@
     NSString * amountLocalString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:TRUE];
 
     NSMutableString *messageString = [NSMutableString stringWithFormat:BC_STRING_CONFIRM_PAYMENT_OF, amountBTCString, amountLocalString, self.toAddress];
-    
-    if (![toField.text isEqualToString:self.toAddress]) {
-        [messageString appendFormat:@" (%@)", toField.text];
-    }
-    
     
     BCAlertView *alert = [[BCAlertView alloc] initWithTitle:BC_STRING_CONFIRM_PAYMENT
                                                     message:messageString
@@ -258,7 +263,9 @@
         if (app.latestResponse.symbol_btc) {
             double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
             
+            app.btcFormatter.usesGroupingSeparator = NO;
             amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
+            app.btcFormatter.usesGroupingSeparator = YES;
         }
         
         amountField.text = amountString;
@@ -286,10 +293,20 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField == amountField) {
+
+        NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        NSArray  *points = [newString componentsSeparatedByString:@"."];
+        NSArray  *commas = [newString componentsSeparatedByString:@","];
+        
+        if ([points count] > 2 || [commas count] > 2)
+            return NO;
+
         [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+        
+        return YES;
     }
     
-    return TRUE;
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField
@@ -298,50 +315,97 @@
     return YES;
 }
 
+# pragma mark- kDropDownListView delegate
+
+- (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex {
+    [selectAddressButton setEnabled:YES];
+    [addressBookButton setEnabled:YES];
+    if (dropdownListView == fromAddressDropDown) {
+        if (anIndex > 0) {
+            NSString* address = [self.fromAddresses objectAtIndex:anIndex-1];
+            NSString * label = [app.wallet labelForAddress:address];
+            if (label && ![label isEqualToString:@""]) {
+                [selectAddressButton setTitle:label forState:UIControlStateNormal];
+            } else {
+                [selectAddressButton setTitle:address forState:UIControlStateNormal];
+            }
+            self.selectedAddress = address;
+        } else {
+            self.selectedAddress = @"";
+            [selectAddressButton setTitle:@"Any Address" forState:UIControlStateNormal];
+        }
+    } else if (dropdownListView == addressBookdropDown) {
+        [self didSelectAddress: [self.addressBookAddress objectAtIndex:anIndex]];
+    }
+}
+
+- (void)DropDownListView:(DropDownListView *)dropdownListView Datalist:(NSMutableArray*)ArryData {}
+- (void)DropDownListViewDidCancel {}
+
 # pragma mark- Addres book delegate
 -(void)didSelectAddress:(NSString *)address {
     toField.text = [self labelForAddress:address];
     self.toAddress = address;
 }
 
--(NSUInteger)countForValueField:(MultiValueField*)valueField {
-    if (valueField == fromField) {
-        return [self.fromAddresses count]+1;
-    }
-    return 0;
-}
+#pragma mark - Actions
 
--(NSString*)titleForValueField:(MultiValueField*)valueField atIndex:(NSUInteger)index {
-    if (valueField == fromField) {
-        if (index == 0) {
-            return @"Any Address";
-        }
-        
-        NSString * address = [self.fromAddresses objectAtIndex:index-1];
+- (IBAction)selectAddressClicked:(id)sender {
+    if (fromAddressDropDown != nil)
+        [fromAddressDropDown fadeOut];
 
+    NSMutableArray* displayedSelectAddress = [[NSMutableArray alloc] init];
+    NSMutableArray* displayedSelectAddressLabel = [[NSMutableArray alloc] init];
+    [displayedSelectAddressLabel addObject:@"Any Address"];
+    [displayedSelectAddress addObject:@""];
+    
+    for (NSString* address in self.fromAddresses) {
         NSString * label = [app.wallet labelForAddress:address];
         if (label && ![label isEqualToString:@""]) {
-            return label;
+            [displayedSelectAddress addObject:address];
+            [displayedSelectAddressLabel addObject:label];
         } else {
-            return address;
+            [displayedSelectAddressLabel addObject:address];
+            [displayedSelectAddress addObject:@""];
         }
     }
     
-    return @"";
+    //point below label "From:"
+    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
+    fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddressLabel detailsText:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
+    fromAddressDropDown.delegate = self;
+    [fromAddressDropDown showInView:self.view animated:YES];
+    const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);
+    [fromAddressDropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
+
+    [addressBookButton setEnabled:NO];
+    [selectAddressButton setEnabled:NO];
 }
 
-#pragma mark - Actions
--(IBAction)addressBookClicked:(id)sender {
-    AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet];
-    addressBookView.delegate = self;
 
-    [app showModal:addressBookView isClosable:TRUE onDismiss:^() {
-        [self.readerView stop];
-        
-        self.readerView = nil;
-        
-        [app.wallet cancelTxSigning];
-    } onResume:nil];
+-(IBAction)addressBookClicked:(id)sender {
+    if (addressBookdropDown != nil)
+        [addressBookdropDown fadeOut];
+    NSMutableArray* displayedAddressBookAddresses = [[NSMutableArray alloc] init];
+    NSMutableArray* displayedAddressBookLabel = [[NSMutableArray alloc] init];
+    self.addressBookAddress = [app.wallet.addressBook allKeys];
+    for (NSString * label in self.addressBookAddress) {
+        [displayedAddressBookAddresses addObject:[app.wallet.addressBook objectForKey:label]];
+        [displayedAddressBookLabel addObject:label];
+    }
+    
+    //point below label "From:"
+    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
+    addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses detailsText:displayedAddressBookLabel xy:xy size:dropDownSize isMultiple:NO];
+    addressBookdropDown.delegate = self;
+    [addressBookdropDown showInView:self.view animated:YES];
+    const CGFloat* components = CGColorGetComponents(COLOR_BLOCKCHAIN_BLUE.CGColor);
+    [addressBookdropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
+    
+    [addressBookButton setEnabled:NO];
+    [selectAddressButton setEnabled:NO];
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender {

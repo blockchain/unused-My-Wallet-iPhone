@@ -19,15 +19,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "MultiValueField.h"
 #import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "BCAlertView.h"
+#import "DropDownListView.h"
 
-@class Wallet, MultiValueField;
+@class Wallet;
 
-@interface SendViewController : UIViewController <MultiValueFieldDataSource, ZBarReaderViewDelegate, AddressBookDelegate> {
-    IBOutlet MultiValueField * fromField;
+@interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate, kDropDownListViewDelegate> {
     IBOutlet UITextField * toFieldContainerField;
     IBOutlet UITextField * toField;
     IBOutlet UITextField * amountField;
@@ -36,6 +35,9 @@
     IBOutlet UILabel * currencyConversionLabel;
 
     
+    IBOutlet UILabel *fromLabel;
+    IBOutlet UIButton *selectAddressButton;
+    IBOutlet UIButton *addressBookButton;
     IBOutlet UIButton * sendPaymentButton;
     IBOutlet UIView * labelAddressView;
     IBOutlet UILabel * labelAddressLabel;
@@ -43,14 +45,19 @@
     IBOutlet UIView * sendProgressModal;
     IBOutlet UILabel * sendProgressModalText;
     IBOutlet UIButton * btcCodeButton;
-    
+    DropDownListView * fromAddressDropDown;
+    DropDownListView * addressBookdropDown;
+
     BOOL displayingLocalSymbol;
 }
 
+@property(nonatomic, strong) NSString *selectedAddress;
+@property(nonatomic, strong) NSArray * addressBookAddress;
 @property(nonatomic, strong) NSArray * fromAddresses;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, strong) NSString *toAddress;
 
+- (IBAction)selectAddressClicked:(id)sender;
 -(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)addressBookClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;

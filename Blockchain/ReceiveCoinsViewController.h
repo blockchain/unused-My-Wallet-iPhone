@@ -62,6 +62,10 @@
 -(IBAction)generateNewAddressClicked:(id)sender;
 -(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
+-(IBAction)shareByTwitter:(id)sender;
+-(IBAction)shareByFacebook:(id)sender;
+-(IBAction)shareByGooglePlus:(id)sender;
+-(IBAction)shareByEmailClicked:(id)sender;
 -(IBAction)requestPaymentClicked:(id)sender;
 -(IBAction)closeKeyboardClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;

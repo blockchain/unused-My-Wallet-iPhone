@@ -12,6 +12,7 @@
 #import "ReceiveTableCell.h"
 #import "Address.h"
 #import "PrivateKeyReader.h"
+#import "AddThis.h"
 
 @implementation ReceiveCoinsViewController
 
@@ -116,6 +117,25 @@
     }
 }
 
+
+-(NSString *)getKey:(NSIndexPath*)indexPath {
+    
+    NSString * key =  NULL;
+    
+    if ([indexPath section] == 0)
+        key = [activeKeys objectAtIndex:[indexPath row]];
+    else
+        key = [archivedKeys objectAtIndex:[indexPath row]];
+    
+    return key;
+}
+
+-(NSString*)blockchainUriURL {
+    NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
+    double amount = [requestAmountTextField.text doubleValue];
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
+}
+
 -(void)setQR {
     DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
     
@@ -171,12 +191,44 @@
     [UIPasteboard generalPasteboard].string = addr;
 }
 
+-(IBAction)shareByTwitter:(id)sender {
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+}
+
+-(IBAction)shareByFacebook:(id)sender {
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+}
+-(IBAction)shareByGooglePlus:(id)sender {
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+}
+
+-(IBAction)shareByEmailClicked:(id)sender {
+    [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
+}
+
 -(IBAction)requestPaymentClicked:(id)sender {
     [self setQR];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
+    
+    //configure addthis -- (this step is optional)
+	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+    
+    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
+    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
+    
+	//Facebook connect settings
+	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
+	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
+	
+	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
+
     
     
     [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {

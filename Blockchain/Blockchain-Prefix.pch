@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "LocalizationConstants.h"
 #endif
 
 #define ANIMATION_DURATION .2f

@@ -49,7 +49,7 @@
             
                 [app closeModal];
             } else {
-                [app standardNotify:@"Unsupported Private Key Format"];
+                [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
             }
             
             break;

@@ -150,7 +150,7 @@
     labelTextField.text = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([labelTextField.text length] == 0 || [labelTextField.text length] > 255) {
-        [app standardNotify:@"You must enter a label"];
+        [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
         return;
     }
         
@@ -166,7 +166,7 @@
 -(IBAction)copyAddressClicked:(id)sender {
     NSString * addr = self.clickedAddress;
 
-    [app standardNotify:[NSString stringWithFormat:@"%@ copied to clipboard", addr]  title:@"Success" delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr]  title:BC_STRING_SUCCESS delegate:nil];
 
     [UIPasteboard generalPasteboard].string = addr;
 }
@@ -261,16 +261,16 @@
     self.clickedAddress = addr;
     
     if (tag == 2)
-        [archiveUnarchiveButton setTitle:@"Unarchive" forState:UIControlStateNormal];
+        [archiveUnarchiveButton setTitle:BC_STRING_UNARCHIVE forState:UIControlStateNormal];
     else
-        [archiveUnarchiveButton setTitle:@"Archive" forState:UIControlStateNormal];
+        [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
     
     [app showModal:optionsModalView isClosable:TRUE];
     
     if (label)
         optionsTitleLabel.text = label;
     else
-        optionsTitleLabel.text = @"Bitcoin Address";
+        optionsTitleLabel.text = BC_STRING_BITCOIN_ADDRESS;
     
     optionsAddressLabel.text = addr;
 }
@@ -286,9 +286,9 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0)
-        return @"Active";
+        return BC_STRING_ACTIVE;
     else if (section == 1)
-        return @"Archived";
+        return BC_STRING_ARCHIVED;
     else
         @throw @"Unknown Secion";
 }
@@ -322,7 +322,7 @@
     if (label)
         cell.labelLabel.text = label;
     else 
-        cell.labelLabel.text = @"No Label";
+        cell.labelLabel.text = BC_STRING_NO_LABEL;
     
     cell.addressLabel.text = addr;
     

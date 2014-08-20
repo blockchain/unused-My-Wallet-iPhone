@@ -275,10 +275,22 @@
     [app closeModal];
 }
 
+
+-(void)dismissKeyboard {
+    //[requestAmountTextField resignFirstResponder];
+    [requestAmountTextField endEditing:YES];
+    [app.modalView removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+}
+
 # pragma mark - UITextField delegates
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[app.tabViewController responderMayHaveChanged];
+    self.tapGesture = [[UITapGestureRecognizer alloc]
+                       initWithTarget:self
+                       action:@selector(dismissKeyboard)];
+    [app.modalView addGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField

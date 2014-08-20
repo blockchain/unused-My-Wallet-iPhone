@@ -56,6 +56,7 @@
 @property(nonatomic, strong) NSArray * fromAddresses;
 @property(nonatomic, strong) ZBarReaderView * readerView;
 @property(nonatomic, strong) NSString *toAddress;
+@property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 - (IBAction)selectAddressClicked:(id)sender;
 -(IBAction)QRCodebuttonClicked:(id)sender;

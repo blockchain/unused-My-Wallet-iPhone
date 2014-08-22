@@ -12,6 +12,9 @@
 #import "ReceiveTableCell.h"
 #import "Address.h"
 #import "PrivateKeyReader.h"
+#import "AddThis.h"
+#import <Social/Social.h>
+#import <Twitter/Twitter.h>
 
 @implementation ReceiveCoinsViewController
 
@@ -90,6 +93,12 @@
     return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
 }
 
+-(NSString*)blockchainUriURL {
+    NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
+    double amount = [requestAmountTextField.text doubleValue];
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
+}
+
 -(uint64_t)getInputAmountInSatoshi {
     NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
 
@@ -116,6 +125,19 @@
     }
 }
 
+
+-(NSString *)getKey:(NSIndexPath*)indexPath {
+    
+    NSString * key =  NULL;
+    
+    if ([indexPath section] == 0)
+        key = [activeKeys objectAtIndex:[indexPath row]];
+    else
+        key = [archivedKeys objectAtIndex:[indexPath row]];
+    
+    return key;
+}
+
 -(void)setQR {
     DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
     
@@ -124,6 +146,59 @@
     qrCodeImageView.image = image;
     
     [self doCurrencyConversion];
+}
+
+# pragma mark - MFMailComposeViewControllerDelegate delegates
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            break;
+            
+        case MFMailComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send email!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MFMailComposeResultSent:
+            break;
+            
+        case MFMailComposeResultSaved:
+            break;
+            
+        default:
+            break;
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+# pragma mark - MFMessageComposeViewControllerDelegate delegates
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Actions
@@ -171,12 +246,104 @@
     [UIPasteboard generalPasteboard].string = addr;
 }
 
+-(IBAction)shareByTwitter:(id)sender {
+    SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    
+    [composeController setInitialText:[self formatPaymentRequest:@""]];
+    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    
+    [self presentViewController:composeController
+                       animated:YES completion:nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+        } else {
+        }
+    };
+    composeController.completionHandler = myBlock;
+}
+
+-(IBAction)shareByFacebook:(id)sender {
+    SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    [composeController setInitialText:[self formatPaymentRequest:@""]];
+    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    
+    [self presentViewController:composeController animated:YES completion:nil];
+    
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+        } else {
+        }
+    };
+    composeController.completionHandler = myBlock;
+}
+
+
+-(NSString*)formatPaymentRequest:(NSString*)url {
+    return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST, url];
+}
+
+-(NSString*)formatPaymentRequestHTML:(NSString*)url {
+    return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST_HTML, url];
+}
+
+-(IBAction)shareByGooglePlus:(id)sender {
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
+}
+
+-(IBAction)shareByMessageClicked:(id)sender {
+    if([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+        [messageController setMessageComposeDelegate:self];
+        [messageController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
+        [messageController setBody:[self formatPaymentRequest:[self blockchainUriURL]]];
+        [app.tabViewController presentViewController:messageController animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR message:BC_STRING_DEVICE_NO_SMS delegate:nil cancelButtonTitle:BC_STRING_OK otherButtonTitles:nil];
+        [warningAlert show];
+    }
+}
+
+-(IBAction)shareByEmailClicked:(id)sender {
+    if([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+        [mailController setMailComposeDelegate:self];
+        [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
+        [mailController setMessageBody:[self formatPaymentRequestHTML:[self blockchainUriURL]] isHTML:YES];
+        [app.tabViewController presentViewController:mailController animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR message:BC_STRING_DEVICE_NO_EMAIL delegate:nil cancelButtonTitle:BC_STRING_OK otherButtonTitles:nil];
+        [warningAlert show];
+    }
+}
+
 -(IBAction)requestPaymentClicked:(id)sender {
     [self setQR];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
+    
+    //configure addthis -- (this step is optional)
+	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+    
+    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
+    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
+    
+	//Facebook connect settings
+	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
+	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
+	
+	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
+
     
     
     [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {
@@ -223,10 +390,22 @@
     [app closeModal];
 }
 
+
+-(void)dismissKeyboard {
+    //[requestAmountTextField resignFirstResponder];
+    [requestAmountTextField endEditing:YES];
+    [app.modalView removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+}
+
 # pragma mark - UITextField delegates
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[app.tabViewController responderMayHaveChanged];
+    self.tapGesture = [[UITapGestureRecognizer alloc]
+                       initWithTarget:self
+                       action:@selector(dismissKeyboard)];
+    [app.modalView addGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField

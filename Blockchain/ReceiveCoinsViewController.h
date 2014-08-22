@@ -19,9 +19,10 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "Wallet.h"
 
-@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
+@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate> {
     IBOutlet UITableView * tableView;
     IBOutlet UIImageView * qrCodeImageView;
     IBOutlet UIButton * archiveUnarchiveButton;
@@ -52,6 +53,7 @@
 
 @property(nonatomic, strong) NSArray * activeKeys;
 @property(nonatomic, strong) NSArray * archivedKeys;
+@property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 -(void)reload;
 
@@ -62,6 +64,11 @@
 -(IBAction)generateNewAddressClicked:(id)sender;
 -(IBAction)copyAddressClicked:(id)sender;
 -(IBAction)labelSaveClicked:(id)sender;
+-(IBAction)shareByTwitter:(id)sender;
+-(IBAction)shareByFacebook:(id)sender;
+-(IBAction)shareByGooglePlus:(id)sender;
+-(IBAction)shareByEmailClicked:(id)sender;
+-(IBAction)shareByMessageClicked:(id)sender;
 -(IBAction)requestPaymentClicked:(id)sender;
 -(IBAction)closeKeyboardClicked:(id)sender;
 -(IBAction)btcCodeClicked:(id)sender;

@@ -280,12 +280,25 @@
     self.readerView = nil;
 }
 
+-(void)dismissKeyboard {
+    [amountField resignFirstResponder];
+    [self.view removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+}
+
 #pragma mark - Textfield Delegates
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
     if (textField == amountField) {
         [self doCurrencyConversion];
+        if (self.tapGesture == nil) {
+            self.tapGesture = [[UITapGestureRecognizer alloc]
+                               initWithTarget:self
+                               action:@selector(dismissKeyboard)];
+            
+            [self.view addGestureRecognizer:self.tapGesture];
+        }
     }
     
     [app.tabViewController responderMayHaveChanged];

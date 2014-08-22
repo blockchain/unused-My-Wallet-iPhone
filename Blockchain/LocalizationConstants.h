@@ -125,4 +125,10 @@
 #define BC_STRING_PIN_ENCRYPTED_STRING_IS_NIL NSLocalizedString(@"PIN Encrypted String is nil", nil)
 #define BC_STRING_PIN_SAVED_SUCCESSFULLY NSLocalizedString(@"PIN Saved Successfully", nil)
 
-
+#define BC_STRING_PAYMENT_REQUEST_TITLE NSLocalizedString(@"Payment Request", nil)
+#define BC_STRING_DEVICE_NO_SMS NSLocalizedString(@"This device does not support SMS.", nil)
+#define BC_STRING_DEVICE_NO_EMAIL NSLocalizedString(@"This device does not support email.", nil)
+#define BC_STRING_MY_BITCOIN_ADDRESS NSLocalizedString(@"My Bitcoin Address", nil)
+#define BC_STRING_PAY_ME_WITH_BITCOIN NSLocalizedString(@"Pay me with bitcoin", nil)
+#define BC_STRING_PAYMENT_REQUEST NSLocalizedString(@"Please send payment to bitcoin address. FAQ: (https://blockchain.info/wallet/bitcoin-faq): %@", nil)
+#define BC_STRING_PAYMENT_REQUEST_HTML NSLocalizedString(@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/bitcoin-faq\">help?</a>): %@", nil)

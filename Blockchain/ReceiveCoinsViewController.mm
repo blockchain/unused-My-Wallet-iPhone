@@ -13,6 +13,8 @@
 #import "Address.h"
 #import "PrivateKeyReader.h"
 #import "AddThis.h"
+#import <Social/Social.h>
+#import <Twitter/Twitter.h>
 
 @implementation ReceiveCoinsViewController
 
@@ -91,6 +93,12 @@
     return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
 }
 
+-(NSString*)blockchainUriURL {
+    NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
+    double amount = [requestAmountTextField.text doubleValue];
+    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
+}
+
 -(uint64_t)getInputAmountInSatoshi {
     NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
 
@@ -130,12 +138,6 @@
     return key;
 }
 
--(NSString*)blockchainUriURL {
-    NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
-    double amount = [requestAmountTextField.text doubleValue];
-    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
-}
-
 -(void)setQR {
     DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
     
@@ -144,6 +146,59 @@
     qrCodeImageView.image = image;
     
     [self doCurrencyConversion];
+}
+
+# pragma mark - MFMailComposeViewControllerDelegate delegates
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            break;
+            
+        case MFMailComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send email!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MFMailComposeResultSent:
+            break;
+            
+        case MFMailComposeResultSaved:
+            break;
+            
+        default:
+            break;
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+# pragma mark - MFMessageComposeViewControllerDelegate delegates
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Actions
@@ -192,18 +247,78 @@
 }
 
 -(IBAction)shareByTwitter:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"twitter" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+    SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    
+    [composeController setInitialText:[self formatPaymentRequest:@""]];
+    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    
+    [self presentViewController:composeController
+                       animated:YES completion:nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+        } else {
+        }
+    };
+    composeController.completionHandler = myBlock;
 }
 
 -(IBAction)shareByFacebook:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"facebook" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+    SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    [composeController setInitialText:[self formatPaymentRequest:@""]];
+    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    
+    [self presentViewController:composeController animated:YES completion:nil];
+    
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+        } else {
+        }
+    };
+    composeController.completionHandler = myBlock;
 }
+
+
+-(NSString*)formatPaymentRequest:(NSString*)url {
+    return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST, url];
+}
+
+-(NSString*)formatPaymentRequestHTML:(NSString*)url {
+    return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST_HTML, url];
+}
+
 -(IBAction)shareByGooglePlus:(id)sender {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:@"My Bitcoin Address" description:@"Pay me with bitcoin"];
+    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
+}
+
+-(IBAction)shareByMessageClicked:(id)sender {
+    if([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+        [messageController setMessageComposeDelegate:self];
+        [messageController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
+        [messageController setBody:[self formatPaymentRequest:[self blockchainUriURL]]];
+        [app.tabViewController presentViewController:messageController animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR message:BC_STRING_DEVICE_NO_SMS delegate:nil cancelButtonTitle:BC_STRING_OK otherButtonTitles:nil];
+        [warningAlert show];
+    }
 }
 
 -(IBAction)shareByEmailClicked:(id)sender {
-    [AddThisSDK shareURL:[self uriURL] withService:@"mailto" title:@"Payment Request" description:@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/faq\">help?</a>)"];
+    if([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+        [mailController setMailComposeDelegate:self];
+        [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
+        [mailController setMessageBody:[self formatPaymentRequestHTML:[self blockchainUriURL]] isHTML:YES];
+        [app.tabViewController presentViewController:mailController animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR message:BC_STRING_DEVICE_NO_EMAIL delegate:nil cancelButtonTitle:BC_STRING_OK otherButtonTitles:nil];
+        [warningAlert show];
+    }
 }
 
 -(IBAction)requestPaymentClicked:(id)sender {

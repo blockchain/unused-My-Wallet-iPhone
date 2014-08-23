@@ -267,6 +267,17 @@
 		C9C17AA2197FD0C600BF8A4E /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A92197FCE4700BF8A4E /* signer.js */; };
 		C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = C9C17A93197FCE4700BF8A4E /* wallet.js */; };
 		C9C3998319885FAC001B3922 /* BCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3998219885FAC001B3922 /* BCAlertView.m */; };
+		ECD244EB19A8AC45004B1F40 /* PEKeyboard-3-done.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E119A8AC45004B1F40 /* PEKeyboard-3-done.png */; };
+		ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E219A8AC45004B1F40 /* PEKeyboard-3-dot.png */; };
+		ECD244ED19A8AC45004B1F40 /* PEKeyboard-3-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E319A8AC45004B1F40 /* PEKeyboard-3-edit.png */; };
+		ECD244EE19A8AC45004B1F40 /* PEKeyboard-3-next.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E419A8AC45004B1F40 /* PEKeyboard-3-next.png */; };
+		ECD244EF19A8AC45004B1F40 /* PEKeyboard-3.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E519A8AC45004B1F40 /* PEKeyboard-3.png */; };
+		ECD244F019A8AC45004B1F40 /* PEKeyboard-4-done.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E619A8AC45004B1F40 /* PEKeyboard-4-done.png */; };
+		ECD244F119A8AC45004B1F40 /* PEKeyboard-4-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E719A8AC45004B1F40 /* PEKeyboard-4-dot.png */; };
+		ECD244F219A8AC45004B1F40 /* PEKeyboard-4-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E819A8AC45004B1F40 /* PEKeyboard-4-edit.png */; };
+		ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E919A8AC45004B1F40 /* PEKeyboard-4-next.png */; };
+		ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */; };
+		ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD244F619A8B444004B1F40 /* UIImage+Utils.m */; };
 		ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98A1959968F00255292 /* address-book-icon.png */; };
 		ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98B1959968F00255292 /* address-book-icon@2x.png */; };
 		ECE9A9901959968F00255292 /* camera-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE9A98C1959968F00255292 /* camera-icon.png */; };
@@ -960,6 +971,18 @@
 		C9C17A93197FCE4700BF8A4E /* wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = wallet.js; path = "Submodules/My-Wallet/wallet.js"; sourceTree = SOURCE_ROOT; };
 		C9C3998119885FAC001B3922 /* BCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCAlertView.h; sourceTree = "<group>"; };
 		C9C3998219885FAC001B3922 /* BCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCAlertView.m; sourceTree = "<group>"; };
+		ECD244E119A8AC45004B1F40 /* PEKeyboard-3-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-3-done.png"; sourceTree = "<group>"; };
+		ECD244E219A8AC45004B1F40 /* PEKeyboard-3-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-3-dot.png"; sourceTree = "<group>"; };
+		ECD244E319A8AC45004B1F40 /* PEKeyboard-3-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-3-edit.png"; sourceTree = "<group>"; };
+		ECD244E419A8AC45004B1F40 /* PEKeyboard-3-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-3-next.png"; sourceTree = "<group>"; };
+		ECD244E519A8AC45004B1F40 /* PEKeyboard-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-3.png"; sourceTree = "<group>"; };
+		ECD244E619A8AC45004B1F40 /* PEKeyboard-4-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4-done.png"; sourceTree = "<group>"; };
+		ECD244E719A8AC45004B1F40 /* PEKeyboard-4-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4-dot.png"; sourceTree = "<group>"; };
+		ECD244E819A8AC45004B1F40 /* PEKeyboard-4-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4-edit.png"; sourceTree = "<group>"; };
+		ECD244E919A8AC45004B1F40 /* PEKeyboard-4-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4-next.png"; sourceTree = "<group>"; };
+		ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4.png"; sourceTree = "<group>"; };
+		ECD244F519A8B444004B1F40 /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
+		ECD244F619A8B444004B1F40 /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		ECE9A98A1959968F00255292 /* address-book-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon.png"; sourceTree = "<group>"; };
 		ECE9A98B1959968F00255292 /* address-book-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon@2x.png"; sourceTree = "<group>"; };
 		ECE9A98C1959968F00255292 /* camera-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon.png"; sourceTree = "<group>"; };
@@ -1275,6 +1298,8 @@
 		9F1831F315176F2200FB3D52 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				ECD244F519A8B444004B1F40 /* UIImage+Utils.h */,
+				ECD244F619A8B444004B1F40 /* UIImage+Utils.m */,
 				84FC031B1981DEBA00B97D5B /* UIAlertView+Blocks.h */,
 				84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */,
 				9F1831E01516A39500FB3D52 /* NSData+Hex.h */,
@@ -1642,6 +1667,16 @@
 		C9BE916E1945D8F600FD516D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ECD244E119A8AC45004B1F40 /* PEKeyboard-3-done.png */,
+				ECD244E219A8AC45004B1F40 /* PEKeyboard-3-dot.png */,
+				ECD244E319A8AC45004B1F40 /* PEKeyboard-3-edit.png */,
+				ECD244E419A8AC45004B1F40 /* PEKeyboard-3-next.png */,
+				ECD244E519A8AC45004B1F40 /* PEKeyboard-3.png */,
+				ECD244E619A8AC45004B1F40 /* PEKeyboard-4-done.png */,
+				ECD244E719A8AC45004B1F40 /* PEKeyboard-4-dot.png */,
+				ECD244E819A8AC45004B1F40 /* PEKeyboard-4-edit.png */,
+				ECD244E919A8AC45004B1F40 /* PEKeyboard-4-next.png */,
+				ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */,
 				C9BE916F1945D8F600FD516D /* PEKeyboard-1-done.png */,
 				C9BE91701945D8F600FD516D /* PEKeyboard-1-dot.png */,
 				C9BE91711945D8F600FD516D /* PEKeyboard-1-edit.png */,
@@ -1854,6 +1889,7 @@
 				C9C17AA3197FD0C600BF8A4E /* wallet.js in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				84AEEC961987E4E8000E8DC8 /* marker_atm_off.png in Resources */,
+				ECD244F219A8AC45004B1F40 /* PEKeyboard-4-edit.png in Resources */,
 				84AEEC8E1987D9C7000E8DC8 /* marker_drink@2x.png in Resources */,
 				84AEEC901987D9C7000E8DC8 /* marker_spend@2x.png in Resources */,
 				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
@@ -1861,6 +1897,7 @@
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				2245F726198C1C640075B19F /* drop_down@2x.png in Resources */,
 				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,
+				ECD244F119A8AC45004B1F40 /* PEKeyboard-4-dot.png in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
@@ -1878,6 +1915,7 @@
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
+				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
 				ECE9A98E1959968F00255292 /* address-book-icon.png in Resources */,
 				84F4BE16197FB78D00B7BF7B /* receive-money.png in Resources */,
@@ -1885,6 +1923,7 @@
 				C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */,
 				9F2D935414C07B2D0053F0FF /* payment_sent.png in Resources */,
 				9F2D935714C080610053F0FF /* button_green.png in Resources */,
+				ECD244EF19A8AC45004B1F40 /* PEKeyboard-3.png in Resources */,
 				C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */,
 				9F2D935814C080610053F0FF /* button_green@2x.png in Resources */,
 				9F2D935B14C081EF0053F0FF /* button_blue.png in Resources */,
@@ -1911,6 +1950,7 @@
 				9F7480B41513E98700BC4292 /* power-white.png in Resources */,
 				9F7480B51513E98700BC4292 /* power-white@2x.png in Resources */,
 				9F7480B71513E9F100BC4292 /* power-red.png in Resources */,
+				ECD244ED19A8AC45004B1F40 /* PEKeyboard-3-edit.png in Resources */,
 				9F7480D31514030800BC4292 /* alert-received.wav in Resources */,
 				ECE9A98F1959968F00255292 /* address-book-icon@2x.png in Resources */,
 				9F7480D7151404E200BC4292 /* payment_moved@2x.png in Resources */,
@@ -1922,6 +1962,8 @@
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,
 				C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */,
 				9F45F8201514D8C300018AED /* 21-circle-east.png in Resources */,
+				ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */,
+				ECD244EB19A8AC45004B1F40 /* PEKeyboard-3-done.png in Resources */,
 				84AEEC991987E4E8000E8DC8 /* marker_eat_off.png in Resources */,
 				84AEEC7F1987D5EC000E8DC8 /* marker_drink_off.png in Resources */,
 				9F45F8211514D8C300018AED /* 21-circle-east@2x.png in Resources */,
@@ -1929,6 +1971,7 @@
 				84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */,
 				9F45F82B1514E35200018AED /* button_grey_large@2x.png in Resources */,
 				84F4BE0E197FB5B800B7BF7B /* account-settings.png in Resources */,
+				ECD244F019A8AC45004B1F40 /* PEKeyboard-4-done.png in Resources */,
 				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
 				9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */,
 				9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */,
@@ -1948,6 +1991,8 @@
 				84AEEC581987A61C000E8DC8 /* 172-pricetag@2x.png in Resources */,
 				220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */,
 				84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */,
+				ECD244EE19A8AC45004B1F40 /* PEKeyboard-3-next.png in Resources */,
+				ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */,
 				84F4BE12197FB72800B7BF7B /* send-money.png in Resources */,
 				84F4BE13197FB72800B7BF7B /* send-money@2x.png in Resources */,
 				84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */,
@@ -2061,6 +2106,7 @@
 				2203489519A4D51300611AC3 /* NSString+SBJSON.m in Sources */,
 				2203488719A4D51300611AC3 /* FBSession.m in Sources */,
 				2245F727198C1C640075B19F /* DropDownListView.m in Sources */,
+				ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */,
 				2203487619A4D51300611AC3 /* FBFriendPickerCacheDescriptor.m in Sources */,
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,
 				2203487219A4D51300611AC3 /* FBDataDiskCache.m in Sources */,

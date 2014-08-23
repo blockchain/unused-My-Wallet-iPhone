@@ -23,6 +23,7 @@
 ********************************************************************************/
 
 #import "PENumpadView.h"
+#import "UIImage+Utils.h"
 
 static CGRect Buttons[12];
 #ifdef PINENTRY_KEYBOARD_SENDS_NOTIFICATIONS
@@ -85,11 +86,12 @@ NSString *kPinEntryKeyboardCode = @"kPinEntryKeyboardCode";
 
 - (void)drawRect:(CGRect)rect
 {
-	[[UIImage imageNamed:[NSString stringWithFormat:@"PEKeyboard-1%@.png", detail]] drawAtPoint:CGPointMake(0, 0)];
-	if(activeClip >= 0) {
-		[[UIBezierPath bezierPathWithRect:Buttons[activeClip]] addClip];
-		[[UIImage imageNamed:[NSString stringWithFormat:@"PEKeyboard-2%@.png", detail]] drawAtPoint:CGPointMake(0, 0)];
-	}
+    [[UIImage imageWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"PEKeyboard-3%@.png", detail]] scaledToSize:CGSizeMake(320,216)] drawAtPoint:CGPointMake(0, 0)] ;
+    
+    if(activeClip >= 0) {
+        [[UIBezierPath bezierPathWithRect:Buttons[activeClip]] addClip];
+        [[UIImage imageWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"PEKeyboard-4%@.png", detail]] scaledToSize:CGSizeMake(320,216)] drawAtPoint:CGPointMake(0, 0)] ;
+    }
 }
 
 

@@ -46,12 +46,7 @@
         return;
     }
 
-    if ([emailTextField.text isEqualToString:@""]) {
-        [app standardNotify:BC_STRING_PLEASE_PROVIDE_AN_EMAIL_ADDRESS];
-        return;
-    }
-
-    if ([emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
+    if (emailTextField.text.length > 0 && [emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
         [app standardNotify:BC_STRING_INVALID_EMAIL_ADDRESS];
         return;
     }

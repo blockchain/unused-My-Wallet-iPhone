@@ -196,7 +196,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5kT-sJ-hSW">
-                    <rect key="frame" x="85" y="263" width="36" height="36"/>
+                    <rect key="frame" x="85" y="264" width="36" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="twitterButton.png">
@@ -226,7 +226,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T0O-ag-tLo">
-                    <rect key="frame" x="214" y="263" width="36" height="36"/>
+                    <rect key="frame" x="216" y="264" width="36" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="sms.png">

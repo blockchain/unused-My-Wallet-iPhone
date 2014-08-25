@@ -853,8 +853,8 @@
         <image name="172-pricetag.png" width="34" height="28"/>
         <image name="573-money.png" width="28" height="24"/>
         <image name="arrow_down.png" width="15" height="8"/>
-        <image name="button_blue.png" width="154" height="32"/>
-        <image name="button_red.png" width="100" height="30"/>
+        <image name="button_blue.png" width="97" height="29"/>
+        <image name="button_red.png" width="97" height="29"/>
         <image name="circle.png" width="28" height="28"/>
         <image name="divider.png" width="5" height="34"/>
         <image name="header.png" width="163" height="46"/>

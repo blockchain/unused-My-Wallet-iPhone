@@ -311,6 +311,8 @@
     if([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
         [mailController setMailComposeDelegate:self];
+        NSData *jpegData = UIImageJPEGRepresentation(qrCodeImageView.image, 1);
+        [mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
         [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
         [mailController setMessageBody:[self formatPaymentRequestHTML:[self blockchainUriURL]] isHTML:YES];
         [app.tabViewController presentViewController:mailController animated:YES completion:nil];

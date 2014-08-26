@@ -16,6 +16,8 @@
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
 
+NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
+
 @implementation ReceiveCoinsViewController
 
 @synthesize activeKeys;
@@ -63,6 +65,8 @@
     }
     
     [tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EVENT_NEW_ADDRESS
+                                                        object:nil userInfo:nil];
 }
 
 #pragma mark - Helpers
@@ -148,6 +152,14 @@
     [self doCurrencyConversion];
 }
 
+-(void)setLabelForNewAddress {
+    //newest address is the last object in activeKeys
+    self.clickedAddress = [activeKeys lastObject];
+    [self labelAddressClicked:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:EVENT_NEW_ADDRESS
+                                                  object:nil];
+}
+
 # pragma mark - MFMailComposeViewControllerDelegate delegates
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
@@ -205,6 +217,9 @@
 
 -(IBAction)generateNewAddressClicked:(id)sender {
     [app.wallet generateNewKey];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setLabelForNewAddress)
+                                                 name:EVENT_NEW_ADDRESS object:nil];
 }
 
 -(IBAction)btcCodeClicked:(id)sender {

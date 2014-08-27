@@ -201,6 +201,7 @@
 
 -(void)setToAddressFromUrlHandler:(NSString*)string {
     self.toAddress = string;
+    DLog(@"toAddress: %@", self.toAddress);
     toField.text = [self labelForAddress:self.toAddress];
 }
 
@@ -257,7 +258,8 @@
         
         toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
         self.toAddress = [dict objectForKey:@"address"];
-        
+        DLog(@"toAddress: %@", self.toAddress);
+
         NSString *amountString = [dict objectForKey:@"amount"];
         
         if (app.latestResponse.symbol_btc) {
@@ -317,6 +319,9 @@
         [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
         
         return YES;
+    } else if (textField == toField) {
+        self.toAddress = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        DLog(@"toAddress: %@", self.toAddress);
     }
     
     return YES;
@@ -359,6 +364,7 @@
 -(void)didSelectAddress:(NSString *)address {
     toField.text = [self labelForAddress:address];
     self.toAddress = address;
+    DLog(@"toAddress: %@", self.toAddress);
 }
 
 #pragma mark - Actions
@@ -464,9 +470,11 @@
 -(IBAction)sendPaymentClicked:(id)sender {
     
     // If user pasted an address into the toField, assign it to toAddress
-    if ([self.toAddress length] == 0)
+    if ([self.toAddress length] == 0) {
         self.toAddress = toField.text;
-    
+        DLog(@"toAddress: %@", self.toAddress);
+    }
+
     if ([self.toAddress length] == 0) {
         [app standardNotify:BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS];
         return;

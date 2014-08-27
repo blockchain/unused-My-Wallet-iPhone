@@ -65,6 +65,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
     
     [tableView reloadData];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:EVENT_NEW_ADDRESS
                                                         object:nil userInfo:nil];
 }
@@ -152,7 +153,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     [self doCurrencyConversion];
 }
 
--(void)setLabelForNewAddress {
+-(void)promptForLabelAfterGenerate {
     //newest address is the last object in activeKeys
     self.clickedAddress = [activeKeys lastObject];
     [self labelAddressClicked:nil];
@@ -218,7 +219,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 -(IBAction)generateNewAddressClicked:(id)sender {
     [app.wallet generateNewKey];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setLabelForNewAddress)
+                                             selector:@selector(promptForLabelAfterGenerate)
                                                  name:EVENT_NEW_ADDRESS object:nil];
 }
 

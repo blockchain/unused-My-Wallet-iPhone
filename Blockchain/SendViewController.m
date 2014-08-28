@@ -82,6 +82,9 @@
         amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
         app.btcFormatter.usesGroupingSeparator = YES;
 
+        // Popup kb so user can change value & see conversion
+        [amountField becomeFirstResponder];
+        
         self.initialToAmountDouble = 0;
     }
     

@@ -42,6 +42,8 @@ AppDelegate * app;
 @synthesize modalView;
 @synthesize latestResponse;
 
+BOOL showSendCoins = NO;
+
 #pragma mark - Lifecycle
 
 -(id)init {
@@ -305,7 +307,12 @@ AppDelegate * app;
 -(void)walletDidDecrypt {
     DLog(@"walletDidDecrypt");
     
-    [self transitionToIndex:0];
+    if (showSendCoins) {
+        [self showSendCoins];
+        showSendCoins = NO;
+    } else {
+        [self transitionToIndex:0];
+    }
 
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
     
@@ -472,7 +479,7 @@ AppDelegate * app;
     NSString * addr = [dict objectForKey:@"address"];
     NSString * amount = [dict objectForKey:@"amount"];
 
-    [self showSendCoins];
+    showSendCoins = YES;
     
     [_sendViewController setToAddressFromUrlHandler:addr];
     [_sendViewController setAmountFromUrlHandler:amount];
@@ -915,7 +922,7 @@ AppDelegate * app;
         _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
     }
     
-    [_tabViewController setActiveViewController:_sendViewController  animated:TRUE index:2];
+    [_tabViewController setActiveViewController:_sendViewController animated:TRUE index:2];
 }
 
 -(void)clearPin {
@@ -971,7 +978,7 @@ AppDelegate * app;
             welcomeLabel.text = BC_STRING_OPTIONS;
             welcomeInstructionsLabel.text = BC_STRING_OPEN_ACCOUNT_SETTINGS;
             [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
-            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
+            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
             [welcomeButton2 setTitle:BC_STRING_LOGOUT forState:UIControlStateNormal];
         }
         // Wallet paired, but no password
@@ -979,7 +986,7 @@ AppDelegate * app;
             welcomeLabel.text = BC_STRING_WELCOME_BACK;
             welcomeInstructionsLabel.text = @"";
             [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
-            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
+            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
             [welcomeButton2 setTitle:BC_STRING_FORGET_DETAILS forState:UIControlStateNormal];
         }
         // User is completed logged out

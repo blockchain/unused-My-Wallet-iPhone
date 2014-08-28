@@ -207,23 +207,28 @@
 
 -(void)setAmountFromUrlHandler:(NSString*)amountString {
     
+    // Convert amountString to local currency
     double amountDouble = 0.0;
     double displayValue = 0.0;
 
+    // Switch to local currency
     if (app->symbolLocal) {
         [app toggleSymbol];
     }
 
     // get decimal bitcoin value
     if (app.latestResponse.symbol_btc) {
+        DLog(@"converting to symbol_btc");
         displayValue = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
     } else {
+        DLog(@"???");
         displayValue = amountDouble;
     }
     
-    amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:displayValue]];
-    amountField.text = amountString;
+    
+    amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:displayValue]];
 
+    // Recalculate currencyConversionLabel (which is displayed in the keyboard accessory)
     [self doCurrencyConversion];
 }
 
@@ -498,32 +503,34 @@
         return;
     }
     
-    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ADD_TO_ADDRESS_BOOK
-                                                        message:[NSString stringWithFormat:BC_STRING_ASK_TO_ADD_TO_ADDRESS_BOOK, self.toAddress]
-                                                       delegate:nil
-                                              cancelButtonTitle:BC_STRING_NO
-                                              otherButtonTitles:BC_STRING_YES, nil];
-        
-        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // do nothing & proceed
-            if (buttonIndex == 0) {
-                [self confirmPayment];
-            }
-            // let user save address in addressbook
-            else if (buttonIndex == 1) {
-                labelAddressLabel.text = toField.text;
-                
-                [app showModal:labelAddressView isClosable:TRUE];
-                
-                [labelAddressTextField becomeFirstResponder];
-            }
-        };
-        
-        [alert show];
-    } else {
-        [self confirmPayment];
-    }
+    [self confirmPayment];
+
+//    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ADD_TO_ADDRESS_BOOK
+//                                                        message:[NSString stringWithFormat:BC_STRING_ASK_TO_ADD_TO_ADDRESS_BOOK, self.toAddress]
+//                                                       delegate:nil
+//                                              cancelButtonTitle:BC_STRING_NO
+//                                              otherButtonTitles:BC_STRING_YES, nil];
+//        
+//        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+//            // do nothing & proceed
+//            if (buttonIndex == 0) {
+//                [self confirmPayment];
+//            }
+//            // let user save address in addressbook
+//            else if (buttonIndex == 1) {
+//                labelAddressLabel.text = toField.text;
+//                
+//                [app showModal:labelAddressView isClosable:TRUE];
+//                
+//                [labelAddressTextField becomeFirstResponder];
+//            }
+//        };
+//        
+//        [alert show];
+//    } else {
+//        [self confirmPayment];
+//    }
 }
 
 

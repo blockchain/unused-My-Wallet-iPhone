@@ -177,7 +177,7 @@
     } else if (confirmations < 100) { 
         [confirmationsButton setHidden:FALSE];
 
-        [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_blue.png"] forState:UIControlStateNormal];
+        [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
         [confirmationsButton setTitle:[NSString stringWithFormat:BC_STRING_COUNT_CONFIRMATIONS, confirmations] forState:UIControlStateNormal];
         
     } else {

@@ -51,6 +51,9 @@
     BOOL displayingLocalSymbol;
 }
 
+@property(nonatomic, strong) NSString *initialToAddressString;
+@property(nonatomic) double initialToAmountDouble; // satoshi
+
 @property(nonatomic, strong) NSString *selectedAddress;
 @property(nonatomic, strong) NSArray * addressBookAddress;
 @property(nonatomic, strong) NSArray * fromAddresses;
@@ -69,8 +72,7 @@
 -(IBAction)sendPaymentClicked:(id)sender;
 -(IBAction)labelAddressClicked:(id)sender;
 
--(void)setToAddressFromUrlHandler:(NSString*)string;
--(void)setAmountFromUrlHandler:(NSString*)amountString;
+-(void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
 
 -(void)reload;
 

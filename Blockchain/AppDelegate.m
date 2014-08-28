@@ -53,6 +53,7 @@ BOOL showSendCoins = NO;
         [_btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
         self.localCurrencyFormatter = [[NSNumberFormatter alloc] init];
+        [_localCurrencyFormatter setMinimumFractionDigits:2];
         [_localCurrencyFormatter setMaximumFractionDigits:2];
         [_localCurrencyFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
@@ -474,15 +475,19 @@ BOOL showSendCoins = NO;
 {
     [app closeModal];
     
-    NSDictionary *dict = [self parseURI:[url absoluteString]];
-        
-    NSString * addr = [dict objectForKey:@"address"];
-    NSString * amount = [dict objectForKey:@"amount"];
-
     showSendCoins = YES;
     
-    [_sendViewController setToAddressFromUrlHandler:addr];
-    [_sendViewController setAmountFromUrlHandler:amount];
+    if (!_sendViewController) {
+        // really no reason to lazyload anymore...
+        _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
+    }
+
+    NSDictionary *dict = [self parseURI:[url absoluteString]];
+    NSString * addr = [dict objectForKey:@"address"];
+    NSString * amount = [dict objectForKey:@"amount"];
+    
+    [_sendViewController setAmountFromUrlHandler:amount withToAddress:addr];
+    [_sendViewController reload];
 
     return YES;
 }
@@ -1417,7 +1422,7 @@ BOOL showSendCoins = NO;
                 return [latestResponse.symbol_local.symbol stringByAppendingString:[self.localCurrencyFormatter stringFromNumber:number]];
             
         } @catch (NSException * e) {
-            DLog(@"%@", e);
+            DLog(@"Exception: %@", e);
         }
     } else if (latestResponse.symbol_btc) {
         NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];

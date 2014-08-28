@@ -64,6 +64,27 @@
 -(void)reload {
     self.fromAddresses = [app.wallet activeAddresses];
     
+    // Populate address field from URL handler if available.
+    if (self.initialToAddressString && toField != nil) {
+        self.toAddress = self.initialToAddressString;
+        DLog(@"toAddress: %@", self.toAddress);
+        
+        toField.text = [self labelForAddress:self.toAddress];
+        self.initialToAddressString = nil;
+    }
+    
+    // Populate amount field from URL handler if available
+    if (self.initialToAmountDouble > 0 && amountField != nil && app.latestResponse.symbol_btc) {
+        
+        double amountInSymbolBTC = (self.initialToAmountDouble / (double)app.latestResponse.symbol_btc.conversion);
+        
+        app.btcFormatter.usesGroupingSeparator = NO;
+        amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
+        app.btcFormatter.usesGroupingSeparator = YES;
+
+        self.initialToAmountDouble = 0;
+    }
+    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
         [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;
@@ -199,37 +220,20 @@
     }
 }
 
--(void)setToAddressFromUrlHandler:(NSString*)string {
-    self.toAddress = string;
-    DLog(@"toAddress: %@", self.toAddress);
-    toField.text = [self labelForAddress:self.toAddress];
-}
+-(void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)addressString {
 
--(void)setAmountFromUrlHandler:(NSString*)amountString {
-    
-    // Convert amountString to local currency
-    double amountDouble = 0.0;
-    double displayValue = 0.0;
+    // Set toAddress
+//    self.toAddress = addressString;
+//    DLog(@"toAddress: %@", self.toAddress);
+    self.initialToAddressString = addressString;
 
-    // Switch to local currency
+    // If we're in local currency, toggle to bitcoin since amount from URL is in BTC
     if (app->symbolLocal) {
+        DLog(@"Toggling to BTC");
         [app toggleSymbol];
     }
 
-    // get decimal bitcoin value
-    if (app.latestResponse.symbol_btc) {
-        DLog(@"converting to symbol_btc");
-        displayValue = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
-    } else {
-        DLog(@"???");
-        displayValue = amountDouble;
-    }
-    
-    
-    amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:displayValue]];
-
-    // Recalculate currencyConversionLabel (which is displayed in the keyboard accessory)
-    [self doCurrencyConversion];
+    self.initialToAmountDouble = [amountString doubleValue] * SATOSHI;
 }
 
 - (NSString *)labelForAddress:(NSString *)address {

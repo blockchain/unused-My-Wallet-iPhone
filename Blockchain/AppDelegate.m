@@ -49,14 +49,9 @@ BOOL showSendCoins = NO;
 -(id)init {
     if (self = [super init]) {
         self.btcFormatter = [[NSNumberFormatter alloc] init];
-        [_btcFormatter setMaximumFractionDigits:5];
+        [_btcFormatter setMaximumFractionDigits:8];
         [_btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-        self.btcFormatterFromURLs = [[NSNumberFormatter alloc] init];
-        [_btcFormatterFromURLs setMaximumFractionDigits:8];
-        [_btcFormatterFromURLs setNumberStyle:NSNumberFormatterDecimalStyle];
-        
-        
         self.localCurrencyFormatter = [[NSNumberFormatter alloc] init];
         [_localCurrencyFormatter setMinimumFractionDigits:2];
         [_localCurrencyFormatter setMaximumFractionDigits:2];

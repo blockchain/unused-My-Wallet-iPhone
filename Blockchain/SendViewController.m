@@ -78,9 +78,9 @@
         
         double amountInSymbolBTC = (self.initialToAmountDouble / (double)app.latestResponse.symbol_btc.conversion);
         
-        app.btcFormatterFromURLs.usesGroupingSeparator = NO;
-        amountField.text = [app.btcFormatterFromURLs stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
-        app.btcFormatterFromURLs.usesGroupingSeparator = YES;
+        app.btcFormatter.usesGroupingSeparator = NO;
+        amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
+        app.btcFormatter.usesGroupingSeparator = YES;
 
         // Popup kb so user can change value & see conversion
         [amountField becomeFirstResponder];
@@ -277,9 +277,9 @@
         if (app.latestResponse.symbol_btc) {
             double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
             
-            app.btcFormatterFromURLs.usesGroupingSeparator = NO;
-            amountString = [app.btcFormatterFromURLs stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
-            app.btcFormatterFromURLs.usesGroupingSeparator = YES;
+            app.btcFormatter.usesGroupingSeparator = NO;
+            amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
+            app.btcFormatter.usesGroupingSeparator = YES;
         }
         
         amountField.text = amountString;

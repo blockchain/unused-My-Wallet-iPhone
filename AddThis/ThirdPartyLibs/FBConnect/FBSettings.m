@@ -93,10 +93,10 @@ static dispatch_once_t g_publishInstallOnceToken;
         NSString *attributionID = [[UIPasteboard pasteboardWithName:FBAttributionPasteboard create:NO] string];
   
         NSString *advertiserID = nil;
-        if ([ASIdentifierManager class]) {
-            ASIdentifierManager *manager = [ASIdentifierManager sharedManager];
-            advertiserID = [[manager advertisingIdentifier] UUIDString];
-        }
+//        if ([ASIdentifierManager class]) {
+//            ASIdentifierManager *manager = [ASIdentifierManager sharedManager];
+//            advertiserID = [[manager advertisingIdentifier] UUIDString];
+//        }
   
         if ((attributionID || advertiserID) && !lastPing) {
             FBRequestHandler publishCompletionBlock = ^(FBRequestConnection *connection,

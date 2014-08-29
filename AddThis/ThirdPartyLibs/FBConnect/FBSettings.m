@@ -19,7 +19,7 @@
 #import "FBSettings.h"
 #import "FBSettings+Internal.h"
 
-#import <AdSupport/AdSupport.h>
+//#import <AdSupport/AdSupport.h>
 #import <UIKit/UIKit.h>
 
 NSString *const FBLoggingBehaviorFBRequests = @"fb_requests";

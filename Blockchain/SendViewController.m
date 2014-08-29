@@ -119,8 +119,12 @@
 -(void)reallyDoPayment {
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
-    NSString * to = self.toAddress;
+    NSString * to   = self.toAddress;
     NSString * from = self.selectedAddress;
+    
+    DLog(@"Sending uint64_t %llu Satoshi (String value: %@)", satoshiValue, [[NSNumber numberWithLongLong:satoshiValue] stringValue]);
+    DLog(@"From: %@", self.selectedAddress);
+    DLog(@"To: %@", self.toAddress);
     
     transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
     

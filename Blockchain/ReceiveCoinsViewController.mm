@@ -257,8 +257,30 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 -(IBAction)copyAddressClicked:(id)sender {
     NSString * addr = self.clickedAddress;
 
-    [app standardNotify:[NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr]  title:BC_STRING_SUCCESS delegate:nil];
+    UIView *v = (UIView *)sender;
+    
+    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240, 40)];
+    [[v superview] addSubview:l];
+    
+    l.textAlignment = NSTextAlignmentCenter;
+    [l setFont:[UIFont systemFontOfSize:12.0f]];
+    l.numberOfLines = 2;
+    l.minimumScaleFactor = .3f;
+    l.adjustsFontSizeToFitWidth = YES;
+    l.center = CGPointMake(v.center.x, v.center.y + 40);
+    l.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
 
+    l.alpha = 0;
+    [UIView animateWithDuration:.1f animations:^{
+        l.alpha = 1;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:5.0f animations:^{
+            l.alpha = 0;
+        } completion:^(BOOL finished) {
+            [l removeFromSuperview];
+        }];
+    }];
+    
     [UIPasteboard generalPasteboard].string = addr;
 }
 

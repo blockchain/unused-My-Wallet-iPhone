@@ -49,7 +49,7 @@ BOOL showSendCoins = NO;
 -(id)init {
     if (self = [super init]) {
         self.btcFormatter = [[NSNumberFormatter alloc] init];
-        [_btcFormatter setMaximumFractionDigits:5];
+        [_btcFormatter setMaximumFractionDigits:8];
         [_btcFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
         self.localCurrencyFormatter = [[NSNumberFormatter alloc] init];

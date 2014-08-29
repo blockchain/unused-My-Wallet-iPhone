@@ -89,9 +89,9 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
 
-    app.btcFormatter.usesGroupingSeparator = NO;
-    NSString *amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]];
-    app.btcFormatter.usesGroupingSeparator = YES;
+    app.btcFormatterFromURLs.usesGroupingSeparator = NO;
+    NSString *amountString = [app.btcFormatterFromURLs stringFromNumber:[NSNumber numberWithDouble:amount]];
+    app.btcFormatterFromURLs.usesGroupingSeparator = YES;
 
     amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
 

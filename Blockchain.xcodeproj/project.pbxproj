@@ -834,9 +834,9 @@
 		9FDAEF761514EB5200E92C90 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
-		C91C5EE819C07DFF0007D988 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ModalView.xib; sourceTree = "<group>"; };
-		C91C5F0D19C07EE50007D988 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AccountViewController.xib; sourceTree = "<group>"; };
-		C91C5F0F19C07F510007D988 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MerchantMap.xib; sourceTree = "<group>"; };
+		C91C5F1019C083970007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AccountViewController.xib; sourceTree = "<group>"; };
+		C91C5F1119C0840E0007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ModalView.xib; sourceTree = "<group>"; };
+		C91C5F1219C0841A0007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MerchantMap.xib; sourceTree = "<group>"; };
 		C92F761519803346007916F7 /* icon_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512.png; sourceTree = "<group>"; };
 		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
 		C9BE91681945D8F600FD516D /* PENumpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENumpadView.m; sourceTree = "<group>"; };
@@ -2108,7 +2108,7 @@
 		220E375619A3612F00E06996 /* ModalView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C91C5EE819C07DFF0007D988 /* en */,
+				C91C5F1119C0840E0007D988 /* Base */,
 			);
 			name = ModalView.xib;
 			sourceTree = "<group>";
@@ -2157,7 +2157,7 @@
 		220E375C19A3613D00E06996 /* AccountViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C91C5F0D19C07EE50007D988 /* en */,
+				C91C5F1019C083970007D988 /* Base */,
 			);
 			name = AccountViewController.xib;
 			sourceTree = "<group>";
@@ -2247,7 +2247,7 @@
 		220E376519A3615400E06996 /* MerchantMap.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C91C5F0F19C07F510007D988 /* en */,
+				C91C5F1219C0841A0007D988 /* Base */,
 			);
 			name = MerchantMap.xib;
 			sourceTree = "<group>";

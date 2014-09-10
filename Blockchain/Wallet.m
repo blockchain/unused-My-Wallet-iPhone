@@ -13,6 +13,7 @@
 #import "MultiAddressResponse.h"
 #import "UncaughtExceptionHandler.h"
 #import "NSString+JSONParser_NSString.h"
+#import "NSString+NSString_EscapeQuotes.h"
 #import "crypto_scrypt.h"
 #import "NSData+Hex.h"
 
@@ -876,11 +877,11 @@
 }
 
 -(NSString*)encrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations {
-    return [self.webView executeJSSynchronous:@"MyWallet.encrypt(\"%@\", \"%@\", %d)", data, _password, pbkdf2_iterations];
+    return [self.webView executeJSSynchronous:@"MyWallet.encrypt(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
 }
 
 -(NSString*)decrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations {
-    return [self.webView executeJSSynchronous:@"MyWalletPhone.decrypt(\"%@\", \"%@\", %d)", data, _password, pbkdf2_iterations];
+    return [self.webView executeJSSynchronous:@"MyWalletPhone.decrypt(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
 }
 
 @end

@@ -27,7 +27,7 @@
 "368.text" = "3";
 
 /* Class = "IBUILabel"; text = "Click 'Show Pairing Code' to reveal a QR Code (a square black & white barcode). Scan the code with your camera."; ObjectID = "369"; */
-"369.text" = "Haga clic en" Mostrar código de emparejamiento "para revelar un código QR ​​(un código de barras en blanco y negro cuadrado) Escanear el código con la cámara.";
+"369.text" = "Haga clic en Mostrar código de emparejamiento para revelar un código QR ​​(un código de barras en blanco y negro cuadrado) Escanear el código con la cámara.";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Pairing Code"; ObjectID = "370"; */
 "370.normalTitle" = "Escanear código de emparejamiento";

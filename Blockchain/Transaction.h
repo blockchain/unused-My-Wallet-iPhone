@@ -19,7 +19,7 @@
 
 +(Transaction*)fromJSONDict:(NSDictionary*)dict;
 
-@property(nonatomic, strong) NSString * hash;
+@property(nonatomic, strong) NSString * myHash;
 @property(nonatomic, strong) NSArray * inputs;
 @property(nonatomic, strong) NSArray * outputs;
 @property(nonatomic, assign) uint32_t size;

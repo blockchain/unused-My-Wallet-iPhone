@@ -137,7 +137,9 @@ function JSBridgeObj_SendObject(success, error)
         error : error
     };
 
-    window.location.href = "JSBridge://ReadNotificationWithId=" + Object.keys(JSBridge_pendingObjIDs).join(',');
+    // iOS 8 does not load new URI if the scheme is not known, so the original way of doing this does not work anymore
+    // window.location.href = "JSBridge://ReadNotificationWithId=" + Object.keys(JSBridge_pendingObjIDs).join(',');
+    window.location.href = "http://jsbridge-fake-address-for-obj-c-callbacks.com/ReadNotificationWithId=" + Object.keys(JSBridge_pendingObjIDs).join(',');
 
     JSBridge_objCount++;
 }

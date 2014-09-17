@@ -26,7 +26,7 @@
 
 
 -(IBAction)transactionHashClicked:(UIButton *)button {
-    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.hash]];
+    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
 }
 
 -(void)reload {   

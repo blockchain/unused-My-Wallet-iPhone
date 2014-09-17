@@ -188,7 +188,7 @@
 	NSArray* array = nil;
 	
 	// Checks if the URL means a JS notification.
-	if ([strUrl hasPrefix:@"JSBridge://ReadNotificationWithId="]) {
+	if ([strUrl hasPrefix:@"http://jsbridge-fake-address-for-obj-c-callbacks.com/ReadNotificationWithId="]) {
 		
 		NSRange range = [strUrl rangeOfString:@"="];
 		

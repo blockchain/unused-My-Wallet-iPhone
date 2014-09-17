@@ -39,8 +39,6 @@
 @property(nonatomic, assign) uint32_t height;
 @property(nonatomic, assign) uint64_t time;
 
-@property(nonatomic, strong) NSString * hash;
-
 @end
 
 @interface MulitAddressResponse : NSObject

@@ -79,7 +79,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    DLog(@"dlocationManager idFailWithError: %@", error);
+    DLog(@"locationManager didFailWithError: %@", error);
 
     [self displayError:[error description]];
     
@@ -218,6 +218,11 @@
     
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    // For iOS 8 we need to request authorization to get access to the user's location
+    if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [locationManager requestWhenInUseAuthorization];
+    }
     
     [locationManager startUpdatingLocation];
 }

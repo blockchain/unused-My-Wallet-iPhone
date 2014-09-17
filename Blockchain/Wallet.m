@@ -389,7 +389,6 @@
     
     LatestBlock * latestBlock = [[LatestBlock alloc] init];
     
-    latestBlock.hash = [dict objectForKey:@"hash"];
     latestBlock.height = [[dict objectForKey:@"height"] intValue];
     latestBlock.time = [[dict objectForKey:@"time"] longLongValue];
     latestBlock.blockIndex = [[dict objectForKey:@"block_index"] intValue];

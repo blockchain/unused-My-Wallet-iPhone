@@ -38,7 +38,6 @@
 @end
 
 @implementation LatestBlock
-@synthesize hash;
 @synthesize blockIndex;
 @synthesize height;
 @synthesize time;

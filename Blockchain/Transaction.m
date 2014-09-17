@@ -19,7 +19,7 @@
     Transaction * transaction = [[Transaction alloc] init];
     transaction.inputs = [[NSMutableArray alloc] init];
     transaction.outputs = [[NSMutableArray alloc] init];
-    transaction.hash = [transactionDict objectForKey:@"hash"];
+    transaction.myHash = [transactionDict objectForKey:@"hash"];
     transaction.size = [[transactionDict objectForKey:@"size"] intValue];
     transaction.tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
     

@@ -1,4 +1,3 @@
-
 /* Class = "IBUILabel"; text = "0 BTC"; ObjectID = "257"; */
 "257.text" = "0 BTC";
 
@@ -105,19 +104,20 @@
 "OKS-md-gDQ.normalTitle" = "Button 3";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "TzC-Tw-04r"; */
-"TzC-Tw-04r.normalTitle" = "Continue";
+"TzC-Tw-04r.normalTitle" = "继续";
 
 /* Class = "IBUILabel"; text = "Email:"; ObjectID = "VcH-wh-BEs"; */
-"VcH-wh-BEs.text" = "Email:";
+"VcH-wh-BEs.text" = "电子邮件：";
 
 /* Class = "IBUILabel"; text = "* required for wallet backups"; ObjectID = "jUZ-5W-4qw"; */
-"jUZ-5W-4qw.text" = "* required for wallet backups";
+"jUZ-5W-4qw.text" = "为钱包备份的要求 ；";
 
 /* Class = "IBUILabel"; text = "0 Transactions"; ObjectID = "kK3-Xs-d3Q"; */
-"kK3-Xs-d3Q.text" = "0 Transactions";
+"kK3-Xs-d3Q.text" = "0 交易";
 
 /* Class = "IBUILabel"; text = "Manual Pairing"; ObjectID = "qIf-DM-Gtq"; */
-"qIf-DM-Gtq.text" = "Manual Pairing";
+"qIf-DM-Gtq.text" = "手动配对";
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
-"wvh-x7-hB8.text" = "* minimum 10 characters";
+"wvh-x7-hB8.text" = "* 最低 10 个字符";
+

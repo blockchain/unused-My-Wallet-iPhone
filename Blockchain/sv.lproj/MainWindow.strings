@@ -1,123 +1,123 @@
-
 /* Class = "IBUILabel"; text = "0 BTC"; ObjectID = "257"; */
 "257.text" = "0 BTC";
 
 /* Class = "IBUILabel"; text = "loading"; ObjectID = "263"; */
-"263.text" = "loading";
+"263.text" = "laddar";
 
 /* Class = "IBUILabel"; text = "Automatic Pairing"; ObjectID = "353"; */
-"353.text" = "Automatic Pairing";
+"353.text" = "Automatisk Parning";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Create Wallet";
+"358.text" = "Skapa Plånbok";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";
 
 /* Class = "IBUILabel"; text = "Login to your Blockchain Wallet via your PC or Mac at http://blockchain.info/wallet"; ObjectID = "361"; */
-"361.text" = "Login to your Blockchain Wallet via your PC or Mac at http://blockchain.info/wallet";
+"361.text" = "Logga in på ditt Blockchain Plånbok via din PC eller Mac http://blockchain.info/wallet";
 
 /* Class = "IBUILabel"; text = "2"; ObjectID = "363"; */
 "363.text" = "2";
 
 /* Class = "IBUILabel"; text = "Click the [Account Settings] button. Then choose the [Devices] tab."; ObjectID = "364"; */
-"364.text" = "Click the [Account Settings] button. Then choose the [Devices] tab.";
+"364.text" = "Klicka på [Account Settings] - knappen. Välj sedan fliken [Enheter].";
 
 /* Class = "IBUILabel"; text = "3"; ObjectID = "368"; */
 "368.text" = "3";
 
 /* Class = "IBUILabel"; text = "Click 'Show Pairing Code' to reveal a QR Code (a square black & white barcode). Scan the code with your camera."; ObjectID = "369"; */
-"369.text" = "Click 'Show Pairing Code' to reveal a QR Code (a square black & white barcode). Scan the code with your camera.";
+"369.text" = "Klicka på \" Visa länkningskod \" för att avslöja en QR-Kod (en kvadrat svart & vit streckkod). Skanna koden med din kamera.";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Pairing Code"; ObjectID = "370"; */
-"370.normalTitle" = "Scan Pairing Code";
+"370.normalTitle" = "Skanna Länkningskod";
 
 /* Class = "IBUIButton"; normalTitle = "Button 2"; ObjectID = "376"; */
-"376.normalTitle" = "Button 2";
+"376.normalTitle" = "Knapp 2";
 
 /* Class = "IBUIButton"; normalTitle = "Button 1"; ObjectID = "377"; */
-"377.normalTitle" = "Button 1";
+"377.normalTitle" = "Knapp 1";
 
 /* Class = "IBUILabel"; text = "If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required."; ObjectID = "378"; */
-"378.text" = "If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.";
+"378.text" = "Om du redan har en Blockchain Plånbok, välj koppla ihop Enheten, annars väljer du Skapa Plånbok. Det är Gratis! Ingen e-post krävs.";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
-"380.text" = "Welcome to Blockchain Wallet";
+"380.text" = "Välkommen till Blockchain Plånbok";
 
 /* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "Transactions";
+"386.text" = "Transaktioner";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
-"387.text" = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection.";
+"387.text" = "Välkommen till Blockchain Plånbok. Den här skärmen visar din transaktioner. Om du redan har gjort transaktioner med denna plånbok, det kan ha varit ett misstag kontakta vår server. Vänligen se till att ditt konto är korrekt installation och du har en aktiv internet-anslutning.";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "394"; */
-"394.text" = "Password:";
+"394.text" = "Lösenord:";
 
 /* Class = "IBUILabel"; text = "Confirm:"; ObjectID = "396"; */
-"396.text" = "Confirm:";
+"396.text" = "Bekräfta:";
 
 /* Class = "IBUIButton"; normalTitle = "Create Wallet"; ObjectID = "398"; */
-"398.normalTitle" = "Create Wallet";
+"398.normalTitle" = "Skapa Plånbok";
 
 /* Class = "IBUILabel"; text = "Password Required"; ObjectID = "465"; */
-"465.text" = "Password Required";
+"465.text" = "Lösenord Krävs";
 
 /* Class = "IBUILabel"; text = "Password Request Description"; ObjectID = "467"; */
-"467.text" = "Password Request Description";
+"467.text" = "Lösenord Begäran Beskrivning";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "468"; */
-"468.text" = "Password:";
+"468.text" = "Lösenord:";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "471"; */
-"471.normalTitle" = "Continue";
+"471.normalTitle" = "Fortsätt";
 
 /* Class = "IBUILabel"; text = "Wallet Identifier:"; ObjectID = "586"; */
-"586.text" = "Wallet Identifier:";
+"586.text" = "Plånbok Identifierare:";
 
 /* Class = "IBUILabel"; text = "You have chosen to pair manually (or automatic pairing is not supported with your device). Please enter your login details below."; ObjectID = "588"; */
-"588.text" = "You have chosen to pair manually (or automatic pairing is not supported with your device). Please enter your login details below.";
+"588.text" = "Du har valt att koppla ihop manuellt (eller automatisk hopkoppling stöds inte med din enhet). Vänligen fyll i dina inloggningsuppgifter nedan.";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "591"; */
-"591.text" = "Password:";
+"591.text" = "Lösenord:";
 
 /* Class = "IBUILabel"; text = "You must have two-factor authentication disabled to pair manually!"; ObjectID = "602"; */
-"602.text" = "You must have two-factor authentication disabled to pair manually!";
+"602.text" = "Du måste ha två-faktor autentisering är inaktiverat för att koppla ihop manuellt!";
 
 /* Class = "IBUILabel"; text = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login."; ObjectID = "624"; */
-"624.text" = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login.";
+"624.text" = "Du har loggat ut eller var det ett misstag att dekryptera din plånbok fil. Ange ditt lösenord nedan för att logga in.";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "625"; */
-"625.normalTitle" = "Continue";
+"625.normalTitle" = "Fortsätt";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "627"; */
-"627.text" = "Password:";
+"627.text" = "Lösenord:";
 
 /* Class = "IBUILabel"; text = "Login"; ObjectID = "630"; */
-"630.text" = "Login";
+"630.text" = "Logga in";
 
 /* Class = "IBUIButton"; normalTitle = "Forget Wallet"; ObjectID = "5gL-FG-Zcc"; */
-"5gL-FG-Zcc.normalTitle" = "Forget Wallet";
+"5gL-FG-Zcc.normalTitle" = "Glömma Plånboken";
 
 /* Class = "IBUILabel"; text = "If you would like to forget this wallet and start over, press 'Forget Wallet'."; ObjectID = "C0R-wB-wF1"; */
-"C0R-wB-wF1.text" = "If you would like to forget this wallet and start over, press 'Forget Wallet'.";
+"C0R-wB-wF1.text" = "Om du skulle vilja glömma den här plånboken och börja om, tryck på \" Glömt Plånboken'.";
 
 /* Class = "IBUIButton"; normalTitle = "Button 3"; ObjectID = "OKS-md-gDQ"; */
-"OKS-md-gDQ.normalTitle" = "Button 3";
+"OKS-md-gDQ.normalTitle" = "Knapp 3";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "TzC-Tw-04r"; */
-"TzC-Tw-04r.normalTitle" = "Continue";
+"TzC-Tw-04r.normalTitle" = "Fortsätt";
 
 /* Class = "IBUILabel"; text = "Email:"; ObjectID = "VcH-wh-BEs"; */
-"VcH-wh-BEs.text" = "Email:";
+"VcH-wh-BEs.text" = "E-post:";
 
 /* Class = "IBUILabel"; text = "* required for wallet backups"; ObjectID = "jUZ-5W-4qw"; */
-"jUZ-5W-4qw.text" = "* required for wallet backups";
+"jUZ-5W-4qw.text" = "* krävs för plånboken säkerhetskopior";
 
 /* Class = "IBUILabel"; text = "0 Transactions"; ObjectID = "kK3-Xs-d3Q"; */
-"kK3-Xs-d3Q.text" = "0 Transactions";
+"kK3-Xs-d3Q.text" = "0 Transaktioner";
 
 /* Class = "IBUILabel"; text = "Manual Pairing"; ObjectID = "qIf-DM-Gtq"; */
-"qIf-DM-Gtq.text" = "Manual Pairing";
+"qIf-DM-Gtq.text" = "Manuell Parning";
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
-"wvh-x7-hB8.text" = "* minimum 10 characters";
+"wvh-x7-hB8.text" = "* minst 10 tecken";
+

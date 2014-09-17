@@ -1,4 +1,3 @@
-
 /* Class = "IBUIButton"; normalTitle = "Send Payment"; ObjectID = "4"; */
 "4.normalTitle" = "Send Payment";
 
@@ -43,3 +42,4 @@
 
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
 "aKC-Q2-phD.text" = "Sending Payment";
+

@@ -46,7 +46,8 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Lifecycle
 
--(id)init {
+- (id)init
+{
     if (self = [super init]) {
         self.btcFormatter = [[NSNumberFormatter alloc] init];
         [_btcFormatter setMaximumFractionDigits:8];
@@ -65,53 +66,43 @@ BOOL showSendCoins = NO;
     return self;
 }
 
-
-- (void)installUncaughtExceptionHandler
-{
-	InstallUncaughtExceptionHandler();
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    //Allocate the global wallet
+    // Allocate the global wallet
     self.wallet = [[Wallet alloc] init];
-    
     self.wallet.delegate = self;
     
-    [self performSelector:@selector(installUncaughtExceptionHandler) withObject:nil afterDelay:0];
+    // Send email when exceptions are caught
+    NSSetUncaughtExceptionHandler(&HandleException);
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
-        
         self.loadingText = [notification object];
     }];
     
-    // Override point for customization after application launch.
     _window.backgroundColor = [UIColor whiteColor];
-    
     [_window makeKeyAndVisible];
-    
     [_window setRootViewController:_tabViewController];
-    
     [_tabViewController setActiveViewController:_transactionsViewController];
-
     [_window.rootViewController.view addSubview:busyView];
     
     busyView.frame = _window.frame;
     busyView.alpha = 0.0f;
     
     [self showWelcome:FALSE];
+    
+    return TRUE;
+}
 
-    //If either of this is nil we are not properyl paired
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // If either of this is nil we are not properyl paired
     if ([self guid] && [self sharedKey]) {
-        //We are properly paired here
-        //If the PIN is set show the entry modal
+        // We are properly paired here
+        // If the PIN is set show the entry modal
         if ([self isPINSet]) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self showPinModal];
-            });
+            [self showPinModal];
         } else {
-            //No PIN set we need to ask for the main password
+            // No PIN set we need to ask for the main password
             [self showMainPasswordModalOrWelcomeMenu];
         }
         
@@ -137,8 +128,6 @@ BOOL showSendCoins = NO;
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
         }
     }
-
-    return TRUE;
 }
 
 - (void)transitionToIndex:(NSInteger)newIndex

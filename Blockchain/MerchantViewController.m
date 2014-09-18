@@ -77,11 +77,33 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    DLog(@"locationManager didFailWithError: %@", error);
-
-    [self displayError:[error description]];
+    DLog(@"LocationManager: didFailWithError: %@", [error description]);
+    
+    switch ([error code]) {
+        case kCLErrorLocationUnknown:{
+            DLog(@"LocationManager: location unknown.");
+            // This also happens in airplane mode
+        }
+            break;
+        case kCLErrorNetwork:{
+            DLog(@"LocationManager: network error.");
+            // This is the usual airplane mode/no connection error
+        }
+            break;
+            
+        case kCLErrorDenied:{
+            DLog(@"LocationManager: denied.");
+            // The user has denied location access
+        }
+            break;
+            
+        default:{
+            DLog(@"LocationManager: unknown location error.");
+        }
+            break;
+    }
     
     //Default to London
     [self setLocation:51.5072f long:0.1275f];

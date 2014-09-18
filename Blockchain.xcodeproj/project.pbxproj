@@ -90,6 +90,7 @@
 		2245F727198C1C640075B19F /* DropDownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F721198C1C640075B19F /* DropDownListView.m */; };
 		2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F723198C1C640075B19F /* DropDownViewCell.m */; };
 		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
+		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC551987A61C000E8DC8 /* 172-pricetag.png */; };
@@ -610,6 +611,7 @@
 		2245F722198C1C640075B19F /* DropDownViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownViewCell.h; sourceTree = "<group>"; };
 		2245F723198C1C640075B19F /* DropDownViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownViewCell.m; sourceTree = "<group>"; };
 		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
+		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -1240,6 +1242,7 @@
 		9F765EDC14BBBEC400048EFB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				67C6703F19CAF558004BD8FC /* bluedot.png */,
 				22D41D9819A7604300C9E1F4 /* sms.png */,
 				84AEEC871987D9C7000E8DC8 /* marker_atm@2x.png */,
 				84AEEC881987D9C7000E8DC8 /* marker_cafe@2x.png */,
@@ -1781,6 +1784,7 @@
 				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
 				84F4BE17197FB78D00B7BF7B /* receive-money@2x.png in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
+				67C6704019CAF558004BD8FC /* bluedot.png in Resources */,
 				2245F726198C1C640075B19F /* drop_down@2x.png in Resources */,
 				ECE9A9901959968F00255292 /* camera-icon.png in Resources */,
 				ECD244F119A8AC45004B1F40 /* PEKeyboard-4-dot.png in Resources */,

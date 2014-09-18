@@ -11,7 +11,6 @@ cd Submodules/My-Wallet
 git checkout master
 cd ../OpenSSL-for-iPhone  
 git checkout master
-sed -i -e 's/7\.1/8\.0/g' build-libssl.sh
 ./build-libssl.sh
 
 # open the project in xcode

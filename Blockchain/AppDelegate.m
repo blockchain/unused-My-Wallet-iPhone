@@ -90,11 +90,6 @@ BOOL showSendCoins = NO;
     
     [self showWelcome:FALSE];
     
-    return TRUE;
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
     // If either of this is nil we are not properyl paired
     if ([self guid] && [self sharedKey]) {
         // We are properly paired here
@@ -128,6 +123,8 @@ BOOL showSendCoins = NO;
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
         }
     }
+    
+    return TRUE;
 }
 
 - (void)transitionToIndex:(NSInteger)newIndex
@@ -162,12 +159,12 @@ BOOL showSendCoins = NO;
     }
 }
 
--(IBAction)balanceTextClicked:(id)sender {
+- (IBAction)balanceTextClicked:(id)sender {
     [self toggleSymbol];
 }
 
 #pragma mark - UI State
--(void)toggleSymbol {
+- (void)toggleSymbol {
     symbolLocal = !symbolLocal;
     
     [_transactionsViewController reload];
@@ -177,7 +174,7 @@ BOOL showSendCoins = NO;
 
 
 
--(void)setDisableBusyView:(BOOL)__disableBusyView {
+- (void)setDisableBusyView:(BOOL)__disableBusyView {
     _disableBusyView = __disableBusyView;
     
     if (_disableBusyView) {
@@ -189,16 +186,16 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)didWalletDecryptStart {
+- (void)didWalletDecryptStart {
     [self networkActivityStart];
 }
 
--(void)didWalletDecryptFinish {
+- (void)didWalletDecryptFinish {
     [self networkActivityStop];
 }
 
 
--(void)networkActivityStart {
+- (void)networkActivityStart {
     [busyView fadeIn];
 
     [powerButton setEnabled:FALSE];
@@ -210,7 +207,7 @@ BOOL showSendCoins = NO;
     [self setStatus];
 }
 
--(void)networkActivityStop {
+- (void)networkActivityStop {
     [powerButton setEnabled:TRUE];
 
     [busyView fadeOut];
@@ -220,7 +217,7 @@ BOOL showSendCoins = NO;
     [self setStatus];
 }
 
--(void)setStatus {
+- (void)setStatus {
     if ([app.wallet getWebsocketReadyState] != 1) {
         [powerButton setHighlighted:TRUE];
     } else {
@@ -250,13 +247,13 @@ BOOL showSendCoins = NO;
     });
 }
 
--(void)walletDidLoad {
+- (void)walletDidLoad {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self endBackgroundUpdateTask];
     });
 }
 
--(void)walletFailedToLoad {
+- (void)walletFailedToLoad {
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //If the PIN View controller is visible don't dislay the error yet
@@ -294,7 +291,7 @@ BOOL showSendCoins = NO;
     });
 }
 
--(void)walletDidDecrypt {
+- (void)walletDidDecrypt {
     DLog(@"walletDidDecrypt");
     
     if (showSendCoins) {
@@ -324,7 +321,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
+- (void)didGetMultiAddressResponse:(MulitAddressResponse*)response {
     self.latestResponse = response;
 
     _transactionsViewController.data = response;
@@ -334,22 +331,22 @@ BOOL showSendCoins = NO;
     [_sendViewController reload];
 }
 
--(void)didSetLatestBlock:(LatestBlock*)block {
+- (void)didSetLatestBlock:(LatestBlock*)block {
     _transactionsViewController.latestBlock = block;
 }
 
--(void)walletFailedToDecrypt {
+- (void)walletFailedToDecrypt {
     [self showMainPasswordModalOrWelcomeMenu];
 }
 
--(void)showMainPasswordModalOrWelcomeMenu {
-    
-    if ([self guid]) {        
+- (void)showMainPasswordModalOrWelcomeMenu
+{
+    if ([self guid]) {
         [self showModal:mainPasswordView isClosable:FALSE];
         
         [mainPasswordTextField becomeFirstResponder];
     } else {
-        //Called when bad password is entered when maually pairing
+        // Called when bad password is entered when manually pairing
         [app showWelcome];
     }
 }
@@ -395,7 +392,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)playBeepSound {
+- (void)playBeepSound {
 	if (beepSoundID == 0) {
 		AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"]], &beepSoundID);
 	}
@@ -403,7 +400,7 @@ BOOL showSendCoins = NO;
 	AudioServicesPlaySystemSound(beepSoundID);		
 }
 
--(void)playAlertSound {
+- (void)playAlertSound {
     
 	if (alertSoundID == 0) {
 		//Find the Alert Sound
@@ -418,7 +415,7 @@ BOOL showSendCoins = NO;
 
 
 // Only gets called when displaying a transaction hash
--(void)pushWebViewController:(NSString*)url {
+- (void)pushWebViewController:(NSString*)url {
     self.webViewController = [[WebViewController alloc] init];
     
     [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
@@ -442,7 +439,7 @@ BOOL showSendCoins = NO;
     return dict;
 }
 
--(NSDictionary*)parseURI:(NSString*)urlString {
+- (NSDictionary*)parseURI:(NSString*)urlString {
     
     if (![urlString hasPrefix:@"bitcoin:"]) {
         return [NSDictionary dictionaryWithObject:urlString forKey:@"address"];
@@ -488,7 +485,7 @@ BOOL showSendCoins = NO;
     return YES;
 }
 
--(void)getPrivateKeyPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
+- (void)getPrivateKeyPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
     
     validateSecondPassword = FALSE;
     
@@ -509,7 +506,7 @@ BOOL showSendCoins = NO;
     [secondPasswordTextField becomeFirstResponder];
 }
 
--(IBAction)secondPasswordClicked:(id)sender {
+- (IBAction)secondPasswordClicked:(id)sender {
     NSString * password = secondPasswordTextField.text;
     
     if (!validateSecondPassword || [wallet validateSecondPassword:password]) {
@@ -520,7 +517,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
+- (void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error {
     
     secondPasswordDescriptionLabel.text = BC_STRING_ACTION_REQUIRES_SECOND_PASSWORD;
     
@@ -544,7 +541,7 @@ BOOL showSendCoins = NO;
 }
 
 
--(void)closeAllModals {
+- (void)closeAllModals {
     [modalView removeFromSuperview];
     
     CATransition *animation = [CATransition animation];
@@ -577,7 +574,7 @@ BOOL showSendCoins = NO;
     [self.modalChain removeAllObjects];
 }
 
--(void)closeModal {
+- (void)closeModal {
     [modalView removeFromSuperview];
     
     CATransition *animation = [CATransition animation];
@@ -613,13 +610,13 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable {
+- (void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable {
     [self showModal:contentView isClosable:_isClosable onDismiss:nil onResume:nil];
 }
 
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
+- (void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
 
-    //This modal is already being displayed in another view
+    // This modal is already being displayed in another view
     if ([contentView superview]) {
         if (self.modalView.modalContentView == [contentView superview]) {
             if (self.modalView.onResume)
@@ -729,7 +726,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)didFailBackupWallet {
+- (void)didFailBackupWallet {
 
 #pragma mark why is this needed?
     [self networkActivityStop];
@@ -741,13 +738,13 @@ BOOL showSendCoins = NO;
     [self.wallet getWalletAndHistory];
 }
 
--(void)didBackupWallet {
+- (void)didBackupWallet {
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
 }
 
--(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey {
+- (void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey {
 
     if ([guid length] != 36) {
         [app standardNotify:BC_STRING_INVALID_GUID];
@@ -767,7 +764,7 @@ BOOL showSendCoins = NO;
     [app closeModal];
 }
 
--(BOOL)isZBarSupported {
+- (BOOL)isZBarSupported {
     NSUInteger platformType = [[UIDevice currentDevice] platformType];
     
     if (platformType ==  UIDeviceiPhoneSimulator || platformType ==  UIDeviceiPhoneSimulatoriPhone  || platformType ==  UIDeviceiPhoneSimulatoriPhone || platformType ==  UIDevice1GiPhone || platformType ==  UIDevice3GiPhone || platformType ==  UIDevice1GiPod || platformType ==  UIDevice2GiPod || ![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
@@ -777,7 +774,7 @@ BOOL showSendCoins = NO;
     return TRUE;
 }
 
--(IBAction)manualPairClicked:(id)sender {
+- (IBAction)manualPairClicked:(id)sender {
     
     NSString * guid = manualIdentifier.text;
     NSString * password = manualPassword.text;
@@ -797,7 +794,7 @@ BOOL showSendCoins = NO;
 }
 
 
--(IBAction)scanAccountQRCodeclicked:(id)sender {
+- (IBAction)scanAccountQRCodeclicked:(id)sender {
     
     if ([self isZBarSupported]) {
         PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] init];
@@ -828,7 +825,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
+- (void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ASK_FOR_PRIVATE_KEY_TITLE
                                             message:[NSString stringWithFormat:BC_STRING_ASK_FOR_PRIVATE_KEY_DETAIL, address]
                                            delegate:nil
@@ -848,7 +845,7 @@ BOOL showSendCoins = NO;
     [alert show];
 }
 
--(void)logout {
+- (void)logout {
     [self.wallet cancelTxSigning];
     
     [self.wallet loadBlankWallet];
@@ -865,7 +862,7 @@ BOOL showSendCoins = NO;
     [self transitionToIndex:0];
 }
 
--(void)forgetWallet {
+- (void)forgetWallet {
     
     [self clearPin];
     
@@ -893,7 +890,7 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Show Screens
 
--(void)showAccountSettings {
+- (void)showAccountSettings {
     if (!_accountViewController) {
         _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
     }
@@ -901,7 +898,7 @@ BOOL showSendCoins = NO;
     [_tabViewController setActiveViewController:_accountViewController];
 }
 
--(void)showMerchant {
+- (void)showMerchant {
     
     if (!_merchantViewController) {
         _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
@@ -910,7 +907,7 @@ BOOL showSendCoins = NO;
     [_tabViewController setActiveViewController:_merchantViewController  animated:TRUE index:3];
 }
 
--(void)showSendCoins {
+- (void)showSendCoins {
     
     if (!_sendViewController) {
         _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
@@ -919,49 +916,51 @@ BOOL showSendCoins = NO;
     [_tabViewController setActiveViewController:_sendViewController animated:TRUE index:2];
 }
 
--(void)clearPin {
+- (void)clearPin {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"encryptedPINPassword"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"passwordPartHash"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pinKey"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(BOOL)isPINSet {
+- (BOOL)isPINSet {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"pinKey"] != nil && [[NSUserDefaults standardUserDefaults] objectForKey:@"encryptedPINPassword"] != nil;
 }
 
--(void)closePINModal:(BOOL)animated
+- (void)closePINModal:(BOOL)animated
 {
-    [_tabViewController dismissViewControllerAnimated:animated completion:^{ }];
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        self.pinEntryViewController.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.pinEntryViewController.view removeFromSuperview];
+    }];
 }
 
 - (void)showPinModal
 {
     // if pin exists - verify
-    if ([self isPINSet])
-    {
+    if ([self isPINSet]) {
         self.pinEntryViewController = [PEPinEntryController pinVerifyController];
     }
     // no pin - create
-    else
-    {
+    else {
         self.pinEntryViewController = [PEPinEntryController pinCreateController];
     }
     
     self.pinEntryViewController.navigationBarHidden = YES;
     self.pinEntryViewController.pinDelegate = self;
     
-    [_window.rootViewController presentViewController:self.pinEntryViewController animated:NO completion:nil];
+    [_window.rootViewController.view addSubview:self.pinEntryViewController.view];
     
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 }
 
 // Modal menu
--(void)showWelcome {
+- (void)showWelcome {
     [self showWelcome:[self guid] && [self sharedKey]];
 }
 
--(void)showWelcome:(BOOL)isClosable {
+- (void)showWelcome:(BOOL)isClosable {
     [app showModal:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
         
         [welcomeButton3 setHidden:![self isPINSet]];
@@ -997,12 +996,12 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Actions
 
--(IBAction)powerClicked:(id)sender {
+- (IBAction)powerClicked:(id)sender {
     [self showWelcome];
 }
 
 
--(void)changePIN {
+- (void)changePIN {
     PEPinEntryController *c = [PEPinEntryController pinChangeController];
     c.pinDelegate = self;
     c.navigationBarHidden = YES;
@@ -1014,11 +1013,11 @@ BOOL showSendCoins = NO;
 }
 
 //Change PIN
--(IBAction)welcomeButton3Clicked:(id)sender {
+- (IBAction)welcomeButton3Clicked:(id)sender {
     [self changePIN];
 }
 
--(IBAction)welcomeButton1Clicked:(id)sender {
+- (IBAction)welcomeButton1Clicked:(id)sender {
     //Wallet is already paired
     if ([self guid] || [self sharedKey])  {
         [app closeModal];
@@ -1030,7 +1029,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)forgetWalletAlert:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
+- (void)forgetWalletAlert:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_WARNING
                                                     message:BC_STRING_FORGET_WALLET_DETAILS
                                                    delegate:self
@@ -1042,7 +1041,7 @@ BOOL showSendCoins = NO;
 
 }
 
--(IBAction)welcomeButton2Clicked:(id)sender {
+- (IBAction)welcomeButton2Clicked:(id)sender {
     // Logout
     if (self.wallet.password) {
         [self clearPin];
@@ -1097,12 +1096,12 @@ BOOL showSendCoins = NO;
 }
 
 
--(IBAction)forgetWalletClicked:(id)sender {
+- (IBAction)forgetWalletClicked:(id)sender {
     [self welcomeButton2Clicked:sender];
 }
 
 
--(IBAction)receiveCoinClicked:(UIButton *)sender {
+- (IBAction)receiveCoinClicked:(UIButton *)sender {
     if (!_receiveViewController) {
         _receiveViewController = [[ReceiveCoinsViewController alloc] initWithNibName:@"ReceiveCoins" bundle:[NSBundle mainBundle]];
     }
@@ -1110,23 +1109,23 @@ BOOL showSendCoins = NO;
     [_tabViewController setActiveViewController:_receiveViewController animated:TRUE index:1];
 }
 
--(IBAction)transactionsClicked:(UIButton *)sender {
+- (IBAction)transactionsClicked:(UIButton *)sender {
     [_tabViewController setActiveViewController:_transactionsViewController animated:TRUE index:0];
 }
 
--(IBAction)sendCoinsClicked:(UIButton *)sender {
+- (IBAction)sendCoinsClicked:(UIButton *)sender {
     [self showSendCoins];
 }
 
--(IBAction)merchantClicked:(UIButton *)sender {
+- (IBAction)merchantClicked:(UIButton *)sender {
     [self showMerchant];
 }
 
--(IBAction)accountSettingsClicked:(UIButton *)sender {
+- (IBAction)accountSettingsClicked:(UIButton *)sender {
     [self showAccountSettings];
 }
 
--(IBAction)mainPasswordClicked:(id)sender {
+- (IBAction)mainPasswordClicked:(id)sender {
 
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -1152,7 +1151,7 @@ BOOL showSendCoins = NO;
     [app closeModal];
 }
 
--(IBAction)refreshClicked:(id)sender {
+- (IBAction)refreshClicked:(id)sender {
     if (![self guid] || ![self sharedKey]) {
         [app showWelcome];
         return;
@@ -1171,11 +1170,11 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Accessors
 
--(NSString*)guid {
+- (NSString*)guid {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
 }
 
--(NSString*)sharedKey {
+- (NSString*)sharedKey {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
 }
 
@@ -1206,7 +1205,7 @@ BOOL showSendCoins = NO;
     self.pinViewControllerCallback = callback;
 }
 
--(void)askIfUserWantsToResetPIN {
+- (void)askIfUserWantsToResetPIN {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_PIN_VALIDATION_ERROR
                                                     message:BC_STRING_PIN_VALIDATION_ERROR_DETAIL
                                                    delegate:self
@@ -1228,13 +1227,13 @@ BOOL showSendCoins = NO;
 }
 
 
--(void)didFailGetPin:(NSString*)value {
+- (void)didFailGetPin:(NSString*)value {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
     
     [self askIfUserWantsToResetPIN];
 }
 
--(void)didGetPinSuccess:(NSDictionary*)dictionary {
+- (void)didGetPinSuccess:(NSDictionary*)dictionary {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
     
     NSNumber * code = [dictionary objectForKey:@"code"]; //This is a status code from the server
@@ -1299,7 +1298,7 @@ BOOL showSendCoins = NO;
     }
 }
 
--(void)didFailPutPin:(NSString*)value {
+- (void)didFailPutPin:(NSString*)value {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 
     [app standardNotify:value];
@@ -1307,7 +1306,7 @@ BOOL showSendCoins = NO;
     [self closePINModal:YES];
 }
 
--(void)didPutPinSuccess:(NSDictionary*)dictionary {
+- (void)didPutPinSuccess:(NSDictionary*)dictionary {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 
     if (!app.wallet.password) {
@@ -1393,7 +1392,7 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Format helpers
 
--(NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {
+- (NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal {
     if (fsymbolLocal && latestResponse.symbol_local.conversion) {
         @try {
             BOOL negative = false;
@@ -1428,7 +1427,7 @@ BOOL showSendCoins = NO;
     return [string stringByAppendingString:@" BTC"];
 }
 
--(NSString*)formatMoney:(uint64_t)value {
+- (NSString*)formatMoney:(uint64_t)value {
     return [self formatMoney:value localCurrency:symbolLocal];
 }
 

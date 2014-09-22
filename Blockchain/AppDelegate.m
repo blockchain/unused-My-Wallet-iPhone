@@ -354,12 +354,21 @@ BOOL showSendCoins = NO;
     self.backgroundUpdateTask = UIBackgroundTaskInvalid;
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Close all other modals and show pin modal before we close the app so the PIN modal gets shown in the list of running apps and immediately after we restart
     [app closeAllModals];
-
+    
     [self closePINModal:NO]; // Close PIN Modal in case we are setting it
+    
+    if ([self isPINSet]) {
+        [self showPinModal:YES];
+    }
+}
 
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     if ([wallet isInitialized]) {
         [self beginBackgroundUpdateTask];
 
@@ -367,10 +376,10 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // The PIN modal is shown on ResignActive, but we don't want to override the modal with the welcome screen
     if ([self isPINSet]) {
-        [self showPinModal:NO];
         return;
     }
     

@@ -1,4 +1,3 @@
-
 /* Class = "IBUILabel"; text = "0 BTC"; ObjectID = "257"; */
 "257.text" = "0 BTC";
 
@@ -121,3 +120,4 @@
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
 "wvh-x7-hB8.text" = "* minimum 10 characters";
+

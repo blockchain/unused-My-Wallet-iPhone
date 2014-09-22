@@ -355,12 +355,20 @@
 }
 
 -(NSDictionary*)addressBook {
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
     NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAddressBook())"];
     
     return [addressBookJSON getJSONObject];
 }
 
 -(void)addToAddressBook:(NSString*)address label:(NSString*)label {
+    if (![self.webView isLoaded]) {
+        return;
+    }
+    
     [self.webView executeJS:@"MyWalletPhone.addAddressBookEntry(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
 }
 
@@ -381,7 +389,6 @@
 -(void)log:(NSString*)message {
     DLog(@"console.log: %@", [message description]);
 }
-
 
 -(void)parseLatestBlockJSON:(NSString*)latestBlockJSON {
     

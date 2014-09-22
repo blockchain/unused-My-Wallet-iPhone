@@ -1226,7 +1226,6 @@ BOOL showSendCoins = NO;
         DLog(@"No Internet connection");
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR
-                              // XXX TODO need to finish localization - seems like there is no auto way to insert new strings into the different localized.strings versions - has to be manually inserted and then (later) translated in each file - YEAH
                                                         message:BC_STRING_NO_INTERNET_CONNECTION
                                                        delegate:nil
                                               cancelButtonTitle:BC_STRING_CLOSE_APP

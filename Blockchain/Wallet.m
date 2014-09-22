@@ -709,6 +709,11 @@
 }
 
 -(void)makeNotice:(NSString*)type id:(NSString*)_id message:(NSString*)message {
+    // This is kind of ugly. When the wallet fails to load, usually because of a connection problem, wallet.js throws two errors in the setGUID function and we only want to show one. This filters out the one we don't want to show.
+    if ([message isEqualToString:@"Error changing wallet identifier"]) {
+        return;
+    }
+    
     if ([type isEqualToString:@"error"]) {
         [app standardNotify:message title:BC_STRING_ERROR delegate:nil];
     } else if ([type isEqualToString:@"info"]) {
@@ -872,6 +877,16 @@
 }
 
 -(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin {
+    NSError * error = nil;
+    // wallet_pre.html is the offline wallet - it does not connect to the server on load
+    NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet_pre" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    
+    NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
+    
+    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${resource_url}" withString:[baseURL absoluteString]];
+    
+    [webView loadHTMLString:walletHTML baseURL:baseURL];
+    
     [self.webView executeJS:@"MyWalletPhone.apiGetPINValue(\"%@\", \"%@\")", key, pin];
 }
 

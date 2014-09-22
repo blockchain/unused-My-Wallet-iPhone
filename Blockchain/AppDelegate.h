@@ -51,12 +51,12 @@
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
-
+    
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet BCFadeView * busyView;
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
-
+    
     IBOutlet UIView * welcomeView;
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
@@ -74,7 +74,7 @@
     
     IBOutlet UIView * mainPasswordView;
     IBOutlet UITextField * mainPasswordTextField;
-
+    
     IBOutlet UIView * manualView;
     IBOutlet UITextField * manualIdentifier;
     IBOutlet UITextField * manualSharedKey;
@@ -185,7 +185,7 @@
 
 -(void)setStatus;
 -(void)clearPin;
--(void)showPinModal;
+- (void)showPinModal:(BOOL)asView;
 -(BOOL)isPINSet;
 
 @end

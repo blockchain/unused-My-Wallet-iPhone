@@ -106,7 +106,6 @@
     }
     
     // Default to London
-    // TODO XXX - this is quite a bit off compared to Google Maps locations
     [self setLocation:51.508663f long:-0.117380f];
 }
 

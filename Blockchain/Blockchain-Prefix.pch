@@ -27,5 +27,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
     #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
     #define DLog(format, ...)
+    // assert will not be included in release builds
+    #define NDEBUG 1
 #endif
 

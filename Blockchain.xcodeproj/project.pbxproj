@@ -91,6 +91,7 @@
 		2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F723198C1C640075B19F /* DropDownViewCell.m */; };
 		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
+		67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */ = {isa = PBXBuildFile; fileRef = 67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC571987A61C000E8DC8 /* 172-pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC551987A61C000E8DC8 /* 172-pricetag.png */; };
@@ -598,7 +599,6 @@
 		220ADB6E19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
 		220ADB6F19A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SendCoins.strings; sourceTree = "<group>"; };
 		220ADB7019A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainWindow.strings; sourceTree = "<group>"; };
-		220ADB7219A37B3700EB7599 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		220E375019A3604500E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ReceiveCoins.xib; sourceTree = "<group>"; };
 		220E375819A3613600E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddressBookView.xib; sourceTree = "<group>"; };
 		220E375E19A3614900E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SendCoins.xib; sourceTree = "<group>"; };
@@ -612,6 +612,7 @@
 		2245F723198C1C640075B19F /* DropDownViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownViewCell.m; sourceTree = "<group>"; };
 		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
+		67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet_pre.html; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -1178,6 +1179,7 @@
 			children = (
 				C9C17A8B197FCE1900BF8A4E /* My-Wallet */,
 				844BC7AF1949BD710024160B /* bridge.js */,
+				67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */,
 				9F0CBAAD15135DF200CD945D /* wallet.html */,
 				84AEEC631987B5E9000E8DC8 /* merchant.html */,
 			);
@@ -1868,6 +1870,7 @@
 				9F1740211514FAAE00CF1186 /* close-container.png in Resources */,
 				9F1740221514FAAE00CF1186 /* close-container@2x.png in Resources */,
 				84F4BE0B197FB4D700B7BF7B /* 573-money@2x.png in Resources */,
+				67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */,
 				9F1740261514FAB800CF1186 /* 31-circle-x.png in Resources */,
 				9F1740271514FAB800CF1186 /* 31-circle-x@2x.png in Resources */,
 				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
@@ -2063,7 +2066,6 @@
 				220ADB5A19A37A7600EB7599 /* id */,
 				220ADB6219A37A7A00EB7599 /* ms */,
 				220ADB6A19A37A7F00EB7599 /* vi */,
-				220ADB7219A37B3700EB7599 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

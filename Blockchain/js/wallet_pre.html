@@ -1,0 +1,121 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="UTF-8">
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="bitcoinjs.js"></script>
+<script type="text/javascript" src="shared.js"></script>
+<script type="text/javascript" src="bridge.js"></script>
+
+<script type="text/javascript">
+var MyWallet = {};
+
+MyWallet.getIsInitialized = function() {
+    return true;
+}
+
+var MyWalletPhone = {};
+var pendingTransactions = {};
+
+window.onerror = function(errorMsg, url, lineNumber) {
+    device.execute("jsUncaughtException:url:lineNumber:", [errorMsg, url, lineNumber]);
+}
+
+$(document).ajaxStart(function() {
+    device.execute('ajaxStart');
+}).ajaxStop(function() {
+    device.execute('ajaxStop');
+});
+
+console.log = function(message) {
+    device.execute("log:", [message]);
+}
+
+min = false;
+isExtension = true;
+APP_NAME = 'javascript_iphone_app';
+APP_VERSION = '0.1 BETA';
+root = "https://blockchain.info/";
+resource = '';
+
+//Hack to prevent JS Error
+function showLabelAddressModal() {}
+
+$(document).ready(function() {
+    MyWallet.logout = function() {}
+});
+
+MyWalletPhone.apiGetPINValue = function(key, pin) {
+    MyWallet.setLoadingText('Retreiving PIN Code');
+
+    $.ajax({
+        type: "POST",
+        url: root + 'pin-store',
+        timeout: 30000,
+        dataType: 'json',
+        data: {
+           format: 'json',
+           method: 'get',
+           pin : pin,
+           key : key
+       },
+       success: function (responseObject) {
+           device.execute('on_pin_code_get_response:', [responseObject])
+       },
+       error: function (res) {
+           if (!res || !res.responseText || res.responseText.length == 0) {
+                device.execute('on_error_pin_code_get_error:', ['Unknown Error']);
+           } else {
+                try {
+                    var responseObject = $.parseJSON(res.responseText);
+           
+                    if (!responseObject) {
+                        throw 'Response Object nil';
+                    }
+           
+                    device.execute('on_pin_code_get_response:', [responseObject])
+                } catch (e) {
+                    device.execute('on_error_pin_code_get_error:', [res.responseText]);
+                }
+           }
+       }
+    });
+}
+
+MyWalletPhone.getWsReadyState = function() {
+    if (!ws) return -1;
+    
+    return ws.readyState;
+}
+
+//Overrides
+MyWallet.setLoadingText = function(txt) {
+    device.execute('setLoadingText:', [txt]);
+}
+
+MyWallet.getPassword = function(modal, success, error) {
+    device.execute("getPassword:", [modal.selector], success, error);
+}
+
+MyWallet.makeNotice = function(type, _id, msg) {
+    device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
+}
+
+MyWallet.showNotification = function() { }
+
+MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
+    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
+}
+
+</script>
+
+<meta name="viewport" content="width=150px, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+
+</body>
+</html>

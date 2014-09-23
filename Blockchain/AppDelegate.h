@@ -185,7 +185,7 @@
 
 -(void)setStatus;
 -(void)clearPin;
-- (void)showPinModal:(BOOL)asView;
+- (void)showPinModalAsView:(BOOL)asView;
 -(BOOL)isPINSet;
 
 @end

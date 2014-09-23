@@ -96,7 +96,7 @@ BOOL showSendCoins = NO;
         // We are properly paired here
         // If the PIN is set show the entry modal
         if ([self isPINSet]) {
-            [self showPinModal:YES];
+            [self showPinModalAsView:YES];
         } else {
             // No PIN set we need to ask for the main password
             [self showMainPasswordModalOrWelcomeMenu];
@@ -307,7 +307,7 @@ BOOL showSendCoins = NO;
     }
     
     if (![app isPINSet]) {
-        [app showPinModal:NO];
+        [app showPinModalAsView:NO];
     }
 }
 
@@ -357,13 +357,20 @@ BOOL showSendCoins = NO;
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Close all other modals and show pin modal before we close the app so the PIN modal gets shown in the list of running apps and immediately after we restart
+    // Close all modals
     [app closeAllModals];
     
-    [self closePINModal:NO]; // Close PIN Modal in case we are setting it
+    // Close PIN Modal in case we are setting it (after login or when changing the PIN)
+    if (self.pinEntryViewController.verifyOnly == NO) {
+        [self closePINModal:NO];
+    }
     
+    // Show pin modal before we close the app so the PIN verify modal gets shown in the list of running apps and immediately after we restart
     if ([self isPINSet]) {
-        [self showPinModal:YES];
+        // Small delay so we don't change the view while it's zooming out
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showPinModalAsView:YES];
+        });
     }
 }
 
@@ -947,8 +954,14 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)showPinModal:(BOOL)asView
+- (void)showPinModalAsView:(BOOL)asView
 {
+    // Don't show a new one if we already show it
+    if ([self.pinEntryViewController.view isDescendantOfView:self.tabViewController.view] ||
+        ( _tabViewController.presentedViewController != nil &&_tabViewController.presentedViewController == self.pinEntryViewController)) {
+        return;
+    }
+    
     // if pin exists - verify
     if ([self isPINSet]) {
         self.pinEntryViewController = [PEPinEntryController pinVerifyController];

@@ -133,9 +133,9 @@
 -(void)swipeRight;
 
 // BC Modal
--(void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable;
--(void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
--(void)closeModal;
+- (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable;
+- (void)showModalWithContent:(UIView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)closeModalWithTransition:(NSString *)transition;
 
 -(NSDictionary*)parseURI:(NSString*)string;
 

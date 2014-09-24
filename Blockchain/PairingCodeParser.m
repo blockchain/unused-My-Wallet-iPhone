@@ -36,7 +36,7 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModalWithContent:self.readerView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;
@@ -66,7 +66,7 @@
         break;
     }
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 @end

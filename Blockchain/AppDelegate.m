@@ -470,7 +470,7 @@ BOOL showSendCoins = NO;
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
     
     showSendCoins = YES;
     
@@ -502,7 +502,7 @@ BOOL showSendCoins = NO;
     
     secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
 
-    [app showModalWithContent:secondPasswordView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -521,7 +521,7 @@ BOOL showSendCoins = NO;
     NSString * password = secondPasswordTextField.text;
     
     if (!validateSecondPassword || [wallet validateSecondPassword:password]) {
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
     } else {
         [app standardNotify:BC_STRING_SECOND_PASSWORD_INCORRECT];
         secondPasswordTextField.text = nil;
@@ -534,7 +534,7 @@ BOOL showSendCoins = NO;
     
     validateSecondPassword = TRUE;
     
-    [app showModalWithContent:secondPasswordView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
                     
         if ([password length] == 0) {
@@ -585,12 +585,12 @@ BOOL showSendCoins = NO;
     [self.modalChain removeAllObjects];
 }
 
-- (void)closeModal {
+- (void)closeModalWithTransition:(NSString *)transition {
     [modalView removeFromSuperview];
     
     CATransition *animation = [CATransition animation];
     [animation setDuration:ANIMATION_DURATION];
-    [animation setType:kCATransitionFade];
+    [animation setType:transition];
     
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [[_window layer] addAnimation:animation forKey:@"HideModal"];
@@ -622,10 +622,14 @@ BOOL showSendCoins = NO;
 }
 
 - (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable {
-    [self showModalWithContent:contentView isClosable:_isClosable onDismiss:nil onResume:nil];
+    [self showModalWithContent:contentView transition:kCATransitionFade isClosable:_isClosable onDismiss:nil onResume:nil];
 }
 
-- (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
+- (void)showModalWithContent:(UIView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable {
+    [self showModalWithContent:contentView transition:transition isClosable:_isClosable onDismiss:nil onResume:nil];
+}
+
+- (void)showModalWithContent:(UIView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
 
     // This modal is already being displayed in another view
     if ([contentView superview]) {
@@ -682,7 +686,16 @@ BOOL showSendCoins = NO;
     @try {
         CATransition *animation = [CATransition animation]; 
         [animation setDuration:ANIMATION_DURATION];
-        [animation setType:kCATransitionFade];
+        
+        // There are two types of transitions: movement based and fade in/out. The movement based ones can have a subType to set which direction the movement is in. In case the transition parameter is a direction, we use the MoveIn transition and the transition parameter as the direction, otherwise we use the transition parameter as the transition type.
+        if (transition == kCATransitionFromBottom || transition == kCATransitionFromLeft || transition == kCATransitionFromTop || transition == kCATransitionFromRight) {
+            [animation setType:kCATransitionMoveIn];
+            [animation setSubtype:transition];
+        }
+        else {
+            [animation setType:transition];
+        }
+        
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
     } @catch (NSException * e) {
@@ -767,10 +780,11 @@ BOOL showSendCoins = NO;
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
-- (BOOL)isZBarSupported {
+- (BOOL)isZBarSupported
+{
     NSUInteger platformType = [[UIDevice currentDevice] platformType];
     
     if (platformType ==  UIDeviceiPhoneSimulator || platformType ==  UIDeviceiPhoneSimulatoriPhone  || platformType ==  UIDeviceiPhoneSimulatoriPhone || platformType ==  UIDevice1GiPhone || platformType ==  UIDevice3GiPhone || platformType ==  UIDevice1GiPod || platformType ==  UIDevice2GiPod || ![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
@@ -796,12 +810,12 @@ BOOL showSendCoins = NO;
     
     self.wallet.delegate = self;
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 
-- (IBAction)scanAccountQRCodeclicked:(id)sender {
-    
+- (IBAction)scanAccountQRCodeclicked:(id)sender
+{
     if ([self isZBarSupported]) {
         PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] init];
         
@@ -825,7 +839,7 @@ BOOL showSendCoins = NO;
     
         }];
     } else {
-        [self showModalWithContent:manualView isClosable:TRUE onDismiss:^() {
+        [self showModalWithContent:manualView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
             manualPassword.text = nil;
         } onResume:nil];
     }
@@ -993,8 +1007,6 @@ BOOL showSendCoins = NO;
 #warning split this up into different methods if possible
 - (void)showWelcomeWithCloseButton:(BOOL)isClosable
 {
-//    [app showModalWithContent:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
-    
         [welcomeButton3 setHidden:![self isPINSet]];
         [welcomeButton3 setTitle:BC_STRING_CHANGE_PIN forState:UIControlStateNormal];
 
@@ -1022,23 +1034,22 @@ BOOL showSendCoins = NO;
     WelcomeView *welcomeView = [[WelcomeView alloc] init];
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
-    [app showModalWithContent:welcomeView isClosable:NO onDismiss:^{
-        // [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    [app showModalWithContent:welcomeView transition:kCATransitionFade isClosable:NO onDismiss:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     } onResume:^{
-        // [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-//        modalView.backgroundColor = UIColorFromRGB(0xdddddd);
         modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     }];
 }
 
-- (void)showCreateWallet:(id)sender {
-    [app showModalWithContent:newAccountView isClosable:TRUE];
+- (void)showCreateWallet:(id)sender
+{
+    [app showModalWithContent:newAccountView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
 }
 
-- (void)showPairWallet:(id)sender {
+- (void)showPairWallet:(id)sender
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_HOW_WOULD_YOU_LIKE_TO_PAIR
                                                     message:nil
                                                    delegate:self
@@ -1048,11 +1059,11 @@ BOOL showSendCoins = NO;
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         // Manually
         if (buttonIndex == 0) {
-            [app showModalWithContent:manualView isClosable:TRUE];
+            [app showModalWithContent:manualView transition:kCATransitionFromRight isClosable:TRUE];
         }
         // QR
         else if (buttonIndex == 1) {
-            [app showModalWithContent:pairingInstructionsView isClosable:TRUE];
+            [app showModalWithContent:pairingInstructionsView transition:kCATransitionFromRight isClosable:TRUE];
         }
     };
     
@@ -1078,16 +1089,17 @@ BOOL showSendCoins = NO;
 }
 
 //Change PIN
-- (IBAction)welcomeButton3Clicked:(id)sender {
+- (IBAction)welcomeButton3Clicked:(id)sender
+{
     [self changePIN];
 }
 
-
 // TODO check that this is still needed
-- (IBAction)welcomeButton1Clicked:(id)sender {
+- (IBAction)welcomeButton1Clicked:(id)sender
+{
     //Wallet is already paired
     if ([self guid] || [self sharedKey])  {
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
         
         [app showAccountSettings];
     } else {
@@ -1095,7 +1107,8 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)confirmForgetWalletWithBlock:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
+- (void)confirmForgetWalletWithBlock:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_WARNING
                                                     message:BC_STRING_FORGET_WALLET_DETAILS
                                                    delegate:self
@@ -1107,14 +1120,15 @@ BOOL showSendCoins = NO;
 
 }
 
-- (IBAction)welcomeButton2Clicked:(id)sender {
+- (IBAction)welcomeButton2Clicked:(id)sender
+{
     // Logout
     if (self.wallet.password) {
         [self clearPin];
 
         [self logout];
         
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
         
         [self showMainPasswordModalOrWelcomeMenu]; // misleading method name
     }
@@ -1130,7 +1144,7 @@ BOOL showSendCoins = NO;
             // Forget Wallet Confirmed
             else if (buttonIndex == 1) {
                 DLog(@"forgetting wallet");
-                [app closeModal];
+                [app closeModalWithTransition:kCATransitionFade];
                 [self forgetWallet];
                 [app showWelcome];
             }
@@ -1196,7 +1210,7 @@ BOOL showSendCoins = NO;
     
     mainPasswordTextField.text = nil;
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 - (IBAction)refreshClicked:(id)sender

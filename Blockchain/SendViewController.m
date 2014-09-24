@@ -135,7 +135,7 @@
 
         sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
         
-        [app showModalWithContent:sendProgressModal isClosable:FALSE onDismiss:^() {
+        [app showModalWithContent:sendProgressModal transition:kCATransitionFade isClosable:FALSE onDismiss:^() {
             [app.wallet cancelTxSigning];
         } onResume:nil];
     };
@@ -163,7 +163,7 @@
         toField.text = @"";
         amountField.text = @"";
         
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
     };
     
     listener.on_error = ^(NSString* error) {
@@ -171,7 +171,7 @@
 
         app.disableBusyView = FALSE;
 
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
     };
     
     [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
@@ -290,7 +290,7 @@
         
         [view stop];
         
-        [app closeModal];
+        [app closeModalWithTransition:kCATransitionFade];
 
         break;
     }
@@ -456,7 +456,7 @@
     
     [self.readerView setReaderDelegate:self];
     
-    [app showModalWithContent:self.readerView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;
@@ -471,7 +471,7 @@
 -(IBAction)labelAddressClicked:(id)sender {
     [app.wallet addToAddressBook:toField.text label:labelAddressTextField.text];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
     labelAddressTextField.text = @"";
     
     // Complete payment

@@ -18,7 +18,7 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModalWithContent:self.readerView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;
@@ -48,7 +48,7 @@
             if (!app.wallet || [format length] > 0) {
                 self.success(privateKeyString);
             
-                [app closeModal];
+                [app closeModalWithTransition:kCATransitionFade];
             } else {
                 [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
             }

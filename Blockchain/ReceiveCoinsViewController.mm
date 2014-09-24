@@ -251,7 +251,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         
     [self reload];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 -(IBAction)copyAddressClicked:(id)sender {
@@ -386,7 +386,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
     
     
-    [app showModalWithContent:requestCoinsView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:requestCoinsView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     [requestAmountTextField becomeFirstResponder];
@@ -406,7 +406,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         labelAddressLabel.text = addr;
 
-    [app showModalWithContent:labelAddressView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:labelAddressView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     
@@ -427,7 +427,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     [self reload];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 

@@ -38,7 +38,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [delegate didSelectAddress:[addresses objectAtIndex:[indexPath row]]];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 

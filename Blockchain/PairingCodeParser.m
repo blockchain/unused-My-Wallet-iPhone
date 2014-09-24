@@ -11,8 +11,8 @@
 
 @implementation PairingCodeParser
 
-
-- (void)errorParsingPairingCode:(NSString *)message {    
+- (void)errorParsingPairingCode:(NSString *)message
+{
     [app networkActivityStop];
 
     if (self.error) {
@@ -20,7 +20,8 @@
     }
 }
 
--(void)didParsePairingCode:(NSDictionary *)dict {
+-(void)didParsePairingCode:(NSDictionary *)dict
+{
     [app networkActivityStop];
 
     if (self.success) {
@@ -28,13 +29,14 @@
     }
 }
 
--(void)scanAndParse:(void (^)(NSDictionary*))__success error:(void (^)(NSString*))__error {
+-(void)scanAndParse:(void (^)(NSDictionary*))__success error:(void (^)(NSString*))__error
+{
     self.success = __success;
     self.error = __error;
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;
@@ -45,7 +47,8 @@
     [self.readerView setReaderDelegate:self];
 }
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
+- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
+{
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {

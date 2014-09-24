@@ -1,5 +1,5 @@
 //
-//  UIModalView.h
+//  BCModalView.h
 //  Blockchain
 //
 //  Created by Ben Reeves on 19/07/2014.
@@ -8,17 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyUIModalView : UIView {
+@interface BCModalView : UIView {
  
 }
 
 @property(nonatomic, copy) void (^onDismiss)();
 @property(nonatomic, copy) void (^onResume)();
 @property(nonatomic, strong) IBOutlet UIView * modalContentView;
-@property(nonatomic, strong) IBOutlet UIView * closeButtonBackground;
+@property(nonatomic, strong) IBOutlet UIButton * closeButton;
 
 @property(nonatomic) BOOL isClosable;
-@property(nonatomic, strong) IBOutlet UIButton * closeButton;
 
 -(IBAction)closeModalClicked:(id)sender;
 

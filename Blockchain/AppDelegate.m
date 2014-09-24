@@ -34,6 +34,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Reachability.h"
 
+// Welcome View Modal
+#import "WelcomeView.h"
+
 AppDelegate * app;
 
 @implementation AppDelegate
@@ -89,31 +92,33 @@ BOOL showSendCoins = NO;
     busyView.frame = _window.frame;
     busyView.alpha = 0.0f;
     
-    [self showWelcome:FALSE];
+    // If either of these is nil we are not properly paired
+    if (![self guid] || ![self sharedKey]) {
+        [self showWelcome];
+        return TRUE;
+    }
     
-    // If either of this is nil we are not properly paired
-    if ([self guid] && [self sharedKey]) {
-        // We are properly paired here
-        // If the PIN is set show the entry modal
-        if ([self isPINSet]) {
-            [self showPinModalAsView:YES];
-        } else {
-            // No PIN set we need to ask for the main password
-            [self showMainPasswordModalOrWelcomeMenu];
-        }
+    // We are properly paired here
+    
+    // If the PIN is set show the entry modal
+    if ([self isPINSet]) {
+        [self showPinModalAsView:YES];
+    } else {
+        // No PIN set we need to ask for the main password
+        [self showMainPasswordModalOrWelcomeMenu];
+    }
+    
+    /* Migrate Password and PIN from NSUserDefaults (for users updating from old version) */
+    NSString * password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+    NSString * pin = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
+    
+    if (password && pin) {
+        self.wallet.password = password;
         
-        /* Migrate Password and PIN from NSUserDefaults (for users updating from old version) */
-        NSString * password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
-        NSString * pin = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
+        [self savePIN:pin];
         
-        if (password && pin) {
-            self.wallet.password = password;
-            
-            [self savePIN:pin];
-            
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
-        }
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
     }
     
     return TRUE;
@@ -163,7 +168,6 @@ BOOL showSendCoins = NO;
     [_sendViewController reload];
     [_receiveViewController reload];
 }
-
 
 
 - (void)setDisableBusyView:(BOOL)__disableBusyView {
@@ -263,7 +267,7 @@ BOOL showSendCoins = NO;
         }
         // Forget Wallet
         else {
-            [self forgetWalletAlert:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            [self confirmForgetWalletWithBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                 // Forget Wallet Cancelled
                 if (buttonIndex == 0) {
                     // Open the Failed to load alert again
@@ -332,12 +336,12 @@ BOOL showSendCoins = NO;
 - (void)showMainPasswordModalOrWelcomeMenu
 {
     if ([self guid]) {
-        [self showModal:mainPasswordView isClosable:FALSE];
+        [self showModalWithContent:mainPasswordView isClosable:FALSE];
         
         [mainPasswordTextField becomeFirstResponder];
     } else {
         // Called when bad password is entered when manually pairing
-        [app showWelcome];
+        [app showMenus];
     }
 }
 
@@ -378,7 +382,7 @@ BOOL showSendCoins = NO;
 {
     if ([wallet isInitialized]) {
         [self beginBackgroundUpdateTask];
-
+        
         [self logout];
     }
 }
@@ -391,10 +395,10 @@ BOOL showSendCoins = NO;
     }
     
     if (![wallet isInitialized]) {
-        [app showWelcome:FALSE];
+        [app showWelcome];
         
         if ([self guid] && [self sharedKey]) {
-            [self showModal:mainPasswordView isClosable:FALSE];
+            [self showModalWithContent:mainPasswordView isClosable:FALSE];
         }
     }
 }
@@ -498,7 +502,7 @@ BOOL showSendCoins = NO;
     
     secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
 
-    [app showModal:secondPasswordView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView isClosable:TRUE onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -530,7 +534,7 @@ BOOL showSendCoins = NO;
     
     validateSecondPassword = TRUE;
     
-    [app showModal:secondPasswordView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView isClosable:TRUE onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
                     
         if ([password length] == 0) {
@@ -565,7 +569,7 @@ BOOL showSendCoins = NO;
     
     self.modalView = nil;
     
-    for (MyUIModalView * modalChainView in self.modalChain) {
+    for (BCModalView * modalChainView in self.modalChain) {
         
         for (UIView * subView in [modalChainView.modalContentView subviews]) {
             [subView removeFromSuperview];
@@ -599,7 +603,7 @@ BOOL showSendCoins = NO;
     self.modalView = nil;
     
     if ([self.modalChain count] > 0) {
-        MyUIModalView * previousModalView = [self.modalChain objectAtIndex:[self.modalChain count]-1];
+        BCModalView * previousModalView = [self.modalChain objectAtIndex:[self.modalChain count]-1];
         
         [_window.rootViewController.view addSubview:previousModalView];
 
@@ -617,11 +621,11 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable {
-    [self showModal:contentView isClosable:_isClosable onDismiss:nil onResume:nil];
+- (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable {
+    [self showModalWithContent:contentView isClosable:_isClosable onDismiss:nil onResume:nil];
 }
 
-- (void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
+- (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume {
 
     // This modal is already being displayed in another view
     if ([contentView superview]) {
@@ -637,9 +641,9 @@ BOOL showSendCoins = NO;
         [modalView removeFromSuperview];
 
         if (modalView.isClosable) {
-            if (self.modalView.onDismiss) {
-                self.modalView.onDismiss();
-                self.modalView.onDismiss = nil;
+            if (modalView.onDismiss) {
+                modalView.onDismiss();
+                modalView.onDismiss = nil;
             }
         } else {
             [self.modalChain addObject:modalView];
@@ -657,22 +661,17 @@ BOOL showSendCoins = NO;
         [contentView addSubview:self.readerViewTapSubView];
     }
     
-    [[NSBundle mainBundle] loadNibNamed:@"ModalView" owner:self options:nil];
-    
-    [modalView.modalContentView addSubview:contentView];
-    
+    modalView = [[BCModalView alloc] init];
     modalView.isClosable = _isClosable;
-    
-    modalView.frame = _window.frame;
-    
     self.modalView.onDismiss = onDismiss;
     self.modalView.onResume = onResume;
-    
     if (onResume) {
         onResume();
     }
     
-    contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
+    [modalView.modalContentView addSubview:contentView];
+    
+     contentView.frame = CGRectMake(0, 0, modalView.modalContentView.frame.size.width, modalView.modalContentView.frame.size.height);
     
     [_window.rootViewController.view addSubview:modalView];
     
@@ -826,7 +825,7 @@ BOOL showSendCoins = NO;
     
         }];
     } else {
-        [self showModal:manualView isClosable:TRUE onDismiss:^() {
+        [self showModalWithContent:manualView isClosable:TRUE onDismiss:^() {
             manualPassword.text = nil;
         } onResume:nil];
     }
@@ -986,50 +985,85 @@ BOOL showSendCoins = NO;
 }
 
 // Modal menu
-- (void)showWelcome
+- (void)showMenus
 {
-    [self showWelcome:[self guid] && [self sharedKey]];
+    [self showWelcomeWithCloseButton:[self guid] && [self sharedKey]];
 }
 
-- (void)showWelcome:(BOOL)isClosable
+#warning split this up into different methods if possible
+- (void)showWelcomeWithCloseButton:(BOOL)isClosable
 {
-    [app showModal:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
-        
+//    [app showModalWithContent:welcomeView isClosable:isClosable onDismiss:nil onResume:^() {
+    
         [welcomeButton3 setHidden:![self isPINSet]];
         [welcomeButton3 setTitle:BC_STRING_CHANGE_PIN forState:UIControlStateNormal];
-        
-        // User is logged in
-        if ([self.wallet isInitialized]) {
-            welcomeLabel.text = BC_STRING_OPTIONS;
-            welcomeInstructionsLabel.text = BC_STRING_OPEN_ACCOUNT_SETTINGS;
-            [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
-            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
-            [welcomeButton2 setTitle:BC_STRING_LOGOUT forState:UIControlStateNormal];
-        }
+
         // Wallet paired, but no password
-        else if ([self guid] && [self sharedKey]) {
+        if ([self guid] && [self sharedKey]) {
             welcomeLabel.text = BC_STRING_WELCOME_BACK;
             welcomeInstructionsLabel.text = @"";
             [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
             [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
             [welcomeButton2 setTitle:BC_STRING_FORGET_DETAILS forState:UIControlStateNormal];
         }
-        // User is completed logged out
-        else {
-            welcomeLabel.text = BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET;
-            welcomeInstructionsLabel.text = BC_STRING_WELCOME_INSTRUCTIONS;
-            
-            [welcomeButton1 setTitle:BC_STRING_CREATE_WALLET forState:UIControlStateNormal];
-            [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
-            [welcomeButton2 setTitle:BC_STRING_PAIR_DEVICE forState:UIControlStateNormal];
-        }
+}
+
+- (void)showSideMenu
+{
+    welcomeLabel.text = BC_STRING_OPTIONS;
+    welcomeInstructionsLabel.text = BC_STRING_OPEN_ACCOUNT_SETTINGS;
+    [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
+    [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
+    [welcomeButton2 setTitle:BC_STRING_LOGOUT forState:UIControlStateNormal];
+}
+
+- (void)showWelcome
+{
+    WelcomeView *welcomeView = [[WelcomeView alloc] init];
+    [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
+    [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
+    [app showModalWithContent:welcomeView isClosable:NO onDismiss:^{
+        // [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+    } onResume:^{
+        // [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//        modalView.backgroundColor = UIColorFromRGB(0xdddddd);
+        modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     }];
 }
+
+- (void)showCreateWallet:(id)sender {
+    [app showModalWithContent:newAccountView isClosable:TRUE];
+}
+
+- (void)showPairWallet:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_HOW_WOULD_YOU_LIKE_TO_PAIR
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:BC_STRING_MANUALLY
+                                          otherButtonTitles:BC_STRING_AUTOMATICALLY, nil];
+    
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        // Manually
+        if (buttonIndex == 0) {
+            [app showModalWithContent:manualView isClosable:TRUE];
+        }
+        // QR
+        else if (buttonIndex == 1) {
+            [app showModalWithContent:pairingInstructionsView isClosable:TRUE];
+        }
+    };
+    
+    [alert show];
+}
+
 
 #pragma mark - Actions
 
 - (IBAction)powerClicked:(id)sender {
-    [self showWelcome];
+    [self showSideMenu];
 }
 
 - (void)changePIN {
@@ -1048,6 +1082,8 @@ BOOL showSendCoins = NO;
     [self changePIN];
 }
 
+
+// TODO check that this is still needed
 - (IBAction)welcomeButton1Clicked:(id)sender {
     //Wallet is already paired
     if ([self guid] || [self sharedKey])  {
@@ -1055,12 +1091,11 @@ BOOL showSendCoins = NO;
         
         [app showAccountSettings];
     } else {
-    //No Wallet show New Wallet creation
-        [app showModal:newAccountView isClosable:TRUE];
+        assert(0);
     }
 }
 
-- (void)forgetWalletAlert:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
+- (void)confirmForgetWalletWithBlock:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_WARNING
                                                     message:BC_STRING_FORGET_WALLET_DETAILS
                                                    delegate:self
@@ -1088,7 +1123,7 @@ BOOL showSendCoins = NO;
         
         // confirm forget wallet
         
-        [self forgetWalletAlert:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        [self confirmForgetWalletWithBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
             // Forget Wallet Cancelled
             if (buttonIndex == 0) {
             }
@@ -1102,27 +1137,9 @@ BOOL showSendCoins = NO;
         }];
 
     }
-    // Do pair
+    // TODO was do pair
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_HOW_WOULD_YOU_LIKE_TO_PAIR
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:BC_STRING_MANUALLY
-                                              otherButtonTitles:BC_STRING_AUTOMATICALLY, nil];
-
-        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // Manually
-            if (buttonIndex == 0) {
-                [app showModal:manualView isClosable:TRUE];
-            }
-            // QR
-            else if (buttonIndex == 1) {
-                [app showModal:pairingInstructionsView isClosable:TRUE];
-            }
-        };
-
-        
-        [alert show];
+        assert(0);
     }
 }
 
@@ -1182,30 +1199,32 @@ BOOL showSendCoins = NO;
     [app closeModal];
 }
 
-- (IBAction)refreshClicked:(id)sender {
+- (IBAction)refreshClicked:(id)sender
+{
     if (![self guid] || ![self sharedKey]) {
         [app showWelcome];
         return;
     }
     
-    //If displaying the merchant view controller refresh the map instead
+    // If displaying the merchant view controller refresh the map instead
     if (_tabViewController.activeViewController == _merchantViewController) {
         [_merchantViewController refresh];
-        
-    //Otherwise just fetch the transaction history again
-    } else {
+    }
+    // Otherwise just fetch the transaction history again
+    else {
         [self.wallet getWalletAndHistory];
     }
-
 }
 
 #pragma mark - Accessors
 
-- (NSString*)guid {
+- (NSString*)guid
+{
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
 }
 
-- (NSString*)sharedKey {
+- (NSString*)sharedKey
+{
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
 }
 

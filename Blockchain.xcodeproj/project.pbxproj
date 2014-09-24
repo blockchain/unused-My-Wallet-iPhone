@@ -78,7 +78,6 @@
 		220348B619A4D90E00611AC3 /* libc++abi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 220348B519A4D90E00611AC3 /* libc++abi.dylib */; };
 		220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 220ADA6819A3796200EB7599 /* Localizable.strings */; };
 		220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375119A3604500E06996 /* ReceiveCoins.xib */; };
-		220E375419A3612F00E06996 /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375619A3612F00E06996 /* ModalView.xib */; };
 		220E375719A3613600E06996 /* AddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* AddressBookView.xib */; };
 		220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375C19A3613D00E06996 /* AccountViewController.xib */; };
 		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
@@ -90,6 +89,8 @@
 		2245F727198C1C640075B19F /* DropDownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F721198C1C640075B19F /* DropDownListView.m */; };
 		2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F723198C1C640075B19F /* DropDownViewCell.m */; };
 		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
+		674709EC19D1D14300757D46 /* WelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 674709EB19D1D14300757D46 /* WelcomeView.m */; };
+		674709F219D1EED500757D46 /* welcome_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F119D1EED500757D46 /* welcome_logo@3x.png */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
 		67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */ = {isa = PBXBuildFile; fileRef = 67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
@@ -115,7 +116,7 @@
 		84AEEC991987E4E8000E8DC8 /* marker_eat_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC941987E4E8000E8DC8 /* marker_eat_off.png */; };
 		84AEEC9A1987E4E8000E8DC8 /* marker_spend_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC951987E4E8000E8DC8 /* marker_spend_off.png */; };
 		84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */; };
-		84B601CA197AD03800DA1829 /* UIModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C9197AD03800DA1829 /* UIModalView.m */; };
+		84B601CA197AD03800DA1829 /* BCModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B601C9197AD03800DA1829 /* BCModalView.m */; };
 		84CCFAAF197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CCFAAE197D859C00DA4482 /* NSString+NSString_EscapeQuotes.m */; };
 		84F4BDF6197E71AF00B7BF7B /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F4BDF4197E71AF00B7BF7B /* header.png */; };
 		84F4BDFA197F21D700B7BF7B /* PairingCodeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4BDF9197F21D700B7BF7B /* PairingCodeParser.m */; };
@@ -611,6 +612,9 @@
 		2245F722198C1C640075B19F /* DropDownViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownViewCell.h; sourceTree = "<group>"; };
 		2245F723198C1C640075B19F /* DropDownViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownViewCell.m; sourceTree = "<group>"; };
 		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
+		674709EA19D1D14300757D46 /* WelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeView.h; sourceTree = "<group>"; };
+		674709EB19D1D14300757D46 /* WelcomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeView.m; sourceTree = "<group>"; };
+		674709F119D1EED500757D46 /* welcome_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_logo@3x.png"; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
 		67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet_pre.html; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
@@ -644,8 +648,8 @@
 		84AEEC951987E4E8000E8DC8 /* marker_spend_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_spend_off.png; sourceTree = "<group>"; };
 		84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Blocks.h"; sourceTree = "<group>"; };
 		84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Blocks.m"; sourceTree = "<group>"; };
-		84B601C8197AD03800DA1829 /* UIModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModalView.h; sourceTree = "<group>"; };
-		84B601C9197AD03800DA1829 /* UIModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIModalView.m; sourceTree = "<group>"; };
+		84B601C8197AD03800DA1829 /* BCModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCModalView.h; sourceTree = "<group>"; };
+		84B601C9197AD03800DA1829 /* BCModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCModalView.m; sourceTree = "<group>"; };
 		84C2569119810DF300F901D1 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = Library/keys/include/config.h; sourceTree = "<group>"; };
 		84C2569219810DF300F901D1 /* crypto_scrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = crypto_scrypt.h; path = Library/keys/include/crypto_scrypt.h; sourceTree = "<group>"; };
 		84C2569319810DF300F901D1 /* scrypt_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = scrypt_platform.h; path = Library/keys/include/scrypt_platform.h; sourceTree = "<group>"; };
@@ -838,7 +842,6 @@
 		9FDAEF851514EDF500E92C90 /* modal_background_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large.png; sourceTree = "<group>"; };
 		9FDAEF861514EDF500E92C90 /* modal_background_large2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modal_background_large2x.png; sourceTree = "<group>"; };
 		C91C5F1019C083970007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AccountViewController.xib; sourceTree = "<group>"; };
-		C91C5F1119C0840E0007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ModalView.xib; sourceTree = "<group>"; };
 		C91C5F1219C0841A0007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MerchantMap.xib; sourceTree = "<group>"; };
 		C92F761519803346007916F7 /* icon_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512.png; sourceTree = "<group>"; };
 		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
@@ -1244,6 +1247,7 @@
 		9F765EDC14BBBEC400048EFB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				674709F119D1EED500757D46 /* welcome_logo@3x.png */,
 				67C6703F19CAF558004BD8FC /* bluedot.png */,
 				22D41D9819A7604300C9E1F4 /* sms.png */,
 				84AEEC871987D9C7000E8DC8 /* marker_atm@2x.png */,
@@ -1642,7 +1646,6 @@
 				C9B32CF9194F3F5800BDF3A0 /* Cells */,
 				220E375C19A3613D00E06996 /* AccountViewController.xib */,
 				220E375919A3613600E06996 /* AddressBookView.xib */,
-				220E375619A3612F00E06996 /* ModalView.xib */,
 				220E375119A3604500E06996 /* ReceiveCoins.xib */,
 				220E375F19A3614900E06996 /* SendCoins.xib */,
 				220E376219A3614F00E06996 /* MainWindow.xib */,
@@ -1668,8 +1671,10 @@
 				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
 				9F0CBAD61513CA2600CD945D /* BCFadeView.h */,
 				9F0CBAD71513CA2600CD945D /* BCFadeView.m */,
-				84B601C8197AD03800DA1829 /* UIModalView.h */,
-				84B601C9197AD03800DA1829 /* UIModalView.m */,
+				84B601C8197AD03800DA1829 /* BCModalView.h */,
+				84B601C9197AD03800DA1829 /* BCModalView.m */,
+				674709EA19D1D14300757D46 /* WelcomeView.h */,
+				674709EB19D1D14300757D46 /* WelcomeView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1822,6 +1827,7 @@
 				9F2D935C14C081EF0053F0FF /* button_blue@2x.png in Resources */,
 				9F0CBAA215134C2C00CD945D /* button_red.png in Resources */,
 				9F0CBAA315134C2C00CD945D /* button_red@2x.png in Resources */,
+				674709F219D1EED500757D46 /* welcome_logo@3x.png in Resources */,
 				9F0CBAA615134D3200CD945D /* button_grey.png in Resources */,
 				9F0CBAA715134D3200CD945D /* button_grey@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet.html in Resources */,
@@ -1866,7 +1872,6 @@
 				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
 				9FDAEF871514EDF500E92C90 /* modal_background_large.png in Resources */,
 				9FDAEF881514EDF500E92C90 /* modal_background_large2x.png in Resources */,
-				220E375419A3612F00E06996 /* ModalView.xib in Resources */,
 				9F1740211514FAAE00CF1186 /* close-container.png in Resources */,
 				9F1740221514FAAE00CF1186 /* close-container@2x.png in Resources */,
 				84F4BE0B197FB4D700B7BF7B /* 573-money@2x.png in Resources */,
@@ -1930,6 +1935,7 @@
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
 				2203488319A4D51300611AC3 /* FBProfilePictureView.m in Sources */,
+				674709EC19D1D14300757D46 /* WelcomeView.m in Sources */,
 				2203488819A4D51300611AC3 /* FBSessionManualTokenCachingStrategy.m in Sources */,
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
 				2203489719A4D51300611AC3 /* SBJsonBase.m in Sources */,
@@ -1965,7 +1971,7 @@
 				84FC031A1981D76800B97D5B /* PrivateKeyReader.m in Sources */,
 				84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */,
 				220348A519A4D51300611AC3 /* OARequestParameter.m in Sources */,
-				84B601CA197AD03800DA1829 /* UIModalView.m in Sources */,
+				84B601CA197AD03800DA1829 /* BCModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* BCFadeView.m in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
@@ -2109,14 +2115,6 @@
 				220ADB6E19A37B3700EB7599 /* en */,
 			);
 			name = ReceiveCoins.xib;
-			sourceTree = "<group>";
-		};
-		220E375619A3612F00E06996 /* ModalView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C91C5F1119C0840E0007D988 /* Base */,
-			);
-			name = ModalView.xib;
 			sourceTree = "<group>";
 		};
 		220E375919A3613600E06996 /* AddressBookView.xib */ = {

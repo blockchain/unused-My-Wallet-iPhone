@@ -11,14 +11,14 @@
 
 @implementation PrivateKeyReader
 
-
--(void)readPrivateKey:(void (^)(NSString*))__success error:(void (^)(NSString*))__error {
+-(void)readPrivateKey:(void (^)(NSString*))__success error:(void (^)(NSString*))__error
+{
     self.success = __success;
     self.error = __error;
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModal:self.readerView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView isClosable:TRUE onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;
@@ -33,7 +33,8 @@
     [self.readerView setReaderDelegate:self];
 }
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img {
+- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
+{
     
     // do something uselful with results
     for(ZBarSymbol *sym in syms) {

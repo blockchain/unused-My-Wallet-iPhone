@@ -386,7 +386,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
     
     
-    [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:requestCoinsView isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     [requestAmountTextField becomeFirstResponder];
@@ -406,7 +406,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         labelAddressLabel.text = addr;
 
-    [app showModal:labelAddressView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:labelAddressView isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     
@@ -484,7 +484,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView isClosable:TRUE];
+    [app showModalWithContent:optionsModalView isClosable:TRUE];
     
     if (label)
         optionsTitleLabel.text = label;

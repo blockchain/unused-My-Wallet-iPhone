@@ -28,7 +28,7 @@
 #import "TabViewController.h"
 #import "ZBarSDK.h"
 #import "PEPinEntryController.h"
-#import "UIModalView.h"
+#import "BCModalView.h"
 
 #define SATOSHI 100000000
 #define LOADING_TEXT_NOTIFICAITON_KEY @"SetLoadingText"
@@ -57,7 +57,6 @@
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
     
-    IBOutlet UIView * welcomeView;
     IBOutlet NewAccountView * newAccountView;
     IBOutlet UIView * pairingInstructionsView;
 
@@ -103,7 +102,7 @@
 
 @property (nonatomic) BOOL disableBusyView;
 
-@property (strong, nonatomic) IBOutlet MyUIModalView * modalView;
+@property (strong, nonatomic) IBOutlet BCModalView * modalView;
 @property(nonatomic, strong) UIView * readerViewTapSubView;
 @property (strong, nonatomic) NSMutableArray * modalChain;
 
@@ -125,7 +124,7 @@
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showWelcome;
+-(void)showMenus;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
@@ -133,9 +132,9 @@
 -(void)swipeLeft;
 -(void)swipeRight;
 
-//Simple Modal UIVIew
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable;
+// BC Modal
+-(void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable;
+-(void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
 -(void)closeModal;
 
 -(NSDictionary*)parseURI:(NSString*)string;

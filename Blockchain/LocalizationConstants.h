@@ -101,7 +101,7 @@
 #define BC_STRING_LOGOUT NSLocalizedString(@"Logout", nil)
 #define BC_STRING_WELCOME_BACK NSLocalizedString(@"Welcome Back", nil)
 #define BC_STRING_FORGET_DETAILS NSLocalizedString(@"Forget Details", nil)
-#define BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET NSLocalizedString(@"Welcome to Blockchain Wallet", nil)
+// #define BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET NSLocalizedString(@"Welcome to Blockchain Wallet", nil)
 #define BC_STRING_WELCOME_INSTRUCTIONS NSLocalizedString(@"If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.", nil)
 #define BC_STRING_CREATE_WALLET NSLocalizedString(@"Create Wallet", nil)
 

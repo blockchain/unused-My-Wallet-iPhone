@@ -65,6 +65,25 @@
     [app networkActivityStop];
 }
 
+-(IBAction)termsOfServiceClicked:(id)sender
+{
+    // XXX
+    // problems: 1) close vs. back?
+    // 2) terms is a pdf right now
+    // 3) Modals not stackable right now
+    UIWebView *webView = [[UIWebView alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:@"https://blockchain.info/terms_of_service"];
+    
+    //URL Requst Object
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    
+    //Load the request in the UIWebView.
+    [webView loadRequest:requestObj];
+    
+    [app showModalWithContent:webView transition:kCATransitionFromBottom isClosable:YES onDismiss:nil onResume:nil];
+}
+
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
     [app forgetWallet];
     

@@ -29,6 +29,8 @@
     IBOutlet UIButton * createButton;
 }
 
+-(IBAction)termsOfServiceClicked:(id)sender;
+
 -(IBAction)createAccountClicked:(id)sender;
 
 @property(nonatomic, strong) NSString * tmpPassword;

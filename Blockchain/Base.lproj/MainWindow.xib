@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
@@ -234,6 +233,9 @@
                     <state key="normal" title="Blockchain Terms of Service">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="termsOfServiceClicked:" destination="355" eventType="touchUpInside" id="cUG-Yk-K3K"/>
+                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By creating a new wallet you agree to the" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qvx-f4-C2O">
                     <rect key="frame" x="30" y="260" width="220" height="21"/>
@@ -262,7 +264,7 @@
                     <rect key="frame" x="63" y="155" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 1" backgroundImage="74F53A9E-C213-4349-A5DF-F1CC40202170">
+                    <state key="normal" title="Button 1" backgroundImage="96CC2147-0F69-4860-B65E-0CFEFE5D4907">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -276,7 +278,7 @@
                     <rect key="frame" x="63" y="195" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 2" backgroundImage="74F53A9E-C213-4349-A5DF-F1CC40202170">
+                    <state key="normal" title="Button 2" backgroundImage="96CC2147-0F69-4860-B65E-0CFEFE5D4907">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -316,7 +318,7 @@
                     <rect key="frame" x="63" y="235" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 3" backgroundImage="74F53A9E-C213-4349-A5DF-F1CC40202170">
+                    <state key="normal" title="Button 3" backgroundImage="96CC2147-0F69-4860-B65E-0CFEFE5D4907">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -795,7 +797,7 @@
         <image name="01-refresh.png" width="24" height="26"/>
         <image name="172-pricetag.png" width="34" height="28"/>
         <image name="573-money.png" width="28" height="24"/>
-        <image name="74F53A9E-C213-4349-A5DF-F1CC40202170" width="83" height="25">
+        <image name="96CC2147-0F69-4860-B65E-0CFEFE5D4907" width="83" height="25">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

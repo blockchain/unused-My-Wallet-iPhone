@@ -8,7 +8,7 @@
 "353.text" = "Associazione Automatica";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Creare Portafoglio";
+"358.text" = "Creare un nuovo portafoglio";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

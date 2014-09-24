@@ -8,7 +8,7 @@
 "353.text" = "Автоматичне Сполучення";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Створити Гаманець";
+"358.text" = "Створити новий гаманець";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

@@ -8,7 +8,7 @@
 "353.text" = "Αυτόματη Αντιστοίχιση";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Δημιουργήστε Πορτοφόλι";
+"358.text" = "Δημιουργήστε ένα νέο πορτοφόλι";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

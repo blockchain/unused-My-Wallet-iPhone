@@ -8,7 +8,7 @@
 "353.text" = "Automatyczne Parowanie";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Stworzyć Portfel";
+"358.text" = "Utwórz nowy portfel";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

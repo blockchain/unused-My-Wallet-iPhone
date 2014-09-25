@@ -38,6 +38,8 @@
 // Welcome View Modal
 #import "BCWelcomeView.h"
 
+#define CURTAIN_IMAGE_TAG 123
+
 AppDelegate * app;
 
 @implementation AppDelegate
@@ -359,8 +361,36 @@ BOOL showSendCoins = NO;
     self.backgroundUpdateTask = UIBackgroundTaskInvalid;
 }
 
+// Fade out the LaunchImage when app becomes active
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    UIView *curtainView = [self.window viewWithTag:CURTAIN_IMAGE_TAG];
+    [UIView animateWithDuration:0.25 animations:^{
+        curtainView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [curtainView removeFromSuperview];
+    }];
+}
 
+// Show the LaunchImage when app resigns active so the list of running apps does not show the user's information
 - (void)applicationWillResignActive:(UIApplication *)application
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // Small delay so we don't change the view while it's zooming out
+        UIImageView *curtainImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
+        curtainImageView.image = [UIImage imageNamed:@"LaunchImage"];
+        curtainImageView.alpha = 0;
+        [curtainImageView setTag:CURTAIN_IMAGE_TAG];
+        [self.window addSubview:curtainImageView];
+        [self.window bringSubviewToFront:curtainImageView];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            curtainImageView.alpha = 1;
+        }];
+    });
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
 {
     // Close all modals
     [app closeAllModals];
@@ -372,17 +402,9 @@ BOOL showSendCoins = NO;
     
     // Show pin modal before we close the app so the PIN verify modal gets shown in the list of running apps and immediately after we restart
     if ([self isPINSet]) {
-        // XXX Problem: when we ask for location access, app goes to background and users have to enter their PIN again
-        // Possible solutions: longer delay and cancel on back to fg
-        // Small delay so we don't change the view while it's zooming out
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showPinModalAsView:YES];
-        });
+        [self showPinModalAsView:YES];
     }
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
+    
     if ([wallet isInitialized]) {
         [self beginBackgroundUpdateTask];
         

@@ -8,7 +8,7 @@
 "353.text" = "Kết nối tự động";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Tạo Wallet";
+"358.text" = "Tạo một ví mới";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

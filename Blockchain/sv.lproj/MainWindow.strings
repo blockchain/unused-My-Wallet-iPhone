@@ -8,7 +8,7 @@
 "353.text" = "Automatisk Parning";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Skapa Plånbok";
+"358.text" = "Skapa en ny plånbok";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

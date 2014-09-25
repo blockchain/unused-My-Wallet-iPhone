@@ -8,7 +8,7 @@
 "353.text" = "L'Appariement Automatique";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "Créez Porte-Monnaie";
+"358.text" = "Créer un nouveau portefeuille";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

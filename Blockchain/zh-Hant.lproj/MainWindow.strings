@@ -8,7 +8,7 @@
 "353.text" = "自動配對";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "創建錢包";
+"358.text" = "創建一個新的錢包";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";

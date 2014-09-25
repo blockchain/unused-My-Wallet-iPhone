@@ -20,7 +20,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WebViewController : UIViewController <UIWebViewDelegate> {
+@interface BCWalletWebViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView * webView;
 }
 

@@ -17,7 +17,7 @@
 #import "SendViewController.h"
 #import "AccountViewController.h"
 #import "TransactionsViewController.h"
-#import "WebViewController.h"
+#import "BCWalletWebViewController.h"
 #import "NewAccountView.h"
 #import "NSString+SHA256.h"
 #import "Transaction.h"
@@ -371,6 +371,8 @@ BOOL showSendCoins = NO;
     
     // Show pin modal before we close the app so the PIN verify modal gets shown in the list of running apps and immediately after we restart
     if ([self isPINSet]) {
+        // XXX Problem: when we ask for location access, app goes to background and users have to enter their PIN again
+        // Possible solutions: longer delay and cancel on back to fg
         // Small delay so we don't change the view while it's zooming out
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showPinModalAsView:YES];
@@ -427,7 +429,7 @@ BOOL showSendCoins = NO;
 
 // Only gets called when displaying a transaction hash
 - (void)pushWebViewController:(NSString*)url {
-    self.webViewController = [[WebViewController alloc] init];
+    self.webViewController = [[BCWalletWebViewController alloc] init];
     
     [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
 

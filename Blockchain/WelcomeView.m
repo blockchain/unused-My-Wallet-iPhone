@@ -8,6 +8,7 @@
 
 #import "WelcomeView.h"
 #import "AppDelegate.h"
+#import "LocalizationConstants.h"
 
 #define BUTTON_HEIGHT 50
 
@@ -35,8 +36,7 @@
         
         self.createWalletButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.createWalletButton.frame = CGRectMake(0, self.frame.size.height - (BUTTON_HEIGHT * 2), self.frame.size.width, BUTTON_HEIGHT);
-        // XXX localize
-        [self.createWalletButton setTitle:@"New Wallet" forState:UIControlStateNormal];
+        [self.createWalletButton setTitle:BC_STRING_NEW_WALLET forState:UIControlStateNormal];
         [self.createWalletButton setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
         [self addSubview:self.createWalletButton];
         

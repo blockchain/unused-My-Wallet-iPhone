@@ -29,8 +29,11 @@
     IBOutlet UIButton * createButton;
 }
 
--(IBAction)termsOfServiceClicked:(id)sender;
+-(IBAction)didEndEmail:(id)sender;
+-(IBAction)didEndPassword1:(id)sender;
+-(IBAction)didEndPassword2:(id)sender;
 
+-(IBAction)termsOfServiceClicked:(id)sender;
 -(IBAction)createAccountClicked:(id)sender;
 
 @property(nonatomic, strong) NSString * tmpPassword;

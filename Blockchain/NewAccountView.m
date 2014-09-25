@@ -8,22 +8,80 @@
 
 #import "NewAccountView.h"
 #import "AppDelegate.h"
+#import "BCWebViewController.h"
+
+#define IS_568_SCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
+
+#define SCROLL_HEIGHT_SMALL_SCREEN 58
 
 @implementation NewAccountView
 
+-(void)awakeFromNib {
+    [activity startAnimating];
+    
+    // Make sure the button is in front of everything else
+    [self bringSubviewToFront:createButton];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField*)aTextField {
     [aTextField resignFirstResponder];
     
+    // If we return from the password confirm textfield, create the account
+    if (aTextField == password2TextField) {
+        [self createAccountClicked:aTextField];
+    }
+    
     return YES;
+}
+
+-(IBAction)didEndEmail:(id)sender
+{
+    [passwordTextField becomeFirstResponder];
+}
+
+-(IBAction)didEndPassword1:(id)sender
+{
+    [password2TextField becomeFirstResponder];
+}
+
+-(IBAction)didEndPassword2:(id)sender
+{
+    // Do nothing
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[app.tabViewController responderMayHaveChanged];
+    
+    // Scroll up to fit all entry fields on small screens
+    if (!IS_568_SCREEN) {
+        CGRect frame = self.frame;
+        
+        frame.origin.y = -SCROLL_HEIGHT_SMALL_SCREEN;
+        self.frame = frame;
+    }
 }
 
--(void)awakeFromNib {
-    [activity startAnimating];
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [app.tabViewController responderMayHaveChanged];
+}
+
+// Move up create wallet button when keyboard is shown
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGRect createButtonFrame = createButton.frame;
+    createButtonFrame.origin.y = keyboardFrame.size.height + createButtonFrame.size.height + 14 - (!IS_568_SCREEN ? SCROLL_HEIGHT_SMALL_SCREEN : 0);
+    
+    [UIView animateWithDuration:ANIMATION_DURATION
+                     animations:^{
+                         createButton.frame = createButtonFrame;
+                     }
+                     completion:nil];
 }
 
 # pragma mark - Wallet Delegate method
@@ -32,7 +90,29 @@
 }
 
 // Get here from New Account and also when manually pairing
--(IBAction)createAccountClicked:(id)sender {
+-(IBAction)createAccountClicked:(id)sender
+{
+    // Make sure we leave the textfields
+    [emailTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+    [password2TextField resignFirstResponder];
+    
+    // Reset scrolling on small screens
+    if (!IS_568_SCREEN) {
+        CGRect frame = self.frame;
+        
+        frame.origin.y = 0;
+        self.frame = frame;
+    }
+    
+    // Move create wallet button back to original position at bottom of screen
+    CGRect createButtonFrame = createButton.frame;
+    createButtonFrame.origin.y = self.frame.size.height - createButtonFrame.size.height;
+    [UIView animateWithDuration:ANIMATION_DURATION
+                     animations:^{
+                         createButton.frame = createButtonFrame;
+                     }
+                     completion:nil];
     
     self.tmpPassword = passwordTextField.text;
     
@@ -67,21 +147,12 @@
 
 -(IBAction)termsOfServiceClicked:(id)sender
 {
-    // XXX
-    // problems: 1) close vs. back?
-    // 2) terms is a pdf right now
-    // 3) Modals not stackable right now
-    UIWebView *webView = [[UIWebView alloc] init];
+    BCWebViewController *webViewController = [[BCWebViewController alloc] init];
+    NSString *url = [NSString stringWithFormat:@"%@terms_of_service", WebROOT];
     
-    NSURL *url = [NSURL URLWithString:@"https://blockchain.info/terms_of_service"];
+    [webViewController loadURL:url];
     
-    //URL Requst Object
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    
-    //Load the request in the UIWebView.
-    [webView loadRequest:requestObj];
-    
-    [app showModalWithContent:webView transition:kCATransitionFromBottom isClosable:YES onDismiss:nil onResume:nil];
+    [app.tabViewController presentViewController:webViewController animated:YES completion:nil];
 }
 
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {

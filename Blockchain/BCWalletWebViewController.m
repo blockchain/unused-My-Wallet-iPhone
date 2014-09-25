@@ -6,14 +6,14 @@
 //  Copyright (c) 2012 Qkos Services Ltd. All rights reserved.
 //
 
-#import "WebViewController.h"
+#import "BCWalletWebViewController.h"
 #import "AppDelegate.h"
-@interface WebViewController ()
+
+@interface BCWalletWebViewController ()
 
 @end
 
-@implementation WebViewController
-
+@implementation BCWalletWebViewController
 
 - (BOOL)webView:(UIWebView *)_webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
                 

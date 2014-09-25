@@ -8,6 +8,7 @@
 
 #import "BCModalView.h"
 #import "AppDelegate.h"
+#import "LocalizationConstants.h"
 
 @implementation BCModalView
 
@@ -25,9 +26,8 @@
         
         self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.closeButton.frame = CGRectMake(0, 22, 80, 20);
-        // XXX localize
         [self.closeButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
-        [self.closeButton setTitle:@"❮ Back" forState:UIControlStateNormal];
+        [self.closeButton setTitle:[NSString stringWithFormat:@"❮ %@", BC_STRING_BACK] forState:UIControlStateNormal];
         [self.closeButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];
         [topBarView addSubview:self.closeButton];
         

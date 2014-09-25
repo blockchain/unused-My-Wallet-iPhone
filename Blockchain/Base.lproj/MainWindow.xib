@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
@@ -16,9 +17,7 @@
                 <outlet property="busyView" destination="260" id="264"/>
                 <outlet property="mainPasswordTextField" destination="626" id="633"/>
                 <outlet property="mainPasswordView" destination="623" id="634"/>
-                <outlet property="manualIdentifier" destination="587" id="avE-9g-qfe"/>
-                <outlet property="manualPassword" destination="592" id="6ur-us-fJU"/>
-                <outlet property="manualView" destination="585" id="598"/>
+                <outlet property="manualPairView" destination="585" id="z6f-l0-Z4m"/>
                 <outlet property="newAccountView" destination="355" id="373"/>
                 <outlet property="pairingInstructionsView" destination="351" id="374"/>
                 <outlet property="powerButton" destination="271" id="272"/>
@@ -267,7 +266,7 @@
                     <rect key="frame" x="63" y="155" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 1" backgroundImage="D1DD2186-4A86-497B-B063-A19D5CFFD895">
+                    <state key="normal" title="Button 1" backgroundImage="D4DDF47B-4D79-4C37-9778-5226C88D09E5">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -281,7 +280,7 @@
                     <rect key="frame" x="63" y="195" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 2" backgroundImage="D1DD2186-4A86-497B-B063-A19D5CFFD895">
+                    <state key="normal" title="Button 2" backgroundImage="D4DDF47B-4D79-4C37-9778-5226C88D09E5">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -321,7 +320,7 @@
                     <rect key="frame" x="63" y="235" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Button 3" backgroundImage="D1DD2186-4A86-497B-B063-A19D5CFFD895">
+                    <state key="normal" title="Button 3" backgroundImage="D4DDF47B-4D79-4C37-9778-5226C88D09E5">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -384,7 +383,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-236" y="-392"/>
         </view>
-        <view contentMode="scaleToFill" id="585" userLabel="Manual Pair">
+        <view contentMode="scaleToFill" id="585" userLabel="Manual Pair" customClass="BCManualPairView">
             <rect key="frame" x="0.0" y="0.0" width="280" height="360"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -394,6 +393,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                     <connections>
+                        <action selector="didEndWalletIdentifier:" destination="585" eventType="editingDidEnd" id="oBq-b3-icL"/>
                         <outlet property="delegate" destination="3" id="599"/>
                     </connections>
                 </textField>
@@ -403,6 +403,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                     <connections>
+                        <action selector="didEndPassword:" destination="585" eventType="editingDidEnd" id="Un6-96-bEy"/>
                         <outlet property="delegate" destination="3" id="601"/>
                     </connections>
                 </textField>
@@ -438,7 +439,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="manualPairClicked:" destination="3" eventType="touchUpInside" id="2P3-Oi-GIP"/>
+                        <action selector="continueClicked:" destination="585" eventType="touchUpInside" id="FKH-yQ-8td"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Manual Pairing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="qIf-DM-Gtq">
@@ -452,7 +453,11 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="792" y="-366"/>
+            <connections>
+                <outlet property="passwordTextField" destination="592" id="V9f-lP-d6P"/>
+                <outlet property="walletIdentifierTextField" destination="587" id="gUm-Cp-DPi"/>
+            </connections>
+            <point key="canvasLocation" x="818" y="-289"/>
         </view>
         <view contentMode="scaleToFill" id="623" userLabel="Please Login">
             <rect key="frame" x="0.0" y="0.0" width="280" height="308"/>
@@ -800,7 +805,7 @@
         <image name="01-refresh.png" width="24" height="26"/>
         <image name="172-pricetag.png" width="34" height="28"/>
         <image name="573-money.png" width="28" height="24"/>
-        <image name="D1DD2186-4A86-497B-B063-A19D5CFFD895" width="83" height="25">
+        <image name="D4DDF47B-4D79-4C37-9778-5226C88D09E5" width="83" height="25">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

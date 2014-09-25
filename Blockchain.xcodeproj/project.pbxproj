@@ -94,6 +94,7 @@
 		674709F719D2DA3800757D46 /* welcome_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F419D2DA3800757D46 /* welcome_logo@2x.png */; };
 		674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F519D2DA3800757D46 /* welcome_logo@3x.png */; };
 		67470A0419D42B1400757D46 /* BCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67470A0319D42B1400757D46 /* BCWebViewController.m */; };
+		67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67470A0719D43AFE00757D46 /* BCManualPairView.m */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
 		67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */ = {isa = PBXBuildFile; fileRef = 67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
@@ -623,6 +624,8 @@
 		67470A0219D42B1400757D46 /* BCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCWebViewController.h; sourceTree = "<group>"; };
 		67470A0319D42B1400757D46 /* BCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCWebViewController.m; sourceTree = "<group>"; };
 		67470A0519D438E000757D46 /* LocalizationConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationConstants.h; sourceTree = "<group>"; };
+		67470A0619D43AFE00757D46 /* BCManualPairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCManualPairView.h; sourceTree = "<group>"; };
+		67470A0719D43AFE00757D46 /* BCManualPairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCManualPairView.m; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
 		67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet_pre.html; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
@@ -1670,10 +1673,16 @@
 		C9D4B2B2193E032200EDA9EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9F45F8191514D7D600018AED /* MultiValueField.h */,
-				9F45F81A1514D7D600018AED /* MultiValueField.m */,
 				9F61B89C151519EF0083C57A /* AddressBookView.h */,
 				9F61B89D151519EF0083C57A /* AddressBookView.m */,
+				9F0CBAD61513CA2600CD945D /* BCFadeView.h */,
+				9F0CBAD71513CA2600CD945D /* BCFadeView.m */,
+				67470A0619D43AFE00757D46 /* BCManualPairView.h */,
+				67470A0719D43AFE00757D46 /* BCManualPairView.m */,
+				84B601C8197AD03800DA1829 /* BCModalView.h */,
+				84B601C9197AD03800DA1829 /* BCModalView.m */,
+				9F45F8191514D7D600018AED /* MultiValueField.h */,
+				9F45F81A1514D7D600018AED /* MultiValueField.m */,
 				9F91B605151666EB00ACB32D /* NewAccountView.h */,
 				9F91B606151666EB00ACB32D /* NewAccountView.m */,
 				9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */,
@@ -1682,10 +1691,6 @@
 				9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */,
 				9F45F81C1514D81700018AED /* UIButtonPressAndHold.h */,
 				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
-				9F0CBAD61513CA2600CD945D /* BCFadeView.h */,
-				9F0CBAD71513CA2600CD945D /* BCFadeView.m */,
-				84B601C8197AD03800DA1829 /* BCModalView.h */,
-				84B601C9197AD03800DA1829 /* BCModalView.m */,
 				674709EA19D1D14300757D46 /* WelcomeView.h */,
 				674709EB19D1D14300757D46 /* WelcomeView.m */,
 			);
@@ -2031,6 +2036,7 @@
 				2203487919A4D51300611AC3 /* FBGraphObjectPagingLoader.m in Sources */,
 				9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */,
 				9F5F3E57151BED0100128830 /* DataMatrix.mm in Sources */,
+				67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */,
 				9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */,
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				2203488619A4D51300611AC3 /* FBRequestConnection.m in Sources */,

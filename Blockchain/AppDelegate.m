@@ -19,6 +19,7 @@
 #import "TransactionsViewController.h"
 #import "BCWalletWebViewController.h"
 #import "NewAccountView.h"
+#import "BCManualPairView.h"
 #import "NSString+SHA256.h"
 #import "Transaction.h"
 #import "Input.h"
@@ -796,26 +797,6 @@ BOOL showSendCoins = NO;
     return TRUE;
 }
 
-- (IBAction)manualPairClicked:(id)sender {
-    
-    NSString * guid = manualIdentifier.text;
-    NSString * password = manualPassword.text;
-    
-    if ([guid length] != 36) {
-        [app standardNotify:BC_STRING_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER title:BC_STRING_INVALID_IDENTIFIER delegate:nil];
-        return;
-    }
-    
-    [self.wallet loadGuid:guid];
-    
-    self.wallet.password = password;
-    
-    self.wallet.delegate = self;
-    
-    [app closeModalWithTransition:kCATransitionFade];
-}
-
-
 - (IBAction)scanAccountQRCodeclicked:(id)sender
 {
     if ([self isZBarSupported]) {
@@ -841,8 +822,8 @@ BOOL showSendCoins = NO;
     
         }];
     } else {
-        [self showModalWithContent:manualView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
-            manualPassword.text = nil;
+        [self showModalWithContent:manualPairView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+            manualPairView.passwordTextField.text = nil;
         } onResume:nil];
     }
 }
@@ -1061,7 +1042,7 @@ BOOL showSendCoins = NO;
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         // Manually
         if (buttonIndex == 0) {
-            [app showModalWithContent:manualView transition:kCATransitionFromRight isClosable:TRUE];
+            [app showModalWithContent:manualPairView transition:kCATransitionFromRight isClosable:TRUE];
         }
         // QR
         else if (buttonIndex == 1) {

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Qkos Services Ltd. All rights reserved.
 //
 
-#import "NewAccountView.h"
+#import "BCCreateWalletView.h"
 #import "AppDelegate.h"
 #import "BCWebViewController.h"
 
@@ -14,9 +14,9 @@
 
 #define SCROLL_HEIGHT_SMALL_SCREEN 58
 
-@implementation NewAccountView
+@implementation BCCreateWalletView
 
--(void)awakeFromNib {
+- (void)awakeFromNib {
     [activity startAnimating];
     
     // Make sure the button is in front of everything else
@@ -26,48 +26,59 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField*)aTextField {
-    [aTextField resignFirstResponder];
     
-    // If we return from the password confirm textfield, create the account
-    if (aTextField == password2TextField) {
-        [self createAccountClicked:aTextField];
-    }
-    
-    return YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
--(IBAction)didEndEmail:(id)sender
-{
-    [passwordTextField becomeFirstResponder];
+- (void)prepareForModalPresentation {
+    emailTextField.delegate = self;
+    passwordTextField.delegate = self;
+    password2TextField.delegate = self;
 }
 
--(IBAction)didEndPassword1:(id)sender
-{
-    [password2TextField becomeFirstResponder];
+- (void)prepareForModalDismissal {
+    emailTextField.delegate = nil;
+    passwordTextField.delegate = nil;
+    password2TextField.delegate = nil;
 }
 
--(IBAction)didEndPassword2:(id)sender
-{
-    // Do nothing
+- (void)modalWasDismissed {
+    CGRect createButtonFrame = createButton.frame;
+    createButtonFrame.origin.y = self.frame.size.height - createButtonFrame.size.height;
+    createButton.frame = createButtonFrame;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[app.tabViewController responderMayHaveChanged];
-    
     // Scroll up to fit all entry fields on small screens
     if (!IS_568_SCREEN) {
         CGRect frame = self.frame;
         
         frame.origin.y = -SCROLL_HEIGHT_SMALL_SCREEN;
-        self.frame = frame;
+        
+        [UIView animateWithDuration:ANIMATION_DURATION
+                         animations:^{
+                             self.frame = frame;
+                         }
+                         completion:nil];
     }
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [app.tabViewController responderMayHaveChanged];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == emailTextField) {
+        [passwordTextField becomeFirstResponder];
+    }
+    else if (textField == passwordTextField) {
+        [password2TextField becomeFirstResponder];
+    }
+    else {
+        [self createAccountClicked:textField];
+    }
+    
+    return YES;
 }
 
 // Move up create wallet button when keyboard is shown
@@ -75,7 +86,7 @@
 {
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     CGRect createButtonFrame = createButton.frame;
-    createButtonFrame.origin.y = keyboardFrame.size.height + createButtonFrame.size.height + 14 - (!IS_568_SCREEN ? SCROLL_HEIGHT_SMALL_SCREEN : 0);
+    createButtonFrame.origin.y -= keyboardFrame.size.height - (!IS_568_SCREEN ? SCROLL_HEIGHT_SMALL_SCREEN : 0);
     
     [UIView animateWithDuration:ANIMATION_DURATION
                      animations:^{
@@ -84,13 +95,26 @@
                      completion:nil];
 }
 
+// Move create wallet button back down when keyboard is hidden
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    CGRect createButtonFrame = createButton.frame;
+    createButtonFrame.origin.y = self.frame.size.height - createButtonFrame.size.height;
+    [UIView animateWithDuration:ANIMATION_DURATION
+                     animations:^{
+                         createButton.frame = createButtonFrame;
+                     }
+                     completion:nil];
+}
+
 # pragma mark - Wallet Delegate method
--(void)walletJSReady {
+- (void)walletJSReady
+{
     [app.wallet newAccount:self.tmpPassword email:emailTextField.text];
 }
 
 // Get here from New Account and also when manually pairing
--(IBAction)createAccountClicked:(id)sender
+- (IBAction)createAccountClicked:(id)sender
 {
     // Make sure we leave the textfields
     [emailTextField resignFirstResponder];
@@ -102,17 +126,13 @@
         CGRect frame = self.frame;
         
         frame.origin.y = 0;
-        self.frame = frame;
+        
+        [UIView animateWithDuration:ANIMATION_DURATION
+                         animations:^{
+                             self.frame = frame;
+                         }
+                         completion:nil];
     }
-    
-    // Move create wallet button back to original position at bottom of screen
-    CGRect createButtonFrame = createButton.frame;
-    createButtonFrame.origin.y = self.frame.size.height - createButtonFrame.size.height;
-    [UIView animateWithDuration:ANIMATION_DURATION
-                     animations:^{
-                         createButton.frame = createButtonFrame;
-                     }
-                     completion:nil];
     
     self.tmpPassword = passwordTextField.text;
     
@@ -166,7 +186,9 @@
     
     app.wallet.delegate = app;
     
-    [app standardNotify:[NSString stringWithFormat:BC_STRING_DID_CREATE_NEW_ACCOUNT_DETAIL] title:BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE delegate:nil];
+    [app standardNotify:[NSString stringWithFormat:BC_STRING_DID_CREATE_NEW_ACCOUNT_DETAIL]
+                  title:BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE
+               delegate:nil];
 }
 
 -(void)errorCreatingNewAccount:(NSString*)message {

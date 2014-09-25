@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BCModalContentView.h"
 
-@interface WelcomeView : UIView
+@interface BCWelcomeView : BCModalContentView
 
 @property (nonatomic, strong) UIButton *createWalletButton, *existingWalletButton;
 

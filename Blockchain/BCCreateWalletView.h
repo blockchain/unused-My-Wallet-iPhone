@@ -19,19 +19,16 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "BCModalContentView.h"
 #import "Wallet.h"
 
-@interface NewAccountView : UIView <UITextFieldDelegate, WalletDelegate> {
+@interface BCCreateWalletView : BCModalContentView <UITextFieldDelegate, WalletDelegate> {
     IBOutlet UITextField * emailTextField;
     IBOutlet UITextField * passwordTextField;
     IBOutlet UITextField * password2TextField;
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet UIButton * createButton;
 }
-
--(IBAction)didEndEmail:(id)sender;
--(IBAction)didEndPassword1:(id)sender;
--(IBAction)didEndPassword2:(id)sender;
 
 -(IBAction)termsOfServiceClicked:(id)sender;
 -(IBAction)createAccountClicked:(id)sender;

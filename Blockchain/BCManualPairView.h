@@ -7,15 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BCModalContentView.h"
 
-@interface BCManualPairView : UIView {
+@interface BCManualPairView : BCModalContentView <UITextFieldDelegate> {
     IBOutlet UITextField *walletIdentifierTextField;
+    IBOutlet UITextField *passwordTextField;
 }
-
-@property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
-
--(IBAction)didEndWalletIdentifier:(id)sender;
--(IBAction)didEndPassword:(id)sender;
 
 -(IBAction)continueClicked:(id)sender;
 

@@ -43,7 +43,7 @@
 
 #define PIN_PBKDF2_ITERATIONS 1 //This does not need to be large because the key is already 256 bits
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, BCWalletWebViewController, NewAccountView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, BCWalletWebViewController, BCCreateWalletView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
@@ -57,8 +57,8 @@
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
     
-    IBOutlet NewAccountView * newAccountView;
-    IBOutlet UIView * pairingInstructionsView;
+    IBOutlet BCCreateWalletView *newAccountView;
+    IBOutlet BCModalContentView *pairingInstructionsView;
     IBOutlet BCManualPairView *manualPairView;
 
     IBOutlet UIButton * welcomeButton1;

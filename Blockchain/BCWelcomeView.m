@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Qkos Services Ltd. All rights reserved.
 //
 
-#import "WelcomeView.h"
+#import "BCWelcomeView.h"
 #import "AppDelegate.h"
 #import "LocalizationConstants.h"
 
 #define BUTTON_HEIGHT 50
 
-@implementation WelcomeView
+@implementation BCWelcomeView
 
 -(id)init
 {

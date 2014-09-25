@@ -11,20 +11,36 @@
 
 @implementation BCManualPairView
 
--(IBAction)didEndWalletIdentifier:(id)sender
-{
-    [self.passwordTextField becomeFirstResponder];
+- (void)prepareForModalPresentation {
+    walletIdentifierTextField.delegate = self;
+    passwordTextField.delegate = self;
 }
 
--(IBAction)didEndPassword:(id)sender
+- (void)prepareForModalDismissal {
+    walletIdentifierTextField.delegate = nil;
+    passwordTextField.delegate = nil;
+}
+
+- (void)modalWasDismissed {
+    passwordTextField = nil;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self continueClicked:sender];
+    if (textField == walletIdentifierTextField) {
+        [passwordTextField becomeFirstResponder];
+    }
+    else {
+        [self continueClicked:textField];
+    }
+    
+    return YES;
 }
 
 -(IBAction)continueClicked:(id)sender
 {
     NSString * guid = walletIdentifierTextField.text;
-    NSString * password = self.passwordTextField.text;
+    NSString * password = passwordTextField.text;
     
     if ([guid length] != 36) {
         [app standardNotify:BC_STRING_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER title:BC_STRING_INVALID_IDENTIFIER delegate:nil];

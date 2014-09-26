@@ -27,7 +27,7 @@
     //        logo.frame = CGRectMake(79, 18, 163, 46);
     //        [topBarView addSubview:logo];
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, 20, 40, 20)];
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 35)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
     closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

@@ -29,7 +29,7 @@
 //        [topBarView addSubview:logo];
         
         self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.closeButton.frame = CGRectMake(0, 15, 100, 35);
+        self.closeButton.frame = CGRectMake(0, 15, 65, 35);
         [self.closeButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [self.closeButton setTitle:[NSString stringWithFormat:@"❮ %@", BC_STRING_BACK] forState:UIControlStateNormal];
         [self.closeButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];

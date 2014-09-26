@@ -41,7 +41,6 @@
         return FALSE;
     }];
     
-    [selectAddressButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     self.selectedAddress = @"";
 
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
@@ -103,13 +102,11 @@
     if (fromAddressDropDown != nil) {
         [fromAddressDropDown fadeOut];
         [addressBookButton setEnabled:YES];
-        [selectAddressButton setEnabled:YES];
         fromAddressDropDown = nil;
     }
     if (addressBookdropDown != nil) {
         [addressBookdropDown fadeOut];
         [addressBookButton setEnabled:YES];
-        [selectAddressButton setEnabled:YES];
         addressBookdropDown = nil;
     }
 }
@@ -352,21 +349,21 @@
 # pragma mark- kDropDownListView delegate
 
 - (void)DropDownListView:(DropDownListView *)dropdownListView didSelectedIndex:(NSInteger)anIndex {
-    [selectAddressButton setEnabled:YES];
     [addressBookButton setEnabled:YES];
     if (dropdownListView == fromAddressDropDown) {
         if (anIndex > 0) {
             NSString* address = [self.fromAddresses objectAtIndex:anIndex-1];
             NSString * label = [app.wallet labelForAddress:address];
             if (label && ![label isEqualToString:@""]) {
-                [selectAddressButton setTitle:label forState:UIControlStateNormal];
+                [selectAddressTextField setText:label];
             } else {
-                [selectAddressButton setTitle:address forState:UIControlStateNormal];
+                [selectAddressTextField setText:address];
             }
             self.selectedAddress = address;
         } else {
             self.selectedAddress = @"";
-            [selectAddressButton setTitle:@"Any Address" forState:UIControlStateNormal];
+            // TODO i18n
+            [selectAddressTextField setText:@"Any Address"];
         }
     } else if (dropdownListView == addressBookdropDown) {
         [self didSelectAddress: [self.addressBookAddress objectAtIndex:anIndex]];
@@ -385,7 +382,8 @@
 
 #pragma mark - Actions
 
-- (IBAction)selectAddressClicked:(id)sender {
+- (IBAction)selectAddressClicked:(id)sender
+{
     [toField resignFirstResponder];
     [amountField resignFirstResponder];
 
@@ -394,6 +392,7 @@
 
     NSMutableArray* displayedSelectAddress = [[NSMutableArray alloc] init];
     NSMutableArray* displayedSelectAddressLabel = [[NSMutableArray alloc] init];
+    // TODO i18n - also in the nib
     [displayedSelectAddressLabel addObject:@"Any Address"];
     [displayedSelectAddress addObject:@""];
     
@@ -409,8 +408,9 @@
     }
     
     //point below label "From:"
-    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    CGPoint xy = CGPointMake(20, selectAddressTextField.frame.origin.y + selectAddressTextField.frame.size.height + 5);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
+    // TODO i18n
     fromAddressDropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment From:" options:displayedSelectAddressLabel detailsText:displayedSelectAddress xy:xy size:dropDownSize isMultiple:NO];
     fromAddressDropDown.delegate = self;
     [fromAddressDropDown showInView:self.view animated:YES];
@@ -418,11 +418,11 @@
     [fromAddressDropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
 
     [addressBookButton setEnabled:NO];
-    [selectAddressButton setEnabled:NO];
+    [selectAddressTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
 }
 
-
--(IBAction)addressBookClicked:(id)sender {
+- (IBAction)addressBookClicked:(id)sender
+{
     [toField resignFirstResponder];
     [amountField resignFirstResponder];
     
@@ -437,8 +437,9 @@
     }
     
     //point below label "From:"
-    CGPoint xy = CGPointMake(20, fromLabel.frame.origin.y + fromLabel.frame.size.height);
+    CGPoint xy = CGPointMake(20, selectAddressTextField.frame.origin.y + selectAddressTextField.frame.size.height + 5);
     CGSize dropDownSize = CGSizeMake(self.view.frame.size.width-40, 250);
+    // TODO i18n
     addressBookdropDown = [[DropDownListView alloc] initWithTitle:@"Send Payment To:" options:displayedAddressBookAddresses detailsText:displayedAddressBookLabel xy:xy size:dropDownSize isMultiple:NO];
     addressBookdropDown.delegate = self;
     [addressBookdropDown showInView:self.view animated:YES];
@@ -446,10 +447,10 @@
     [addressBookdropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
     
     [addressBookButton setEnabled:NO];
-    [selectAddressButton setEnabled:NO];
 }
 
--(IBAction)QRCodebuttonClicked:(id)sender {
+- (IBAction)QRCodebuttonClicked:(id)sender
+{
     self.readerView = [[ZBarReaderView alloc] init];
     
     [self.readerView start];

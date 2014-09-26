@@ -708,7 +708,9 @@ BOOL showSendCoins = NO;
         onResume();
     }
     
-    [contentView prepareForModalPresentation];
+    if ([contentView respondsToSelector:@selector(prepareForModalPresentation)]) {
+        [contentView prepareForModalPresentation];
+    }
     
     [modalView.myHolderView addSubview:contentView];
     
@@ -933,15 +935,6 @@ BOOL showSendCoins = NO;
     }
     
     [_tabViewController setActiveViewController:_accountViewController];
-}
-
-- (void)showMerchant
-{
-    if (!_merchantViewController) {
-        _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
-    }
-    
-    [_tabViewController setActiveViewController:_merchantViewController animated:TRUE index:-1];
 }
 
 - (void)showSendCoins
@@ -1199,7 +1192,11 @@ BOOL showSendCoins = NO;
 
 - (IBAction)merchantClicked:(UIButton *)sender
 {
-    [self showMerchant];
+    if (!_merchantViewController) {
+        _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
+    }
+    
+    [_tabViewController showViewController:_merchantViewController sender:nil];
 }
 
 - (IBAction)accountSettingsClicked:(UIButton *)sender

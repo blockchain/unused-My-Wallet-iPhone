@@ -15,9 +15,34 @@
 
 @implementation MerchantViewController
 
-
-- (BOOL)webView:(UIWebView *)_webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
+    UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+    [self.view addSubview:topBarView];
+    
+    //        UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"header"]];
+    //        logo.frame = CGRectMake(79, 18, 163, 46);
+    //        [topBarView addSubview:logo];
+    
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, 20, 40, 20)];
+    [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
+    closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [topBarView addSubview:closeButton];
+    
+    didLoadGoogleMaps = FALSE;
+}
+
+- (void)closeButtonClicked:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)webView:(UIWebView *)_webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
     if (navigationType != UIWebViewNavigationTypeOther) {
         if ([[[request URL] host] rangeOfString:@"blockchain.info"].location != NSNotFound) {
             
@@ -37,24 +62,8 @@
     return TRUE;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    app.loadingText = BC_STRING_LOADING_EXTERNAL_PAGE;
-    
-    [app networkActivityStart];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {    
-    [app networkActivityStop];
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [app standardNotify:[error localizedDescription]];
-    
-    [app networkActivityStop];
-}
-
--(void)addCookiesToRequest:(NSMutableURLRequest*)request {
-    
+- (void)addCookiesToRequest:(NSMutableURLRequest*)request
+{
     NSHTTPCookie *no_header_cookie = [NSHTTPCookie cookieWithProperties:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                          @"blockchain.info", NSHTTPCookieDomain,
                                                                          @"\\", NSHTTPCookiePath,  // IMPORTANT!
@@ -77,7 +86,26 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
--(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    app.loadingText = BC_STRING_LOADING_EXTERNAL_PAGE;
+    
+    [app networkActivityStart];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [app networkActivityStop];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [app standardNotify:[error localizedDescription]];
+    
+    [app networkActivityStop];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     DLog(@"LocationManager: didFailWithError: %@", [error description]);
     
@@ -109,11 +137,11 @@
     [self setLocation:51.508663f long:-0.117380f];
 }
 
--(void)loadMap {
-    
+- (void)loadMap
+{
     //Throttle load requests
     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-    if (lastLoadedMap > now-10.0f) {
+    if (lastLoadedMap > now - 10.0f) {
         return;
     }
         
@@ -131,11 +159,13 @@
     [self fetchLocation];
 }
 
--(void)didLoadGoogleMaps {
+- (void)didLoadGoogleMaps
+{
     didLoadGoogleMaps = TRUE;
 }
 
--(void)setLocation:(float)latitude long:(float)longitude {
+- (void)setLocation:(float)latitude long:(float)longitude
+{
     [webView executeJS:@"MerchantMap.setLocation(%f, %f)", latitude, longitude];
     
     [webView executeJS:@"MerchantMap.zoomToOptimimum()"];
@@ -157,46 +187,54 @@
     }
 }
 
--(void)log:(NSString*)message {
+- (void)log:(NSString*)message
+{
     DLog(@"console.log: %@", [message description]);
 }
 
--(IBAction)coffeeClicked:(UIButton*)sender {
+- (IBAction)coffeeClicked:(UIButton*)sender
+{
     [sender setSelected:![sender isSelected]];
     
     [self setFilters];
 }
 
--(IBAction)drinkClicked:(UIButton*)sender {
+- (IBAction)drinkClicked:(UIButton*)sender
+{
     [sender setSelected:![sender isSelected]];
     
     [self setFilters];
 }
 
--(IBAction)foodClicked:(UIButton*)sender {
+- (IBAction)foodClicked:(UIButton*)sender
+{
     [sender setSelected:![sender isSelected]];
     
     [self setFilters];
 }
 
--(IBAction)spendClicked:(UIButton*)sender {
+- (IBAction)spendClicked:(UIButton*)sender
+{
     [sender setSelected:![sender isSelected]];
     
     [self setFilters];
 }
 
--(IBAction)atmClicked:(UIButton*)sender {
+- (IBAction)atmClicked:(UIButton*)sender
+{
     [sender setSelected:![sender isSelected]];
     
     [self setFilters];
 }
 
 //Called From Javascript
--(void)displayError:(NSString*)message {
+- (void)displayError:(NSString*)message
+{
     [app standardNotify:message];
 }
 
--(void)setFilters {
+- (void)setFilters
+{
     int HEADING_CAFE = 1;
     int HEADING_BAR = 2;
     int HEADING_RESTAURANT = 3;
@@ -235,7 +273,8 @@
     [webView executeJS:@"MerchantMap.setFilters(%@)", jsString];
 }
 
--(void)fetchLocation {
+- (void)fetchLocation
+{
     locationManager = [[CLLocationManager alloc] init];
     
     locationManager.delegate = self;
@@ -249,7 +288,8 @@
     [locationManager startUpdatingLocation];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     if (!didLoadGoogleMaps) {
@@ -257,27 +297,13 @@
     }
 }
 
--(void)refresh {
+- (void)refresh
+{
     if (didLoadGoogleMaps) {
         [self fetchLocation];
     } else {
         [self loadMap];
     }
 }
-
--(void)viewDidLoad {
-    [super viewDidLoad];
-        
-    didLoadGoogleMaps = FALSE;
-    
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
-    }
-}
-
-
 
 @end

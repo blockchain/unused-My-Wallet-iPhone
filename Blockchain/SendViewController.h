@@ -36,7 +36,7 @@
 
     
     IBOutlet UILabel *fromLabel;
-    IBOutlet UIButton *selectAddressButton;
+    IBOutlet UITextField *selectAddressTextField;
     IBOutlet UIButton *addressBookButton;
     IBOutlet UIButton * sendPaymentButton;
     IBOutlet UIView * labelAddressView;

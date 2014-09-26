@@ -29,7 +29,7 @@
 //        [topBarView addSubview:logo];
         
         self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.closeButton.frame = CGRectMake(0, 22, 80, 20);
+        self.closeButton.frame = CGRectMake(0, 15, 100, 35);
         [self.closeButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [self.closeButton setTitle:[NSString stringWithFormat:@"❮ %@", BC_STRING_BACK] forState:UIControlStateNormal];
         [self.closeButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -64,9 +64,13 @@
 -(IBAction)closeModalClicked:(id)sender {
     if (self.isClosable) {
         // Not pretty but works
-        [self.myHolderView.subviews[0] prepareForModalDismissal];
+        if ([self.myHolderView.subviews[0] respondsToSelector:@selector(prepareForModalDismissal)]) {
+            [self.myHolderView.subviews[0] prepareForModalDismissal];
+        }
+        if ([self.myHolderView.subviews[0] respondsToSelector:@selector(modalWasDismissed)]) {
+            [self.myHolderView.subviews[0] modalWasDismissed];
+        }
         [app closeModalWithTransition:kCATransitionMoveIn];
-        [self.myHolderView.subviews[0] modalWasDismissed];
     }
 }
 

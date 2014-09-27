@@ -1,11 +1,11 @@
 /* Class = "IBUIButton"; normalTitle = "Send Payment"; ObjectID = "4"; */
-"4.normalTitle" = "Betaling";
+"4.normalTitle" = "Verzenden";
 
 /* Class = "IBUILabel"; text = "From:"; ObjectID = "7"; */
-"7.text" = "Van:";
+"7.text" = "Van";
 
 /* Class = "IBUILabel"; text = "To:"; ObjectID = "13"; */
-"13.text" = "Naar:";
+"13.text" = "Aan";
 
 /* Class = "IBUITextField"; text = "0.00"; ObjectID = "52"; */
 "52.text" = "0.00";
@@ -32,7 +32,7 @@
 "6zi-8R-Tmt.normalTitle" = "BTC";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "7ho-GV-ikp"; */
-"7ho-GV-ikp.text" = "Hoeveelheid:";
+"7ho-GV-ikp.text" = "Bedrag";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
 "8LN-Tc-WVh.normalTitle" = "Sluiten";

@@ -1,12 +1,11 @@
-
 /* Class = "IBUIButton"; normalTitle = "Send Payment"; ObjectID = "4"; */
-"4.normalTitle" = "Enviar pago";
+"4.normalTitle" = "Enviar";
 
 /* Class = "IBUILabel"; text = "From:"; ObjectID = "7"; */
-"7.text" = "De:";
+"7.text" = "De";
 
 /* Class = "IBUILabel"; text = "To:"; ObjectID = "13"; */
-"13.text" = "Para:";
+"13.text" = "Para";
 
 /* Class = "IBUITextField"; text = "0.00"; ObjectID = "52"; */
 "52.text" = "0.00";
@@ -27,19 +26,20 @@
 "65.text" = "Dirección:";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "67"; */
-"67.text" = "Etiqueta de dirección";
+"67.text" = "Dirección De La Etiqueta";
 
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "6zi-8R-Tmt"; */
 "6zi-8R-Tmt.normalTitle" = "BTC";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "7ho-GV-ikp"; */
-"7ho-GV-ikp.text" = "Monto:";
+"7ho-GV-ikp.text" = "Cantidad";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
 "8LN-Tc-WVh.normalTitle" = "Cerrar";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
-"Zgn-Wx-Uwx.text" = "Espere por favor";
+"Zgn-Wx-Uwx.text" = "Por Favor Espere";
 
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
-"aKC-Q2-phD.text" = "Envío de pago";
+"aKC-Q2-phD.text" = "El Envío De Pago";
+

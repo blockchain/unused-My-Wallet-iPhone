@@ -8,7 +8,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "AppDelegate.h"
-#import "TransactionsViewController.h"
 #import "MultiAddressResponse.h"
 #import "Wallet.h"
 #import "BCFadeView.h"

@@ -27,13 +27,15 @@
 @class Wallet;
 
 @interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate, kDropDownListViewDelegate> {
+    IBOutlet UIButton *balanceBigButton;
+    IBOutlet UIButton *balanceSmallButton;
+    
     IBOutlet UITextField * toFieldContainerField;
     IBOutlet UITextField * toField;
     IBOutlet UITextField * amountField;
-   
+    
     IBOutlet UIView * amountKeyboardAccessoryView;
     IBOutlet UILabel * currencyConversionLabel;
-
     
     IBOutlet UILabel *fromLabel;
     IBOutlet UITextField *selectAddressTextField;

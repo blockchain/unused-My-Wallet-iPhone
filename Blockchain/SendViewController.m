@@ -327,6 +327,16 @@
 
 #pragma mark - Textfield Delegates
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (textField == selectAddressTextField) {
+        [self selectAddressClicked:textField];
+        return NO;  // Hide both keyboard and blinking cursor.
+    }
+    
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == amountField) {
@@ -440,7 +450,6 @@
     [fromAddressDropDown SetBackGroundDropDwon_R:components[0]*255 G:components[1]*255 B:components[2]*255 alpha:CGColorGetAlpha(COLOR_BLOCKCHAIN_BLUE.CGColor)];
     
     [addressBookButton setEnabled:NO];
-    [selectAddressTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
 }
 
 - (IBAction)addressBookClicked:(id)sender

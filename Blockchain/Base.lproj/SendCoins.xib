@@ -50,7 +50,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
-                        <action selector="selectAddressClicked:" destination="-1" eventType="editingDidBegin" id="grk-O0-9un"/>
+                        <outlet property="delegate" destination="-1" id="9q4-vm-2LR"/>
                     </connections>
                 </textField>
                 <view contentMode="scaleToFill" id="UFr-og-Lbi">

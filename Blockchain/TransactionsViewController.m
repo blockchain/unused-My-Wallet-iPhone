@@ -19,11 +19,13 @@
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [data.transactions count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
     
 	TransactionTableCell * cell = (TransactionTableCell*)[tableView dequeueReusableCellWithIdentifier:@"transaction"];
@@ -41,15 +43,26 @@
     return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+//- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//     return nil;
+//}
+
+// TODO
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    TransactionTableCell *cell = (TransactionTableCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[WebROOT stringByAppendingFormat:@"tx/%@", cell.transaction.myHash]]]];
+    [app showModalWithContent:webView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
 	[app.tabViewController responderMayHaveChanged];
 }
 
--(void)drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
 	//Setup
 	CGContextRef context = UIGraphicsGetCurrentContext();	
@@ -59,8 +72,9 @@
     CGContextFillRect(context, CGRectMake(0, 0, 320, 15));
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    float baseHeight = 85.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    float baseHeight = 75.0f;
     
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
@@ -89,34 +103,32 @@
     }
     
     if (!isfinite(baseHeight)) {        
-        return 85.0f;
+        return 75.0f;
     }
     
     return baseHeight;
 }
 
--(UITableView*)tableView {
+- (UITableView*)tableView
+{
     return tableView;
 }
 
--(void)setText {
+- (void)setText
+{
     if ([data.transactions count] == 0) {
         [self.view addSubview:noTransactionsView];
     } else {
         [noTransactionsView removeFromSuperview];
     }
     
-    NSString * finalBalanceString = [app formatMoney:data.final_balance];
-    
-    //If the balance label is likely to overfla the transaction count hide it
-//    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
-    
-    [transactionCountLabel setText:[NSString stringWithFormat:BC_STRING_TRANSACTIONS_COUNT, data.n_transactions]];
-    
-    [finalBalanceLabel setText:finalBalanceString];
+    // Balance
+    [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+    [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
 }
 
--(void)setLatestBlock:(LatestBlock *)_latestBlock {
+- (void)setLatestBlock:(LatestBlock *)_latestBlock
+{
     latestBlock = _latestBlock;
     
     if (latestBlock && latestBlock.blockIndex != _latestBlock.blockIndex) {
@@ -124,7 +136,8 @@
     }
 }
 
--(void)reload {
+- (void)reload
+{
     [self setText];
     
     [tableView reloadData];
@@ -132,22 +145,31 @@
 
 #pragma mark - View lifecycle
 
--(void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    [finalBalanceLabel setMinimumScaleFactor:.5f];
-    [finalBalanceLabel setAdjustsFontSizeToFitWidth:YES];
-    
+    // TODO Adapt for iphone6 and 6 plus - check other instances in all ViewControllers, ideally a better solution without hardcoded size and checking for screen size
     if (APP_IS_IPHONE5) {
         self.view.frame = CGRectMake(0, 0, 320, 450);
-    } else {
+    }
+    else {
         self.view.frame = CGRectMake(0, 0, 320, 361);
     }
     
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    
+    [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    
     [self reload];
 }
-
 
 @end

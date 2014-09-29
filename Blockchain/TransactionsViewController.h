@@ -24,8 +24,10 @@
 
 @interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UITableView * tableView;
-    IBOutlet UILabel * transactionCountLabel;
-    IBOutlet UILabel * finalBalanceLabel;
+
+    IBOutlet UIButton *balanceBigButton;
+    IBOutlet UIButton *balanceSmallButton;
+    
     IBOutlet UIView * noTransactionsView;
     
     MulitAddressResponse * data;

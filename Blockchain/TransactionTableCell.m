@@ -13,6 +13,7 @@
 #import "Input.h"
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
+#import "BCWebViewController.h"
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
@@ -20,27 +21,23 @@
 
 @synthesize transaction;
 
--(void)awakeFromNib {    
+- (void)awakeFromNib
+{
     labels = [[NSMutableArray alloc] initWithCapacity:5];
 }
 
-
--(IBAction)transactionHashClicked:(UIButton *)button {
-    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
-}
-
--(void)reload {   
-        
+- (void)reload
+{
     if (transaction == NULL)
         return;
     
-    float y = 36;
- 
+    float y = 30;
+    
     if (transaction.time > 0)  {
-        [hashButton setHidden:FALSE];
-        [hashButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction.time] shortHandDateWithTime] forState:UIControlStateNormal];
+        [dateButton setHidden:FALSE];
+        [dateButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction.time] shortHandDateWithTime] forState:UIControlStateNormal];
     } else {
-        [hashButton setHidden:TRUE];
+        [dateButton setHidden:TRUE];
     }
     
     [btcButton setTitle:[app formatMoney:transaction.result] forState:UIControlStateNormal];
@@ -50,18 +47,18 @@
     for (UILabel * label in labels) {
         [label removeFromSuperview];
     }
-
+    
     //Payment Received
     if (transaction.result >= 0) {
         
         if (transaction.result == 0) {
-            [typeImageView setImage:[UIImage imageNamed:@"payment_moved.png"]];        
+            [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_grey.png"] forState:UIControlStateNormal];
+            [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
         } else {
-            [typeImageView setImage:[UIImage imageNamed:@"payment_received.png"]];
+            [transactionTypeLabel setText:BC_STRING_TRANSACTION_RECEIVED];
             [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_green.png"] forState:UIControlStateNormal];
+            [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
         }
         
         NSArray * inputs = [transaction inputsNotFromAddresses:[[app transactionsViewController].data addresses]];
@@ -73,9 +70,12 @@
         //Show the inouts i.e. where the coins are from
         for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
-            [label setFont:[UIFont systemFontOfSize:12]];
-            [label setTextColor:hashButton.titleLabel.textColor];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(15, y, 285, 20)];
+            [label setFont:[UIFont systemFontOfSize:14]];
+            [label setTextColor:[UIColor blackColor]];
+            [label setTextAlignment:NSTextAlignmentRight];
+            label.adjustsFontSizeToFitWidth = YES;
+            [label setMinimumScaleFactor:.5f];
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
                 [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [inputs count] - i]];
@@ -89,7 +89,7 @@
                 else
                     [label setText:[[input prev_out] addr]];
             }
-
+            
             [labels addObject:label];
             [self addSubview:label];
             
@@ -100,33 +100,36 @@
         NSArray * outputs = [transaction outputsNotToAddresses:[app transactionsViewController].data.addresses];
         
         if ([outputs count] == 0) {
-            [typeImageView setImage:[UIImage imageNamed:@"payment_moved.png"]];
+            [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_grey.png"] forState:UIControlStateNormal];
+            [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
         } else {
-            [typeImageView setImage:[UIImage imageNamed:@"payment_sent.png"]];
+            [transactionTypeLabel setText:BC_STRING_TRANSACTION_SENT];
             [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
+            [btcButton setBackgroundColor:COLOR_BUTTON_RED];
         }
         
         //Show the addresses involved anyway
         if ([outputs count] == 0) {
             outputs = transaction.outputs;
         }
-
+        
         // limit to MAX_ADDRESS_ROWS_PER_CELL outputs
         for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 286, 20)];
-            [label setFont:[UIFont systemFontOfSize:12]];
-            [label setTextColor:hashButton.titleLabel.textColor];
-
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(15, y, 285, 20)];
+            [label setFont:[UIFont systemFontOfSize:14]];
+            [label setTextColor:[UIColor blackColor]];
+            [label setTextAlignment:NSTextAlignmentRight];
+            label.adjustsFontSizeToFitWidth = YES;
+            [label setMinimumScaleFactor:.5f];
+            
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
                 [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [outputs count] - i]];
             } else {
                 Output *output = [outputs objectAtIndex:i];
                 NSString * addressString = [app.wallet labelForAddress:[output addr]];
-
+                
                 if ([addressString length] > 0)
                     [label setText:addressString];
                 else
@@ -139,58 +142,67 @@
             y += 22;
         }
     }
-
+    
     y += 5;
     
-    [typeImageView sizeToFit];
-
-    float x = typeImageView.frame.origin.x+typeImageView.frame.size.width+5;
+    [transactionTypeLabel sizeToFit];
     
-    [hashButton setFrame:CGRectMake(x, hashButton.frame.origin.y, self.frame.size.width - x - 5, hashButton.frame.size.height)];
+    float x = transactionTypeLabel.frame.origin.x + transactionTypeLabel.frame.size.width + 5;
+    
+    [dateButton setFrame:CGRectMake(x, dateButton.frame.origin.y, self.frame.size.width - x - 20, dateButton.frame.size.height)];
     [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, y, btcButton.frame.size.width, btcButton.frame.size.height)];
     
-    [confirmationsButton setFrame:CGRectMake(confirmationsButton.frame.origin.x, y, confirmationsButton.frame.size.width, confirmationsButton.frame.size.height)];
-
+    [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, y, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];
 }
 
--(IBAction)btcbuttonclicked:(id)sender {
-    [app toggleSymbol];
-}
-
--(void)seLatestBlock:(LatestBlock*)block {
-    
+- (void)seLatestBlock:(LatestBlock*)block
+{
     // Hide confirmations if we're offline
     if (!block) {
-        [confirmationsButton setHidden:TRUE];
+        [confirmationsLabel setHidden:TRUE];
         return;
     }
-
+    
     int confirmations = block.height - transaction.block_height + 1;
-
+    
     if (confirmations <= 0 || transaction.block_height == 0) {
-        [confirmationsButton setHidden:FALSE];
-
-        [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_red.png"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:BC_STRING_UNCONFIRMED forState:UIControlStateNormal];
+        [confirmationsLabel setHidden:FALSE];
         
-       
-    } else if (confirmations < 100) { 
-        [confirmationsButton setHidden:FALSE];
-
-        [confirmationsButton setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
-        [confirmationsButton setTitle:[NSString stringWithFormat:BC_STRING_COUNT_CONFIRMATIONS, confirmations] forState:UIControlStateNormal];
-        
-    } else {
-        [confirmationsButton setHidden:YES];
+        [confirmationsLabel setBackgroundColor:COLOR_BUTTON_RED];
+        confirmationsLabel.text = BC_STRING_UNCONFIRMED;
+    }
+    else if (confirmations < 100) {
+        [confirmationsLabel setHidden:FALSE];
+        confirmationsLabel.text = [NSString stringWithFormat:BC_STRING_COUNT_CONFIRMATIONS, confirmations];
+    }
+    else {
+        [confirmationsLabel setHidden:YES];
     }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
+#pragma mark button interactions
+
+- (IBAction)transactionHashClicked:(UIButton *)button
+{
+    // TODO clean this up and we should probably have a uiwebViewController that tracks page loads and sets the back button control accordingly - clicking back goes back until we are at the first page again, then closes it again
+    // TODO - also remove the website nav bar - like pushWebViewController does
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]]]];
+    [app showModalWithContent:webView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
+    
+//    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
+}
+
+- (IBAction)btcbuttonclicked:(id)sender
+{
+    [app toggleSymbol];
+}
 
 @end

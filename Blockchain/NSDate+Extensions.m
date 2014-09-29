@@ -22,6 +22,7 @@ NSDateFormatter * dayOfMonthFormatter = nil;
 NSDateFormatter * monthFormatter = nil;
 NSDateFormatter * timeFormatter = nil;
 NSDateFormatter * shortHandDateFormatterWithTime = nil;
+NSDateFormatter * shortHandDateFormatterWithTimeCurrentYear = nil;
 
 @implementation NSDate (Extensions)
 
@@ -29,9 +30,22 @@ NSDateFormatter * shortHandDateFormatterWithTime = nil;
 -(NSString*)shortHandDateWithTime {
 	if (shortHandDateFormatterWithTime == nil) {
 		shortHandDateFormatterWithTime = [[NSDateFormatter alloc] init];
-		[shortHandDateFormatterWithTime setDateFormat:@"EE d MMMM yyyy - hh:mm aa"];
+		[shortHandDateFormatterWithTime setDateFormat:@"EE d MMMM yyyy @ hh:mm aa"];
 	}
-	
+    
+    if (shortHandDateFormatterWithTimeCurrentYear == nil) {
+        shortHandDateFormatterWithTimeCurrentYear = [[NSDateFormatter alloc] init];
+        [shortHandDateFormatterWithTimeCurrentYear setDateFormat:@"EE d MMMM @ hh:mm aa"];
+    }
+    
+    // Include the year only if if the date is not in the current year
+    NSDateComponents *components1 = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit) fromDate:[NSDate date]];
+    NSDateComponents *components2 = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit) fromDate:self];
+    
+    if ([components1 year] == [components2 year]) {
+        	return [shortHandDateFormatterWithTimeCurrentYear stringFromDate:self];
+    }
+    
 	return [shortHandDateFormatterWithTime stringFromDate:self];
 }
 

@@ -43,3 +43,6 @@
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
 "aKC-Q2-phD.text" = "Envio De Pagamento";
 
+/* Class = "IBUITextField"; text = "Any Address"; ObjectID = "zyc-E3-FOM"; */
+"zyc-E3-FOM.text" = "Qualquer endereço";
+

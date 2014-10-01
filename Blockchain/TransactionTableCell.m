@@ -191,13 +191,8 @@
 
 - (IBAction)transactionHashClicked:(UIButton *)button
 {
-    // TODO clean this up and we should probably have a uiwebViewController that tracks page loads and sets the back button control accordingly - clicking back goes back until we are at the first page again, then closes it again
-    // TODO - also remove the website nav bar - like pushWebViewController does
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]]]];
-    [app showModalWithContent:webView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
-    
-//    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
+    // TODO uiwebViewController that tracks page loads and sets the back button control accordingly. Animated from bottom and close button.
+    [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
 }
 
 - (IBAction)btcbuttonclicked:(id)sender

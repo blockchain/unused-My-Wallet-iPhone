@@ -168,9 +168,7 @@
 -(IBAction)termsOfServiceClicked:(id)sender
 {
     BCWebViewController *webViewController = [[BCWebViewController alloc] init];
-    NSString *url = [NSString stringWithFormat:@"%@terms_of_service", WebROOT];
-    
-    [webViewController loadURL:url];
+    [webViewController loadURL:[WebROOT stringByAppendingString:@"terms_of_service"]];
     
     [app.tabViewController presentViewController:webViewController animated:YES completion:nil];
 }

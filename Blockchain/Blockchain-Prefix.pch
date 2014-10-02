@@ -26,6 +26,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define COLOR_BUTTON_RED UIColorFromRGB(0xe88787)
 #define COLOR_BUTTON_GREEN UIColorFromRGB(0x7eb858)
 #define COLOR_BUTTON_GRAY UIColorFromRGB(0xebebeb)
+#define COLOR_BUTTON_DARK_GRAY UIColorFromRGB(0xb9b9b9)
 
 #define APP_IS_IPHONE5                      ( [[UIScreen mainScreen] bounds].size.height == 568 )
 

@@ -66,10 +66,10 @@
     [super viewDidLoad];
 	
     if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
+        self.view.frame = CGRectMake(0, 0, 320, 449);
     }
     else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
+        self.view.frame = CGRectMake(0, 0, 320, 360);
     }
 
     // Remove Shadow

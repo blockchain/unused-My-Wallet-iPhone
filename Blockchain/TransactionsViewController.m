@@ -151,10 +151,10 @@
     
     // TODO Adapt for iphone6 and 6 plus - check other instances in all ViewControllers, ideally a better solution without hardcoded size and checking for screen size
     if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
+        self.view.frame = CGRectMake(0, 0, 320, 449);
     }
     else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
+        self.view.frame = CGRectMake(0, 0, 320, 360);
     }
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

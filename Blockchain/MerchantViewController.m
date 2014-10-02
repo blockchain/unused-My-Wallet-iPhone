@@ -19,6 +19,13 @@
 {
     [super viewDidLoad];
     
+    if (APP_IS_IPHONE5) {
+        self.view.frame = CGRectMake(0, 0, 320, 449);
+    }
+    else {
+        self.view.frame = CGRectMake(0, 0, 320, 360);
+    }
+    
     UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
     topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBarView];

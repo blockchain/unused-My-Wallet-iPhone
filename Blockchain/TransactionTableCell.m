@@ -70,12 +70,11 @@
         //Show the inouts i.e. where the coins are from
         for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(15, y, 285, 20)];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
             [label setFont:[UIFont systemFontOfSize:14]];
             [label setTextColor:[UIColor blackColor]];
-            [label setTextAlignment:NSTextAlignmentRight];
+            [label setTextAlignment:NSTextAlignmentCenter];
             label.adjustsFontSizeToFitWidth = YES;
-            [label setMinimumScaleFactor:.5f];
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
                 [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [inputs count] - i]];
@@ -117,12 +116,10 @@
         // limit to MAX_ADDRESS_ROWS_PER_CELL outputs
         for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(15, y, 285, 20)];
-            [label setFont:[UIFont systemFontOfSize:14]];
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
             [label setTextColor:[UIColor blackColor]];
-            [label setTextAlignment:NSTextAlignmentRight];
+            [label setTextAlignment:NSTextAlignmentCenter];
             label.adjustsFontSizeToFitWidth = YES;
-            [label setMinimumScaleFactor:.5f];
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
                 [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [outputs count] - i]];

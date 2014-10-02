@@ -262,7 +262,7 @@
         return FALSE;
     }
     
-    return ![[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeStringForJS]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeStringForJS]] boolValue];
 }
 
 

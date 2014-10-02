@@ -42,14 +42,14 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else {
         self.view.frame = CGRectMake(0, 0, 320, 360);
     }
-
+    
     [self reload];
 }
 
 -(void)reload {
     self.activeKeys = [app.wallet activeAddresses];
     self.archivedKeys = [app.wallet archivedAddresses];
-
+    
     if ([activeKeys count] == 0) {
         [self.view addSubview:noaddressesView];
     } else {
@@ -88,13 +88,13 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 -(NSString*)uriURL {
     
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
-
+    
     app.btcFormatter.usesGroupingSeparator = NO;
     NSString *amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]];
     app.btcFormatter.usesGroupingSeparator = YES;
-
+    
     amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
-
+    
     return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
 }
 
@@ -106,7 +106,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 -(uint64_t)getInputAmountInSatoshi {
     NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
-
+    
     if (displayingLocalSymbol) {
         return app.latestResponse.symbol_local.conversion * [requestedAmountString doubleValue];
     } else {
@@ -244,11 +244,11 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
         return;
     }
-        
+    
     NSString * addr = self.clickedAddress;
-
+    
     [app.wallet setLabel:labelTextField.text ForAddress:addr];
-        
+    
     [self reload];
     
     [app closeModalWithTransition:kCATransitionFade];
@@ -256,7 +256,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 -(IBAction)copyAddressClicked:(id)sender {
     NSString * addr = self.clickedAddress;
-
+    
     UIView *v = (UIView *)sender;
     
     UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240, 40)];
@@ -269,7 +269,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     l.adjustsFontSizeToFitWidth = YES;
     l.center = CGPointMake(v.center.x, v.center.y + 40);
     l.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
-
+    
     l.alpha = 0;
     [UIView animateWithDuration:.1f animations:^{
         l.alpha = 1;
@@ -369,21 +369,21 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
     //configure addthis -- (this step is optional)
-	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
     
     [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
     [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
     
-	//Facebook connect settings
-	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
-	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
-	
-	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
-	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
-	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
-
+    //Facebook connect settings
+    [AddThisSDK setFacebookAPIKey:@"289188934490223"];
+    [AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
+    
+    [AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+    [AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+    [AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
+    
     
     
     [app showModalWithContent:requestCoinsView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
@@ -400,12 +400,12 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 -(IBAction)labelAddressClicked:(id)sender {
     NSString * addr =  self.clickedAddress;
     NSString * label =  [app.wallet labelForAddress:addr];
-
+    
     if (label && ![label isEqualToString:@""])
         labelAddressLabel.text = label;
     else
         labelAddressLabel.text = addr;
-
+    
     [app showModalWithContent:labelAddressView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
@@ -416,10 +416,10 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 }
 
 -(IBAction)archiveAddressClicked:(id)sender {
-
+    
     NSString * addr = self.clickedAddress;
     NSInteger tag =  [app.wallet tagForAddress:addr];
-
+    
     if (tag == 2)
         [app.wallet unArchiveAddress:addr];
     else
@@ -441,7 +441,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 # pragma mark - UITextField delegates
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[app.tabViewController responderMayHaveChanged];
+    [app.tabViewController responderMayHaveChanged];
     self.tapGesture = [[UITapGestureRecognizer alloc]
                        initWithTarget:self
                        action:@selector(dismissKeyboard)];
@@ -529,26 +529,45 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ReceiveTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
+    NSString * addr =  [self getAddress:indexPath];
+    
+    Boolean isWatchOnlyAddress = [app.wallet isWatchOnlyAddress:addr];
+    
+    ReceiveTableCell *cell;
+    if (isWatchOnlyAddress) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"receiveWatchOnly"];
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"receiveNormal"];
+    }
     
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        
+        if (isWatchOnlyAddress) {
+            // Show the watch only tag and resize the label and balance labels so there is enough space
+            cell.labelLabel.frame = CGRectMake(20, 11, 148, 21);
+            cell.balanceLabel.frame = CGRectMake(254, 11, 83, 21);
+            
+            [cell.watchLabel setHidden:FALSE];
+        }
+        else {
+            // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
+            cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);
+            cell.balanceLabel.frame = CGRectMake(217, 11, 120, 21);
+            
+            [cell.watchLabel setHidden:TRUE];
+        }
     }
-
-    NSString * addr =  [self getAddress:indexPath];
+    
     NSString * label =  [app.wallet labelForAddress:addr];
     
     if (label)
         cell.labelLabel.text = label;
-    else 
+    else
         cell.labelLabel.text = BC_STRING_NO_LABEL;
     
     cell.addressLabel.text = addr;
-    
-    if ([app.wallet isWatchOnlyAddress:addr])
-        [cell.watchLabel setHidden:TRUE];
-    else
-        [cell.watchLabel setHidden:FALSE];
     
     uint64_t balance = [app.wallet getAddressBalance:addr];
     
@@ -557,7 +576,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     [cell setSelectedBackgroundView:v];
     
     cell.balanceLabel.text = [app formatMoney:balance];
- 
+    
     return cell;
 }
 

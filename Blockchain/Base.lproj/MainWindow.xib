@@ -261,7 +261,7 @@
                     <rect key="frame" x="63" y="155" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" title="Button 1" backgroundImage="96CA1308-4F6D-4047-9B83-9C1A98C47746">
+                    <state key="normal" title="Button 1" backgroundImage="669A8035-5462-413B-BEF8-98E765957977">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -275,7 +275,7 @@
                     <rect key="frame" x="63" y="195" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" title="Button 2" backgroundImage="96CA1308-4F6D-4047-9B83-9C1A98C47746">
+                    <state key="normal" title="Button 2" backgroundImage="669A8035-5462-413B-BEF8-98E765957977">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -315,7 +315,7 @@
                     <rect key="frame" x="63" y="235" width="154" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" title="Button 3" backgroundImage="96CA1308-4F6D-4047-9B83-9C1A98C47746">
+                    <state key="normal" title="Button 3" backgroundImage="669A8035-5462-413B-BEF8-98E765957977">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted">
@@ -763,7 +763,7 @@
         </imageView>
     </objects>
     <resources>
-        <image name="96CA1308-4F6D-4047-9B83-9C1A98C47746" width="83" height="25">
+        <image name="669A8035-5462-413B-BEF8-98E765957977" width="83" height="25">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

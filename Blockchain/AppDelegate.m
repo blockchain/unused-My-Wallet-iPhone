@@ -79,7 +79,9 @@ BOOL showSendCoins = NO;
     self.wallet.delegate = self;
     
     // Send email when exceptions are caught
+#ifdef DEBUG
     NSSetUncaughtExceptionHandler(&HandleException);
+#endif
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
         self.loadingText = [notification object];

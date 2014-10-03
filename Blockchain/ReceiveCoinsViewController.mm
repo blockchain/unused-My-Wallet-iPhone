@@ -115,7 +115,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 }
 
 -(void)doCurrencyConversion {
-    uint64_t amount = SATOSHI;
+    uint64_t amount = 0;
     
     if ([requestAmountTextField.text length] > 0) {
         amount = [self getInputAmountInSatoshi];

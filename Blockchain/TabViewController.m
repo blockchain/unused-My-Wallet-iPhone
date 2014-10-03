@@ -24,6 +24,7 @@ CGPoint arrowPositions[3] = {
 
 @synthesize oldViewController;
 @synthesize activeViewController;
+@synthesize contentView;
 
 - (void) keyboardWillShow:(NSNotification *)note
 {

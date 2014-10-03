@@ -11,21 +11,24 @@
 
 @implementation BCManualPairView
 
-- (void)prepareForModalPresentation {
+- (void)prepareForModalPresentation
+{
     walletIdentifierTextField.delegate = self;
     passwordTextField.delegate = self;
 }
 
-- (void)prepareForModalDismissal {
+- (void)prepareForModalDismissal
+{
     walletIdentifierTextField.delegate = nil;
     passwordTextField.delegate = nil;
 }
 
-- (void)modalWasDismissed {
+- (void)modalWasDismissed
+{
     passwordTextField = nil;
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == walletIdentifierTextField) {
         [passwordTextField becomeFirstResponder];
@@ -37,7 +40,7 @@
     return YES;
 }
 
--(IBAction)continueClicked:(id)sender
+- (IBAction)continueClicked:(id)sender
 {
     NSString * guid = walletIdentifierTextField.text;
     NSString * password = passwordTextField.text;
@@ -52,8 +55,6 @@
     app.wallet.password = password;
     
     app.wallet.delegate = app;
-    
-    [app closeModalWithTransition:kCATransitionFade];
 }
 
 @end

@@ -31,6 +31,7 @@
 static PEViewController *EnterController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
+    // TODO i18n
 	c.prompt = @"Please enter your pin";
 	c.title = @"";
     
@@ -44,6 +45,7 @@ static PEViewController *EnterController()
 static PEViewController *NewController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
+    // TODO i18n
 	c.prompt = @"Please enter a new pin";
 	c.title = @"";
 
@@ -57,6 +59,7 @@ static PEViewController *NewController()
 static PEViewController *VerifyController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
+    // TODO i18n
 	c.prompt = @"Confirm your pin";
 	c.title = @"";
 
@@ -87,7 +90,8 @@ static PEViewController *VerifyController()
 	PEViewController *c = EnterController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
-	c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
+    // TODO i18n
+    c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
     n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = NO;
@@ -120,6 +124,13 @@ static PEViewController *VerifyController()
         [pinController.activityIndicator stopAnimating];
 }
 
+- (void)reset
+{
+    [self setActivityIndicatorAnimated:NO];
+    
+    [pinController resetPin];
+}
+
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller
 {
 	switch (pinStage) {
@@ -134,6 +145,7 @@ static PEViewController *VerifyController()
                         self.viewControllers = [NSArray arrayWithObject:c];
                     }
                 } else {
+                    // TODO i18n
                     controller.prompt = @"Incorrect pin. Please retry.";
                     [controller resetPin];
                 }

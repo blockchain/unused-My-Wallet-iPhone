@@ -33,8 +33,7 @@
 #import "NSData+Hex.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Reachability.h"
-
-// Welcome View Modal
+#import "SideMenuViewController.h"
 #import "BCWelcomeView.h"
 
 #define CURTAIN_IMAGE_TAG 123
@@ -88,8 +87,16 @@ BOOL showSendCoins = NO;
     }];
     
     _window.backgroundColor = [UIColor whiteColor];
+    
+    // Side menu
+    _slidingViewController = [[ECSlidingViewController alloc] init];
+    _slidingViewController.topViewController = _tabViewController;
+    _slidingViewController.underLeftViewController = [[SideMenuViewController alloc] init];
+    _window.rootViewController = _slidingViewController;
+    
     [_window makeKeyAndVisible];
-    [_window setRootViewController:_tabViewController];
+    
+    // Default view in TabViewController: transactionsViewController
     [_tabViewController setActiveViewController:_transactionsViewController];
     [_window.rootViewController.view addSubview:busyView];
     
@@ -109,7 +116,7 @@ BOOL showSendCoins = NO;
         [self showPinModalAsView:YES];
     } else {
         // No PIN set we need to ask for the main password
-        [self showMainPasswordModalOrWelcomeMenu];
+        [self showPasswordModal];
     }
     
     /* Migrate Password and PIN from NSUserDefaults (for users updating from old version) */
@@ -245,6 +252,8 @@ BOOL showSendCoins = NO;
     });
 }
 
+# pragma mark - Wallet.js callbacks
+
 - (void)walletDidLoad
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -336,19 +345,14 @@ BOOL showSendCoins = NO;
 
 - (void)walletFailedToDecrypt
 {
-    [self showMainPasswordModalOrWelcomeMenu];
+    [self showPasswordModal];
 }
 
-- (void)showMainPasswordModalOrWelcomeMenu
+- (void)showPasswordModal
 {
-    if ([self guid]) {
-        [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
-        
-        [mainPasswordTextField becomeFirstResponder];
-    } else {
-        // Called when bad password is entered when manually pairing
-        [app showMenus];
-    }
+    [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
+    
+    [mainPasswordTextField becomeFirstResponder];
 }
 
 - (void) beginBackgroundUpdateTask
@@ -622,8 +626,15 @@ BOOL showSendCoins = NO;
 {
     [modalView removeFromSuperview];
     CATransition *animation = [CATransition animation];
+    // There are two types of transitions: movement based and fade in/out. The movement based ones can have a subType to set which direction the movement is in. In case the transition parameter is a direction, we use the MoveIn transition and the transition parameter as the direction, otherwise we use the transition parameter as the transition type.
     [animation setDuration:ANIMATION_DURATION];
-    [animation setType:transition];
+    if (transition != kCATransitionFade) {
+        [animation setType:kCATransitionMoveIn];
+        [animation setSubtype:transition];
+    }
+    else {
+        [animation setType:transition];
+    }
     
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [[_window layer] addAnimation:animation forKey:@"HideModal"];
@@ -722,7 +733,7 @@ BOOL showSendCoins = NO;
         
         if (closeType == ModalCloseTypeBack) {
             [animation setType:kCATransitionMoveIn];
-            [animation setSubtype:kCATransitionFromLeft];
+            [animation setSubtype:kCATransitionFromRight];
         }
         else {
             [animation setType:kCATransitionFade];
@@ -852,7 +863,7 @@ BOOL showSendCoins = NO;
             
         }];
     } else {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeNone onDismiss:nil onResume:nil];
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
     }
 }
 
@@ -957,7 +968,7 @@ BOOL showSendCoins = NO;
 - (void)closePINModal:(BOOL)animated
 {
     // There are two different ways the pinModal is displayed: as a subview of tabViewController (on start) and as a viewController. This checks which one it is and dismisses accordingly
-    if ([self.pinEntryViewController.view isDescendantOfView:self.tabViewController.view]) {
+    if ([self.pinEntryViewController.view isDescendantOfView:_window.rootViewController.view]) {
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.pinEntryViewController.view.alpha = 0;
         } completion:^(BOOL finished) {
@@ -1000,35 +1011,30 @@ BOOL showSendCoins = NO;
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
 }
 
-// Modal menu
-- (void)showMenus
+- (void)toggleSideMenu
 {
-    [self showWelcomeWithCloseButton:[self guid] && [self sharedKey]];
-}
-
-#warning split this up into different methods if possible
-- (void)showWelcomeWithCloseButton:(BOOL)isClosable
-{
-    [welcomeButton3 setHidden:![self isPINSet]];
-    [welcomeButton3 setTitle:BC_STRING_CHANGE_PIN forState:UIControlStateNormal];
-    
-    // Wallet paired, but no password
-    if ([self guid] && [self sharedKey]) {
-        welcomeLabel.text = BC_STRING_WELCOME_BACK;
-        welcomeInstructionsLabel.text = @"";
-        [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
-        [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
-        [welcomeButton2 setTitle:BC_STRING_FORGET_DETAILS forState:UIControlStateNormal];
+    if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
+        _tabViewController.contentView.userInteractionEnabled = NO;
+        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 66, _window.frame.size.width, _window.frame.size.height)];
+        grayOverlayView.backgroundColor = [UIColor blackColor];
+        grayOverlayView.tag = 200;
+        grayOverlayView.alpha = 0.0;
+        [_tabViewController.view addSubview:grayOverlayView];
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            grayOverlayView.alpha = 0.4;
+        }];
+        [_slidingViewController anchorTopViewToRightAnimated:YES];
     }
-}
-
-- (void)showSideMenu
-{
-    welcomeLabel.text = BC_STRING_OPTIONS;
-    welcomeInstructionsLabel.text = BC_STRING_OPEN_ACCOUNT_SETTINGS;
-    [welcomeButton1 setTitle:BC_STRING_ACCOUNT_SETTINGS forState:UIControlStateNormal];
-    [welcomeButton1 setBackgroundImage:[UIImage imageNamed:@"button_blue"] forState:UIControlStateNormal];
-    [welcomeButton2 setTitle:BC_STRING_LOGOUT forState:UIControlStateNormal];
+    else {
+        UIView *grayOverlayView = [_tabViewController.view viewWithTag:200];
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            grayOverlayView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [grayOverlayView removeFromSuperview];
+        }];
+        _tabViewController.contentView.userInteractionEnabled = YES;
+        [_slidingViewController resetTopViewAnimated:YES];
+    }
 }
 
 - (void)showWelcome
@@ -1077,7 +1083,22 @@ BOOL showSendCoins = NO;
 
 - (IBAction)powerClicked:(id)sender
 {
-    [self showSideMenu];
+    [self toggleSideMenu];
+}
+
+- (IBAction)newsClicked:(id)sender
+{
+    // TODO
+}
+
+- (IBAction)accountSettingsClicked:(id)sender
+{
+    [app showAccountSettings];
+}
+
+- (IBAction)changePINClicked:(id)sender
+{
+    [self changePIN];
 }
 
 - (void)changePIN
@@ -1092,23 +1113,12 @@ BOOL showSendCoins = NO;
     [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
-//Change PIN
-- (IBAction)welcomeButton3Clicked:(id)sender
+- (IBAction)logoutClicked:(id)sender
 {
-    [self changePIN];
-}
-
-// TODO check that this is still needed
-- (IBAction)welcomeButton1Clicked:(id)sender
-{
-    //Wallet is already paired
-    if ([self guid] || [self sharedKey])  {
-        [app closeModalWithTransition:kCATransitionFade];
-        
-        [app showAccountSettings];
-    } else {
-        assert(0);
-    }
+    [self clearPin];
+    [self logout];
+    
+    [self showPasswordModal];
 }
 
 - (void)confirmForgetWalletWithBlock:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock
@@ -1124,46 +1134,22 @@ BOOL showSendCoins = NO;
     
 }
 
-- (IBAction)welcomeButton2Clicked:(id)sender
-{
-    // Logout
-    if (self.wallet.password) {
-        [self clearPin];
-        
-        [self logout];
-        
-        [app closeModalWithTransition:kCATransitionFade];
-        
-        [self showMainPasswordModalOrWelcomeMenu]; // misleading method name
-    }
-    // Forget wallet
-    else if ([self guid] && [self sharedKey]) {
-        
-        // confirm forget wallet
-        
-        [self confirmForgetWalletWithBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // Forget Wallet Cancelled
-            if (buttonIndex == 0) {
-            }
-            // Forget Wallet Confirmed
-            else if (buttonIndex == 1) {
-                DLog(@"forgetting wallet");
-                [app closeModalWithTransition:kCATransitionFade];
-                [self forgetWallet];
-                [app showWelcome];
-            }
-        }];
-        
-    }
-    // TODO was do pair
-    else {
-        assert(0);
-    }
-}
-
 - (IBAction)forgetWalletClicked:(id)sender
 {
-    [self welcomeButton2Clicked:sender];
+    // confirm forget wallet
+    [self confirmForgetWalletWithBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        // Forget Wallet Cancelled
+        if (buttonIndex == 0) {
+        }
+        // Forget Wallet Confirmed
+        else if (buttonIndex == 1) {
+            DLog(@"forgetting wallet");
+            [app closeModalWithTransition:kCATransitionFade];
+            [self forgetWallet];
+            [app showWelcome];
+        }
+    }];
+    
 }
 
 - (IBAction)receiveCoinClicked:(UIButton *)sender
@@ -1191,7 +1177,7 @@ BOOL showSendCoins = NO;
         _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
     }
     
-    [_tabViewController showViewController:_merchantViewController sender:nil];
+    [_tabViewController presentViewController:_merchantViewController animated:YES completion:nil];
 }
 
 -(IBAction)QRCodebuttonClicked:(id)sender
@@ -1207,11 +1193,6 @@ BOOL showSendCoins = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [_sendViewController QRCodebuttonClicked:sender];
     });
-}
-
-- (IBAction)accountSettingsClicked:(UIButton *)sender
-{
-    [self showAccountSettings];
 }
 
 - (IBAction)mainPasswordClicked:(id)sender
@@ -1236,8 +1217,6 @@ BOOL showSendCoins = NO;
     }
     
     mainPasswordTextField.text = nil;
-    
-    [app closeModalWithTransition:kCATransitionFade];
 }
 
 - (IBAction)refreshClicked:(id)sender
@@ -1301,14 +1280,12 @@ BOOL showSendCoins = NO;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR
                                                         message:BC_STRING_NO_INTERNET_CONNECTION
                                                        delegate:nil
-                                              cancelButtonTitle:BC_STRING_CLOSE_APP
+                                              cancelButtonTitle:BC_STRING_OK
                                               otherButtonTitles:nil];
         
         alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // Close App
-            UIApplication *app = [UIApplication sharedApplication];
-            
-            [app performSelector:@selector(suspend)];
+            // Reset the pin entry field
+            [self.pinEntryViewController reset];
         };
         
         [alert show];
@@ -1332,7 +1309,7 @@ BOOL showSendCoins = NO;
         if (buttonIndex == 0) {
             [self closePINModal:YES];
             
-            [self showMainPasswordModalOrWelcomeMenu];
+            [self showPasswordModal];
         } else if (buttonIndex == 1) {
             [self pinEntryController:self.pinEntryViewController shouldAcceptPin:self.lastEnteredPIN callback:self.pinViewControllerCallback];
         }
@@ -1364,7 +1341,7 @@ BOOL showSendCoins = NO;
         
         [self clearPin];
         
-        [self showMainPasswordModalOrWelcomeMenu];
+        [self showPasswordModal];
         
         [self closePINModal:YES];
     } else if ([code integerValue] == PIN_API_STATUS_PIN_INCORRECT) {

@@ -11,7 +11,6 @@
 @interface TabViewcontroller : UIViewController  {
 	IBOutlet UIView * header;
 	IBOutlet UIView * footer;
-	IBOutlet UIView * contentView;
 	IBOutlet UIImageView * arrow;
     IBOutlet UIButton *sendButton;
     IBOutlet UIButton *homeButton;
@@ -32,6 +31,7 @@
 
 @property(nonatomic, retain) UIViewController * activeViewController;
 @property(nonatomic, retain) UIViewController * oldViewController;
+@property(nonatomic, retain) IBOutlet UIView * contentView;
 @property(nonatomic, assign) BOOL backButtonEnabled;
 @property(nonatomic, assign) BOOL nextButtonEnabled;
 @property(nonatomic, assign) BOOL submitButtonEnabled;

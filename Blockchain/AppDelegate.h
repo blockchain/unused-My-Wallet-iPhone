@@ -29,6 +29,7 @@
 #import "ZBarSDK.h"
 #import "PEPinEntryController.h"
 #import "BCModalView.h"
+#import "ECSlidingViewController.h"
 
 #define SATOSHI 100000000
 #define LOADING_TEXT_NOTIFICAITON_KEY @"SetLoadingText"
@@ -60,15 +61,9 @@
     IBOutlet BCCreateWalletView *newAccountView;
     IBOutlet BCModalContentView *pairingInstructionsView;
     IBOutlet BCManualPairView *manualPairView;
-
-    IBOutlet UIButton * welcomeButton1;
-    IBOutlet UIButton * welcomeButton2;
-    IBOutlet UIButton * welcomeButton3;
     
     BOOL validateSecondPassword;
     IBOutlet UILabel * secondPasswordDescriptionLabel;
-    IBOutlet UILabel * welcomeLabel;
-    IBOutlet UILabel * welcomeInstructionsLabel;
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     
@@ -80,6 +75,7 @@
     BOOL symbolLocal;
 }
 
+@property (strong, nonatomic) IBOutlet ECSlidingViewController *slidingViewController;
 @property (strong, nonatomic) IBOutlet TabViewcontroller * tabViewController;
 @property (strong, nonatomic) IBOutlet TransactionsViewController * transactionsViewController;
 @property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
@@ -119,7 +115,7 @@
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showMenus;
+- (void)toggleSideMenu;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
@@ -164,7 +160,6 @@
 -(IBAction)sendCoinsClicked:(UIButton *)sender;
 -(IBAction)merchantClicked:(UIButton *)sender;
 -(IBAction)QRCodebuttonClicked:(id)sender;
--(IBAction)accountSettingsClicked:(UIButton *)sender;
 -(IBAction)forgetWalletClicked:(id)sender;
 -(IBAction)powerClicked:(id)sender;
 -(IBAction)scanAccountQRCodeclicked:(id)sender;
@@ -173,10 +168,10 @@
 -(IBAction)refreshClicked:(id)sender;
 -(IBAction)balanceTextClicked:(id)sender;
 
-//WelcomeMenu
--(IBAction)welcomeButton1Clicked:(id)sender;
--(IBAction)welcomeButton2Clicked:(id)sender;
--(IBAction)welcomeButton3Clicked:(id)sender;
+- (IBAction)newsClicked:(id)sender;
+- (IBAction)accountSettingsClicked:(id)sender;
+- (IBAction)changePINClicked:(id)sender;
+- (IBAction)logoutClicked:(id)sender;
 
 -(void)setStatus;
 -(void)clearPin;

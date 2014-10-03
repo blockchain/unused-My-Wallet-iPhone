@@ -12,7 +12,7 @@
 
 #define IS_568_SCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
 
-#define SCROLL_HEIGHT_SMALL_SCREEN 58
+#define SCROLL_HEIGHT_SMALL_SCREEN 65
 
 @implementation BCCreateWalletView
 

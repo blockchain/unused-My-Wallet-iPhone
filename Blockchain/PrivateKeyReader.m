@@ -8,6 +8,7 @@
 
 #import "PrivateKeyReader.h"
 #import "AppDelegate.h"
+#import "BCModalView.h"
 
 @implementation PrivateKeyReader
 
@@ -18,7 +19,7 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView closeType:ModalCloseTypeClose onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;

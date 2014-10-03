@@ -39,22 +39,21 @@
     [cell seLatestBlock:self.latestBlock];
     
     [cell reload];
+    
+    // Selected cell color
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+    [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+    [cell setSelectedBackgroundView:v];
 
     return cell;
 }
 
-//- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//     return nil;
-//}
-
-// TODO
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     TransactionTableCell *cell = (TransactionTableCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[WebROOT stringByAppendingFormat:@"tx/%@", cell.transaction.myHash]]]];
-    [app showModalWithContent:webView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
+    [cell transactionHashClicked:nil];
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

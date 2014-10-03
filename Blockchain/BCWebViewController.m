@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "LocalizationConstants.h"
 
-#define TOP_BAR_HEIGHT 50
+#define TOP_BAR_HEIGHT 66
 
 @interface BCWebViewController ()
 

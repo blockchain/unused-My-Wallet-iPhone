@@ -41,8 +41,8 @@
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Amount:";
 
-/* Class = "IBUITextField"; text = ".1"; ObjectID = "103"; */
-"103.text" = ".1";
+/* Class = "IBUITextField"; text = ".01"; ObjectID = "103"; */
+"103.text" = ".01";
 
 /* Class = "IBUILabel"; text = "5 BTC = $10"; ObjectID = "120"; */
 "120.text" = "5 BTC = $10";

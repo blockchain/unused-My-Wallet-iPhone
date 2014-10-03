@@ -26,15 +26,15 @@
         self.view.frame = CGRectMake(0, 0, 320, 360);
     }
     
-    UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 66)];
     topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBarView];
     
-    //        UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"header"]];
-    //        logo.frame = CGRectMake(79, 18, 163, 46);
-    //        [topBarView addSubview:logo];
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
+    logo.frame = CGRectMake(88, 22, 143, 40);
+    [topBarView addSubview:logo];
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 35)];
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
     closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

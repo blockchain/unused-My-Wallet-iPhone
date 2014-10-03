@@ -128,8 +128,8 @@
 -(void)swipeRight;
 
 // BC Modal
-- (void)showModalWithContent:(UIView*)contentView isClosable:(BOOL)_isClosable;
-- (void)showModalWithContent:(UIView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
 - (void)closeModalWithTransition:(NSString *)transition;
 
 -(NSDictionary*)parseURI:(NSString*)string;
@@ -163,6 +163,7 @@
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;
 -(IBAction)merchantClicked:(UIButton *)sender;
+-(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)accountSettingsClicked:(UIButton *)sender;
 -(IBAction)forgetWalletClicked:(id)sender;
 -(IBAction)powerClicked:(id)sender;

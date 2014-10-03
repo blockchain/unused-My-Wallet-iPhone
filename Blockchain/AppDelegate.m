@@ -340,7 +340,7 @@ BOOL showSendCoins = NO;
 - (void)showMainPasswordModalOrWelcomeMenu
 {
     if ([self guid]) {
-        [self showModalWithContent:mainPasswordView isClosable:FALSE];
+        [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
         
         [mainPasswordTextField becomeFirstResponder];
     } else {
@@ -424,7 +424,7 @@ BOOL showSendCoins = NO;
         [app showWelcome];
         
         if ([self guid] && [self sharedKey]) {
-            [self showModalWithContent:mainPasswordView isClosable:FALSE];
+            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
         }
     }
 }
@@ -457,7 +457,7 @@ BOOL showSendCoins = NO;
 {
     self.webViewController = [[BCWalletWebViewController alloc] init];
     
-    [_tabViewController setActiveViewController:_webViewController animated:YES index:-1];
+    [_tabViewController setActiveViewController:_webViewController animated:NO index:-1];
     
     [_webViewController loadURL:url];
 }
@@ -531,7 +531,7 @@ BOOL showSendCoins = NO;
     
     secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
     
-    [app showModalWithContent:secondPasswordView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -565,7 +565,7 @@ BOOL showSendCoins = NO;
     
     validateSecondPassword = TRUE;
     
-    [app showModalWithContent:secondPasswordView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -650,17 +650,12 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)showModalWithContent:(BCModalContentView*)contentView isClosable:(BOOL)_isClosable
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType
 {
-    [self showModalWithContent:contentView transition:kCATransitionFade isClosable:_isClosable onDismiss:nil onResume:nil];
+    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType onDismiss:nil onResume:nil];
 }
 
-- (void)showModalWithContent:(BCModalContentView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable
-{
-    [self showModalWithContent:contentView transition:transition isClosable:_isClosable onDismiss:nil onResume:nil];
-}
-
-- (void)showModalWithContent:(BCModalContentView*)contentView transition:(NSString *)transition isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
 {
     // This modal is already being displayed in another view
     if ([contentView superview]) {
@@ -676,7 +671,7 @@ BOOL showSendCoins = NO;
     if (modalView) {
         [modalView removeFromSuperview];
         
-        if (modalView.isClosable) {
+        if (modalView.closeType != ModalCloseTypeNone) {
             if (modalView.onDismiss) {
                 modalView.onDismiss();
                 modalView.onDismiss = nil;
@@ -700,7 +695,7 @@ BOOL showSendCoins = NO;
     
     // Show modal
     modalView = [[BCModalView alloc] init];
-    modalView.isClosable = _isClosable;
+    [modalView setModalCloseType:closeType];
     self.modalView.onDismiss = onDismiss;
     self.modalView.onResume = onResume;
     if (onResume) {
@@ -708,7 +703,7 @@ BOOL showSendCoins = NO;
     }
     
     if ([contentView respondsToSelector:@selector(prepareForModalPresentation)]) {
-        [contentView prepareForModalPresentation];
+        [(BCModalContentView *)contentView prepareForModalPresentation];
     }
     
     [modalView.myHolderView addSubview:contentView];
@@ -723,13 +718,12 @@ BOOL showSendCoins = NO;
         CATransition *animation = [CATransition animation];
         [animation setDuration:ANIMATION_DURATION];
         
-        // There are two types of transitions: movement based and fade in/out. The movement based ones can have a subType to set which direction the movement is in. In case the transition parameter is a direction, we use the MoveIn transition and the transition parameter as the direction, otherwise we use the transition parameter as the transition type.
-        if (transition == kCATransitionFromBottom || transition == kCATransitionFromLeft || transition == kCATransitionFromTop || transition == kCATransitionFromRight) {
+        if (closeType == ModalCloseTypeBack) {
             [animation setType:kCATransitionMoveIn];
-            [animation setSubtype:transition];
+            [animation setSubtype:kCATransitionFromLeft];
         }
         else {
-            [animation setType:transition];
+            [animation setType:kCATransitionFade];
         }
         
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
@@ -856,7 +850,7 @@ BOOL showSendCoins = NO;
             
         }];
     } else {
-        [self showModalWithContent:manualPairView transition:kCATransitionFade isClosable:TRUE onDismiss:nil onResume:nil];
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeNone onDismiss:nil onResume:nil];
     }
 }
 
@@ -1040,7 +1034,7 @@ BOOL showSendCoins = NO;
     BCWelcomeView *welcomeView = [[BCWelcomeView alloc] init];
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
-    [app showModalWithContent:welcomeView transition:kCATransitionFade isClosable:NO onDismiss:^{
+    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone onDismiss:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     } onResume:^{
@@ -1051,7 +1045,7 @@ BOOL showSendCoins = NO;
 
 - (void)showCreateWallet:(id)sender
 {
-    [app showModalWithContent:newAccountView transition:kCATransitionFromRight isClosable:TRUE onDismiss:nil onResume:nil];
+    [app showModalWithContent:newAccountView closeType:ModalCloseTypeBack];
 }
 
 - (void)showPairWallet:(id)sender
@@ -1065,11 +1059,11 @@ BOOL showSendCoins = NO;
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         // Manually
         if (buttonIndex == 0) {
-            [app showModalWithContent:manualPairView transition:kCATransitionFromRight isClosable:TRUE];
+            [app showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
         }
         // QR
         else if (buttonIndex == 1) {
-            [app showModalWithContent:pairingInstructionsView transition:kCATransitionFromRight isClosable:TRUE];
+            [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack];
         }
     };
     
@@ -1196,6 +1190,21 @@ BOOL showSendCoins = NO;
     }
     
     [_tabViewController showViewController:_merchantViewController sender:nil];
+}
+
+-(IBAction)QRCodebuttonClicked:(id)sender
+{
+    if (_tabViewController.activeViewController == _sendViewController) {
+        [_sendViewController QRCodebuttonClicked:sender];
+        
+        return;
+    }
+    
+    [self showSendCoins];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_sendViewController QRCodebuttonClicked:sender];
+    });
 }
 
 - (IBAction)accountSettingsClicked:(UIButton *)sender

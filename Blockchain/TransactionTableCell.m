@@ -14,6 +14,7 @@
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
 #import "BCWebViewController.h"
+#import "BCWalletWebViewController.h"
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
@@ -117,6 +118,7 @@
         for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
+            [label setFont:[UIFont systemFontOfSize:14]];
             [label setTextColor:[UIColor blackColor]];
             [label setTextAlignment:NSTextAlignmentCenter];
             label.adjustsFontSizeToFitWidth = YES;
@@ -165,11 +167,13 @@
     if (confirmations <= 0 || transaction.block_height == 0) {
         [confirmationsLabel setHidden:FALSE];
         
-        [confirmationsLabel setBackgroundColor:COLOR_BUTTON_RED];
+        confirmationsLabel.textColor = [UIColor redColor];
         confirmationsLabel.text = BC_STRING_UNCONFIRMED;
     }
     else if (confirmations < 100) {
         [confirmationsLabel setHidden:FALSE];
+        
+        confirmationsLabel.textColor = [UIColor darkGrayColor];
         confirmationsLabel.text = [NSString stringWithFormat:BC_STRING_COUNT_CONFIRMATIONS, confirmations];
     }
     else {

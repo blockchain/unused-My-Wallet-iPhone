@@ -47,7 +47,6 @@ CGPoint arrowPositions[3] = {
 
 // Move contentview up when keyboard is covering the first responder
 // Useful on 3.5 inch screens
-// TODO should replace this or fix it to adapt to iOS 8
 - (void)responderMayHaveChanged
 {
     UIView * responder = [contentView findFirstResponder];
@@ -266,8 +265,17 @@ CGPoint arrowPositions[3] = {
 
 - (void)moveArrow
 {
-    if (desiredIndex == selectedIndex)
+    if (desiredIndex == selectedIndex) {
+        // Makes sure the original button is highlighted on start
+        if (selectedIndex == 0)
+            sendButton.highlighted = YES;
+        else if (selectedIndex == 1)
+            homeButton.highlighted = YES;
+        else
+            receiveButton.highlighted = YES;
+        
         return;
+    }
     else if (desiredIndex > selectedIndex) {
         ++selectedIndex;
     } else {
@@ -281,6 +289,19 @@ CGPoint arrowPositions[3] = {
     [UIView setAnimationDidStopSelector:@selector(arrowAnimationStopped)];
     arrow.frame = CGRectMake(arrowPositions[selectedIndex].x, arrowPositions[selectedIndex].y, arrow.frame.size.width, arrow.frame.size.height);
     [UIView commitAnimations];
+    
+    // Highlight the button that was clicked after the arrow animation is done
+    sendButton.highlighted = NO;
+    homeButton.highlighted = NO;
+    receiveButton.highlighted = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(arrowStepDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (selectedIndex == 0)
+            sendButton.highlighted = YES;
+        else if (selectedIndex == 1)
+            homeButton.highlighted = YES;
+        else
+            receiveButton.highlighted = YES;
+    });
 }
 
 - (IBAction)backClicked:(id)sender

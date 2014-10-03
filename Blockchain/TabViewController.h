@@ -13,6 +13,9 @@
 	IBOutlet UIView * footer;
 	IBOutlet UIView * contentView;
 	IBOutlet UIImageView * arrow;
+    IBOutlet UIButton *sendButton;
+    IBOutlet UIButton *homeButton;
+    IBOutlet UIButton *receiveButton;
 
 	IBOutlet UIButton * nextButton;
 	IBOutlet UIButton * backButton;

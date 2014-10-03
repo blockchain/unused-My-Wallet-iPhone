@@ -149,6 +149,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
     
     qrCodeImageView.image = image;
+    qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self doCurrencyConversion];
 }
@@ -386,7 +387,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     
     
-    [app showModalWithContent:requestCoinsView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     [requestAmountTextField becomeFirstResponder];
@@ -406,7 +407,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         labelAddressLabel.text = addr;
     
-    [app showModalWithContent:labelAddressView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     
@@ -470,9 +471,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 #pragma mark - UITableview Delegates
 
-- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
+- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
     NSInteger tag =  [app.wallet tagForAddress:addr];
     NSString *label =  [app.wallet labelForAddress:addr];
@@ -484,7 +484,10 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
     
-    [app showModalWithContent:optionsModalView isClosable:TRUE];
+    [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose onDismiss:^() {
+        // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
+        [optionsModalView removeFromSuperview];
+    } onResume:nil];
     
     if (label)
         optionsTitleLabel.text = label;
@@ -492,6 +495,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         optionsTitleLabel.text = BC_STRING_BITCOIN_ADDRESS;
     
     optionsAddressLabel.text = addr;
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -571,6 +576,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     uint64_t balance = [app.wallet getAddressBalance:addr];
     
+    // Selected cell color
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
     [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
     [cell setSelectedBackgroundView:v];

@@ -8,6 +8,7 @@
 
 #import "PairingCodeParser.h"
 #import "AppDelegate.h"
+#import "BCModalView.h"
 
 @implementation PairingCodeParser
 
@@ -36,7 +37,7 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView closeType:ModalCloseTypeBack onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;

@@ -154,7 +154,7 @@
         
         sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
         
-        [app showModalWithContent:sendProgressModal transition:kCATransitionFade isClosable:FALSE onDismiss:^() {
+        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeClose onDismiss:^() {
             [app.wallet cancelTxSigning];
         } onResume:nil];
     };
@@ -487,7 +487,7 @@
     
     [self.readerView setReaderDelegate:self];
     
-    [app showModalWithContent:self.readerView transition:kCATransitionFade isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:self.readerView closeType:ModalCloseTypeClose onDismiss:^() {
         [self.readerView stop];
         
         self.readerView = nil;

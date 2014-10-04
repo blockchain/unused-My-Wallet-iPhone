@@ -45,7 +45,7 @@
         
         self.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
         
-        self.myHolderView = [[UIView alloc] initWithFrame:CGRectMake(0, 20, window.frame.size.width, window.frame.size.height - 20)];
+        self.myHolderView = [[UIView alloc] initWithFrame:CGRectMake(0, 66, window.frame.size.width, window.frame.size.height - 66)];
         [self addSubview:self.myHolderView];
         
         [self bringSubviewToFront:topBarView];
@@ -59,27 +59,15 @@
     self.closeType = closeType;
     
     if (closeType == ModalCloseTypeBack) {
-        // The close button is inside a UIView (the top bar)
-        [self.backButton.superview setHidden:NO];
         [self.backButton setHidden:NO];
     }
     else if (closeType == ModalCloseTypeClose) {
-        // The close button is inside a UIView (the top bar)
-        [self.closeButton.superview setHidden:NO];
         [self.closeButton setHidden:NO];
     }
     else {
-        [self.closeButton.superview setHidden:YES];
-        [self.backButton.superview setHidden:YES];
-        [self.closeButton.superview setHidden:YES];
-    }
-    
-    // If it is closable, move the content view further down to accomodate the close button with bar
-    if (closeType != ModalCloseTypeNone) {
-        CGRect frame = self.myHolderView.frame;
-        frame.origin.y += 46;
-        frame.size.height -= 46;
-        self.myHolderView.frame = frame;
+        [self.closeButton setHidden:YES];
+        [self.backButton setHidden:YES];
+        [self.closeButton setHidden:YES];
     }
 }
 

@@ -154,7 +154,7 @@
         
         sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
         
-        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeClose onDismiss:^() {
+        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone onDismiss:^() {
             [app.wallet cancelTxSigning];
         } onResume:nil];
     };
@@ -171,6 +171,7 @@
         sendProgressModalText.text = BC_STRING_FINISHED_SIGNING_INPUTS;
     };
     
+    // TODO this does not always get called on successfull transaction...
     listener.on_success = ^() {
         [app standardNotify:BC_STRING_PAYMENT_SENT title:BC_STRING_SUCCESS delegate:nil];
         

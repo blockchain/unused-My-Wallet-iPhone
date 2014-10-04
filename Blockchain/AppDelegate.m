@@ -187,7 +187,6 @@ BOOL showSendCoins = NO;
     }
     else {
         [_window.rootViewController.view addSubview:busyView];
-        //        [_window bringSubviewToFront:busyView];
     }
 }
 

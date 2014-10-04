@@ -260,7 +260,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     UIView *v = (UIView *)sender;
     
-    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240, 40)];
+    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
     [[v superview] addSubview:l];
     
     l.textAlignment = NSTextAlignmentCenter;

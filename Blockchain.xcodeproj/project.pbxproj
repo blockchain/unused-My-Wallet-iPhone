@@ -130,12 +130,6 @@
 		678AD65119D5AA7500E9A778 /* contacts_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64B19D5AA7500E9A778 /* contacts_icon@2x.png */; };
 		678AD65219D5AA7500E9A778 /* contacts_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
-		67E9674619DF20F200305358 /* ECPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9673A19DF20F200305358 /* ECPercentDrivenInteractiveTransition.m */; };
-		67E9674719DF20F200305358 /* ECSlidingAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9673C19DF20F200305358 /* ECSlidingAnimationController.m */; };
-		67E9674819DF20F200305358 /* ECSlidingInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9673F19DF20F200305358 /* ECSlidingInteractiveTransition.m */; };
-		67E9674919DF20F200305358 /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9674119DF20F200305358 /* ECSlidingSegue.m */; };
-		67E9674A19DF20F200305358 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9674319DF20F200305358 /* ECSlidingViewController.m */; };
-		67E9674B19DF20F200305358 /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9674519DF20F200305358 /* UIViewController+ECSlidingViewController.m */; };
 		67E9674E19DF285000305358 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E9674D19DF285000305358 /* SideMenuViewController.m */; };
 		67E9675B19DF46A900305358 /* lock_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9674F19DF46A900305358 /* lock_icon.png */; };
 		67E9675C19DF46A900305358 /* lock_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9675019DF46A900305358 /* lock_icon@2x.png */; };
@@ -151,13 +145,19 @@
 		67E9676619DF46A900305358 /* settings_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9675A19DF46A900305358 /* settings_icon@3x.png */; };
 		67E9676D19E31F9100305358 /* marker_atm_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676719E31F9100305358 /* marker_atm_off@2x.png */; };
 		67E9676E19E31F9100305358 /* marker_cafe_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676819E31F9100305358 /* marker_cafe_off@2x.png */; };
-		67E9677019E31F9100305358 /* marker_drink_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676A19E31F9100305358 /* marker_drink_off@2x.png */; };
 		67E9677119E31F9100305358 /* marker_eat_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676B19E31F9100305358 /* marker_eat_off@2x.png */; };
 		67E9677219E31F9100305358 /* marker_spend_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676C19E31F9100305358 /* marker_spend_off@2x.png */; };
 		67E9677619E320D100305358 /* marker_atm_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9677319E320D100305358 /* marker_atm_off.png */; };
-		67E9677719E320D100305358 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9677419E320D100305358 /* marker_drink_off.png */; };
 		67E9677819E320D100305358 /* marker_spend_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9677519E320D100305358 /* marker_spend_off.png */; };
 		67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */ = {isa = PBXBuildFile; fileRef = 67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */; };
+		67EE1DBB19E3309500DBBFC9 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EE1DB919E3309500DBBFC9 /* marker_drink_off.png */; };
+		67EE1DBC19E3309500DBBFC9 /* marker_drink_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EE1DBA19E3309500DBBFC9 /* marker_drink_off@2x.png */; };
+		67EE1DCA19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DBE19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m */; };
+		67EE1DCB19E3325900DBBFC9 /* ECSlidingAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC019E3325900DBBFC9 /* ECSlidingAnimationController.m */; };
+		67EE1DCC19E3325900DBBFC9 /* ECSlidingInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC319E3325900DBBFC9 /* ECSlidingInteractiveTransition.m */; };
+		67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC519E3325900DBBFC9 /* ECSlidingSegue.m */; };
+		67EE1DCE19E3325900DBBFC9 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */; };
+		67EE1DCF19E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
@@ -165,7 +165,6 @@
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
 		84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */; };
 		84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */; };
-		84AEEC7F1987D5EC000E8DC8 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC701987D5EC000E8DC8 /* marker_drink_off.png */; };
 		84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC711987D5EC000E8DC8 /* marker_drink.png */; };
 		84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC741987D5EC000E8DC8 /* marker_eat.png */; };
 		84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC771987D5EC000E8DC8 /* marker_spend.png */; };
@@ -680,19 +679,6 @@
 		678AD64B19D5AA7500E9A778 /* contacts_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts_icon@2x.png"; sourceTree = "<group>"; };
 		678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts_icon@3x.png"; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
-		67E9673919DF20F200305358 /* ECPercentDrivenInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPercentDrivenInteractiveTransition.h; sourceTree = "<group>"; };
-		67E9673A19DF20F200305358 /* ECPercentDrivenInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPercentDrivenInteractiveTransition.m; sourceTree = "<group>"; };
-		67E9673B19DF20F200305358 /* ECSlidingAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingAnimationController.h; sourceTree = "<group>"; };
-		67E9673C19DF20F200305358 /* ECSlidingAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingAnimationController.m; sourceTree = "<group>"; };
-		67E9673D19DF20F200305358 /* ECSlidingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingConstants.h; sourceTree = "<group>"; };
-		67E9673E19DF20F200305358 /* ECSlidingInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingInteractiveTransition.h; sourceTree = "<group>"; };
-		67E9673F19DF20F200305358 /* ECSlidingInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingInteractiveTransition.m; sourceTree = "<group>"; };
-		67E9674019DF20F200305358 /* ECSlidingSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingSegue.h; sourceTree = "<group>"; };
-		67E9674119DF20F200305358 /* ECSlidingSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingSegue.m; sourceTree = "<group>"; };
-		67E9674219DF20F200305358 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
-		67E9674319DF20F200305358 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
-		67E9674419DF20F200305358 /* UIViewController+ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ECSlidingViewController.h"; sourceTree = "<group>"; };
-		67E9674519DF20F200305358 /* UIViewController+ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ECSlidingViewController.m"; sourceTree = "<group>"; };
 		67E9674C19DF285000305358 /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
 		67E9674D19DF285000305358 /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
 		67E9674F19DF46A900305358 /* lock_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock_icon.png; sourceTree = "<group>"; };
@@ -709,13 +695,26 @@
 		67E9675A19DF46A900305358 /* settings_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings_icon@3x.png"; sourceTree = "<group>"; };
 		67E9676719E31F9100305358 /* marker_atm_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_atm_off@2x.png"; sourceTree = "<group>"; };
 		67E9676819E31F9100305358 /* marker_cafe_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_cafe_off@2x.png"; sourceTree = "<group>"; };
-		67E9676A19E31F9100305358 /* marker_drink_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_drink_off@2x.png"; sourceTree = "<group>"; };
 		67E9676B19E31F9100305358 /* marker_eat_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_eat_off@2x.png"; sourceTree = "<group>"; };
 		67E9676C19E31F9100305358 /* marker_spend_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_spend_off@2x.png"; sourceTree = "<group>"; };
 		67E9677319E320D100305358 /* marker_atm_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_atm_off.png; sourceTree = "<group>"; };
-		67E9677419E320D100305358 /* marker_drink_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_drink_off.png; sourceTree = "<group>"; };
 		67E9677519E320D100305358 /* marker_spend_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_spend_off.png; sourceTree = "<group>"; };
 		67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet_pre.html; sourceTree = "<group>"; };
+		67EE1DB919E3309500DBBFC9 /* marker_drink_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_drink_off.png; sourceTree = "<group>"; };
+		67EE1DBA19E3309500DBBFC9 /* marker_drink_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_drink_off@2x.png"; sourceTree = "<group>"; };
+		67EE1DBD19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECPercentDrivenInteractiveTransition.h; path = SideMenu/ECPercentDrivenInteractiveTransition.h; sourceTree = "<group>"; };
+		67EE1DBE19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECPercentDrivenInteractiveTransition.m; path = SideMenu/ECPercentDrivenInteractiveTransition.m; sourceTree = "<group>"; };
+		67EE1DBF19E3325900DBBFC9 /* ECSlidingAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSlidingAnimationController.h; path = SideMenu/ECSlidingAnimationController.h; sourceTree = "<group>"; };
+		67EE1DC019E3325900DBBFC9 /* ECSlidingAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingAnimationController.m; path = SideMenu/ECSlidingAnimationController.m; sourceTree = "<group>"; };
+		67EE1DC119E3325900DBBFC9 /* ECSlidingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSlidingConstants.h; path = SideMenu/ECSlidingConstants.h; sourceTree = "<group>"; };
+		67EE1DC219E3325900DBBFC9 /* ECSlidingInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSlidingInteractiveTransition.h; path = SideMenu/ECSlidingInteractiveTransition.h; sourceTree = "<group>"; };
+		67EE1DC319E3325900DBBFC9 /* ECSlidingInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingInteractiveTransition.m; path = SideMenu/ECSlidingInteractiveTransition.m; sourceTree = "<group>"; };
+		67EE1DC419E3325900DBBFC9 /* ECSlidingSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSlidingSegue.h; path = SideMenu/ECSlidingSegue.h; sourceTree = "<group>"; };
+		67EE1DC519E3325900DBBFC9 /* ECSlidingSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingSegue.m; path = SideMenu/ECSlidingSegue.m; sourceTree = "<group>"; };
+		67EE1DC619E3325900DBBFC9 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECSlidingViewController.h; path = SideMenu/ECSlidingViewController.h; sourceTree = "<group>"; };
+		67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingViewController.m; path = SideMenu/ECSlidingViewController.m; sourceTree = "<group>"; };
+		67EE1DC819E3325900DBBFC9 /* UIViewController+ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ECSlidingViewController.h"; path = "SideMenu/UIViewController+ECSlidingViewController.h"; sourceTree = "<group>"; };
+		67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ECSlidingViewController.m"; path = "SideMenu/UIViewController+ECSlidingViewController.m"; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -725,7 +724,6 @@
 		84AEEC651987C49A000E8DC8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_atm.png; sourceTree = "<group>"; };
 		84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_cafe.png; sourceTree = "<group>"; };
-		84AEEC701987D5EC000E8DC8 /* marker_drink_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_drink_off.png; sourceTree = "<group>"; };
 		84AEEC711987D5EC000E8DC8 /* marker_drink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_drink.png; sourceTree = "<group>"; };
 		84AEEC741987D5EC000E8DC8 /* marker_eat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_eat.png; sourceTree = "<group>"; };
 		84AEEC771987D5EC000E8DC8 /* marker_spend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_spend.png; sourceTree = "<group>"; };
@@ -1232,19 +1230,19 @@
 		67E9673419DF1DD300305358 /* SideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				67E9673919DF20F200305358 /* ECPercentDrivenInteractiveTransition.h */,
-				67E9673A19DF20F200305358 /* ECPercentDrivenInteractiveTransition.m */,
-				67E9673B19DF20F200305358 /* ECSlidingAnimationController.h */,
-				67E9673C19DF20F200305358 /* ECSlidingAnimationController.m */,
-				67E9673D19DF20F200305358 /* ECSlidingConstants.h */,
-				67E9673E19DF20F200305358 /* ECSlidingInteractiveTransition.h */,
-				67E9673F19DF20F200305358 /* ECSlidingInteractiveTransition.m */,
-				67E9674019DF20F200305358 /* ECSlidingSegue.h */,
-				67E9674119DF20F200305358 /* ECSlidingSegue.m */,
-				67E9674219DF20F200305358 /* ECSlidingViewController.h */,
-				67E9674319DF20F200305358 /* ECSlidingViewController.m */,
-				67E9674419DF20F200305358 /* UIViewController+ECSlidingViewController.h */,
-				67E9674519DF20F200305358 /* UIViewController+ECSlidingViewController.m */,
+				67EE1DBD19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.h */,
+				67EE1DBE19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m */,
+				67EE1DBF19E3325900DBBFC9 /* ECSlidingAnimationController.h */,
+				67EE1DC019E3325900DBBFC9 /* ECSlidingAnimationController.m */,
+				67EE1DC119E3325900DBBFC9 /* ECSlidingConstants.h */,
+				67EE1DC219E3325900DBBFC9 /* ECSlidingInteractiveTransition.h */,
+				67EE1DC319E3325900DBBFC9 /* ECSlidingInteractiveTransition.m */,
+				67EE1DC419E3325900DBBFC9 /* ECSlidingSegue.h */,
+				67EE1DC519E3325900DBBFC9 /* ECSlidingSegue.m */,
+				67EE1DC619E3325900DBBFC9 /* ECSlidingViewController.h */,
+				67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */,
+				67EE1DC819E3325900DBBFC9 /* UIViewController+ECSlidingViewController.h */,
+				67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */,
 			);
 			name = SideMenu;
 			sourceTree = "<group>";
@@ -1379,8 +1377,8 @@
 				67E9676819E31F9100305358 /* marker_cafe_off@2x.png */,
 				84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */,
 				84AEEC881987D9C7000E8DC8 /* marker_cafe@2x.png */,
-				67E9677419E320D100305358 /* marker_drink_off.png */,
-				67E9676A19E31F9100305358 /* marker_drink_off@2x.png */,
+				67EE1DB919E3309500DBBFC9 /* marker_drink_off.png */,
+				67EE1DBA19E3309500DBBFC9 /* marker_drink_off@2x.png */,
 				84AEEC711987D5EC000E8DC8 /* marker_drink.png */,
 				84AEEC891987D9C7000E8DC8 /* marker_drink@2x.png */,
 				84AEEC941987E4E8000E8DC8 /* marker_eat_off.png */,
@@ -1867,7 +1865,6 @@
 				2203486D19A4D51300611AC3 /* LICENSE in Resources */,
 				67E9677619E320D100305358 /* marker_atm_off.png in Resources */,
 				84F4BE191980124A00B7BF7B /* wallet-signup.js in Resources */,
-				67E9677719E320D100305358 /* marker_drink_off.png in Resources */,
 				678AD63819D5833A00E9A778 /* qrscanner_icon.png in Resources */,
 				678AD61D19D56EEB00E9A778 /* home_icon@3x.png in Resources */,
 				C9C17A9C197FD0C600BF8A4E /* bitcoinjs.js in Resources */,
@@ -1919,7 +1916,6 @@
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
 				6711352C19DCCC6800C2D24E /* menu_shadow.png in Resources */,
-				67E9677019E31F9100305358 /* marker_drink_off@2x.png in Resources */,
 				674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
 				9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */,
@@ -1955,6 +1951,7 @@
 				678AD62119D56EEB00E9A778 /* receive_icon.png in Resources */,
 				C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */,
 				678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */,
+				67EE1DBB19E3309500DBBFC9 /* marker_drink_off.png in Resources */,
 				9F45F8201514D8C300018AED /* 21-circle-east.png in Resources */,
 				678AD63619D5833A00E9A778 /* merchant_directory_icon@2x.png in Resources */,
 				ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */,
@@ -1962,10 +1959,10 @@
 				84AEEC991987E4E8000E8DC8 /* marker_eat_off.png in Resources */,
 				67E9677219E31F9100305358 /* marker_spend_off@2x.png in Resources */,
 				67E9676519DF46A900305358 /* settings_icon@2x.png in Resources */,
-				84AEEC7F1987D5EC000E8DC8 /* marker_drink_off.png in Resources */,
 				9F45F8211514D8C300018AED /* 21-circle-east@2x.png in Resources */,
 				678AD65019D5AA7500E9A778 /* contacts_icon.png in Resources */,
 				67E9675B19DF46A900305358 /* lock_icon.png in Resources */,
+				67EE1DBC19E3309500DBBFC9 /* marker_drink_off@2x.png in Resources */,
 				84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */,
 				678AD63A19D5833A00E9A778 /* qrscanner_icon@3x.png in Resources */,
 				678AD62419D56EEB00E9A778 /* send_icon.png in Resources */,
@@ -2043,14 +2040,13 @@
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
 				2203488319A4D51300611AC3 /* FBProfilePictureView.m in Sources */,
-				67E9674819DF20F200305358 /* ECSlidingInteractiveTransition.m in Sources */,
-				67E9674A19DF20F200305358 /* ECSlidingViewController.m in Sources */,
 				674709EC19D1D14300757D46 /* BCWelcomeView.m in Sources */,
 				2203488819A4D51300611AC3 /* FBSessionManualTokenCachingStrategy.m in Sources */,
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
 				2203489719A4D51300611AC3 /* SBJsonBase.m in Sources */,
 				2203487519A4D51300611AC3 /* FBFrictionlessRequestSettings.m in Sources */,
 				2203487819A4D51300611AC3 /* FBGraphObject.m in Sources */,
+				67EE1DCF19E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m in Sources */,
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				2203488919A4D51300611AC3 /* FBSessionTokenCachingStrategy.m in Sources */,
 				84FC02FD19815F1B00B97D5B /* crypto_scrypt-nosse.c in Sources */,
@@ -2066,7 +2062,6 @@
 				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				2203489119A4D51300611AC3 /* FBSBJsonBase.m in Sources */,
 				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
-				67E9674919DF20F200305358 /* ECSlidingSegue.m in Sources */,
 				2203486F19A4D51300611AC3 /* FBCacheDescriptor.m in Sources */,
 				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
 				2203487F19A4D51300611AC3 /* FBLoginView.m in Sources */,
@@ -2083,7 +2078,6 @@
 				67470A0419D42B1400757D46 /* BCWebViewController.m in Sources */,
 				84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */,
 				220348A519A4D51300611AC3 /* OARequestParameter.m in Sources */,
-				67E9674619DF20F200305358 /* ECPercentDrivenInteractiveTransition.m in Sources */,
 				84B601CA197AD03800DA1829 /* BCModalView.m in Sources */,
 				9F0CBAAA151351F400CD945D /* Wallet.m in Sources */,
 				9F0CBAD81513CA2600CD945D /* BCFadeView.m in Sources */,
@@ -2096,6 +2090,7 @@
 				9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */,
 				2203488119A4D51300611AC3 /* FBPlacePickerCacheDescriptor.m in Sources */,
 				2203487B19A4D51300611AC3 /* FBGraphObjectTableDataSource.m in Sources */,
+				67EE1DCC19E3325900DBBFC9 /* ECSlidingInteractiveTransition.m in Sources */,
 				220348A219A4D51300611AC3 /* OAHMAC_SHA1SignatureProvider.m in Sources */,
 				2203487D19A4D51300611AC3 /* FBLogger.m in Sources */,
 				220348A619A4D51300611AC3 /* OAServiceTicket.m in Sources */,
@@ -2106,6 +2101,7 @@
 				2203487719A4D51300611AC3 /* FBFriendPickerViewController.m in Sources */,
 				2203488019A4D51300611AC3 /* FBNativeDialogs.m in Sources */,
 				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
+				67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */,
 				2203488F19A4D51300611AC3 /* FBViewController.m in Sources */,
 				2203488419A4D51300611AC3 /* FBRequest.m in Sources */,
 				220348A419A4D51300611AC3 /* OAPlaintextSignatureProvider.m in Sources */,
@@ -2114,8 +2110,7 @@
 				2203489B19A4D51300611AC3 /* NSString+URLEncoding.m in Sources */,
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
 				9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */,
-				67E9674B19DF20F200305358 /* UIViewController+ECSlidingViewController.m in Sources */,
-				67E9674719DF20F200305358 /* ECSlidingAnimationController.m in Sources */,
+				67EE1DCA19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m in Sources */,
 				2203488E19A4D51300611AC3 /* FBUtility.m in Sources */,
 				2203489519A4D51300611AC3 /* NSString+SBJSON.m in Sources */,
 				2203488719A4D51300611AC3 /* FBSession.m in Sources */,
@@ -2123,6 +2118,7 @@
 				ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */,
 				2203487619A4D51300611AC3 /* FBFriendPickerCacheDescriptor.m in Sources */,
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,
+				67EE1DCE19E3325900DBBFC9 /* ECSlidingViewController.m in Sources */,
 				2203487219A4D51300611AC3 /* FBDataDiskCache.m in Sources */,
 				2203487119A4D51300611AC3 /* FBContentLink.m in Sources */,
 				9F1831E51516A45700FB3D52 /* NSString+SHA256.m in Sources */,
@@ -2131,6 +2127,7 @@
 				2203487919A4D51300611AC3 /* FBGraphObjectPagingLoader.m in Sources */,
 				9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */,
 				9F5F3E57151BED0100128830 /* DataMatrix.mm in Sources */,
+				67EE1DCB19E3325900DBBFC9 /* ECSlidingAnimationController.m in Sources */,
 				67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */,
 				9F5F3E58151BED0100128830 /* QR_Encode.cpp in Sources */,
 				9F5F3E59151BED0100128830 /* QRCodeEncoderDemoViewController.mm in Sources */,

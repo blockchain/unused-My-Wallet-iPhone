@@ -698,8 +698,32 @@ BOOL showSendCoins = NO;
         self.modalView = nil;
     }
     
-    // Pass tap to QR Code scanner for focussing
+    // QR Code Reader Modal
     if ([contentView isKindOfClass:[ZBarReaderView class]]) {
+        // Create the qt cutout (gray alpha overlay over rest of image)
+        CGRect frame = contentView.frame;
+        float width = .7;
+        float height = width * 2/3;
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        v.backgroundColor = [UIColor grayColor];
+        v.alpha = 0.3;
+        [contentView addSubview:v];
+        
+        CAShapeLayer * layer = [[CAShapeLayer alloc]init];
+        layer.frame = v.bounds;
+        layer.fillColor = [[UIColor blackColor] CGColor];
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithRect:
+                              CGRectMake(frame.size.width*(1-width)/2, (frame.size.height)*(1-height)/2-20,
+                                         frame.size.width*width, (frame.size.height+64)*height)];
+        [path appendPath:[UIBezierPath bezierPathWithRect:contentView.bounds]];
+        
+        layer.path = path.CGPath;
+        layer.fillRule = kCAFillRuleEvenOdd;
+        
+        v.layer.mask = layer;
+        
+        // Pass tap to QR Code scanner for focussing
         self.readerViewTapSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
                                                                              contentView.frame.size.width,
                                                                              contentView.frame.size.height)];

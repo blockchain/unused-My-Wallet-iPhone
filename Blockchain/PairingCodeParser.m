@@ -37,15 +37,19 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
-    [app showModalWithContent:self.readerView closeType:ModalCloseTypeBack onDismiss:^() {
-        [self.readerView stop];
-        
-        self.readerView = nil;
-    } onResume:nil];
+    // Reduce size of qr code to be scanned as part of view size
+    self.readerView.scanCrop = CGRectMake(0.1, 0.1, 0.8, 0.8);
+    
+    [self.readerView setReaderDelegate:self];
     
     [self.readerView start];
     
-    [self.readerView setReaderDelegate:self];
+    [app showModalWithContent:self.readerView closeType:ModalCloseTypeBack onDismiss:^() {
+        [self.readerView stop];
+        
+        [self.readerView setReaderDelegate:nil];
+        self.readerView = nil;
+    } onResume:nil];
 }
 
 - (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img

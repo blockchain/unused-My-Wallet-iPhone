@@ -280,7 +280,7 @@
     return address;
 }
 
-- (void)readerView:(ZBarReaderView*)view didReadSymbols:(ZBarSymbolSet*)syms fromImage:(UIImage*)img
+- (void)readerView:(ZBarReaderView*)readerView didReadSymbols:(ZBarSymbolSet*)syms fromImage:(UIImage*)img
 {
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
@@ -309,13 +309,14 @@
         
         amountField.text = amountString;
         
-        [view stop];
+        [readerView stop];
         
         [app closeModalWithTransition:kCATransitionFade];
         
         break;
     }
     
+    [self.readerView setReaderDelegate:nil];
     self.readerView = nil;
 }
 
@@ -482,15 +483,21 @@
 
 - (IBAction)QRCodebuttonClicked:(id)sender
 {
-    self.readerView = [[ZBarReaderView alloc] init];
+    if (!self.readerView) {
+        self.readerView = [[ZBarReaderView alloc] init];
+    }
+    
+    // Reduce size of qr code to be scanned as part of view size
+    self.readerView.scanCrop = CGRectMake(0.1, 0.1, 0.8, 0.8);
+    
+    self.readerView.readerDelegate = self;
     
     [self.readerView start];
-    
-    [self.readerView setReaderDelegate:self];
     
     [app showModalWithContent:self.readerView closeType:ModalCloseTypeClose onDismiss:^() {
         [self.readerView stop];
         
+        [self.readerView setReaderDelegate:nil];
         self.readerView = nil;
     } onResume:nil];
 }

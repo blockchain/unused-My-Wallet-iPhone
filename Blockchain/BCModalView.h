@@ -28,7 +28,7 @@ typedef enum {
 
 @property(nonatomic) ModalCloseType closeType;
 
-- (void)setModalCloseType:(ModalCloseType)closeType;
+- (id)initWithCloseType:(ModalCloseType)closeType showHeader:(BOOL)showHeader;
 - (IBAction)closeModalClicked:(id)sender;
 
 @end

@@ -45,7 +45,11 @@
     topBar.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBar];
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, 20, 40, 20)];
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
+    logo.frame = CGRectMake(88, 22, 143, 40);
+    [topBar addSubview:logo];
+    
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
     closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

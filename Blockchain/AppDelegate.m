@@ -390,7 +390,7 @@ BOOL showSendCoins = NO;
         [self.window addSubview:curtainImageView];
         [self.window bringSubviewToFront:curtainImageView];
         
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             curtainImageView.alpha = 1;
         }];
     });
@@ -664,10 +664,15 @@ BOOL showSendCoins = NO;
 
 - (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType
 {
-    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType onDismiss:nil onResume:nil];
+    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES onDismiss:nil onResume:nil];
 }
 
 - (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
+{
+    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES onDismiss:onDismiss onResume:onResume];
+}
+
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
 {
     // This modal is already being displayed in another view
     if ([contentView superview]) {
@@ -706,8 +711,7 @@ BOOL showSendCoins = NO;
     }
     
     // Show modal
-    modalView = [[BCModalView alloc] init];
-    [modalView setModalCloseType:closeType];
+    modalView = [[BCModalView alloc] initWithCloseType:closeType showHeader:showHeader];
     self.modalView.onDismiss = onDismiss;
     self.modalView.onResume = onResume;
     if (onResume) {
@@ -902,7 +906,7 @@ BOOL showSendCoins = NO;
     [_sendViewController reload];
     [_accountViewController emptyWebView];
     
-    [self transitionToIndex:0];
+    [self transitionToIndex:1];
 }
 
 - (void)forgetWallet
@@ -928,7 +932,7 @@ BOOL showSendCoins = NO;
     [_sendViewController reload];
     [_accountViewController emptyWebView];
     
-    [self transitionToIndex:0];
+    [self transitionToIndex:1];
 }
 
 #pragma mark - Show Screens
@@ -1041,7 +1045,7 @@ BOOL showSendCoins = NO;
     BCWelcomeView *welcomeView = [[BCWelcomeView alloc] init];
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
-    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone onDismiss:^{
+    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO onDismiss:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     } onResume:^{
@@ -1085,9 +1089,20 @@ BOOL showSendCoins = NO;
     [self toggleSideMenu];
 }
 
+// Open ZeroBlock if it's installed, otherwise go to the ZeroBlock App Store page
 - (IBAction)newsClicked:(id)sender
 {
-    // TODO
+    // TODO actual URL Scheme in ZeroBlock .plist
+    NSURL *zeroBlockAppURL = [NSURL URLWithString:@"ZeroBlock://"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:zeroBlockAppURL]) {
+        [[UIApplication sharedApplication] openURL:zeroBlockAppURL];
+    }
+    else {
+        NSString *iTunesLink = @"https://itunes.apple.com/us/app/zeroblock-real-time-bitcoin/id643184018?mt=8";
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+    }
 }
 
 - (IBAction)accountSettingsClicked:(id)sender

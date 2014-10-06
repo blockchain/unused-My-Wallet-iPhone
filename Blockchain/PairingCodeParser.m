@@ -67,7 +67,7 @@
         break;
     }
     
-    [app closeModalWithTransition:kCATransitionFade];
+    [app closeModalWithTransition:kCATransitionFromRight];
 }
 
 @end

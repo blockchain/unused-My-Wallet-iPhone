@@ -302,8 +302,6 @@ BOOL showSendCoins = NO;
     if (showSendCoins) {
         [self showSendCoins];
         showSendCoins = NO;
-    } else {
-        [self transitionToIndex:1];
     }
     
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
@@ -905,8 +903,6 @@ BOOL showSendCoins = NO;
     [_receiveViewController reload];
     [_sendViewController reload];
     [_accountViewController emptyWebView];
-    
-    [self transitionToIndex:1];
 }
 
 - (void)forgetWallet

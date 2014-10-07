@@ -521,9 +521,16 @@ BOOL showSendCoins = NO;
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    [aTextField resignFirstResponder];
+    if (textField == secondPasswordTextField) {
+        [self secondPasswordClicked:textField];
+    }
+    else if (textField == mainPasswordTextField) {
+        [self mainPasswordClicked:textField];
+    }
+    
+    [textField resignFirstResponder];
     
     return YES;
 }
@@ -563,12 +570,11 @@ BOOL showSendCoins = NO;
 
 - (void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error
 {
-    
     secondPasswordDescriptionLabel.text = BC_STRING_ACTION_REQUIRES_SECOND_PASSWORD;
     
     validateSecondPassword = TRUE;
     
-    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeClose onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -622,6 +628,7 @@ BOOL showSendCoins = NO;
 - (void)closeModalWithTransition:(NSString *)transition
 {
     [modalView removeFromSuperview];
+    
     CATransition *animation = [CATransition animation];
     // There are two types of transitions: movement based and fade in/out. The movement based ones can have a subType to set which direction the movement is in. In case the transition parameter is a direction, we use the MoveIn transition and the transition parameter as the direction, otherwise we use the transition parameter as the transition type.
     [animation setDuration:ANIMATION_DURATION];
@@ -658,6 +665,9 @@ BOOL showSendCoins = NO;
         
         [self.modalChain removeObjectAtIndex:[self.modalChain count]-1];
     }
+    else {
+        self.modalView = nil;
+    }
 }
 
 - (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType
@@ -672,16 +682,6 @@ BOOL showSendCoins = NO;
 
 - (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
 {
-    // This modal is already being displayed in another view
-    if ([contentView superview]) {
-        // Call onResume if we're trying to re-show the currently visible modal
-        if (self.modalView.myHolderView == [contentView superview] && self.modalView.onResume) {
-            self.modalView.onResume();
-        }
-        
-        return;
-    }
-    
     // Remove the modal if we have one
     if (modalView) {
         [modalView removeFromSuperview];

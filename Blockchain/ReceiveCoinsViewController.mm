@@ -36,12 +36,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 449);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 360);
-    }
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
+                                 app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
     [self reload];
 }

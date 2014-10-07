@@ -65,12 +65,8 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
 	
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 449);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 360);
-    }
+    // TODO new size depengin on modal or tab view parent
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
 
     // Remove Shadow
     for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) {

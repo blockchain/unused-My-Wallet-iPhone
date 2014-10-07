@@ -702,11 +702,11 @@ BOOL showSendCoins = NO;
     if ([contentView isKindOfClass:[ZBarReaderView class]]) {
         // Create the qt cutout (gray alpha overlay over rest of image)
         CGRect frame = contentView.frame;
-        float width = .7;
-        float height = width * 2/3;
+        float width = frame.size.width * 0.7;
+        float height = width;
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        v.backgroundColor = [UIColor grayColor];
-        v.alpha = 0.3;
+        v.backgroundColor = [UIColor blackColor];
+        v.alpha = 0.25;
         [contentView addSubview:v];
         
         CAShapeLayer * layer = [[CAShapeLayer alloc]init];
@@ -714,8 +714,8 @@ BOOL showSendCoins = NO;
         layer.fillColor = [[UIColor blackColor] CGColor];
         
         UIBezierPath *path = [UIBezierPath bezierPathWithRect:
-                              CGRectMake(frame.size.width*(1-width)/2, (frame.size.height)*(1-height)/2-20,
-                                         frame.size.width*width, (frame.size.height+64)*height)];
+                              CGRectMake((frame.size.width - width)/2, (frame.size.height - height)/2,
+                                         width, height)];
         [path appendPath:[UIBezierPath bezierPathWithRect:contentView.bounds]];
         
         layer.path = path.CGPath;
@@ -1038,7 +1038,7 @@ BOOL showSendCoins = NO;
 {
     if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
         _tabViewController.contentView.userInteractionEnabled = NO;
-        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 66, _window.frame.size.width, _window.frame.size.height)];
+        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, _window.frame.size.width, _window.frame.size.height)];
         grayOverlayView.backgroundColor = [UIColor blackColor];
         grayOverlayView.tag = 200;
         grayOverlayView.alpha = 0.0;

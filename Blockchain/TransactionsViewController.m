@@ -148,13 +148,8 @@
 {
     [super viewDidLoad];
     
-    // TODO Adapt for iphone6 and 6 plus - check other instances in all ViewControllers, ideally a better solution without hardcoded size and checking for screen size
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 449);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 360);
-    }
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
+                                 app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];

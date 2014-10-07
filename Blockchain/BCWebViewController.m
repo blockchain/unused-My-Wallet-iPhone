@@ -10,8 +10,6 @@
 #import "AppDelegate.h"
 #import "LocalizationConstants.h"
 
-#define TOP_BAR_HEIGHT 66
-
 @interface BCWebViewController ()
 
 @end
@@ -21,7 +19,7 @@
 -(id)init {
     self = [super init];
     if (self) {
-        webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, TOP_BAR_HEIGHT, self.view.frame.size.width, self.view.frame.size.height - TOP_BAR_HEIGHT)];
+        webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, self.view.frame.size.height - DEFAULT_HEADER_HEIGHT)];
         
         webView.delegate = self;
         
@@ -34,14 +32,9 @@
 {
     [super viewDidLoad];
     
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 449);
-    }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 360);
-    }
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
     
-    UIView *topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, TOP_BAR_HEIGHT)];
+    UIView *topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, DEFAULT_HEADER_HEIGHT)];
     topBar.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBar];
     

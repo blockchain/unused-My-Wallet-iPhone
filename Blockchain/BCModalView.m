@@ -23,7 +23,7 @@
         self.closeType = closeType;
         
         if (showHeader) {
-            UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, window.frame.size.width, 66)];
+            UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, window.frame.size.width, DEFAULT_HEADER_HEIGHT)];
             topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
             [self addSubview:topBarView];
             
@@ -47,7 +47,7 @@
                 [topBarView addSubview:self.closeButton];
             }
             
-            self.myHolderView = [[UIView alloc] initWithFrame:CGRectMake(0, 66, window.frame.size.width, window.frame.size.height - 66)];
+            self.myHolderView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, window.frame.size.width, window.frame.size.height - DEFAULT_HEADER_HEIGHT)];
             
             [self addSubview:self.myHolderView];
             

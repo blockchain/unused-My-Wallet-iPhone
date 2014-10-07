@@ -25,7 +25,6 @@
     IBOutlet UIActivityIndicatorView * activity;
 }
 
-- (void)loadWebView;
 - (void)emptyWebView;
 
 @end

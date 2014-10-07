@@ -1144,6 +1144,7 @@ BOOL showSendCoins = NO;
     PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0];
     peViewController.cancelButton.hidden = NO;
     
+    peViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
 
@@ -1211,6 +1212,7 @@ BOOL showSendCoins = NO;
         _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
     }
     
+    _merchantViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [_tabViewController presentViewController:_merchantViewController animated:YES completion:nil];
 }
 

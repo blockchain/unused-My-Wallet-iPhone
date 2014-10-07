@@ -15,7 +15,8 @@
 
 @implementation BCWalletWebViewController
 
-- (BOOL)webView:(UIWebView *)_webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)_webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
                 
     if (navigationType != UIWebViewNavigationTypeOther) {
         if ([[[request URL] host] rangeOfString:@"blockchain.info"].location != NSNotFound) {
@@ -36,24 +37,27 @@
     return TRUE;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
     app.loadingText = BC_STRING_LOADING_EXTERNAL_PAGE;
     
     [app networkActivityStart];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
     [app networkActivityStop];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     [app standardNotify:[error localizedDescription]];
     
     [app networkActivityStop];
 }
 
--(void)addCookiesToRequest:(NSMutableURLRequest*)request {
-    
+- (void)addCookiesToRequest:(NSMutableURLRequest*)request
+{
     NSHTTPCookie *no_header_cookie = [NSHTTPCookie cookieWithProperties:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                          @"blockchain.info", NSHTTPCookieDomain,
                                                                          @"\\", NSHTTPCookiePath,  // IMPORTANT!
@@ -76,8 +80,8 @@
     [request setAllHTTPHeaderFields:headers];
 }
 
--(void)loadURL:(NSString*)url {
-    
+- (void)loadURL:(NSString*)url
+{
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
     [self addCookiesToRequest:request];
@@ -88,20 +92,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    // TODO new size depending on modal or tab view parent
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_FOOTER_HEIGHT);
+    
     webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     webView.delegate = self;
     
 	[self.view addSubview:webView];
     
-    // Hide the imageViews?
-    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) { 
+    // Remove Shadow
+    for(UIView *wview in [[[webView subviews] objectAtIndex:0] subviews]) {
         if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
     }
-    
-    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
 }
-
 
 @end

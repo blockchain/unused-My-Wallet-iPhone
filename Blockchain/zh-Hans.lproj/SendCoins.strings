@@ -5,7 +5,7 @@
 "7.text" = "从";
 
 /* Class = "IBUILabel"; text = "To:"; ObjectID = "13"; */
-"13.text" = "自";
+"13.text" = "至";
 
 /* Class = "IBUITextField"; text = "0.00"; ObjectID = "52"; */
 "52.text" = "0.00";
@@ -26,22 +26,22 @@
 "65.text" = "地址：";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "67"; */
-"67.text" = "标签地址";
+"67.text" = "给地址设置标签";
 
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "6zi-8R-Tmt"; */
 "6zi-8R-Tmt.normalTitle" = "BTC";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "7ho-GV-ikp"; */
-"7ho-GV-ikp.text" = "金额";
+"7ho-GV-ikp.text" = "金额：";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
 "8LN-Tc-WVh.normalTitle" = "关闭";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
-"Zgn-Wx-Uwx.text" = "请稍候";
+"Zgn-Wx-Uwx.text" = "请稍候……";
 
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
-"aKC-Q2-phD.text" = "发送付款";
+"aKC-Q2-phD.text" = "正在发送付款";
 
 /* Class = "IBUITextField"; text = "Any Address"; ObjectID = "zyc-E3-FOM"; */
 "zyc-E3-FOM.text" = "任何地址";

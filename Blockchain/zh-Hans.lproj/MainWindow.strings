@@ -8,13 +8,13 @@
 "353.text" = "自动配对";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
-"358.text" = "创建一个新的钱包";
+"358.text" = "创建钱包";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "360"; */
 "360.text" = "1";
 
 /* Class = "IBUILabel"; text = "Login to your Blockchain Wallet via your PC or Mac at http://blockchain.info/wallet"; ObjectID = "361"; */
-"361.text" = "登录到您通过您的 PC 或 Mac 的 Blockchain Wallet 在 http://blockchain.info/wallet";
+"361.text" = "用您的PC或Mac在http://blockchain.info/wallet上登录到您的Blockchain钱包 ";
 
 /* Class = "IBUILabel"; text = "2"; ObjectID = "363"; */
 "363.text" = "2";
@@ -26,7 +26,7 @@
 "368.text" = "3";
 
 /* Class = "IBUILabel"; text = "Click 'Show Pairing Code' to reveal a QR Code (a square black & white barcode). Scan the code with your camera."; ObjectID = "369"; */
-"369.text" = "单击显示配对密码来揭示 QR 码 （方形黑色 & 白色的条码）。用你的相机扫描代码。";
+"369.text" = "单击显示配对密码来显示二维码（黑白的方形条码）。用你的相机扫描二维码。";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Pairing Code"; ObjectID = "370"; */
 "370.normalTitle" = "扫描匹配码";
@@ -38,22 +38,22 @@
 "377.normalTitle" = "按钮 1";
 
 /* Class = "IBUILabel"; text = "If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required."; ObjectID = "378"; */
-"378.text" = "如果你已经有一个 Blockchain 钱包，选择双装置 ；否则，选择创建的钱包。它是免费的 ！没有所需的电子邮件。";
+"378.text" = "如果你已经有一个 Blockchain 钱包，选择配对设备 ；否则选择创建的钱包。它是免费的 ！不需要电子邮件";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
-"380.text" = "欢迎来到 Blockchain 的钱包";
+"380.text" = "欢迎来到 Blockchain钱包";
 
 /* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "交易记录";
+"386.text" = "交易";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
-"387.text" = "欢迎来到 Blockchain 的钱包。此屏幕显示您的交易。如果你已经做了这个钱包的交易，有可能是接触我们的服务器错误。请确保您的帐户已正确安装而且你有活跃的互联网连接。";
+"387.text" = "欢迎来到 Blockchain 的钱包。此屏幕显示您的交易。如果你已经使用本钱包交易，有可能是连接我们的服务器时出错。请确保您的帐户已正确安装并且有良好的互联网连接。";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "394"; */
 "394.text" = "密码：";
 
 /* Class = "IBUILabel"; text = "Confirm:"; ObjectID = "396"; */
-"396.text" = "请确认：";
+"396.text" = "确认密码";
 
 /* Class = "IBUIButton"; normalTitle = "Create Wallet"; ObjectID = "398"; */
 "398.normalTitle" = "创建钱包";
@@ -71,16 +71,16 @@
 "471.normalTitle" = "继续";
 
 /* Class = "IBUILabel"; text = "Wallet Identifier:"; ObjectID = "586"; */
-"586.text" = "钱包标识符：";
+"586.text" = "钱包标识符";
 
 /* Class = "IBUILabel"; text = "You have chosen to pair manually (or automatic pairing is not supported with your device). Please enter your login details below."; ObjectID = "588"; */
-"588.text" = "您已选择手动配对 （或与您的设备不支持自动配对）。请输入您的登录详细信息下面。";
+"588.text" = "您已选择手动配对 （或与您的设备不支持自动配对）。请在下方输入登录时的详细信息。";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "591"; */
 "591.text" = "密码：";
 
 /* Class = "IBUILabel"; text = "You must have two-factor authentication disabled to pair manually!"; ObjectID = "602"; */
-"602.text" = "您必须手动禁用对双因素身份验证 ！";
+"602.text" = "您必须禁用对双因素身份验证并禁用双因素身份验证 ！";
 
 /* Class = "IBUILabel"; text = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login."; ObjectID = "624"; */
 "624.text" = "您已注销或解密您的钱包文件时出错。输入您下面的密码登录。";
@@ -95,10 +95,10 @@
 "630.text" = "登录";
 
 /* Class = "IBUIButton"; normalTitle = "Forget Wallet"; ObjectID = "5gL-FG-Zcc"; */
-"5gL-FG-Zcc.normalTitle" = "忘了钱包";
+"5gL-FG-Zcc.normalTitle" = "忘记钱包";
 
 /* Class = "IBUILabel"; text = "If you would like to forget this wallet and start over, press 'Forget Wallet'."; ObjectID = "C0R-wB-wF1"; */
-"C0R-wB-wF1.text" = "如果你想要忘记这个钱包并重新开始，请按 ' 忘了钱包 '。";
+"C0R-wB-wF1.text" = "如果你想要忘记这个钱包并重新开始，请按 ' 忘记钱包 '。";
 
 /* Class = "IBUIButton"; normalTitle = "Button 3"; ObjectID = "OKS-md-gDQ"; */
 "OKS-md-gDQ.normalTitle" = "按钮 3";
@@ -110,14 +110,14 @@
 "VcH-wh-BEs.text" = "电子邮件：";
 
 /* Class = "IBUILabel"; text = "* required for wallet backups"; ObjectID = "jUZ-5W-4qw"; */
-"jUZ-5W-4qw.text" = "为钱包备份的要求 ；";
+"jUZ-5W-4qw.text" = "*需要备份钱包";
 
 /* Class = "IBUILabel"; text = "0 Transactions"; ObjectID = "kK3-Xs-d3Q"; */
-"kK3-Xs-d3Q.text" = "0 交易";
+"kK3-Xs-d3Q.text" = "0 次交易";
 
 /* Class = "IBUILabel"; text = "Manual Pairing"; ObjectID = "qIf-DM-Gtq"; */
 "qIf-DM-Gtq.text" = "手动配对";
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
-"wvh-x7-hB8.text" = "* 最低 10 个字符";
+"wvh-x7-hB8.text" = "* 最少 10 个字符";
 

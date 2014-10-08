@@ -876,10 +876,24 @@
     [self.webView executeJS:@"MyWalletPhone.pinServerPutKeyOnPinServerServer(\"%@\", \"%@\", \"%@\")", key, value, pin];
 }
 
--(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin {
+-(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin withWalletDownload:(BOOL)withWalletDownload{
     NSError * error = nil;
-    // wallet_pre.html is the offline wallet - it does not connect to the server on load
-    NSString * walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet_pre" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    
+    NSString * walletHTML;
+    if (withWalletDownload) {
+        // Normal wallet - downloads and decrypts actual wallet
+        walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+        
+        if (self.guid && self.sharedKey) {
+            walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\" data-sharedkey=\"%@\">", self.guid, self.sharedKey]];
+        } else if (self.guid) {
+            walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"<body>" withString:[NSString stringWithFormat:@"<body data-guid=\"%@\">", self.guid]];
+        }
+    }
+    else {
+        // wallet_pre.html is the offline wallet - it does not connect to the server on load
+        walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet_pre" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    }
     
     NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
     

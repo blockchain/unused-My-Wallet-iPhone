@@ -152,7 +152,7 @@
 -(void)newAccount:(NSString*)password email:(NSString *)email;
 
 -(void)pinServerPutKeyOnPinServerServer:(NSString*)key value:(NSString*)value pin:(NSString*)pin;
--(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin;
+-(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin withWalletDownload:(BOOL)withWalletDownload;
 
 -(NSString*)encrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
 -(NSString*)decrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;

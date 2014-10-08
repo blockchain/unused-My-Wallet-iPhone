@@ -1144,6 +1144,8 @@ BOOL showSendCoins = NO;
     PEViewController *peViewController = (PEViewController *)[[c viewControllers] objectAtIndex:0];
     peViewController.cancelButton.hidden = NO;
     
+    self.pinEntryViewController = c;
+    
     peViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.tabViewController presentViewController:c animated:YES completion:nil];
 }
@@ -1288,11 +1290,6 @@ BOOL showSendCoins = NO;
 
 - (void)pinEntryController:(PEPinEntryController *)c shouldAcceptPin:(NSUInteger)_pin callback:(void(^)(BOOL))callback
 {
-    if (!c.verifyOnly) {
-        callback(YES);
-        return;
-    }
-    
     self.lastEnteredPIN = _pin;
     
     // TODO does this ever happen?
@@ -1329,7 +1326,7 @@ BOOL showSendCoins = NO;
         return;
     }
     
-    [app.wallet apiGetPINValue:pinKey pin:pin];
+    [app.wallet apiGetPINValue:pinKey pin:pin withWalletDownload:!c.verifyOnly];
     
     self.pinViewControllerCallback = callback;
 }
@@ -1388,6 +1385,15 @@ BOOL showSendCoins = NO;
         
         [app standardNotify:error];
     } else if ([code intValue] == PIN_API_STATUS_OK) {
+        // This is for change PIN - verify the password first, then show the enter screens
+        if (self.pinEntryViewController.verifyOnly == NO) {
+            if (self.pinViewControllerCallback) {
+                self.pinViewControllerCallback(YES);
+                self.pinViewControllerCallback = nil;
+            }
+            
+            return;
+        }
         
         if ([success length] == 0) {
             [app standardNotify:BC_STRING_PIN_RESPONSE_OBJECT_SUCCESS_LENGTH_0];

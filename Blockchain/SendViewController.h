@@ -30,25 +30,25 @@
     IBOutlet UIButton *balanceBigButton;
     IBOutlet UIButton *balanceSmallButton;
     
-    IBOutlet UITextField * toFieldContainerField;
-    IBOutlet UITextField * toField;
-    IBOutlet UITextField * amountField;
+    IBOutlet UITextField *toFieldContainerField;
+    IBOutlet UITextField *toField;
+    IBOutlet UITextField *amountField;
     
-    IBOutlet UIView * amountKeyboardAccessoryView;
-    IBOutlet UILabel * currencyConversionLabel;
+    IBOutlet UIView *amountKeyboardAccessoryView;
+    IBOutlet UILabel *currencyConversionLabel;
     
     IBOutlet UILabel *fromLabel;
     IBOutlet UITextField *selectAddressTextField;
     IBOutlet UIButton *addressBookButton;
-    IBOutlet UIButton * sendPaymentButton;
-    IBOutlet UIView * labelAddressView;
-    IBOutlet UILabel * labelAddressLabel;
-    IBOutlet UITextField * labelAddressTextField;
-    IBOutlet UIView * sendProgressModal;
-    IBOutlet UILabel * sendProgressModalText;
-    IBOutlet UIButton * btcCodeButton;
-    DropDownListView * fromAddressDropDown;
-    DropDownListView * addressBookdropDown;
+    IBOutlet UIButton *sendPaymentButton;
+    IBOutlet UIView *labelAddressView;
+    IBOutlet UILabel *labelAddressLabel;
+    IBOutlet UITextField *labelAddressTextField;
+    IBOutlet UIView *sendProgressModal;
+    IBOutlet UILabel *sendProgressModalText;
+    IBOutlet UIButton *btcCodeButton;
+    DropDownListView *fromAddressDropDown;
+    DropDownListView *addressBookdropDown;
 
     BOOL displayingLocalSymbol;
 }
@@ -64,18 +64,20 @@
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 - (IBAction)selectAddressClicked:(id)sender;
--(IBAction)QRCodebuttonClicked:(id)sender;
--(IBAction)addressBookClicked:(id)sender;
--(IBAction)btcCodeClicked:(id)sender;
--(IBAction)closeKeyboardClicked:(id)sender;
+- (IBAction)QRCodebuttonClicked:(id)sender;
+- (IBAction)addressBookClicked:(id)sender;
+- (IBAction)btcCodeClicked:(id)sender;
+- (IBAction)closeKeyboardClicked:(id)sender;
 
--(void)didSelectAddress:(NSString *)address;
+- (void)didSelectAddress:(NSString *)address;
 
--(IBAction)sendPaymentClicked:(id)sender;
--(IBAction)labelAddressClicked:(id)sender;
+- (IBAction)sendPaymentClicked:(id)sender;
+- (IBAction)labelAddressClicked:(id)sender;
 
--(void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
+- (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
 
--(void)reload;
+- (void)reload;
+
+- (void)dismissKeyboard;
 
 @end

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2012, Ben Reeves. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -23,54 +23,57 @@
 #import "Wallet.h"
 
 @interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate> {
-    IBOutlet UITableView * tableView;
-    IBOutlet UIImageView * qrCodeImageView;
-    IBOutlet UIButton * archiveUnarchiveButton;
-    IBOutlet UIView * tableFooterView;
+    IBOutlet UITableView *tableView;
+    IBOutlet UIImageView *qrCodeMainImageView;
+    IBOutlet UIImageView *qrCodePaymentImageView;
+    IBOutlet UIButton *requestPaymentButton;
+    IBOutlet UIButton *copyAddressButton;
+    IBOutlet UIButton *labelAddressButton;
+    IBOutlet UIButton *archiveUnarchiveButton;
+    IBOutlet UIView *tableFooterView;
     
-    IBOutlet UIView * noaddressesView;
+    IBOutlet UIView *noaddressesView;
     
     //Label Address
-    IBOutlet UIView * labelAddressView;
-    IBOutlet UITextField * labelTextField;
-    IBOutlet UILabel * labelAddressLabel;
-    IBOutlet UIView * requestCoinsView;
+    IBOutlet UIView *labelAddressView;
+    IBOutlet UITextField *labelTextField;
+    IBOutlet UILabel *labelAddressLabel;
+    IBOutlet UIView *requestCoinsView;
     
-    IBOutlet UIView * optionsModalView;
-    IBOutlet UILabel * optionsTitleLabel;
-    IBOutlet UILabel * optionsAddressLabel;
+    IBOutlet UIView *optionsModalView;
+    IBOutlet UILabel *optionsTitleLabel;
     
     //amount
-    IBOutlet UITextField * requestAmountTextField;
-    IBOutlet UIButton * btcCodeButton;
+    IBOutlet UITextField *requestAmountTextField;
+    IBOutlet UIButton *btcCodeButton;
     
     //accessory
-    IBOutlet UIView * amountKeyoboardAccessoryView;
-    IBOutlet UILabel * currencyConversionLabel;
+    IBOutlet UIView *amountKeyoboardAccessoryView;
+    IBOutlet UILabel *currencyConversionLabel;
     
     BOOL displayingLocalSymbol;
 }
 
-@property(nonatomic, strong) NSArray * activeKeys;
-@property(nonatomic, strong) NSArray * archivedKeys;
+@property(nonatomic, strong) NSArray *activeKeys;
+@property(nonatomic, strong) NSArray *archivedKeys;
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
--(void)reload;
+- (void)reload;
 
-@property(nonatomic, strong) NSString * clickedAddress;
+@property(nonatomic, strong) NSString *clickedAddress;
 
--(IBAction)labelAddressClicked:(id)sender;
--(IBAction)archiveAddressClicked:(id)sender;
--(IBAction)generateNewAddressClicked:(id)sender;
--(IBAction)copyAddressClicked:(id)sender;
--(IBAction)labelSaveClicked:(id)sender;
--(IBAction)shareByTwitter:(id)sender;
--(IBAction)shareByFacebook:(id)sender;
--(IBAction)shareByGooglePlus:(id)sender;
--(IBAction)shareByEmailClicked:(id)sender;
--(IBAction)shareByMessageClicked:(id)sender;
--(IBAction)requestPaymentClicked:(id)sender;
--(IBAction)closeKeyboardClicked:(id)sender;
--(IBAction)btcCodeClicked:(id)sender;
+- (IBAction)labelAddressClicked:(id)sender;
+- (IBAction)archiveAddressClicked:(id)sender;
+- (IBAction)generateNewAddressClicked:(id)sender;
+- (IBAction)copyAddressClicked:(id)sender;
+- (IBAction)labelSaveClicked:(id)sender;
+- (IBAction)shareByTwitter:(id)sender;
+- (IBAction)shareByFacebook:(id)sender;
+- (IBAction)shareByGooglePlus:(id)sender;
+- (IBAction)shareByEmailClicked:(id)sender;
+- (IBAction)shareByMessageClicked:(id)sender;
+- (IBAction)requestPaymentClicked:(id)sender;
+- (IBAction)closeKeyboardClicked:(id)sender;
+- (IBAction)btcCodeClicked:(id)sender;
 
 @end

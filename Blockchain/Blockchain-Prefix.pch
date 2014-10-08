@@ -22,6 +22,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define COLOR_BLOCKCHAIN_BLUE UIColorFromRGB(0x1b8ac7)
 #define COLOR_BLOCKCHAIN_LIGHT_BLUE UIColorFromRGB(0x62b5db)
 
+#define COLOR_BUTTON_LIGHT_BLUE UIColorFromRGB(0x5cb2d6)
 #define COLOR_BUTTON_BLUE UIColorFromRGB(0x609dcd)
 #define COLOR_BUTTON_RED UIColorFromRGB(0xe88787)
 #define COLOR_BUTTON_GREEN UIColorFromRGB(0x7eb858)

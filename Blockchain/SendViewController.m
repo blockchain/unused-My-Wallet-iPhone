@@ -32,7 +32,7 @@
     }];
 }
 
--(void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -63,7 +63,7 @@
     [self reload];
 }
 
--(void)reload
+- (void)reload
 {
     // Balance
     [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
@@ -130,7 +130,7 @@
 
 #pragma mark - Payment
 
--(void)reallyDoPayment
+- (void)reallyDoPayment
 {
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     

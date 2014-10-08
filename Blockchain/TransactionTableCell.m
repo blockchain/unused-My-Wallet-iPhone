@@ -54,11 +54,9 @@
         
         if (transaction.result == 0) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
-            [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundColor:COLOR_BUTTON_BLUE];
+            [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
         } else {
             [transactionTypeLabel setText:@""];
-            [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
         }
         
@@ -101,11 +99,9 @@
         
         if ([outputs count] == 0) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
-            [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundColor:COLOR_BUTTON_BLUE];
+            [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
         } else {
             [transactionTypeLabel setText:@""];
-            [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [btcButton setBackgroundColor:COLOR_BUTTON_RED];
         }
         

@@ -378,6 +378,10 @@ BOOL showSendCoins = NO;
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    // Dismiss sendviewController keyboard
+    if (_sendViewController) {
+        [_sendViewController dismissKeyboard];
+    }
     // Show the LaunchImage so the list of running apps does not show the user's information
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // Small delay so we don't change the view while it's zooming out
@@ -1106,6 +1110,9 @@ BOOL showSendCoins = NO;
 
 - (IBAction)powerClicked:(id)sender
 {
+    if (_sendViewController) {
+        [_sendViewController dismissKeyboard];
+    }
     [self toggleSideMenu];
 }
 

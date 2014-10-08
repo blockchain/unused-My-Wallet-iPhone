@@ -37,7 +37,6 @@
 #define BC_STRING_YOU_MUST_ENTER_A_LABEL NSLocalizedString(@"You must enter a label", nil)
 #define BC_STRING_UNARCHIVE NSLocalizedString(@"Unarchive", nil)
 #define BC_STRING_ARCHIVE NSLocalizedString(@"Archive", nil)
-#define BC_STRING_BITCOIN_ADDRESS NSLocalizedString(@"Bitcoin Address", nil)
 #define BC_STRING_ACTIVE NSLocalizedString(@"Active", nil)
 #define BC_STRING_ARCHIVED NSLocalizedString(@"Archived", nil)
 #define BC_STRING_NO_LABEL NSLocalizedString(@"No Label", nil)

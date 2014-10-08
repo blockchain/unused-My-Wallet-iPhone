@@ -49,15 +49,15 @@
         [label removeFromSuperview];
     }
     
-    //Payment Received
+    // Payment Received
     if (transaction.result >= 0) {
         
         if (transaction.result == 0) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
+            [btcButton setBackgroundColor:COLOR_BUTTON_BLUE];
         } else {
-            [transactionTypeLabel setText:BC_STRING_TRANSACTION_RECEIVED];
+            [transactionTypeLabel setText:@""];
             [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
         }
@@ -68,7 +68,7 @@
             inputs = transaction.inputs;
         }
         
-        //Show the inouts i.e. where the coins are from
+        // Show the inouts i.e. where the coins are from
         for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
@@ -102,14 +102,14 @@
         if ([outputs count] == 0) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
+            [btcButton setBackgroundColor:COLOR_BUTTON_BLUE];
         } else {
-            [transactionTypeLabel setText:BC_STRING_TRANSACTION_SENT];
+            [transactionTypeLabel setText:@""];
             [btcButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [btcButton setBackgroundColor:COLOR_BUTTON_RED];
         }
         
-        //Show the addresses involved anyway
+        // Show the addresses involved anyway
         if ([outputs count] == 0) {
             outputs = transaction.outputs;
         }
@@ -144,11 +144,14 @@
     
     y += 5;
     
+    // Make the transaction lable minimal size to fit the text, then move it to it's position on the right and resize and move the date label to use up the rest of the space
     [transactionTypeLabel sizeToFit];
+    float transactionTypeLabelX = self.frame.size.width - transactionTypeLabel.frame.size.width - 20;
+    [transactionTypeLabel setFrame:CGRectMake(transactionTypeLabelX, transactionTypeLabel.frame.origin.y, transactionTypeLabel.frame.size.width, transactionTypeLabel.frame.size.height)];
     
-    float x = transactionTypeLabel.frame.origin.x + transactionTypeLabel.frame.size.width + 5;
+    [dateButton setFrame:CGRectMake(20, dateButton.frame.origin.y, transactionTypeLabelX - 20 - 5, dateButton.frame.size.height)];
     
-    [dateButton setFrame:CGRectMake(x, dateButton.frame.origin.y, self.frame.size.width - x - 20, dateButton.frame.size.height)];
+    // Move down the btc button and the confirmations label according to the number of inouts from above
     [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, y, btcButton.frame.size.width, btcButton.frame.size.height)];
     
     [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, y, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];

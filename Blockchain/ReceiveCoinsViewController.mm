@@ -485,12 +485,15 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         [optionsModalView removeFromSuperview];
     } onResume:nil];
     
+    // TODO does this work?
     if (label)
         optionsTitleLabel.text = label;
     else
         optionsTitleLabel.text = BC_STRING_BITCOIN_ADDRESS;
     
     optionsAddressLabel.text = addr;
+    
+    // TODO Put QR code in ImageView
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

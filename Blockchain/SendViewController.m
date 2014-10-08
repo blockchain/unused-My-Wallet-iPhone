@@ -319,6 +319,8 @@
 - (void)dismissKeyboard
 {
     [amountField resignFirstResponder];
+    [toField resignFirstResponder];
+    
     [self.view removeGestureRecognizer:self.tapGesture];
     self.tapGesture = nil;
 }

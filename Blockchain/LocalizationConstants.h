@@ -101,6 +101,7 @@
 #define BC_STRING_OPEN_ACCOUNT_SETTINGS NSLocalizedString(@"Open Account Settings, Logout or change your pin below.", nil)
 #define BC_STRING_ACCOUNT_SETTINGS NSLocalizedString(@"Account Settings", nil)
 #define BC_STRING_LOGOUT NSLocalizedString(@"Logout", nil)
+#define BC_STRING_REALLY_LOGOUT NSLocalizedString(@"Do you really want to log out?", nil)
 #define BC_STRING_WELCOME_BACK NSLocalizedString(@"Welcome Back", nil)
 #define BC_STRING_FORGET_DETAILS NSLocalizedString(@"Forget Details", nil)
 // #define BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET NSLocalizedString(@"Welcome to Blockchain Wallet", nil)

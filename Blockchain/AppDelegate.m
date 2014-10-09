@@ -1170,10 +1170,23 @@ BOOL showSendCoins = NO;
 
 - (IBAction)logoutClicked:(id)sender
 {
-    [self clearPin];
-    [self logout];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_LOGOUT
+                                                    message:BC_STRING_REALLY_LOGOUT
+                                                   delegate:self
+                                          cancelButtonTitle:BC_STRING_CANCEL
+                                          otherButtonTitles:BC_STRING_OK, nil];
     
-    [self showPasswordModal];
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        // Actually log out
+        if (buttonIndex == 1) {
+            [self clearPin];
+            [self logout];
+            
+            [self showPasswordModal];
+        }
+    };
+    
+    [alert show];
 }
 
 - (void)confirmForgetWalletWithBlock:(void (^)(UIAlertView *alertView, NSInteger buttonIndex))tapBlock

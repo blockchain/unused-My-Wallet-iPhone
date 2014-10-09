@@ -14,6 +14,10 @@
 
 #define PI 3.14159265
 
+#define TAB_SEND 0
+#define TAB_TRANSACTIONS 1
+#define TAB_RECEIVE 2
+
 CGPoint arrowPositions[3] = {
     0.0f, 50.0f,
     106.0f, 50.0f,
@@ -76,7 +80,7 @@ CGPoint arrowPositions[3] = {
     nextButton.enabled = NO;
     nextButton.alpha = 0.0f;
     
-    selectedIndex = 1;
+    selectedIndex = TAB_TRANSACTIONS;
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -268,12 +272,17 @@ CGPoint arrowPositions[3] = {
 {
     if (desiredIndex == selectedIndex) {
         // Makes sure the original button is highlighted on start
-        if (selectedIndex == 0)
+        if (selectedIndex == TAB_SEND)
             sendButton.highlighted = YES;
-        else if (selectedIndex == 1)
+        else if (selectedIndex == TAB_TRANSACTIONS)
             homeButton.highlighted = YES;
-        else
+        else if (selectedIndex == TAB_RECEIVE)
             receiveButton.highlighted = YES;
+        else {
+            sendButton.highlighted = NO;
+            homeButton.highlighted = NO;
+            receiveButton.highlighted = NO;
+        }
         
         return;
     }

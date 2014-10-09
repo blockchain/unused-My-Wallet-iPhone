@@ -33,15 +33,20 @@
             
             if (closeType == ModalCloseTypeBack) {
                 self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                self.backButton.frame = CGRectMake(0, 15, 65, 51);
+                self.backButton.frame = CGRectMake(0, 15, 85, 51);
+                self.backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                self.backButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
                 [self.backButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
-                [self.backButton setTitle:[NSString stringWithFormat:@"❮ %@", BC_STRING_BACK] forState:UIControlStateNormal];
+                [self.backButton setImage:[UIImage imageNamed:@"back_chevron_icon"] forState:UIControlStateNormal];
+                [self.backButton setTitle:BC_STRING_BACK forState:UIControlStateNormal];
+                [self.backButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
                 [self.backButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [topBarView addSubview:self.backButton];
             }
             else if (closeType == ModalCloseTypeClose) {
                 self.closeButton = [[UIButton alloc] initWithFrame:CGRectMake(window.frame.size.width - 70, 15, 80, 51)];
                 [self.closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
+                [self.closeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
                 self.closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
                 [self.closeButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [topBarView addSubview:self.closeButton];

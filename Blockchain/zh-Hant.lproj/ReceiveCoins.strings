@@ -20,10 +20,10 @@
 "69.text" = "您的帳戶可能沒有正確配對。按一下按鈕在頂部螢幕左下部並按照螢幕上的說明。";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "存檔";
+"80.normalTitle" = "存檔位址";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "設置標籤";
+"81.normalTitle" = "標籤位址";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
 "88.normalTitle" = "請求付款";

@@ -20,10 +20,10 @@
 "69.text" = "あなたのアカウントが正しくペアリングされていない可能性。画面の左上部のボタンをクリックして画面上の指示に従って。";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "アーカイブ";
+"80.normalTitle" = "アーカイブのアドレス";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "ラベルを設定します。";
+"81.normalTitle" = "ラベル アドレス";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
 "88.normalTitle" = "支払いをリクエストします。";

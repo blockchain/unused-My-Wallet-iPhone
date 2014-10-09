@@ -20,13 +20,13 @@
 "69.text" = "Din konto er sandsynligvis ikke forbundet korrekt. Klik på knappen i det øverste venstre side af skærmen, og følg vejledningen på skærmen.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Arkiv";
+"80.normalTitle" = "ARKIV ADRESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Sæt Etiket";
+"81.normalTitle" = "LABEL ADRESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Anmodning Om Betaling";
+"88.normalTitle" = "ANMODNING OM BETALING";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin Adresse ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Kopi Adresse";
+"92.normalTitle" = "KOPIERE ADRESSEN";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Beløb:";

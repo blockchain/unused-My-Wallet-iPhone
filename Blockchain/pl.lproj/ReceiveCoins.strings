@@ -20,13 +20,13 @@
 "69.text" = "Twój wynik, to chyba nie w parze prawidłowo. Kliknij przycisk w prawym górnym rogu ekranu i postępuj zgodnie z instrukcjami wyświetlanymi na ekranie.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Archiwum";
+"80.normalTitle" = "ADRES ARCHIWUM";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Ustaw Etykietę";
+"81.normalTitle" = "ETYKIETY ADRESOWEJ";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Żądanie Płatności";
+"88.normalTitle" = "ZŁÓŻ WNIOSEK O PŁATNOŚĆ";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin-Adres ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Skopiuj Adres";
+"92.normalTitle" = "SKOPIUJ ADRES";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Kwota:";

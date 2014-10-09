@@ -20,13 +20,13 @@
 "69.text" = "Tilisi on todennäköisesti ole muodostettu oikein. Klikkaa painiketta vasemmassa yläkulmassa näytön ja noudattamalla näyttöön tulevia ohjeita.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Arkisto";
+"80.normalTitle" = "ARKISTO OSOITE";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Set Label (Määritä Nimike";
+"81.normalTitle" = "OSOITETARRA";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Maksupyynnön";
+"88.normalTitle" = "MAKSUPYYNNÖN";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin-Osoite ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Kopioi Osoite";
+"92.normalTitle" = "KOPIOI OSOITE";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Määrä:";

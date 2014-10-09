@@ -20,13 +20,13 @@
 "69.text" = "Contul dvs., probabil, nu este asociat în mod corespunzător. Faceți clic pe butonul din colțul din dreapta sus al ecranului, apoi urmați instrucțiunile de pe ecran.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Arhiva";
+"80.normalTitle" = "ARHIVA ADRESA";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Instalați Eticheta";
+"81.normalTitle" = "ETICHETA ADRESA";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Cerere De Plată";
+"88.normalTitle" = "CEREREA DE PLATĂ";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin-Adresa ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Copiați Adresa";
+"92.normalTitle" = "COPIAŢI ADRESA";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Suma:";

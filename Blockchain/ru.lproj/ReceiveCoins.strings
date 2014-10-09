@@ -20,13 +20,13 @@
 "69.text" = "Ваш счет, наверное, не в паре правильно. Нажмите кнопку в правом верхнем углу экрана и следуйте инструкциям на экране.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Архив";
+"80.normalTitle" = "АДРЕС АРХИВА";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Установить Метку";
+"81.normalTitle" = "АДРЕС ЭТИКЕТКИ";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Запрос Платежа";
+"88.normalTitle" = "ЗАПРОСИТЬ ПЛАТЕЖ";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin-Адрес ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Скопируйте Адрес";
+"92.normalTitle" = "СКОПИРОВАТЬ АДРЕС";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Сумма:";

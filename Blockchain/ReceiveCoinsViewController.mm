@@ -86,16 +86,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 38)];
         
-        // Get the default address - active address with most funds
+        // Get the default address - first active address
         NSString *defaultAddress = [activeAddresses firstObject];
-        uint64_t currentBalance = [app.wallet getAddressBalance:defaultAddress];
-        for (NSString *address in activeAddresses) {
-            uint64_t balance = [app.wallet getAddressBalance:address];
-            if (balance > currentBalance) {
-                defaultAddress = address;
-                currentBalance = balance;
-            }
-        }
         
         // QR Code
         UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];

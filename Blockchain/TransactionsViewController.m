@@ -117,13 +117,17 @@
 {
     if ([data.transactions count] == 0) {
         [self.view addSubview:noTransactionsView];
+        
+        // No Balance yet
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     } else {
         [noTransactionsView removeFromSuperview];
+        
+        // Balance
+        [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
     }
-    
-    // Balance
-    [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
-    [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
 }
 
 - (void)setLatestBlock:(LatestBlock *)_latestBlock

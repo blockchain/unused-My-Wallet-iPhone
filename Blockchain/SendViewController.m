@@ -74,8 +74,14 @@
     
     uint64_t balance = app.latestResponse.final_balance;
     
-    [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
-    [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+    if (app.wallet.isInitialized) {
+        [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+    }
+    else {
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
+    }
     
     self.fromAddresses = [app.wallet activeAddresses];
     

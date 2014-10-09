@@ -74,6 +74,58 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
         displayingLocalSymbol = FALSE;
     }
+
+    
+    // Get active addresses
+    NSArray *activeAddresses = [app.wallet activeAddresses];
+    
+    // Show table header with qr code and default address if we can find a default address
+    if (activeAddresses.count > 0) {
+        // Image width is adjusted to screen size
+        float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
+
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 38)];
+        
+        // Get the default address - active address with most funds
+        NSString *defaultAddress = [activeAddresses firstObject];
+        uint64_t currentBalance = [app.wallet getAddressBalance:defaultAddress];
+        for (NSString *address in activeAddresses) {
+            uint64_t balance = [app.wallet getAddressBalance:address];
+            if (balance > currentBalance) {
+                defaultAddress = address;
+                currentBalance = balance;
+            }
+        }
+        
+        // QR Code
+        UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
+        NSString *addressURL = [NSString stringWithFormat:@"bitcoin://%@", defaultAddress];
+        DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
+        qrCodeImageView.image = [QREncoder renderDataMatrix:data imageDimension:250];
+        qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [headerView addSubview:qrCodeImageView];
+        
+        // Address or label UILabel
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 16)];
+        NSString *label = [app.wallet labelForAddress:defaultAddress];
+        if (label.length > 0) {
+            addressLabel.text = label;
+        }
+        else {
+            addressLabel.text = defaultAddress;
+        }
+        addressLabel.font = [UIFont systemFontOfSize:14];
+        addressLabel.textAlignment = NSTextAlignmentCenter;
+        addressLabel.textColor = [UIColor blackColor];
+        [addressLabel setMinimumScaleFactor:.5f];
+        [addressLabel setAdjustsFontSizeToFitWidth:YES];
+        [headerView addSubview:addressLabel];
+        
+        tableView.tableHeaderView = headerView;
+    }
+    else {
+        tableView.tableHeaderView = nil;
+    }
     
     [tableView reloadData];
     

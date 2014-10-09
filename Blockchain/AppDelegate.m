@@ -1002,11 +1002,16 @@ BOOL showSendCoins = NO;
 {
     // There are two different ways the pinModal is displayed: as a subview of tabViewController (on start) and as a viewController. This checks which one it is and dismisses accordingly
     if ([self.pinEntryViewController.view isDescendantOfView:_window.rootViewController.view]) {
-        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            self.pinEntryViewController.view.alpha = 0;
-        } completion:^(BOOL finished) {
+        if (animated) {
+            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                self.pinEntryViewController.view.alpha = 0;
+            } completion:^(BOOL finished) {
+                [self.pinEntryViewController.view removeFromSuperview];
+            }];
+        }
+        else {
             [self.pinEntryViewController.view removeFromSuperview];
-        }];
+        }
     }
     else {
         [_tabViewController dismissViewControllerAnimated:animated completion:^{ }];
@@ -1016,8 +1021,8 @@ BOOL showSendCoins = NO;
 - (void)showPinModalAsView:(BOOL)asView
 {
     // Don't show a new one if we already show it
-    if ([self.pinEntryViewController.view isDescendantOfView:self.tabViewController.view] ||
-        ( _tabViewController.presentedViewController != nil &&_tabViewController.presentedViewController == self.pinEntryViewController)) {
+    if ([self.pinEntryViewController.view isDescendantOfView:_window.rootViewController.view] ||
+        ( _tabViewController.presentedViewController != nil &&_tabViewController.presentedViewController == self.pinEntryViewController && !_pinEntryViewController.isBeingDismissed)) {
         return;
     }
     

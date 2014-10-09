@@ -295,13 +295,22 @@ CGPoint arrowPositions[3] = {
     sendButton.highlighted = NO;
     homeButton.highlighted = NO;
     receiveButton.highlighted = NO;
+    sendButton.userInteractionEnabled = YES;
+    homeButton.userInteractionEnabled = YES;
+    receiveButton.userInteractionEnabled = YES;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(arrowStepDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (selectedIndex == 0)
+        if (selectedIndex == 0) {
             sendButton.highlighted = YES;
-        else if (selectedIndex == 1)
+            sendButton.userInteractionEnabled = NO;
+        }
+        else if (selectedIndex == 1) {
             homeButton.highlighted = YES;
-        else
+            homeButton.userInteractionEnabled = NO;
+        }
+        else {
             receiveButton.highlighted = YES;
+            receiveButton.userInteractionEnabled = NO;
+        }
     });
 }
 

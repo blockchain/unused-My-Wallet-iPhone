@@ -1,9 +1,8 @@
-
 /* Class = "IBUIButton"; normalTitle = "Save"; ObjectID = "48"; */
 "48.normalTitle" = "Guardar";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "56"; */
-"56.text" = "Etiqueta de dirección";
+"56.text" = "Dirección De La Etiqueta";
 
 /* Class = "IBUILabel"; text = "Address:"; ObjectID = "57"; */
 "57.text" = "Dirección:";
@@ -15,31 +14,31 @@
 "60.text" = "Dirección";
 
 /* Class = "IBUILabel"; text = "No Addresses"; ObjectID = "68"; */
-"68.text" = "No hay direcciones";
+"68.text" = "No Hay Direcciones";
 
 /* Class = "IBUILabel"; text = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen."; ObjectID = "69"; */
-"69.text" = "Su cuenta está probablemente no emparejado correctamente Haga clic en el botón en la parte superior izquierda de la pantalla y siga las instrucciones que aparecen en pantalla.";
+"69.text" = "Su cuenta es, probablemente, no vinculado correctamente. Haga clic en el botón en la parte superior izquierda de la pantalla y siga las instrucciones que aparecen en pantalla.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Archivo";
+"80.normalTitle" = "DIRECCIÓN DE ARCHIVO";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Set Label";
+"81.normalTitle" = "DIRECCIÓN DE LA ETIQUETA";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Solicitud de pago";
+"88.normalTitle" = "SOLICITUD DE PAGO";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
-"90.text" = "Dirección Address ";
+"90.text" = "Dirección Bitcoin ";
 
 /* Class = "IBUILabel"; text = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH"; ObjectID = "91"; */
-"91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH";
+"91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Dirección de copia";
+"92.normalTitle" = "COPIAR DIRECCIÓN";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
-"100.text" = "Monto:";
+"100.text" = "Cantidad:";
 
 /* Class = "IBUILabel"; text = "5 BTC = $10"; ObjectID = "120"; */
 "120.text" = "5 BTC = $10";
@@ -54,4 +53,5 @@
 "Yez-oe-AkH.normalTitle" = "Nueva Dirección";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
-"i1j-pG-caF.normalTitle" = "Scan Clave Privada";
+"i1j-pG-caF.normalTitle" = "Exploración De La Clave Privada";
+

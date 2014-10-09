@@ -20,13 +20,13 @@
 "69.text" = "El compte és que probablement no aparellat correctament. Feu clic al botó a la part superior esquerra de la pantalla i seguir les instruccions en pantalla.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Arxiu";
+"80.normalTitle" = "ARXIU D'ADREÇA";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Conjunt Etiqueta";
+"81.normalTitle" = "ETIQUETA ADREÇA";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Sol·licitud De Pagament";
+"88.normalTitle" = "SOL·LICITUD DE PAGAMENT";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin Adreça ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Copieu L'Adreça";
+"92.normalTitle" = "COPIAR L'ADREÇA";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Quantitat:";

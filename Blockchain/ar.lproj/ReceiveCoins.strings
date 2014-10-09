@@ -20,10 +20,10 @@
 "69.text" = "حسابك قد لا يقترن بشكل صحيح. انقر فوق الزر في أعلى يسار الشاشة ثم اتبع الإرشادات التي تظهر على الشاشة.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "الأرشيف";
+"80.normalTitle" = "أرشيف العناوين";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "تسمية مجموعة";
+"81.normalTitle" = "عنوان التسمية";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
 "88.normalTitle" = "طلب الدفع";

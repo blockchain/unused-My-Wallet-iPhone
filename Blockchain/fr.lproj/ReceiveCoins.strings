@@ -20,13 +20,13 @@
 "69.text" = "Votre compte n'est probablement pas correctement couplés. Cliquez sur le bouton en haut à gauche de l'écran et suivez les instructions à l'écran.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Archives";
+"80.normalTitle" = "ADRESSE DE L'ARCHIVE";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Définir L'Étiquette";
+"81.normalTitle" = "ÉTIQUETTE ADRESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Demande De Paiement";
+"88.normalTitle" = "DEMANDE DE PAIEMENT";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Adresse Bitcoin ";
@@ -35,7 +35,7 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Copier L'Adresse";
+"92.normalTitle" = "COPIER L'ADRESSE";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Quantité:";

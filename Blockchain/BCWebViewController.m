@@ -44,6 +44,7 @@
     
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
+    [closeButton setTitleColor:[UIColor colorWithWhite:0.56 alpha:1.0] forState:UIControlStateHighlighted];
     closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [topBar addSubview:closeButton];

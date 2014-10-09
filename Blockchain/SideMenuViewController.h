@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ECSlidingViewController.h"
 
-@interface SideMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SideMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ECSlidingViewControllerDelegate>
 
 @end

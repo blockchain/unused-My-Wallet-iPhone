@@ -1052,25 +1052,25 @@ BOOL showSendCoins = NO;
 - (void)toggleSideMenu
 {
     if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
-        _tabViewController.contentView.userInteractionEnabled = NO;
-        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, _window.frame.size.width, _window.frame.size.height)];
-        grayOverlayView.backgroundColor = [UIColor blackColor];
-        grayOverlayView.tag = 200;
-        grayOverlayView.alpha = 0.0;
-        [_tabViewController.view addSubview:grayOverlayView];
-        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            grayOverlayView.alpha = 0.4;
-        }];
+        // Enable Pan gesture on contenView of tabViewController
+        ECSlidingViewController *sideMenu = app.slidingViewController;
+        [_tabViewController.contentView addGestureRecognizer:sideMenu.panGesture];
+        
         [_slidingViewController anchorTopViewToRightAnimated:YES];
     }
     else {
-        UIView *grayOverlayView = [_tabViewController.view viewWithTag:200];
-        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            grayOverlayView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [grayOverlayView removeFromSuperview];
-        }];
-        _tabViewController.contentView.userInteractionEnabled = YES;
+        // Reset Pan gesture on contenView of tabViewController - this is also done in SideMenuViewController if the view get dismissed with the swipe gesture
+        ECSlidingViewController *sideMenu = app.slidingViewController;
+        [_tabViewController.contentView removeGestureRecognizer:sideMenu.panGesture];
+        
+        UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
+        swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
+        swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+        
+        [_tabViewController.contentView addGestureRecognizer:swipeLeft];
+        [_tabViewController.contentView addGestureRecognizer:swipeRight];
+        
         [_slidingViewController resetTopViewAnimated:YES];
     }
 }

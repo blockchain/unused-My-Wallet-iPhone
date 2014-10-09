@@ -27,9 +27,9 @@ int entries = 4;
     topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBarView];
     
-//    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
-//    logo.frame = CGRectMake(88, 22, 143, 40);
-//    [topBarView addSubview:logo];
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
+    logo.frame = CGRectMake(88, 22, 143, 40);
+    [topBarView addSubview:logo];
     
     self.tableView = ({
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * entries) style:UITableViewStylePlain];
@@ -48,6 +48,60 @@ int entries = 4;
     }
     
     [self.view addSubview:self.tableView];
+    
+    ECSlidingViewController *sideMenu = app.slidingViewController;
+    sideMenu.delegate = self;
+}
+
+// Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
+- (void)viewDidDisappear:(BOOL)animated
+{
+    ECSlidingViewController *sideMenu = app.slidingViewController;
+    [app.tabViewController.contentView removeGestureRecognizer:sideMenu.panGesture];
+    
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    
+    [app.tabViewController.contentView addGestureRecognizer:swipeLeft];
+    [app.tabViewController.contentView addGestureRecognizer:swipeRight];
+}
+
+#pragma mark - SlidingViewController Delegate
+
+- (id<UIViewControllerAnimatedTransitioning>)slidingViewController:(ECSlidingViewController *)slidingViewController animationControllerForOperation:(ECSlidingViewControllerOperation)operation topViewController:(UIViewController *)topViewController
+{
+    if (operation == ECSlidingViewControllerOperationAnchorRight) {
+        // SideMenu slides in
+        UIView *castsShadowView = app.slidingViewController.topViewController.view;
+        castsShadowView.layer.shadowOpacity = 0.3f;
+        castsShadowView.layer.shadowRadius = 10.0f;
+        castsShadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        
+        // Old one - shadow is over topViewController
+        //        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, _window.frame.size.width, _window.frame.size.height)];
+        //        grayOverlayView.backgroundColor = [UIColor blackColor];
+        //        grayOverlayView.tag = 200;
+        //        grayOverlayView.alpha = 0.0;
+        //        [_tabViewController.view addSubview:grayOverlayView];
+        //        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        //            grayOverlayView.alpha = 0.165;
+        //        }];
+        //
+        //        CAGradientLayer *l = [CAGradientLayer layer];
+        //        l.frame = grayOverlayView.bounds;
+        //        l.colors = [NSArray arrayWithObjects:(id)[UIColor whiteColor].CGColor, (id)[UIColor clearColor].CGColor, nil];
+        //        l.startPoint = CGPointMake(0.0f, 1.0f);
+        //        l.endPoint = CGPointMake(0.05f, 1.0f);
+        //        grayOverlayView.layer.mask = l;
+
+    }
+    else if (operation == ECSlidingViewControllerOperationResetFromRight) {
+        // SideMenu slides out
+    }
+    
+    return nil;
 }
 
 #pragma mark - UITableView Delegate

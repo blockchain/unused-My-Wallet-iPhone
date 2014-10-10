@@ -1058,34 +1058,11 @@ BOOL showSendCoins = NO;
 - (void)toggleSideMenu
 {
     // If the sideMenu is not shown, show it
-    if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
-        // Enable Pan gesture on contenView of tabViewController and disable all other interactions
-        for (UIView *view in _tabViewController.activeViewController.view.subviews) {
-            [view setUserInteractionEnabled:NO];
-        }
-        [_tabViewController.activeViewController.view setUserInteractionEnabled:YES];
-        ECSlidingViewController *sideMenu = app.slidingViewController;
-        [_tabViewController.activeViewController.view addGestureRecognizer:sideMenu.panGesture];
-        
+    if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {        
         [_slidingViewController anchorTopViewToRightAnimated:YES];
     }
     // If the sideMenu is shown, dismiss it
     else {
-        // Reset Pan gesture on contenView of tabViewController - this is also done in SideMenuViewController if the view get dismissed with the swipe gesture
-        for (UIView *view in _tabViewController.activeViewController.view.subviews) {
-            [view setUserInteractionEnabled:YES];
-        }
-        ECSlidingViewController *sideMenu = app.slidingViewController;
-        [_tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
-        
-        UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
-        swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
-        swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-        
-        [_tabViewController.activeViewController.view addGestureRecognizer:swipeLeft];
-        [_tabViewController.activeViewController.view addGestureRecognizer:swipeRight];
-        
         [_slidingViewController resetTopViewAnimated:YES];
     }
 }

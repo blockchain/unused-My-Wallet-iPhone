@@ -120,6 +120,16 @@ CGPoint arrowPositions[3] = {
 - (void)viewDidAppear:(BOOL)animated
 {
     originalOffset = contentView.frame.origin;
+    
+    // Add side bar to swipe open the sideMenu
+    if (!_menuSwipeRecognizerView) {
+        _menuSwipeRecognizerView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, 20, self.view.frame.size.height)];
+        
+        ECSlidingViewController *sideMenu = app.slidingViewController;
+        [_menuSwipeRecognizerView addGestureRecognizer:sideMenu.panGesture];
+        
+        [self.view addSubview:_menuSwipeRecognizerView];
+    }
 }
 
 - (UIView*)textFieldResponder

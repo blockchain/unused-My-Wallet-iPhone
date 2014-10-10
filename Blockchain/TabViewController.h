@@ -35,6 +35,7 @@
 @property(nonatomic, assign) BOOL backButtonEnabled;
 @property(nonatomic, assign) BOOL nextButtonEnabled;
 @property(nonatomic, assign) BOOL submitButtonEnabled;
+@property(nonatomic, retain) UIView *menuSwipeRecognizerView;
 
 -(void)setActiveViewController:(UIViewController *)nviewcontroller animated:(BOOL)animated index:(int)index;
 -(IBAction)nextClicked:(id)sender;

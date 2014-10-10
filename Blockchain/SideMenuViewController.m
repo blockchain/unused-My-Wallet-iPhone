@@ -56,11 +56,16 @@ int entries = 4;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
+    // Reset Pan gestures
     for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
         [view setUserInteractionEnabled:YES];
     }
+    
     ECSlidingViewController *sideMenu = app.slidingViewController;
     [app.tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
+    
+    [app.tabViewController.menuSwipeRecognizerView setUserInteractionEnabled:YES];
+    [app.tabViewController.menuSwipeRecognizerView addGestureRecognizer:sideMenu.panGesture];
     
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
@@ -75,8 +80,19 @@ int entries = 4;
 
 - (id<UIViewControllerAnimatedTransitioning>)slidingViewController:(ECSlidingViewController *)slidingViewController animationControllerForOperation:(ECSlidingViewControllerOperation)operation topViewController:(UIViewController *)topViewController
 {
+    // SideMenu will slide in
     if (operation == ECSlidingViewControllerOperationAnchorRight) {
-        // SideMenu slides in
+        // Enable Pan gesture to close sideMenu on tabViewController and disable all other interactions
+        for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
+            [view setUserInteractionEnabled:NO];
+        }
+        [app.tabViewController.menuSwipeRecognizerView setUserInteractionEnabled:NO];
+        
+        [app.tabViewController.activeViewController.view setUserInteractionEnabled:YES];
+        ECSlidingViewController *sideMenu = app.slidingViewController;
+        [app.tabViewController.activeViewController.view addGestureRecognizer:sideMenu.panGesture];
+        
+        // Show shadow on current viewController in tabBarView
         UIView *castsShadowView = app.slidingViewController.topViewController.view;
         castsShadowView.layer.shadowOpacity = 0.3f;
         castsShadowView.layer.shadowRadius = 10.0f;
@@ -100,8 +116,9 @@ int entries = 4;
         //        grayOverlayView.layer.mask = l;
 
     }
+    // SideMenu will slide out
     else if (operation == ECSlidingViewControllerOperationResetFromRight) {
-        // SideMenu slides out
+        // Everything happens in viewDidDisappear: which is called after the slide animation is done
     }
     
     return nil;

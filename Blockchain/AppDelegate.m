@@ -33,7 +33,7 @@
 #import "Reachability.h"
 #import "SideMenuViewController.h"
 #import "BCWelcomeView.h"
-#import "BCBlockchainWebViewController.h"
+#import "BCWebViewController.h"
 
 #define CURTAIN_IMAGE_TAG 123
 
@@ -411,8 +411,8 @@ BOOL showSendCoins = NO;
                 [_merchantViewController dismissViewControllerAnimated:NO completion:nil];
             }
             
-            if (_tabViewController.presentedViewController == _blockchainWebViewController) {
-                [_blockchainWebViewController dismissViewControllerAnimated:NO completion:nil];
+            if (_tabViewController.presentedViewController == _bcWebViewController) {
+                [_bcWebViewController dismissViewControllerAnimated:NO completion:nil];
             }
         }];
     });
@@ -480,9 +480,9 @@ BOOL showSendCoins = NO;
 
 - (void)pushWebViewController:(NSString*)url
 {
-    _blockchainWebViewController = [[BCBlockchainWebViewController alloc] init];
-    [_blockchainWebViewController loadURL:url];
-    [_tabViewController presentViewController:_blockchainWebViewController animated:YES completion:nil];
+    _bcWebViewController = [[BCWebViewController alloc] init];
+    [_bcWebViewController loadURL:url];
+    [_tabViewController presentViewController:_bcWebViewController animated:YES completion:nil];
 }
 
 - (NSMutableDictionary *)parseQueryString:(NSString *)query
@@ -976,10 +976,10 @@ BOOL showSendCoins = NO;
 
 - (void)showAccountSettings
 {
-    _blockchainWebViewController = [[BCBlockchainWebViewController alloc] init];
-    [_blockchainWebViewController loadSettings];
+    _bcWebViewController = [[BCWebViewController alloc] init];
+    [_bcWebViewController loadSettings];
     
-    [_tabViewController presentViewController:_blockchainWebViewController animated:YES completion:nil];
+    [_tabViewController presentViewController:_bcWebViewController animated:YES completion:nil];
 }
 
 - (void)showSendCoins
@@ -1057,25 +1057,34 @@ BOOL showSendCoins = NO;
 
 - (void)toggleSideMenu
 {
+    // If the sideMenu is not shown, show it
     if (_slidingViewController.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
-        // Enable Pan gesture on contenView of tabViewController
+        // Enable Pan gesture on contenView of tabViewController and disable all other interactions
+        for (UIView *view in _tabViewController.activeViewController.view.subviews) {
+            [view setUserInteractionEnabled:NO];
+        }
+        [_tabViewController.activeViewController.view setUserInteractionEnabled:YES];
         ECSlidingViewController *sideMenu = app.slidingViewController;
-        [_tabViewController.contentView addGestureRecognizer:sideMenu.panGesture];
+        [_tabViewController.activeViewController.view addGestureRecognizer:sideMenu.panGesture];
         
         [_slidingViewController anchorTopViewToRightAnimated:YES];
     }
+    // If the sideMenu is shown, dismiss it
     else {
         // Reset Pan gesture on contenView of tabViewController - this is also done in SideMenuViewController if the view get dismissed with the swipe gesture
+        for (UIView *view in _tabViewController.activeViewController.view.subviews) {
+            [view setUserInteractionEnabled:YES];
+        }
         ECSlidingViewController *sideMenu = app.slidingViewController;
-        [_tabViewController.contentView removeGestureRecognizer:sideMenu.panGesture];
+        [_tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
         
         UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
         swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
         UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
         swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
         
-        [_tabViewController.contentView addGestureRecognizer:swipeLeft];
-        [_tabViewController.contentView addGestureRecognizer:swipeRight];
+        [_tabViewController.activeViewController.view addGestureRecognizer:swipeLeft];
+        [_tabViewController.activeViewController.view addGestureRecognizer:swipeRight];
         
         [_slidingViewController resetTopViewAnimated:YES];
     }

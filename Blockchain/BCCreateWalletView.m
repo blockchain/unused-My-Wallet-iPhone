@@ -8,7 +8,6 @@
 
 #import "BCCreateWalletView.h"
 #import "AppDelegate.h"
-#import "BCWebViewController.h"
 
 #define IS_568_SCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
 
@@ -167,10 +166,7 @@
 
 -(IBAction)termsOfServiceClicked:(id)sender
 {
-    BCWebViewController *webViewController = [[BCWebViewController alloc] init];
-    [webViewController loadURL:[WebROOT stringByAppendingString:@"terms_of_service"]];
-    
-    [app.tabViewController presentViewController:webViewController animated:YES completion:nil];
+    [app pushWebViewController:[WebROOT stringByAppendingString:@"terms_of_service"]];
 }
 
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {

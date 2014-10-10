@@ -13,7 +13,6 @@
 #import "Input.h"
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
-#import "BCWebViewController.h"
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 

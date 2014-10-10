@@ -2,7 +2,7 @@
 //  BCWebViewController.h
 //  Blockchain
 //
-//  Created by Mark Pfluger on 9/25/14.
+//  Created by Mark Pfluger on 10/9/14.
 //  Copyright (c) 2014 Qkos Services Ltd. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
     UIWebView * webView;
 }
 
--(void)loadURL:(NSString*)url;
+- (void)loadSettings;
+- (void)loadURL:(NSString*)url;
 
 @end

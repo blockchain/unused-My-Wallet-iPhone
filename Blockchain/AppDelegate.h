@@ -44,7 +44,7 @@
 
 #define PIN_PBKDF2_ITERATIONS 1 //This does not need to be large because the key is already 256 bits
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, SendViewController, BCCreateWalletView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController, BCBlockchainWebViewController;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, SendViewController, BCCreateWalletView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController, BCWebViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
@@ -81,7 +81,7 @@
 @property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
 @property (strong, nonatomic) IBOutlet SendViewController * sendViewController;
 @property (strong, nonatomic) IBOutlet MerchantViewController * merchantViewController;
-@property (strong, nonatomic) IBOutlet BCBlockchainWebViewController *blockchainWebViewController;
+@property (strong, nonatomic) IBOutlet BCWebViewController *bcWebViewController;
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 

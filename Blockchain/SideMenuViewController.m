@@ -56,16 +56,19 @@ int entries = 4;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
+    for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
+        [view setUserInteractionEnabled:YES];
+    }
     ECSlidingViewController *sideMenu = app.slidingViewController;
-    [app.tabViewController.contentView removeGestureRecognizer:sideMenu.panGesture];
+    [app.tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
     
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     
-    [app.tabViewController.contentView addGestureRecognizer:swipeLeft];
-    [app.tabViewController.contentView addGestureRecognizer:swipeRight];
+    [app.tabViewController.activeViewController.view addGestureRecognizer:swipeLeft];
+    [app.tabViewController.activeViewController.view addGestureRecognizer:swipeRight];
 }
 
 #pragma mark - SlidingViewController Delegate

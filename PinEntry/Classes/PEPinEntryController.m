@@ -31,8 +31,7 @@
 static PEViewController *EnterController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-    // TODO i18n
-	c.prompt = @"Please enter your pin";
+	c.prompt = BC_STRING_PLEASE_ENTER_PIN;
 	c.title = @"";
     
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -45,8 +44,7 @@ static PEViewController *EnterController()
 static PEViewController *NewController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-    // TODO i18n
-	c.prompt = @"Please enter a new pin";
+	c.prompt = BC_STRING_PLEASE_ENTER_NEW_PIN;
 	c.title = @"";
 
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -59,8 +57,7 @@ static PEViewController *NewController()
 static PEViewController *VerifyController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-    // TODO i18n
-	c.prompt = @"Confirm your pin";
+	c.prompt = BC_STRING_CONFIRM_PIN;
 	c.title = @"";
 
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -90,8 +87,7 @@ static PEViewController *VerifyController()
 	PEViewController *c = EnterController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
-    // TODO i18n
-    c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
+    c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:BC_STRING_CANCEL style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
     n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = NO;
@@ -145,8 +141,7 @@ static PEViewController *VerifyController()
                         self.viewControllers = [NSArray arrayWithObject:c];
                     }
                 } else {
-                    // TODO i18n
-                    controller.prompt = @"Incorrect pin. Please retry.";
+                    controller.prompt = BC_STRING_INCORRECT_PIN_RETRY;
                     [controller resetPin];
                 }
             }];

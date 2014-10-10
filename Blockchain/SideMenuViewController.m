@@ -112,37 +112,30 @@ int entries = 4;
     
     NSInteger row = indexPath.row;
     
-    const int news = 0;
-    const int settings = 1;
+    const int settings = 0;
+    const int news = 1;
     const int changePin = 2;
     const int logout = 3;
     
     switch (row) {
-        case news:
-        {
-            [app newsClicked:nil];
-        }
-        break;
-        
         case settings:
-        {
             [app accountSettingsClicked:nil];
-        }
-        break;
-        
+            break;
+            
+        case news:
+            [app newsClicked:nil];
+            break;
+            
         case changePin:
-        {
             [app changePINClicked:nil];
-        }
-        break;
+            break;
+            
         case logout:
-        {
             [app logoutClicked:nil];
-        }
-        break;
-        
+            break;
+            
         default:
-        break;
+            break;
     }
     
     [app toggleSideMenu];
@@ -189,9 +182,8 @@ int entries = 4;
     
     NSArray *titles;
     NSArray *images;
-    // TODO i18n
-    titles = @[@"News, Price & Charts", @"Wallet Settings", @"Change PIN", @"Logout"];
-    images = @[@"news_icon.png", @"settings_icon", @"lock_icon", @"logout_icon"];
+    titles = @[BC_STRING_ACCOUNT_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
+    images = @[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"];
 
     cell.textLabel.text = titles[indexPath.row];
     cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];

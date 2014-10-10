@@ -37,8 +37,11 @@
     
     self.readerView = [[ZBarReaderView alloc] init];
     
+    self.readerView.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
+    
     // Reduce size of qr code to be scanned as part of view size
-    self.readerView.scanCrop = CGRectMake(0.1, 0.1, 0.8, 0.8);
+    // Normalized coordinates and x/y flipped
+    self.readerView.scanCrop = CGRectMake(0.2, 0.15, 0.6, 0.7);
     
     [self.readerView setReaderDelegate:self];
     

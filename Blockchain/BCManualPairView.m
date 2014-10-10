@@ -25,7 +25,7 @@
 
 - (void)modalWasDismissed
 {
-    passwordTextField = nil;
+    passwordTextField.text = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -47,8 +47,13 @@
     
     if ([guid length] != 36) {
         [app standardNotify:BC_STRING_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER title:BC_STRING_INVALID_IDENTIFIER delegate:nil];
+        
+        [walletIdentifierTextField becomeFirstResponder];
+        
         return;
     }
+    
+    passwordTextField.text = @"";
     
     [app.wallet loadGuid:guid];
     

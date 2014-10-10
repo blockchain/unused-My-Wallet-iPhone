@@ -51,7 +51,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TransactionTableCell *cell = (TransactionTableCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell transactionHashClicked:nil];
+    [cell transactionClicked:nil];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

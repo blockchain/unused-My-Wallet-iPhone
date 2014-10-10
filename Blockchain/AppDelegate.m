@@ -14,9 +14,7 @@
 #import "TabViewController.h"
 #import "ReceiveCoinsViewController.h"
 #import "SendViewController.h"
-#import "AccountViewController.h"
 #import "TransactionsViewController.h"
-#import "BCWalletWebViewController.h"
 #import "BCCreateWalletView.h"
 #import "BCManualPairView.h"
 #import "NSString+SHA256.h"
@@ -35,6 +33,7 @@
 #import "Reachability.h"
 #import "SideMenuViewController.h"
 #import "BCWelcomeView.h"
+#import "BCBlockchainWebViewController.h"
 
 #define CURTAIN_IMAGE_TAG 123
 
@@ -342,14 +341,19 @@ BOOL showSendCoins = NO;
 
 - (void)walletFailedToDecrypt
 {
+    // In case we were on the manual pair screen, we want to go back there. The way to check for that is that the wallet has a guid, but it's not saved yet
+    if (wallet.guid && ![[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
+        
+        return;
+    }
+    
     [self showPasswordModal];
 }
 
 - (void)showPasswordModal
 {
     [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
-    
-    [mainPasswordTextField becomeFirstResponder];
 }
 
 - (void) beginBackgroundUpdateTask
@@ -388,6 +392,7 @@ BOOL showSendCoins = NO;
     if (_sendViewController) {
         [_sendViewController dismissKeyboard];
     }
+    
     // Show the LaunchImage so the list of running apps does not show the user's information
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // Small delay so we don't change the view while it's zooming out
@@ -400,6 +405,15 @@ BOOL showSendCoins = NO;
         
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             curtainImageView.alpha = 1;
+        } completion:^(BOOL finished) {
+            // Dismiss any ViewControllers that are used modally
+            if (_tabViewController.presentedViewController == _merchantViewController) {
+                [_merchantViewController dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            if (_tabViewController.presentedViewController == _blockchainWebViewController) {
+                [_blockchainWebViewController dismissViewControllerAnimated:NO completion:nil];
+            }
         }];
     });
 }
@@ -464,15 +478,11 @@ BOOL showSendCoins = NO;
     AudioServicesPlaySystemSound(alertSoundID);
 }
 
-
-// Only gets called when displaying a transaction hash
 - (void)pushWebViewController:(NSString*)url
 {
-    self.webViewController = [[BCWalletWebViewController alloc] init];
-    
-    [_tabViewController setActiveViewController:_webViewController animated:NO index:-1];
-    
-    [_webViewController loadURL:url];
+    _blockchainWebViewController = [[BCBlockchainWebViewController alloc] init];
+    [_blockchainWebViewController loadURL:url];
+    [_tabViewController presentViewController:_blockchainWebViewController animated:YES completion:nil];
 }
 
 - (NSMutableDictionary *)parseQueryString:(NSString *)query
@@ -538,9 +548,8 @@ BOOL showSendCoins = NO;
     }
     else if (textField == mainPasswordTextField) {
         [self mainPasswordClicked:textField];
+        [mainPasswordTextField resignFirstResponder];
     }
-    
-    [textField resignFirstResponder];
     
     return YES;
 }
@@ -936,7 +945,6 @@ BOOL showSendCoins = NO;
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
-    [_accountViewController emptyWebView];
 }
 
 - (void)forgetWallet
@@ -960,7 +968,6 @@ BOOL showSendCoins = NO;
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reload];
-    [_accountViewController emptyWebView];
     
     [self transitionToIndex:1];
 }
@@ -969,11 +976,10 @@ BOOL showSendCoins = NO;
 
 - (void)showAccountSettings
 {
-    if (!_accountViewController) {
-        _accountViewController = [[AccountViewController alloc] initWithNibName:@"AccountViewController" bundle:[NSBundle mainBundle]];
-    }
+    _blockchainWebViewController = [[BCBlockchainWebViewController alloc] init];
+    [_blockchainWebViewController loadSettings];
     
-    [_tabViewController setActiveViewController:_accountViewController];
+    [_tabViewController presentViewController:_blockchainWebViewController animated:YES completion:nil];
 }
 
 - (void)showSendCoins
@@ -1127,19 +1133,17 @@ BOOL showSendCoins = NO;
     [self toggleSideMenu];
 }
 
-// Open ZeroBlock if it's installed, otherwise go to the ZeroBlock App Store page
+// Open ZeroBlock if it's installed, otherwise go to the ZeroBlock mobile homepage in the web modal
 - (IBAction)newsClicked:(id)sender
 {
-    // TODO actual URL Scheme in ZeroBlock .plist
-    NSURL *zeroBlockAppURL = [NSURL URLWithString:@"ZeroBlock://"];
+    // TODO ZeroBlock does not have the URL scheme in it's .plist yet
+    NSURL *zeroBlockAppURL = [NSURL URLWithString:@"zeroblock://"];
     
     if ([[UIApplication sharedApplication] canOpenURL:zeroBlockAppURL]) {
         [[UIApplication sharedApplication] openURL:zeroBlockAppURL];
     }
     else {
-        NSString *iTunesLink = @"https://itunes.apple.com/us/app/zeroblock-real-time-bitcoin/id643184018?mt=8";
-        
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+        [self pushWebViewController:@"http://mobile.zeroblock.com"];
     }
 }
 
@@ -1266,10 +1270,14 @@ BOOL showSendCoins = NO;
 
 - (IBAction)mainPasswordClicked:(id)sender
 {
+    [mainPasswordTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
+    
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([mainPasswordTextField.text length] < 10) {
         [app standardNotify:BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
+        
+        mainPasswordTextField.text = nil;
         return;
     }
     

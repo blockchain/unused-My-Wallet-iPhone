@@ -14,7 +14,6 @@
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
 #import "BCWebViewController.h"
-#import "BCWalletWebViewController.h"
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
@@ -189,9 +188,8 @@
 
 #pragma mark button interactions
 
-- (IBAction)transactionHashClicked:(UIButton *)button
+- (IBAction)transactionClicked:(UIButton *)button
 {
-    // TODO uiwebViewController that tracks page loads and sets the back button control accordingly. Animated from bottom and close button.
     [app pushWebViewController:[WebROOT stringByAppendingFormat:@"tx/%@", transaction.myHash]];
 }
 

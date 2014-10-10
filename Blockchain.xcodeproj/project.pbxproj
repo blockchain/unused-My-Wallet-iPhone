@@ -79,7 +79,6 @@
 		220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 220ADA6819A3796200EB7599 /* Localizable.strings */; };
 		220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375119A3604500E06996 /* ReceiveCoins.xib */; };
 		220E375719A3613600E06996 /* AddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* AddressBookView.xib */; };
-		220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375C19A3613D00E06996 /* AccountViewController.xib */; };
 		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
 		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
 		220E376319A3615400E06996 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376519A3615400E06996 /* MerchantMap.xib */; };
@@ -101,6 +100,7 @@
 		6775569419E749CC0054699B /* back_chevron_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569119E749CC0054699B /* back_chevron_icon@3x.png */; };
 		6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569219E749CC0054699B /* back_chevron_icon@2x.png */; };
 		6775569619E749CC0054699B /* back_chevron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569319E749CC0054699B /* back_chevron_icon.png */; };
+		6775569919E752A00054699B /* BCBlockchainWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6775569819E752A00054699B /* BCBlockchainWebViewController.m */; };
 		678AD5E919D4610000E9A778 /* BCModalContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678AD5E819D4610000E9A778 /* BCModalContentView.m */; };
 		678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD60F19D56EEA00E9A778 /* home_icon.png */; };
 		678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD61019D56EEA00E9A778 /* home_icon@2x.png */; };
@@ -264,9 +264,7 @@
 		9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638514B60128004BEA02 /* AppDelegate.m */; };
 		9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */; };
 		9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D1A151494BF00ECDFBE /* SendViewController.m */; };
-		9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D1D151494D600ECDFBE /* AccountViewController.m */; };
 		9FCA4D2015149AA600ECDFBE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCA4D1F15149AA600ECDFBE /* QuartzCore.framework */; };
-		9FCA4D391514A83400ECDFBE /* BCWalletWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCA4D381514A83400ECDFBE /* BCWalletWebViewController.m */; };
 		9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */; };
 		9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */; };
 		C92F761619803346007916F7 /* icon_512.png in Resources */ = {isa = PBXBuildFile; fileRef = C92F761519803346007916F7 /* icon_512.png */; };
@@ -652,6 +650,8 @@
 		6775569119E749CC0054699B /* back_chevron_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@3x.png"; sourceTree = "<group>"; };
 		6775569219E749CC0054699B /* back_chevron_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@2x.png"; sourceTree = "<group>"; };
 		6775569319E749CC0054699B /* back_chevron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_chevron_icon.png; sourceTree = "<group>"; };
+		6775569719E752A00054699B /* BCBlockchainWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCBlockchainWebViewController.h; sourceTree = "<group>"; };
+		6775569819E752A00054699B /* BCBlockchainWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCBlockchainWebViewController.m; sourceTree = "<group>"; };
 		678AD5E519D45FA300E9A778 /* BCModalContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCModalContentView.h; sourceTree = "<group>"; };
 		678AD5E819D4610000E9A778 /* BCModalContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCModalContentView.m; sourceTree = "<group>"; };
 		678AD60F19D56EEA00E9A778 /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
@@ -872,11 +872,7 @@
 		9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReceiveCoinsViewController.mm; sourceTree = "<group>"; };
 		9FCA4D19151494BF00ECDFBE /* SendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendViewController.h; sourceTree = "<group>"; };
 		9FCA4D1A151494BF00ECDFBE /* SendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendViewController.m; sourceTree = "<group>"; };
-		9FCA4D1C151494D600ECDFBE /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
-		9FCA4D1D151494D600ECDFBE /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
 		9FCA4D1F15149AA600ECDFBE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		9FCA4D371514A83400ECDFBE /* BCWalletWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCWalletWebViewController.h; sourceTree = "<group>"; };
-		9FCA4D381514A83400ECDFBE /* BCWalletWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCWalletWebViewController.m; sourceTree = "<group>"; };
 		9FCA4D3C1514C64200ECDFBE /* 25-circle-west.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "25-circle-west.png"; sourceTree = "<group>"; };
 		9FCA4D3D1514C64200ECDFBE /* 25-circle-west@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "25-circle-west@2x.png"; sourceTree = "<group>"; };
 		9FDAEF621514EB5200E92C90 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
@@ -900,7 +896,6 @@
 		9FDAEF741514EB5200E92C90 /* ZBarSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSDK.h; sourceTree = "<group>"; };
 		9FDAEF751514EB5200E92C90 /* ZBarSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSymbol.h; sourceTree = "<group>"; };
 		9FDAEF761514EB5200E92C90 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
-		C91C5F1019C083970007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AccountViewController.xib; sourceTree = "<group>"; };
 		C91C5F1219C0841A0007D988 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MerchantMap.xib; sourceTree = "<group>"; };
 		C92F761519803346007916F7 /* icon_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512.png; sourceTree = "<group>"; };
 		C9BE91671945D8F600FD516D /* PENumpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENumpadView.h; sourceTree = "<group>"; };
@@ -1344,13 +1339,13 @@
 				9F48B3651534C78F00305059 /* 78-stopwatch.png */,
 				9F48B3661534C78F00305059 /* 78-stopwatch@2x.png */,
 				9F765EE514BBC00000048EFB /* 119-piggy-bank@2x.png */,
-				6775569119E749CC0054699B /* back_chevron_icon@3x.png */,
-				6775569219E749CC0054699B /* back_chevron_icon@2x.png */,
-				6775569319E749CC0054699B /* back_chevron_icon.png */,
 				84F4BE0C197FB5B800B7BF7B /* account-settings.png */,
 				84F4BE0D197FB5B800B7BF7B /* account-settings@2x.png */,
 				9F765F2814BC467900048EFB /* arrow_down.png */,
 				9F765F2914BC467900048EFB /* arrow_down@2x.png */,
+				6775569319E749CC0054699B /* back_chevron_icon.png */,
+				6775569219E749CC0054699B /* back_chevron_icon@2x.png */,
+				6775569119E749CC0054699B /* back_chevron_icon@3x.png */,
 				67C6703F19CAF558004BD8FC /* bluedot.png */,
 				9F0CBACF1513BF9D00CD945D /* busy-background.png */,
 				9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */,
@@ -1552,22 +1547,20 @@
 		9FCA4D18151494A300ECDFBE /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9FCA4D1C151494D600ECDFBE /* AccountViewController.h */,
-				9FCA4D1D151494D600ECDFBE /* AccountViewController.m */,
 				9FCA4D141514949500ECDFBE /* ReceiveCoinsViewController.h */,
 				9FCA4D151514949500ECDFBE /* ReceiveCoinsViewController.mm */,
 				9FCA4D19151494BF00ECDFBE /* SendViewController.h */,
 				9FCA4D1A151494BF00ECDFBE /* SendViewController.m */,
 				9F765F3014BC622E00048EFB /* TransactionsViewController.h */,
 				9F765F3114BC622E00048EFB /* TransactionsViewController.m */,
-				9FCA4D371514A83400ECDFBE /* BCWalletWebViewController.h */,
-				9FCA4D381514A83400ECDFBE /* BCWalletWebViewController.m */,
 				84AEEC591987A779000E8DC8 /* MerchantViewController.h */,
 				84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */,
 				67470A0219D42B1400757D46 /* BCWebViewController.h */,
 				67470A0319D42B1400757D46 /* BCWebViewController.m */,
 				67E9674C19DF285000305358 /* SideMenuViewController.h */,
 				67E9674D19DF285000305358 /* SideMenuViewController.m */,
+				6775569719E752A00054699B /* BCBlockchainWebViewController.h */,
+				6775569819E752A00054699B /* BCBlockchainWebViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1749,7 +1742,6 @@
 			isa = PBXGroup;
 			children = (
 				C9B32CF9194F3F5800BDF3A0 /* Cells */,
-				220E375C19A3613D00E06996 /* AccountViewController.xib */,
 				220E375919A3613600E06996 /* AddressBookView.xib */,
 				220E375119A3604500E06996 /* ReceiveCoins.xib */,
 				220E375F19A3614900E06996 /* SendCoins.xib */,
@@ -1994,7 +1986,6 @@
 				9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */,
 				67E9675C19DF46A900305358 /* lock_icon@2x.png in Resources */,
 				9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */,
-				220E375A19A3613D00E06996 /* AccountViewController.xib in Resources */,
 				678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */,
 				84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */,
 				678AD62D19D57FAC00E9A778 /* menu_icon@2x.png in Resources */,
@@ -2099,7 +2090,6 @@
 				2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */,
 				2203489A19A4D51300611AC3 /* NSMutableURLRequest+Parameters.m in Sources */,
 				2203487419A4D51300611AC3 /* FBError.m in Sources */,
-				9FCA4D1E151494D600ECDFBE /* AccountViewController.m in Sources */,
 				2203488119A4D51300611AC3 /* FBPlacePickerCacheDescriptor.m in Sources */,
 				2203487B19A4D51300611AC3 /* FBGraphObjectTableDataSource.m in Sources */,
 				67EE1DCC19E3325900DBBFC9 /* ECSlidingInteractiveTransition.m in Sources */,
@@ -2107,8 +2097,8 @@
 				2203487D19A4D51300611AC3 /* FBLogger.m in Sources */,
 				220348A619A4D51300611AC3 /* OAServiceTicket.m in Sources */,
 				2203487319A4D51300611AC3 /* FBDialog.m in Sources */,
+				6775569919E752A00054699B /* BCBlockchainWebViewController.m in Sources */,
 				2203489619A4D51300611AC3 /* SBJSON.m in Sources */,
-				9FCA4D391514A83400ECDFBE /* BCWalletWebViewController.m in Sources */,
 				2203489919A4D51300611AC3 /* SBJsonWriter.m in Sources */,
 				2203487719A4D51300611AC3 /* FBFriendPickerViewController.m in Sources */,
 				2203488019A4D51300611AC3 /* FBNativeDialogs.m in Sources */,
@@ -2282,14 +2272,6 @@
 				220ADB6C19A37B3700EB7599 /* en */,
 			);
 			name = AddressBookView.xib;
-			sourceTree = "<group>";
-		};
-		220E375C19A3613D00E06996 /* AccountViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C91C5F1019C083970007D988 /* Base */,
-			);
-			name = AccountViewController.xib;
 			sourceTree = "<group>";
 		};
 		220E375F19A3614900E06996 /* SendCoins.xib */ = {

@@ -406,11 +406,7 @@ BOOL showSendCoins = NO;
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             curtainImageView.alpha = 1;
         } completion:^(BOOL finished) {
-            // Dismiss any ViewControllers that are used modally
-            if (_tabViewController.presentedViewController == _merchantViewController) {
-                [_merchantViewController dismissViewControllerAnimated:NO completion:nil];
-            }
-            
+            // Dismiss any ViewControllers that are used modally, except for the MerchantViewController
             if (_tabViewController.presentedViewController == _bcWebViewController) {
                 [_bcWebViewController dismissViewControllerAnimated:NO completion:nil];
             }

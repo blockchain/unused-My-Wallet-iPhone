@@ -56,6 +56,11 @@ int entries = 4;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [self reset];
+}
+
+- (void)reset
+{
     // Reset Pan gestures
     for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
         [view setUserInteractionEnabled:YES];
@@ -157,6 +162,8 @@ int entries = 4;
         default:
             break;
     }
+    
+    [self reset];
     
     [app toggleSideMenu];
 }

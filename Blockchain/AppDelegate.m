@@ -1248,11 +1248,10 @@ BOOL showSendCoins = NO;
         return;
     }
     
-    [self showSendCoins];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_sendViewController QRCodebuttonClicked:sender];
-    });
+    if (!_sendViewController) {
+        _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
+    }
+    [_sendViewController QRCodebuttonClicked:sender];
 }
 
 - (IBAction)mainPasswordClicked:(id)sender

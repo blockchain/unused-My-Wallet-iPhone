@@ -397,11 +397,17 @@ BOOL showSendCoins = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // Small delay so we don't change the view while it's zooming out
         UIImageView *curtainImageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
-        curtainImageView.image = [UIImage imageNamed:@"LaunchImage"];
         
-        CGRect test1 = self.window.bounds;
-        CGSize test2  = curtainImageView.image.size;
-        CGRect test3  = curtainImageView.bounds;
+        // Select the correct image depending on the screen size. The names used are the default names that LaunchImage assets get after processing. See @http://stackoverflow.com/questions/19107543/xcode-5-asset-catalog-how-to-reference-the-launchimage
+        // This works for iPhone 4/4S, 5/5S, 6 and 6Plus in Portrait
+        // TODO need to add new screen sizes with new iPhones ... ugly
+        // TODO we're currently using the scaled version of the app on iPhone 6 and 6 Plus
+//        NSDictionary *dict = @{@"320x480" : @"LaunchImage-700", @"320x568" : @"LaunchImage-700-568h", @"375x667" : @"LaunchImage-800-667h", @"414x736" : @"LaunchImage-800-Portrait-736h"};
+        NSDictionary *dict = @{@"320x480" : @"LaunchImage-700", @"320x568" : @"LaunchImage-700-568h", @"375x667" : @"LaunchImage-700-568h", @"414x736" : @"LaunchImage-700-568h"};
+        NSString *key = [NSString stringWithFormat:@"%dx%d", (int)[UIScreen mainScreen].bounds.size.width, (int)[UIScreen mainScreen].bounds.size.height];
+        UIImage *launchImage = [UIImage imageNamed:dict[key]];
+        
+        curtainImageView.image = launchImage;
         
         curtainImageView.alpha = 0;
         [curtainImageView setTag:CURTAIN_IMAGE_TAG];

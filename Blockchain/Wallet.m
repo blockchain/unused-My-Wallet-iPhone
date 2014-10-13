@@ -355,6 +355,10 @@
 }
 
 -(NSDictionary*)addressBook {
+    if (![self.webView isLoaded]) {
+        return [[NSDictionary alloc] init];
+    }
+    
     NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAddressBook())"];
     
     return [addressBookJSON getJSONObject];

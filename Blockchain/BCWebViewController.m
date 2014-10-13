@@ -119,13 +119,13 @@ NSMutableArray *visitedPages;
 - (void)webViewDidStartLoad:(UIWebView *)_webView
 {
     [activityIndicatorView startAnimating];
+    
+    [backButton setHidden:visitedPages.count < 2];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)_webView
 {
     [activityIndicatorView stopAnimating];
-    
-    [backButton setHidden:visitedPages.count < 2];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

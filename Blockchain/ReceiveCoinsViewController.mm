@@ -86,8 +86,14 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 38)];
         
-        // Get the default address - first active address
-        NSString *defaultAddress = [activeAddresses firstObject];
+        // Get the default address - first active address that's not watch only
+        NSString *defaultAddress;
+        for (NSString *address in activeAddresses) {
+            if (![app.wallet isWatchOnlyAddress:address]) {
+                defaultAddress = address;
+                break;
+            }
+        }
         
         // QR Code
         UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];

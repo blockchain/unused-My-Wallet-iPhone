@@ -396,8 +396,13 @@ BOOL showSendCoins = NO;
     // Show the LaunchImage so the list of running apps does not show the user's information
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // Small delay so we don't change the view while it's zooming out
-        UIImageView *curtainImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
+        UIImageView *curtainImageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
         curtainImageView.image = [UIImage imageNamed:@"LaunchImage"];
+        
+        CGRect test1 = self.window.bounds;
+        CGSize test2  = curtainImageView.image.size;
+        CGRect test3  = curtainImageView.bounds;
+        
         curtainImageView.alpha = 0;
         [curtainImageView setTag:CURTAIN_IMAGE_TAG];
         [self.window addSubview:curtainImageView];

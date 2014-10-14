@@ -22,11 +22,10 @@
 #import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "BCAlertView.h"
-#import "DropDownListView.h"
 
 @class Wallet;
 
-@interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate, kDropDownListViewDelegate> {
+@interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate> {
     IBOutlet UIButton *balanceBigButton;
     IBOutlet UIButton *balanceSmallButton;
     
@@ -47,8 +46,6 @@
     IBOutlet UIView *sendProgressModal;
     IBOutlet UILabel *sendProgressModalText;
     IBOutlet UIButton *btcCodeButton;
-    DropDownListView *fromAddressDropDown;
-    DropDownListView *addressBookdropDown;
 
     BOOL displayingLocalSymbol;
 }
@@ -57,24 +54,27 @@
 @property(nonatomic) double initialToAmountDouble; // satoshi
 
 @property(nonatomic, strong) NSString *selectedAddress;
-@property(nonatomic, strong) NSArray * addressBookAddress;
-@property(nonatomic, strong) NSArray * fromAddresses;
-@property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, strong) NSArray *addressBookAddress;
+@property(nonatomic, strong) NSArray *fromAddresses;
+@property(nonatomic, strong) ZBarReaderView *readerView;
 @property(nonatomic, strong) NSString *toAddress;
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
-- (IBAction)selectAddressClicked:(id)sender;
+- (IBAction)selectFromAddressClicked:(id)sender;
 - (IBAction)QRCodebuttonClicked:(id)sender;
 - (IBAction)addressBookClicked:(id)sender;
 - (IBAction)btcCodeClicked:(id)sender;
 - (IBAction)closeKeyboardClicked:(id)sender;
 
-- (void)didSelectAddress:(NSString *)address;
+- (void)didSelectFromAddress:(NSString *)address;
+- (void)didSelectToAddress:(NSString *)address;
 
 - (IBAction)sendPaymentClicked:(id)sender;
 - (IBAction)labelAddressClicked:(id)sender;
 
 - (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
+
+- (NSString *)labelForAddress:(NSString *)address;
 
 - (void)reload;
 

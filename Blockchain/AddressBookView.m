@@ -9,60 +9,131 @@
 #import "AddressBookView.h"
 #import "Wallet.h"
 #import "AppDelegate.h"
+#import "ReceiveTableCell.h"
+#import "SendViewController.h"
+
+#define ROW_HEIGHT 68
 
 @implementation AddressBookView
 
 @synthesize addresses;
+@synthesize labels;
 @synthesize wallet;
 @synthesize delegate;
 
--(id)initWithWallet:(Wallet*)_wallet {
+bool showOwnAddresses;
+
+- (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)_showOwnAddresses
+{
     if ([super initWithFrame:CGRectZero]) {
         
         self.wallet = _wallet;
-        self.addresses = [NSMutableArray array];
-        for (NSString * addr in [_wallet.addressBook allKeys]) {
-            [addresses addObject:addr]; 
+        showOwnAddresses = _showOwnAddresses;
+        
+        addresses = [NSMutableArray array];
+        labels = [NSMutableArray array];
+        
+        if (_showOwnAddresses) {
+            addresses = [NSMutableArray arrayWithArray:_wallet.activeAddresses];
+            
+            for (NSString *addr in addresses) {
+                [labels addObject:[_wallet labelForAddress:addr]];
+            }
+        }
+        else {
+            for (NSString * addr in [_wallet.addressBook allKeys]) {
+                [addresses addObject:addr];
+            }
+            
+            for (NSString *addr in addresses) {
+                [labels addObject:[app.sendViewController labelForAddress:addr]];
+            }
         }
         
         [[NSBundle mainBundle] loadNibNamed:@"AddressBookView" owner:self options:nil];
         
         [self addSubview:view];
         
-        view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
         
+        // Hacky way to make sure the table view doesn't show empty entries (with divider lines)
+        float tableHeight = ROW_HEIGHT * self.addresses.count;
+        float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT - 49;
+        
+        if (tableHeight < tableSpace) {
+            CGRect frame = tableView.frame;
+            frame.size.height = ROW_HEIGHT * self.addresses.count;
+            tableView.frame = frame;
+        }
     }
     return self;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [delegate didSelectAddress:[addresses objectAtIndex:[indexPath row]]];
-    
-    [app closeModalWithTransition:kCATransitionFade];
+- (void)setHeader:(NSString *)headerText
+{
+    headerLabel.text = headerText;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (showOwnAddresses) {
+        [delegate didSelectFromAddress:[addresses objectAtIndex:[indexPath row]]];
+    }
+    else {
+        [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row]]];
+    }
+    
+    [app closeModalWithTransition:kCATransitionFromLeft];
+}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [addresses count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ROW_HEIGHT;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *addr = [addresses objectAtIndex:[indexPath row]];
+    
+    ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        
+        // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
+        cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);
+        cell.balanceLabel.frame = CGRectMake(217, 11, 120, 21);
+        
+        [cell.watchLabel setHidden:TRUE];
     }
     
-    NSString * addr =  [addresses objectAtIndex:[indexPath row]];
+    NSString *label = [labels objectAtIndex:[indexPath row]];
     
-    // User-given Label
-    cell.textLabel.text = [wallet.addressBook objectForKey:addr];
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
-
-    // Actual Bitcoin Address
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0f];
-    cell.detailTextLabel.text = addr;
-                            
+    if (label)
+        cell.labelLabel.text = label;
+    else
+        cell.labelLabel.text = BC_STRING_NO_LABEL;
+    
+    cell.addressLabel.text = addr;
+    
+    if (showOwnAddresses) {
+        uint64_t balance = [app.wallet getAddressBalance:addr];
+        cell.balanceLabel.text = [app formatMoney:balance];
+    }
+    else {
+        cell.balanceLabel.text = nil;
+    }
+    
+    // Selected cell color
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+    [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+    [cell setSelectedBackgroundView:v];
+    
     return cell;
 }
 

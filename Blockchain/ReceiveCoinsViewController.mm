@@ -578,7 +578,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         optionsTitleLabel.text = addr;
     
-    // TODO Put QR code in ImageView
+    // Put QR code in ImageView
     [self setQRMain];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

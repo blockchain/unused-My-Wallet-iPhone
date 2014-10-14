@@ -82,11 +82,6 @@
 		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
 		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
 		220E376319A3615400E06996 /* MerchantMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376519A3615400E06996 /* MerchantMap.xib */; };
-		2245F724198C1C640075B19F /* check_mark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71D198C1C640075B19F /* check_mark@2x.png */; };
-		2245F725198C1C640075B19F /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71E198C1C640075B19F /* done@2x.png */; };
-		2245F726198C1C640075B19F /* drop_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2245F71F198C1C640075B19F /* drop_down@2x.png */; };
-		2245F727198C1C640075B19F /* DropDownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F721198C1C640075B19F /* DropDownListView.m */; };
-		2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2245F723198C1C640075B19F /* DropDownViewCell.m */; };
 		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
 		6711352C19DCCC6800C2D24E /* menu_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6711352919DCCC6800C2D24E /* menu_shadow.png */; };
 		6711352D19DCCC6800C2D24E /* menu_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6711352A19DCCC6800C2D24E /* menu_shadow@2x.png */; };
@@ -625,13 +620,6 @@
 		220E375819A3613600E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddressBookView.xib; sourceTree = "<group>"; };
 		220E375E19A3614900E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SendCoins.xib; sourceTree = "<group>"; };
 		220E376119A3614F00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		2245F71D198C1C640075B19F /* check_mark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_mark@2x.png"; sourceTree = "<group>"; };
-		2245F71E198C1C640075B19F /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "done@2x.png"; sourceTree = "<group>"; };
-		2245F71F198C1C640075B19F /* drop_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "drop_down@2x.png"; sourceTree = "<group>"; };
-		2245F720198C1C640075B19F /* DropDownListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownListView.h; sourceTree = "<group>"; };
-		2245F721198C1C640075B19F /* DropDownListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownListView.m; sourceTree = "<group>"; };
-		2245F722198C1C640075B19F /* DropDownViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownViewCell.h; sourceTree = "<group>"; };
-		2245F723198C1C640075B19F /* DropDownViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownViewCell.m; sourceTree = "<group>"; };
 		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
 		6711352919DCCC6800C2D24E /* menu_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_shadow.png; sourceTree = "<group>"; };
 		6711352A19DCCC6800C2D24E /* menu_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_shadow@2x.png"; sourceTree = "<group>"; };
@@ -1196,20 +1184,6 @@
 			path = Keychain;
 			sourceTree = "<group>";
 		};
-		2245F71C198C1C640075B19F /* kDropDown */ = {
-			isa = PBXGroup;
-			children = (
-				2245F71D198C1C640075B19F /* check_mark@2x.png */,
-				2245F71E198C1C640075B19F /* done@2x.png */,
-				2245F71F198C1C640075B19F /* drop_down@2x.png */,
-				2245F720198C1C640075B19F /* DropDownListView.h */,
-				2245F721198C1C640075B19F /* DropDownListView.m */,
-				2245F722198C1C640075B19F /* DropDownViewCell.h */,
-				2245F723198C1C640075B19F /* DropDownViewCell.m */,
-			);
-			path = kDropDown;
-			sourceTree = "<group>";
-		};
 		678AD5EC19D4731C00E9A778 /* Modal Content Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1702,7 +1676,6 @@
 			children = (
 				67E9673419DF1DD300305358 /* SideMenu */,
 				220347D019A4D51300611AC3 /* AddThis */,
-				2245F71C198C1C640075B19F /* kDropDown */,
 				84C25678198109AF00F901D1 /* Keys */,
 				9F749E061514F22500B3A8B8 /* libiconv.dylib */,
 				C9BE91651945D8F600FD516D /* PinEntry */,
@@ -1891,7 +1864,6 @@
 				67C6704019CAF558004BD8FC /* bluedot.png in Resources */,
 				67E9676319DF46A900305358 /* news_icon@3x.png in Resources */,
 				678AD62519D56EEB00E9A778 /* send_icon@2x.png in Resources */,
-				2245F726198C1C640075B19F /* drop_down@2x.png in Resources */,
 				ECD244F119A8AC45004B1F40 /* PEKeyboard-4-dot.png in Resources */,
 				678AD63519D5833A00E9A778 /* merchant_directory_icon.png in Resources */,
 				67E9676D19E31F9100305358 /* marker_atm_off@2x.png in Resources */,
@@ -1899,7 +1871,6 @@
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
-				2245F725198C1C640075B19F /* done@2x.png in Resources */,
 				678AD62C19D57FAC00E9A778 /* menu_icon.png in Resources */,
 				C9BE91831945D8F600FD516D /* PEKeyboard-1.png in Resources */,
 				84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */,
@@ -1930,7 +1901,6 @@
 				674709F719D2DA3800757D46 /* welcome_logo@2x.png in Resources */,
 				84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */,
 				9F0CBAD11513BF9D00CD945D /* busy-background.png in Resources */,
-				2245F724198C1C640075B19F /* check_mark@2x.png in Resources */,
 				67E9676619DF46A900305358 /* settings_icon@3x.png in Resources */,
 				9F0CBAD21513BF9D00CD945D /* busy-background@2x.png in Resources */,
 				C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */,
@@ -2081,7 +2051,6 @@
 				67E9674E19DF285000305358 /* SideMenuViewController.m in Sources */,
 				9FCA4D161514949500ECDFBE /* ReceiveCoinsViewController.mm in Sources */,
 				9FCA4D1B151494BF00ECDFBE /* SendViewController.m in Sources */,
-				2245F728198C1C640075B19F /* DropDownViewCell.m in Sources */,
 				2203489A19A4D51300611AC3 /* NSMutableURLRequest+Parameters.m in Sources */,
 				2203487419A4D51300611AC3 /* FBError.m in Sources */,
 				2203488119A4D51300611AC3 /* FBPlacePickerCacheDescriptor.m in Sources */,
@@ -2110,7 +2079,6 @@
 				2203488E19A4D51300611AC3 /* FBUtility.m in Sources */,
 				2203489519A4D51300611AC3 /* NSString+SBJSON.m in Sources */,
 				2203488719A4D51300611AC3 /* FBSession.m in Sources */,
-				2245F727198C1C640075B19F /* DropDownListView.m in Sources */,
 				ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */,
 				2203487619A4D51300611AC3 /* FBFriendPickerCacheDescriptor.m in Sources */,
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,

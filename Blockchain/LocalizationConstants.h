@@ -32,7 +32,8 @@
 #define BC_STRING_COPIED_TO_CLIPBOARD NSLocalizedString(@"%@ copied to clipboard", nil)
 #define BC_STRING_SIGNING_INPUT NSLocalizedString(@"Signing Input %d", nil)
 #define BC_STRING_CONFIRM_PAYMENT_OF NSLocalizedString(@"Confirm payment of %@ (%@) to %@", nil)
-
+#define BC_STRING_SEND_FROM NSLocalizedString(@"Send from...", nil)
+#define BC_STRING_SEND_TO NSLocalizedString(@"Send to...", nil)
 
 #define BC_STRING_YOU_MUST_ENTER_A_LABEL NSLocalizedString(@"You must enter a label", nil)
 #define BC_STRING_UNARCHIVE NSLocalizedString(@"Unarchive", nil)

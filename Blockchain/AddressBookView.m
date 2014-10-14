@@ -21,36 +21,51 @@
 @synthesize wallet;
 @synthesize delegate;
 
-bool showOwnAddresses;
+bool showFromAddresses;
+int numAddressBookAddresses;
+int numMyAddresses;
 
-- (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)_showOwnAddresses
+- (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)_showFromAddresses
 {
     if ([super initWithFrame:CGRectZero]) {
+        [[NSBundle mainBundle] loadNibNamed:@"AddressBookView" owner:self options:nil];
         
         self.wallet = _wallet;
-        showOwnAddresses = _showOwnAddresses;
+        showFromAddresses = _showFromAddresses;
         
         addresses = [NSMutableArray array];
         labels = [NSMutableArray array];
         
-        if (_showOwnAddresses) {
-            addresses = [NSMutableArray arrayWithArray:_wallet.activeAddresses];
-            
-            for (NSString *addr in addresses) {
-                [labels addObject:[_wallet labelForAddress:addr]];
+        // Select from address
+        if (_showFromAddresses) {
+            // Only show user's active addresses with a positive balance
+            for (NSString * addr in _wallet.activeAddresses) {
+                if ([_wallet getAddressBalance:addr] > 0) {
+                    [addresses addObject:addr];
+                    [labels addObject:[_wallet labelForAddress:addr]];
+                }
             }
+            
+            numMyAddresses = addresses.count;
+            numAddressBookAddresses = addresses.count;
         }
+        // Select to address
         else {
+            // Show the address book and all the user's active addresses
             for (NSString * addr in [_wallet.addressBook allKeys]) {
                 [addresses addObject:addr];
-            }
-            
-            for (NSString *addr in addresses) {
                 [labels addObject:[app.sendViewController labelForAddress:addr]];
             }
+            
+            numAddressBookAddresses = addresses.count;
+            
+            for (NSString * addr in _wallet.activeAddresses) {
+                [addresses addObject:addr];
+                [labels addObject:[_wallet labelForAddress:addr]];
+            }
+            
+            numMyAddresses = addresses.count - numAddressBookAddresses;
         }
-        
-        [[NSBundle mainBundle] loadNibNamed:@"AddressBookView" owner:self options:nil];
         
         [self addSubview:view];
         
@@ -62,7 +77,14 @@ bool showOwnAddresses;
         
         if (tableHeight < tableSpace) {
             CGRect frame = tableView.frame;
-            frame.size.height = ROW_HEIGHT * self.addresses.count;
+            frame.size.height = ROW_HEIGHT * self.addresses.count + 55 + (showFromAddresses ? 0 : 48);
+            tableView.frame = frame;
+            
+            tableView.scrollEnabled = NO;
+        }
+        else {
+            CGRect frame = tableView.frame;
+            frame.size.height = tableSpace;
             tableView.frame = frame;
         }
     }
@@ -76,19 +98,45 @@ bool showOwnAddresses;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (showOwnAddresses) {
+    if (showFromAddresses) {
         [delegate didSelectFromAddress:[addresses objectAtIndex:[indexPath row]]];
     }
     else {
-        [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row]]];
+        if (indexPath.section == 1) {
+            [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row] + numAddressBookAddresses]];
+        }
+        else {
+            [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row]]];
+        }
     }
     
     [app closeModalWithTransition:kCATransitionFromLeft];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (showFromAddresses) {
+        return  1;
+    }
+    return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 0 && !showFromAddresses) {
+        return @"Address Book";
+    }
+    
+    return @"My Addresses";
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [addresses count];
+    if (section == 0) {
+        return numAddressBookAddresses;
+    }
+    
+    return numMyAddresses;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -98,7 +146,11 @@ bool showOwnAddresses;
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *addr = [addresses objectAtIndex:[indexPath row]];
+    int row = indexPath.row;
+    if (!showFromAddresses && indexPath.section == 1) {
+        row = indexPath.row + numAddressBookAddresses;
+    }
+    NSString *addr = [addresses objectAtIndex:row];
     
     ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
@@ -112,7 +164,7 @@ bool showOwnAddresses;
         [cell.watchLabel setHidden:TRUE];
     }
     
-    NSString *label = [labels objectAtIndex:[indexPath row]];
+    NSString *label = [labels objectAtIndex:row];
     
     if (label)
         cell.labelLabel.text = label;
@@ -121,7 +173,7 @@ bool showOwnAddresses;
     
     cell.addressLabel.text = addr;
     
-    if (showOwnAddresses) {
+    if (showFromAddresses) {
         uint64_t balance = [app.wallet getAddressBalance:addr];
         cell.balanceLabel.text = [app formatMoney:balance];
     }

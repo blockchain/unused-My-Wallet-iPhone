@@ -25,7 +25,6 @@
 @protocol AddressBookDelegate <NSObject>
 - (void)didSelectFromAddress:(NSString*)address;
 - (void)didSelectToAddress:(NSString*)address;
-
 @end
 
 @interface AddressBookView : UIView <UITableViewDelegate, UITableViewDataSource> {

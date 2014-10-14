@@ -68,9 +68,8 @@
         for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
-            [label setFont:[UIFont systemFontOfSize:14]];
-            [label setTextColor:[UIColor blackColor]];
-            [label setTextAlignment:NSTextAlignmentCenter];
+            [label setFont:[UIFont systemFontOfSize:13]];
+            [label setTextColor:[UIColor darkGrayColor]];
             label.adjustsFontSizeToFitWidth = YES;
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {
@@ -112,9 +111,8 @@
         for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
         {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
-            [label setFont:[UIFont systemFontOfSize:14]];
-            [label setTextColor:[UIColor blackColor]];
-            [label setTextAlignment:NSTextAlignmentCenter];
+            [label setFont:[UIFont systemFontOfSize:13]];
+            [label setTextColor:[UIColor darkGrayColor]];
             label.adjustsFontSizeToFitWidth = YES;
             
             if (i == MAX_ADDRESS_ROWS_PER_CELL) {

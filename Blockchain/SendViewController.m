@@ -172,6 +172,7 @@
         amountField.text = @"";
         
         [app closeModalWithTransition:kCATransitionFade];
+        [app transactionsClicked:nil];
     };
     
     listener.on_error = ^(NSString* error) {
@@ -273,8 +274,8 @@
     // do something useful with results
     for(ZBarSymbol *sym in syms) {
         
-        //Make sure we are displaying the BTC symbol
-        //As amounts from uri's are in BTC
+        // Make sure we are displaying the BTC symbol
+        // As amounts from uri's are in BTC
         if (app->symbolLocal) {
             [app toggleSymbol];
         }
@@ -294,8 +295,16 @@
             amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
             app.btcFormatter.usesGroupingSeparator = YES;
         }
-        
-        amountField.text = amountString;
+
+        // If the amount is empty, open the amount field
+        if ([amountString isEqualToString:@"0"]) {
+            amountField.text = nil;
+            [amountField becomeFirstResponder];
+        }
+        // otherwise set the amountField to the amount from the URI
+        else {
+            amountField.text = amountString;
+        }
         
         [readerView stop];
         
@@ -380,7 +389,16 @@
 
 - (void)didSelectFromAddress:(NSString *)address
 {
-    selectAddressTextField.text = [self labelForAddress:address];
+    NSString *addressOrLabel;
+    NSString *label = [app.wallet labelForAddress:address];
+    if (label && ![label isEqualToString:@""]) {
+        addressOrLabel = label;
+    }
+    else {
+        addressOrLabel = address;
+    }
+        
+    selectAddressTextField.text = addressOrLabel;
     self.selectedAddress = address;
     DLog(@"fromAddress: %@", address);
 }

@@ -102,6 +102,9 @@ BOOL showSendCoins = NO;
     busyView.frame = _window.frame;
     busyView.alpha = 0.0f;
     
+    // Load settings    
+    symbolLocal = [[NSUserDefaults standardUserDefaults] boolForKey:@"symbolLocal"];
+    
     // If either of these is nil we are not properly paired
     if (![self guid] || ![self sharedKey]) {
         [self showWelcome];
@@ -171,6 +174,10 @@ BOOL showSendCoins = NO;
 #pragma mark - UI State
 - (void)toggleSymbol {
     symbolLocal = !symbolLocal;
+    
+    // Save this setting here and load it on start
+    [[NSUserDefaults standardUserDefaults] setBool:symbolLocal forKey:@"symbolLocal"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [_transactionsViewController reload];
     [_sendViewController reload];

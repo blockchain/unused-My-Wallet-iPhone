@@ -445,6 +445,7 @@ BOOL showSendCoins = NO;
     // Show pin modal before we close the app so the PIN verify modal gets shown in the list of running apps and immediately after we restart
     if ([self isPINSet]) {
         [self showPinModalAsView:YES];
+        [self.pinEntryViewController reset];
     }
     
     if ([wallet isInitialized]) {
@@ -1343,23 +1344,12 @@ BOOL showSendCoins = NO;
     [self.pinEntryViewController setActivityIndicatorAnimated:TRUE];
     
     // Check if we have an internet connection
-    // TODO This is not the best solution. Ideally we would differentiate between network and server errors in our JavaScript server calls and report errors accordingly. An improvement would be know if blockchain.info is reachable, but that is blocking and thus needs to be handled with blocks or notifications
+    // This only checks if a network interface is up. All other errors (including timeouts) are handled by JavaScript callbacks in Wallet.m
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     if ([reachability currentReachabilityStatus] == NotReachable) {
         DLog(@"No Internet connection");
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR
-                                                        message:BC_STRING_NO_INTERNET_CONNECTION
-                                                       delegate:nil
-                                              cancelButtonTitle:BC_STRING_OK
-                                              otherButtonTitles:nil];
-        
-        alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-            // Reset the pin entry field
-            [self.pinEntryViewController reset];
-        };
-        
-        [alert show];
+        [self showAlertNoInternetConnection];
         
         return;
     }
@@ -1367,6 +1357,24 @@ BOOL showSendCoins = NO;
     [app.wallet apiGetPINValue:pinKey pin:pin withWalletDownload:!c.verifyOnly];
     
     self.pinViewControllerCallback = callback;
+}
+
+- (void)showAlertNoInternetConnection
+{
+    DLog(@"No Internet connection");
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR
+                                                    message:BC_STRING_NO_INTERNET_CONNECTION
+                                                   delegate:nil
+                                          cancelButtonTitle:BC_STRING_OK
+                                          otherButtonTitles:nil];
+    
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        // Reset the pin entry field
+        [self.pinEntryViewController reset];
+    };
+    
+    [alert show];
 }
 
 - (void)askIfUserWantsToResetPIN {
@@ -1394,6 +1402,13 @@ BOOL showSendCoins = NO;
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
     
     [self askIfUserWantsToResetPIN];
+}
+
+-(void)didFailGetPinTimeout
+{
+    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
+    
+    [self showAlertNoInternetConnection];
 }
 
 - (void)didGetPinSuccess:(NSDictionary*)dictionary {

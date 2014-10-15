@@ -637,6 +637,14 @@
         [delegate didFailGetPin:message];
 }
 
+- (void)on_error_pin_code_get_timeout
+{
+    DLog(@"on_error_pin_code_get_timeout:");
+    
+    if ([delegate respondsToSelector:@selector(didFailGetPinTimeout)])
+    [delegate didFailGetPinTimeout];
+}
+
 - (void)on_pin_code_get_response:(NSDictionary*)responseObject
 {
     DLog(@"on_pin_code_get_response:");

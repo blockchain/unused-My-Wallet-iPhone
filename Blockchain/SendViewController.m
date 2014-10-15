@@ -74,7 +74,7 @@
     
     uint64_t balance = app.latestResponse.final_balance;
     
-    if (app.wallet.isInitialized) {
+    if (app.latestResponse) {
         [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
         [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
     }

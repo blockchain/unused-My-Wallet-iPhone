@@ -115,13 +115,22 @@
 
 - (void)setText
 {
-    if ([data.transactions count] == 0) {
-        [self.view addSubview:noTransactionsView];
+    // Data not loaded yet
+    if (!self.data) {
+        [noTransactionsView removeFromSuperview];
         
-        // No Balance yet
         [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
         [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
-    } else {
+    }
+    // Data loaded, but no Balance yet
+    else if ([data.transactions count] == 0) {
+        [self.view addSubview:noTransactionsView];
+        
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
+    }
+    // Data loaded and we have a balance - display the balance and transactions
+    else {
         [noTransactionsView removeFromSuperview];
         
         // Balance

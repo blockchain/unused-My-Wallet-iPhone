@@ -17,6 +17,8 @@
 @synthesize data;
 @synthesize latestBlock;
 
+BOOL animateNextCell;
+
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -157,11 +159,22 @@
     }
 }
 
+- (void)animateNextCellAfterReload
+{
+    animateNextCell = YES;
+}
+
 - (void)reload
 {
     [self setText];
     
     [tableView reloadData];
+    
+    // Animate the first cell
+    if (data.transactions.count > 0 && animateNextCell) {
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+        animateNextCell = NO;
+    }
 }
 
 #pragma mark - View lifecycle

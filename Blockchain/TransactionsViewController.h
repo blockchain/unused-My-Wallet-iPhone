@@ -42,6 +42,7 @@
 @property(nonatomic, strong) LatestBlock * latestBlock;
 
 - (void)reload;
+- (void)animateNextCellAfterReload;
 - (void)setText;
 - (UITableView*)tableView;
 

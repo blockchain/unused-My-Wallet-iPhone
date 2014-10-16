@@ -17,6 +17,7 @@
 #import "UITextField+Blocks.h"
 #import "UIAlertView+Blocks.h"
 #import "LocalizationConstants.h"
+#import "TransactionsViewController.h"
 
 @implementation SendViewController
 
@@ -170,8 +171,15 @@
         toField.text = @"";
         amountField.text = @"";
         
+        // Close transaction modal, go to transactions view, scroll to top and animate new transaction
         [app closeModalWithTransition:kCATransitionFade];
-        [app transactionsClicked:nil];
+        [app.transactionsViewController animateNextCellAfterReload];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [app transactionsClicked:nil];
+        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [app.transactionsViewController.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        });
     };
     
     listener.on_error = ^(NSString* error) {

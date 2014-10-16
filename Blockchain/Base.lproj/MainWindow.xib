@@ -538,6 +538,8 @@
             <connections>
                 <outlet property="balanceBigButton" destination="bzM-Ub-MUU" id="h1K-cG-U9u"/>
                 <outlet property="balanceSmallButton" destination="6sh-r5-yAx" id="dj6-lf-ToR"/>
+                <outlet property="headerLabel" destination="2je-u4-PB2" id="LYz-uV-495"/>
+                <outlet property="headerSeparator" destination="65n-5J-j8s" id="Wh7-ef-eR8"/>
                 <outlet property="noTransactionsView" destination="385" id="388"/>
                 <outlet property="tableView" destination="242" id="243"/>
             </connections>

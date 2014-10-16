@@ -22,13 +22,17 @@
 @class MulitAddressResponse;
 @class LatestBlock;
 
-@interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
     IBOutlet UITableView * tableView;
 
     IBOutlet UIButton *balanceBigButton;
     IBOutlet UIButton *balanceSmallButton;
     
-    IBOutlet UIView * noTransactionsView;
+    IBOutlet UIView *noTransactionsView;
+    
+    IBOutlet UILabel *headerLabel;
+    IBOutlet UIView *headerSeparator;
     
     MulitAddressResponse * data;
     LatestBlock * latestBlock;
@@ -37,8 +41,8 @@
 @property(nonatomic, strong) MulitAddressResponse * data;
 @property(nonatomic, strong) LatestBlock * latestBlock;
 
--(void)reload;
--(void)setText;
--(UITableView*)tableView;
+- (void)reload;
+- (void)setText;
+- (UITableView*)tableView;
 
 @end

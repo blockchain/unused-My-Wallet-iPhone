@@ -16,6 +16,7 @@
 #import "NSString+NSString_EscapeQuotes.h"
 #import "crypto_scrypt.h"
 #import "NSData+Hex.h"
+#import "TransactionsViewController.h"
 
 @implementation transactionProgressListeners
 @end
@@ -501,6 +502,8 @@
     DLog(@"on_tx");
 
     [app playBeepSound];
+    
+    [app.transactionsViewController animateNextCellAfterReload];
     
     [self getHistory];
 }

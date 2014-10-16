@@ -142,10 +142,7 @@
         
         sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
         
-        // TODO I don't think we need the onDismiss
-        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone onDismiss:^() {
-            [app.wallet cancelTxSigning];
-        } onResume:nil];
+        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone];
     };
     
     listener.on_begin_signing = ^() {
@@ -160,7 +157,6 @@
         sendProgressModalText.text = BC_STRING_FINISHED_SIGNING_INPUTS;
     };
     
-    // TODO this does not always get called on successfull transaction...
     listener.on_success = ^() {
         // TODO beep sound here for now - check into websocket usage ... maybe disable websocket for sending transactions
         [app playBeepSound];

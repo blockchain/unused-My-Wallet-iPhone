@@ -68,6 +68,8 @@
 -(void)didPutPinSuccess:(NSDictionary*)dictionary;
 -(void)didFailGetPin:(NSString*)value;
 -(void)didFailGetPinTimeout;
+-(void)didFailGetPinNoResponse;
+-(void)didFailGetPinInvalidResponse;
 -(void)didGetPinSuccess:(NSDictionary*)dictionary;
 
 @end

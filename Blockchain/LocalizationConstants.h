@@ -75,6 +75,9 @@
 #define BC_STRING_FAILED_TO_LOAD_WALLET_TITLE NSLocalizedString(@"Failed To Load Wallet", nil)
 
 #define BC_STRING_NO_INTERNET_CONNECTION NSLocalizedString(@"No internet connection.", nil)
+#define BC_STRING_TIMED_OUT NSLocalizedString(@"Connection timed out. Please check your internet connection.", nil)
+#define BC_STRING_EMPTY_RESPONSE NSLocalizedString(@"Empty response from server.", nil)
+#define BC_STRING_INVALID_RESPONSE NSLocalizedString(@"Invalid server response. Please check your internet connection.", nil)
 
 #define BC_STRING_FAILED_TO_LOAD_WALLET_DETAIL NSLocalizedString(@"An error was encountered loading your wallet. You may be offline or Blockchain is experiencing difficulties. Please close the application and try again later or re-pair you device.", nil)
 #define BC_STRING_FORGET_WALLET NSLocalizedString(@"Forget Wallet", nil)

@@ -1349,7 +1349,7 @@ BOOL showSendCoins = NO;
     if ([reachability currentReachabilityStatus] == NotReachable) {
         DLog(@"No Internet connection");
         
-        [self showAlertNoInternetConnection];
+        [self showPinErrorWithMessage:BC_STRING_NO_INTERNET_CONNECTION];
         
         return;
     }
@@ -1359,18 +1359,19 @@ BOOL showSendCoins = NO;
     self.pinViewControllerCallback = callback;
 }
 
-- (void)showAlertNoInternetConnection
+- (void)showPinErrorWithMessage:(NSString *)message
 {
-    DLog(@"No Internet connection");
+    DLog(@"Pin error: %@", message);
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR
-                                                    message:BC_STRING_NO_INTERNET_CONNECTION
+                                                    message:message
                                                    delegate:nil
                                           cancelButtonTitle:BC_STRING_OK
                                           otherButtonTitles:nil];
     
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         // Reset the pin entry field
+        [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
         [self.pinEntryViewController reset];
     };
     
@@ -1406,9 +1407,17 @@ BOOL showSendCoins = NO;
 
 -(void)didFailGetPinTimeout
 {
-    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
-    
-    [self showAlertNoInternetConnection];
+    [self showPinErrorWithMessage:BC_STRING_TIMED_OUT];
+}
+
+-(void)didFailGetPinNoResponse
+{
+    [self showPinErrorWithMessage:BC_STRING_EMPTY_RESPONSE];
+}
+
+-(void)didFailGetPinInvalidResponse
+{
+    [self showPinErrorWithMessage:BC_STRING_INVALID_RESPONSE];
 }
 
 - (void)didGetPinSuccess:(NSDictionary*)dictionary {

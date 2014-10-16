@@ -43,8 +43,8 @@
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
 "380.text" = "Vítejte na Blockchain Peněženku";
 
-/* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "Transakce";
+/* Class = "IBUILabel"; text = "TRANSACTIONS"; ObjectID = "2je-u4-PB2"; */
+"2je-u4-PB2.text" = "TRANSAKCE";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
 "387.text" = "Vítejte na Blockchain Peněženku. Tato obrazovka ukazuje vaše transakce. Pokud jste již provedli transakce s tímto peněženku, může tam byla chyba, kontaktujte náš server. Prosím, ujistěte se, že váš účet je správně nastavit a máte aktivní připojení k internetu.";

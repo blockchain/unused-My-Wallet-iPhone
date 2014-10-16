@@ -43,8 +43,8 @@
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
 "380.text" = "歡迎來到 Blockchain 的錢包";
 
-/* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "交易記錄";
+/* Class = "IBUILabel"; text = "TRANSACTIONS"; ObjectID = "2je-u4-PB2"; */
+"2je-u4-PB2.text" = "交易記錄";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
 "387.text" = "歡迎來到 Blockchain 的錢包。此螢幕顯示您的交易。如果你已經做了這個錢包的交易，有可能是接觸我們的伺服器錯誤。請確保您的帳戶已正確安裝而且你有活躍的互聯網連接。";

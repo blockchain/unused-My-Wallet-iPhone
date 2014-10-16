@@ -43,8 +43,8 @@
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
 "380.text" = "오신 것을 환영 합니다 Blockchain 지갑";
 
-/* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "거래";
+/* Class = "IBUILabel"; text = "TRANSACTIONS"; ObjectID = "2je-u4-PB2"; */
+"2je-u4-PB2.text" = "거래";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
 "387.text" = "오신 것을 환영 합니다 Blockchain 지갑. 이 화면 표시 귀하의 거래. 이 지갑과의 거래를 이미 만든 경우 되었을 수도 있습니다 우리의 서버 오류. 귀하의 계정을 제대로 설치 되어 있고 인터넷 연결이 활성화 되어 있는지 확인 하십시오.";

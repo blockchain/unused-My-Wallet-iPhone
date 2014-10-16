@@ -43,8 +43,8 @@
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
 "380.text" = "Bine ati venit la Blockchain portofel";
 
-/* Class = "IBUILabel"; text = "Transactions"; ObjectID = "386"; */
-"386.text" = "Oferte";
+/* Class = "IBUILabel"; text = "TRANSACTIONS"; ObjectID = "2je-u4-PB2"; */
+"2je-u4-PB2.text" = "TRANZACŢII";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
 "387.text" = "Bine ati venit la Blockchain portofel. Acest ecran conține oferte. Dacă sunteți deja au încheiat tranzacțiile cu acest portofel, acolo, probabil, au fost greșeli, de a contacta serverul nostru. Vă rugăm să asigurați-vă că contul dvs. este corectă setări și aveți o conexiune activă la internet.";

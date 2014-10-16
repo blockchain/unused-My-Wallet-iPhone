@@ -158,7 +158,6 @@
     };
     
     listener.on_success = ^() {
-        // TODO beep sound here for now - check into websocket usage ... maybe disable websocket for sending transactions
         [app playBeepSound];
         
         [app standardNotify:BC_STRING_PAYMENT_SENT title:BC_STRING_SUCCESS delegate:nil];

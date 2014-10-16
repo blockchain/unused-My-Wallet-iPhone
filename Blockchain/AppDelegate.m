@@ -77,7 +77,7 @@ BOOL showSendCoins = NO;
     self.wallet.delegate = self;
     
     // Send email when exceptions are caught
-#ifdef DEBUG
+#ifndef DEBUG
     NSSetUncaughtExceptionHandler(&HandleException);
 #endif
     

@@ -19,6 +19,9 @@
 
 BOOL animateNextCell;
 
+UIRefreshControl *refreshControl;
+int lastNumberTransactions = INT_MAX;
+
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -170,10 +173,41 @@ BOOL animateNextCell;
     
     [tableView reloadData];
     
+    if (data.n_transactions > lastNumberTransactions) {
+        int numNewTransactions = data.n_transactions - lastNumberTransactions;
+        // Max number displayed
+        if (numNewTransactions > data.transactions.count) {
+            numNewTransactions = data.transactions.count;
+        }
+        // We only do this for the last five transactions at most
+        if (numNewTransactions > 5) {
+            numNewTransactions = 5;
+        }
+        
+        NSMutableArray *rows = [[NSMutableArray alloc] initWithCapacity:numNewTransactions];
+        for (int i = 0; i < numNewTransactions; i++) {
+            [rows addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        
+        [tableView reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    
     // Animate the first cell
     if (data.transactions.count > 0 && animateNextCell) {
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
         animateNextCell = NO;
+    }
+}
+
+- (void)loadTransactions
+{
+    lastNumberTransactions = data.n_transactions;
+    
+    [app.wallet getHistory];
+    
+    // This should be done when request has finished but there is no callback
+    if (refreshControl && refreshControl.isRefreshing) {
+        [refreshControl endRefreshing];
     }
 }
 
@@ -197,6 +231,15 @@ BOOL animateNextCell;
     
     [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
     [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Tricky way to get the refreshController to work on a UIViewController - @see http://stackoverflow.com/a/12502450/2076094
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = self.tableView;
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self
+                       action:@selector(loadTransactions)
+             forControlEvents:UIControlEventValueChanged];
+    tableViewController.refreshControl = refreshControl;
     
     [self reload];
 }

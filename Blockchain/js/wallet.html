@@ -416,6 +416,7 @@ function webSocketDisconnect() {
     
     if (reconnectInterval) {
         clearInterval(reconnectInterval);
+        reconnectInterval = null;
     }
     else {
         console.log('No reconnectInterval');

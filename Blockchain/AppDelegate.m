@@ -344,6 +344,7 @@ BOOL showSendCoins = NO;
 - (void)didSetLatestBlock:(LatestBlock*)block
 {
     _transactionsViewController.latestBlock = block;
+    [_transactionsViewController reload];
 }
 
 - (void)walletFailedToDecrypt

@@ -197,6 +197,11 @@ int lastNumberTransactions = INT_MAX;
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
         animateNextCell = NO;
     }
+    
+    // If all the data is available, set the lastNumberTransactions - reload gets called once when wallet is loaded and once when latest block is loaded
+    if (app.latestResponse) {
+        lastNumberTransactions = data.n_transactions;
+    }
 }
 
 - (void)loadTransactions

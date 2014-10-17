@@ -131,7 +131,7 @@ int lastNumberTransactions = INT_MAX;
         [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
     // Data loaded, but no Balance yet
-    else if ([data.transactions count] == 0) {
+    else if (!latestBlock) {
         [self.view addSubview:noTransactionsView];
         
         [headerLabel setHidden:NO];

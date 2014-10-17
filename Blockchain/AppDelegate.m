@@ -736,7 +736,7 @@ BOOL showSendCoins = NO;
     if ([contentView isKindOfClass:[ZBarReaderView class]]) {
         // Create the qt cutout (gray alpha overlay over rest of image)
         CGRect frame = contentView.frame;
-        float width = frame.size.width * 0.7;
+        float width = frame.size.width * 0.75;
         float height = width;
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         v.backgroundColor = [UIColor blackColor];

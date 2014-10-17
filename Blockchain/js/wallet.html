@@ -393,9 +393,25 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
 function simpleWebSocketConnect() {
     console.log('Connecting websocket...');
     
+    if (!window.WebSocket) {
+        console.log('No websocket support in JS runtime');
+        return;
+    }
+    
     if (!MyWallet.getIsInitialized()) {
         console.log('Wallet is not initialized yet');
         return;
+    }
+    
+    if (ws && reconnectInterval) {
+        console.log('Websocket already exists. Connection status: ' + ws.readyState);
+        return;
+    }
+    
+    // This should never really happen - try to recover gracefully
+    if (ws) {
+        console.log('Websocket already exists but no reconnectInverval. Connection status: ' + ws.readyState);
+        webSocketDisconnect();
     }
     
     MyWallet.connectWebSocket();

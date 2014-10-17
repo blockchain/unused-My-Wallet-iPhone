@@ -1145,7 +1145,7 @@ BOOL showSendCoins = NO;
         [[UIApplication sharedApplication] openURL:zeroBlockAppURL];
     }
     else {
-        [self pushWebViewController:@"http://mobile.zeroblock.com"];
+        [self pushWebViewController:@"https://zeroblock.com/mobile/"];
     }
 }
 
@@ -1498,9 +1498,20 @@ BOOL showSendCoins = NO;
 - (void)didFailPutPin:(NSString*)value {
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
     
+    // If the server returns an "Invalid Numerical Value" response it means the user entered "0000" and we show a slightly different error message
+    if ([@"Invalid Numerical Value" isEqual:value]) {
+        value = BC_STRING_PLEASE_CHOOSE_ANOTHER_PIN;
+    }
     [app standardNotify:value];
     
-    [self closePINModal:YES];
+    [self closePINModal:NO];
+    
+    // Show the pin modal to enter a pin again
+    self.pinEntryViewController = [PEPinEntryController pinCreateController];
+    self.pinEntryViewController.navigationBarHidden = YES;
+    self.pinEntryViewController.pinDelegate = self;
+    
+    [_window.rootViewController.view addSubview:self.pinEntryViewController.view];
 }
 
 - (void)didPutPinSuccess:(NSDictionary*)dictionary {

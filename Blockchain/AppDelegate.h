@@ -26,7 +26,6 @@
 #import "Wallet.h"
 #import "MultiAddressResponse.h"
 #import "TabViewController.h"
-#import "ZBarSDK.h"
 #import "PEPinEntryController.h"
 #import "BCModalView.h"
 #import "ECSlidingViewController.h"
@@ -93,7 +92,6 @@
 @property (nonatomic) BOOL disableBusyView;
 
 @property (strong, nonatomic) IBOutlet BCModalView * modalView;
-@property(nonatomic, strong) UIView * readerViewTapSubView;
 @property (strong, nonatomic) NSMutableArray * modalChain;
 
 //PIN Entry

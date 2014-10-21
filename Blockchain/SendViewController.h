@@ -19,13 +19,13 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "BCAlertView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @class Wallet;
 
-@interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate> {
+@interface SendViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, AddressBookDelegate> {
     IBOutlet UIButton *balanceBigButton;
     IBOutlet UIButton *balanceSmallButton;
     
@@ -56,7 +56,6 @@
 @property(nonatomic, strong) NSString *selectedAddress;
 @property(nonatomic, strong) NSArray *addressBookAddress;
 @property(nonatomic, strong) NSArray *fromAddresses;
-@property(nonatomic, strong) ZBarReaderView *readerView;
 @property(nonatomic, strong) NSString *toAddress;
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 

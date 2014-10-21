@@ -8,59 +8,126 @@
 
 #import "PrivateKeyReader.h"
 #import "AppDelegate.h"
-#import "BCModalView.h"
 
 @implementation PrivateKeyReader
 
--(void)readPrivateKey:(void (^)(NSString*))__success error:(void (^)(NSString*))__error
+AVCaptureSession *captureSession;
+AVCaptureVideoPreviewLayer *videoPreviewLayer;
+BOOL isReadingQRCode;
+
+- (id)initWithSuccess:(void (^)(NSString*))__success error:(void (^)(NSString*))__error
 {
-    self.success = __success;
-    self.error = __error;
+    self = [super init];
     
-    self.readerView = [[ZBarReaderView alloc] init];
-    
-    self.readerView.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
-    
-    // Reduce size of qr code to be scanned as part of view size
-    // Normalized coordinates and x/y flipped
-    self.readerView.scanCrop = CGRectMake(0.2, 0.15, 0.6, 0.7);
-    
-    [self.readerView setReaderDelegate:self];
-    
-    [self.readerView start];
-    
-    [app showModalWithContent:self.readerView closeType:ModalCloseTypeClose onDismiss:^() {
-        [self.readerView stop];
+    if (self) {
+        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         
-        self.readerView = nil;
-        
-        if (self.error) {
-            self.error(nil);
-        }
-    } onResume:nil];
+        self.success = __success;
+        self.error = __error;
+    }
+    
+    return self;
 }
 
-- (void) readerView: (ZBarReaderView*) view didReadSymbols: (ZBarSymbolSet*) syms fromImage: (UIImage*) img
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
     
-    // do something uselful with results
-    for(ZBarSymbol *sym in syms) {
-        
-        if (self.success) {
-            
-            NSString * privateKeyString = sym.data;
-            
-            NSString * format = [app.wallet detectPrivateKeyFormat:privateKeyString];
-            
-            if (!app.wallet || [format length] > 0) {
-                self.success(privateKeyString);
-            
-                [app closeModalWithTransition:kCATransitionFade];
-            } else {
-                [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
-            }
-            
-            break;
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
+    
+    UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, DEFAULT_HEADER_HEIGHT)];
+    topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+    [self.view addSubview:topBarView];
+    
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
+    logo.frame = CGRectMake(88, 22, 143, 40);
+    [topBarView addSubview:logo];
+    
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
+    [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];
+    [closeButton setTitleColor:[UIColor colorWithWhite:0.56 alpha:1.0] forState:UIControlStateHighlighted];
+    closeButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [topBarView addSubview:closeButton];
+    
+    [self startReadingQRCode];
+}
+
+- (void)closeButtonClicked:(id)sender
+{
+    [self stopReadingQRCode];
+}
+
+- (void)startReadingQRCode
+{
+    NSError *error;
+    
+    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    if (!input) {
+        // This should never happen - all devices we support (iOS 7+) have cameras
+        DLog(@"QR code scanner problem: %@", [error localizedDescription]);
+        return;
+    }
+    
+    captureSession = [[AVCaptureSession alloc] init];
+    [captureSession addInput:input];
+    
+    AVCaptureMetadataOutput *captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    [captureSession addOutput:captureMetadataOutput];
+    
+    dispatch_queue_t dispatchQueue;
+    dispatchQueue = dispatch_queue_create("myQueue", NULL);
+    [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatchQueue];
+    [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeQRCode]];
+    
+    videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
+    [videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    
+    CGRect frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, app.window.frame.size.width, app.window.frame.size.height - DEFAULT_HEADER_HEIGHT);
+    
+    [videoPreviewLayer setFrame:frame];
+    
+    [self.view.layer addSublayer:videoPreviewLayer];
+    
+    [captureSession startRunning];
+}
+
+- (void)stopReadingQRCode
+{
+    [captureSession stopRunning];
+    captureSession = nil;
+    
+    [videoPreviewLayer removeFromSuperlayer];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.error) {
+        self.error(nil);
+    }
+}
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    if (metadataObjects != nil && [metadataObjects count] > 0) {
+        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
+            // do something useful with results
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                NSString * privateKeyString = [metadataObj stringValue];
+                
+                NSString * format = [app.wallet detectPrivateKeyFormat:privateKeyString];
+                
+                if (!app.wallet || [format length] > 0) {
+                    if (self.success) {
+                        self.success(privateKeyString);
+                    }
+                } else {
+                    [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
+                }
+                
+                [self stopReadingQRCode];
+            });
         }
     }
 }

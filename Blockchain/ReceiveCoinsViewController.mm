@@ -302,12 +302,11 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 - (IBAction)scanKeyClicked:(id)sender
 {
-    
-    PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
-    
-    [reader readPrivateKey:^(NSString* privateKeyString) {
+    PrivateKeyReader *reader = [[PrivateKeyReader alloc] initWithSuccess:^(NSString* privateKeyString) {
         [app.wallet addKey:privateKeyString];
     } error:nil];
+    
+    [app.slidingViewController presentViewController:reader animated:YES completion:nil];
 }
 
 - (IBAction)labelSaveClicked:(id)sender

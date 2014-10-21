@@ -10,7 +10,6 @@
 #import "Wallet.h"
 #import "MultiValueField.h"
 #import "AppDelegate.h"
-#import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "TabViewController.h"
 #import "UncaughtExceptionHandler.h"
@@ -20,6 +19,10 @@
 #import "TransactionsViewController.h"
 
 @implementation SendViewController
+
+AVCaptureSession *captureSession;
+AVCaptureVideoPreviewLayer *videoPreviewLayer;
+BOOL isReadingQRCode;
 
 #pragma mark - Lifecycle
 
@@ -276,57 +279,6 @@
     return address;
 }
 
-- (void)readerView:(ZBarReaderView*)readerView didReadSymbols:(ZBarSymbolSet*)syms fromImage:(UIImage*)img
-{
-    // do something useful with results
-    for(ZBarSymbol *sym in syms) {
-        
-        // Make sure we are displaying the BTC symbol
-        // As amounts from uri's are in BTC
-        if (app->symbolLocal) {
-            [app toggleSymbol];
-        }
-        
-        NSDictionary * dict = [app parseURI:sym.data];
-        
-        toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
-        self.toAddress = [dict objectForKey:@"address"];
-        DLog(@"toAddress: %@", self.toAddress);
-        
-        NSString *amountString = [dict objectForKey:@"amount"];
-        
-        if (app.latestResponse.symbol_btc) {
-            double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
-            
-            app.btcFormatter.usesGroupingSeparator = NO;
-            amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
-            app.btcFormatter.usesGroupingSeparator = YES;
-        }
-
-        // If the amount is empty, open the amount field
-        if ([amountString isEqualToString:@"0"]) {
-            amountField.text = nil;
-            [amountField becomeFirstResponder];
-        }
-        // otherwise set the amountField to the amount from the URI
-        else {
-            amountField.text = amountString;
-        }
-        
-        [readerView stop];
-        
-        [app closeModalWithTransition:kCATransitionFade];
-        
-        // Go to the send scren if we are not already on it
-        [app showSendCoins];
-        
-        break;
-    }
-    
-    [self.readerView setReaderDelegate:nil];
-    self.readerView = nil;
-}
-
 - (void)dismissKeyboard
 {
     [amountField resignFirstResponder];
@@ -441,28 +393,109 @@
     [app showModalWithContent:addressBookView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
 }
 
-- (IBAction)QRCodebuttonClicked:(id)sender
+- (BOOL)startReadingQRCode
 {
-    if (!self.readerView) {
-        self.readerView = [[ZBarReaderView alloc] init];
-        
-        self.readerView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height + DEFAULT_FOOTER_HEIGHT);
+    NSError *error;
+    
+    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    if (!input) {
+        // This should never happen - all devices we support (iOS 7+) have cameras
+        DLog(@"QR code scanner problem: %@", [error localizedDescription]);
+        return NO;
     }
     
-    // Reduce size of qr code to be scanned as part of view size
-    // Normalized coordinates and x/y flipped
-    self.readerView.scanCrop = CGRectMake(0.2, 0.15, 0.6, 0.7);
+    captureSession = [[AVCaptureSession alloc] init];
+    [captureSession addInput:input];
     
-    self.readerView.readerDelegate = self;
+    AVCaptureMetadataOutput *captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    [captureSession addOutput:captureMetadataOutput];
     
-    [self.readerView start];
+    dispatch_queue_t dispatchQueue;
+    dispatchQueue = dispatch_queue_create("myQueue", NULL);
+    [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatchQueue];
+    [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeQRCode]];
     
-    [app showModalWithContent:self.readerView closeType:ModalCloseTypeClose onDismiss:^() {
-        [self.readerView stop];
-        
-        [self.readerView setReaderDelegate:nil];
-        self.readerView = nil;
-    } onResume:nil];
+    videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
+    [videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height + DEFAULT_FOOTER_HEIGHT);
+    
+    [videoPreviewLayer setFrame:frame];
+    
+    UIView *view = [[UIView alloc] initWithFrame:frame];
+    [view.layer addSublayer:videoPreviewLayer];
+    
+    [app showModalWithContent:view closeType:ModalCloseTypeClose onDismiss:nil onResume:nil];
+    
+    [captureSession startRunning];
+    
+    return YES;
+}
+
+- (void)stopReadingQRCode
+{
+    [captureSession stopRunning];
+    captureSession = nil;
+    
+    [videoPreviewLayer removeFromSuperlayer];
+    
+    [app closeModalWithTransition:kCATransitionFade];
+    
+    // Go to the send scren if we are not already on it
+    [app showSendCoins];
+}
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    if (metadataObjects != nil && [metadataObjects count] > 0) {
+        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
+            [self performSelectorOnMainThread:@selector(stopReadingQRCode) withObject:nil waitUntilDone:NO];
+            isReadingQRCode = NO;
+            
+            // do something useful with results
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                // Make sure we are displaying the BTC symbol
+                // As amounts from uri's are in BTC
+                if (app->symbolLocal) {
+                    [app toggleSymbol];
+                }
+                
+                NSDictionary *dict = [app parseURI:[metadataObj stringValue]];
+                
+                toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
+                self.toAddress = [dict objectForKey:@"address"];
+                DLog(@"toAddress: %@", self.toAddress);
+                
+                NSString *amountString = [dict objectForKey:@"amount"];
+                
+                if (app.latestResponse.symbol_btc) {
+                    double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
+                    
+                    app.btcFormatter.usesGroupingSeparator = NO;
+                    amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
+                    app.btcFormatter.usesGroupingSeparator = YES;
+                }
+                
+                // If the amount is empty, open the amount field
+                if ([amountString isEqualToString:@"0"]) {
+                    amountField.text = nil;
+                    [amountField becomeFirstResponder];
+                }
+                // otherwise set the amountField to the amount from the URI
+                else {
+                    amountField.text = amountString;
+                }
+            });
+            
+        }
+    }
+}
+
+- (IBAction)QRCodebuttonClicked:(id)sender
+{
+    [self startReadingQRCode];
 }
 
 - (IBAction)closeKeyboardClicked:(id)sender

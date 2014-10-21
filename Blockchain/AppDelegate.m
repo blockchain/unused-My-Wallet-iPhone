@@ -733,40 +733,6 @@ BOOL showSendCoins = NO;
         self.modalView = nil;
     }
     
-    // QR Code Reader Modal
-    if ([contentView isKindOfClass:[ZBarReaderView class]]) {
-        // Create the qt cutout (gray alpha overlay over rest of image)
-        CGRect frame = contentView.frame;
-        float width = frame.size.width * 0.75;
-        float height = width;
-        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        v.backgroundColor = [UIColor blackColor];
-        v.alpha = 0.25;
-        [contentView addSubview:v];
-        
-        CAShapeLayer * layer = [[CAShapeLayer alloc]init];
-        layer.frame = v.bounds;
-        layer.fillColor = [[UIColor blackColor] CGColor];
-        
-        UIBezierPath *path = [UIBezierPath bezierPathWithRect:
-                              CGRectMake((frame.size.width - width)/2, (frame.size.height - height)/2,
-                                         width, height)];
-        [path appendPath:[UIBezierPath bezierPathWithRect:contentView.bounds]];
-        
-        layer.path = path.CGPath;
-        layer.fillRule = kCAFillRuleEvenOdd;
-        
-        v.layer.mask = layer;
-        
-        // Pass tap to QR Code scanner for focussing
-        self.readerViewTapSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                             contentView.frame.size.width,
-                                                                             contentView.frame.size.height)];
-        UITapGestureRecognizer* tapScanner = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(focusAtPoint:)];
-        [self.readerViewTapSubView addGestureRecognizer:tapScanner];
-        [contentView addSubview:self.readerViewTapSubView];
-    }
-    
     // Show modal
     modalView = [[BCModalView alloc] initWithCloseType:closeType showHeader:showHeader];
     self.modalView.onDismiss = onDismiss;
@@ -803,49 +769,6 @@ BOOL showSendCoins = NO;
         [[_window.rootViewController.view layer] addAnimation:animation forKey:@"ShowModal"];
     } @catch (NSException * e) {
         DLog(@"Animation Exception %@", e);
-    }
-}
-
-- (void)focusAtPoint:(id) sender
-{
-    CGPoint touchPoint = [(UITapGestureRecognizer*)sender locationInView:self.readerViewTapSubView];
-    double focus_x = touchPoint.x/self.readerViewTapSubView.frame.size.width;
-    double focus_y = (touchPoint.y+66)/self.readerViewTapSubView.frame.size.height;
-    NSError *error;
-    NSArray *devices = [AVCaptureDevice devices];
-    for (AVCaptureDevice *device in devices){
-        if ([device hasMediaType:AVMediaTypeVideo]) {
-            if ([device position] == AVCaptureDevicePositionBack) {
-                CGPoint point = CGPointMake(focus_y, 1-focus_x);
-                if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus] && [device lockForConfiguration:&error]){
-                    [device setFocusPointOfInterest:point];
-                    CGRect rect = CGRectMake(touchPoint.x-30, touchPoint.y-30, 60, 60);
-                    UIView *focusRect = [[UIView alloc] initWithFrame:rect];
-                    focusRect.layer.borderColor = [UIColor whiteColor].CGColor;
-                    focusRect.layer.borderWidth = 2;
-                    focusRect.tag = 99;
-                    [self.readerViewTapSubView addSubview:focusRect];
-                    [NSTimer scheduledTimerWithTimeInterval: 1
-                                                     target: self
-                                                   selector: @selector(dismissFocusRect)
-                                                   userInfo: nil
-                                                    repeats: NO];
-                    [device setFocusMode:AVCaptureFocusModeAutoFocus];
-                    [device unlockForConfiguration];
-                }
-            }
-        }
-    }
-}
-
-- (void) dismissFocusRect
-{
-    for (UIView *subView in self.readerViewTapSubView.subviews)
-    {
-        if (subView.tag == 99)
-        {
-            [subView removeFromSuperview];
-        }
     }
 }
 
@@ -887,7 +810,7 @@ BOOL showSendCoins = NO;
     [app closeModalWithTransition:kCATransitionFade];
 }
 
-- (BOOL)isZBarSupported
+- (BOOL)isQRCodeScanningSupported
 {
     NSUInteger platformType = [[UIDevice currentDevice] platformType];
     
@@ -900,10 +823,8 @@ BOOL showSendCoins = NO;
 
 - (IBAction)scanAccountQRCodeclicked:(id)sender
 {
-    if ([self isZBarSupported]) {
-        PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] init];
-        
-        [pairingCodeParser scanAndParse:^(NSDictionary*code) {
+    if ([self isQRCodeScanningSupported]) {
+        PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] initWithSuccess:^(NSDictionary*code) {
             DLog(@"scanAndParse success");
             
             [app forgetWallet];
@@ -920,8 +841,9 @@ BOOL showSendCoins = NO;
             
         } error:^(NSString*error) {
             [app standardNotify:error];
-            
         }];
+        
+        [self.slidingViewController presentViewController:pairingCodeParser animated:YES completion:nil];
     } else {
         [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
     }
@@ -939,9 +861,8 @@ BOOL showSendCoins = NO;
         if (buttonIndex == 0) {
             _error(BC_STRING_USER_DECLINED);
         } else {
-            PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
-            
-            [reader readPrivateKey:_success error:_error];
+            PrivateKeyReader *reader = [[PrivateKeyReader alloc] initWithSuccess:_success error:_error];
+            [app.slidingViewController presentViewController:reader animated:YES completion:nil];
         }
     };
     
@@ -1257,12 +1178,6 @@ BOOL showSendCoins = NO;
 
 -(IBAction)QRCodebuttonClicked:(id)sender
 {
-    if (_tabViewController.activeViewController == _sendViewController) {
-        [_sendViewController QRCodebuttonClicked:sender];
-        
-        return;
-    }
-    
     if (!_sendViewController) {
         _sendViewController = [[SendViewController alloc] initWithNibName:@"SendCoins" bundle:[NSBundle mainBundle]];
     }

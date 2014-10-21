@@ -6,16 +6,14 @@
 //  Copyright (c) 2014 Qkos Services Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Wallet.h"
-#import "ZBarSDK.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface PrivateKeyReader : NSObject<ZBarReaderViewDelegate>
+@interface PrivateKeyReader : UIViewController<AVCaptureMetadataOutputObjectsDelegate>
 
 @property(nonatomic, copy) void (^success)(NSString*);
 @property(nonatomic, copy) void (^error)(NSString*);
-@property(nonatomic, strong) ZBarReaderView * readerView;
 
--(void)readPrivateKey:(void (^)(NSString*))success error:(void (^)(NSString*))error;
+- (id)initWithSuccess:(void (^)(NSString*))__success error:(void (^)(NSString*))__error;
 
 @end

@@ -52,6 +52,7 @@
 @property (nonatomic, readonly) BOOL verifyOnly;
 
 -(void)setActivityIndicatorAnimated:(BOOL)animated;
+-(void)reset;
 
 + (PEPinEntryController *)pinVerifyController;
 + (PEPinEntryController *)pinChangeController;

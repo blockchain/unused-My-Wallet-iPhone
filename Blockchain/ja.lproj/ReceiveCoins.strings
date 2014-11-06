@@ -1,60 +1,57 @@
-
 /* Class = "IBUIButton"; normalTitle = "Save"; ObjectID = "48"; */
-"48.normalTitle" = "Save";
+"48.normalTitle" = "保存";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "56"; */
-"56.text" = "Label Address";
+"56.text" = "ラベル アドレス";
 
 /* Class = "IBUILabel"; text = "Address:"; ObjectID = "57"; */
-"57.text" = "Address:";
+"57.text" = "住所：";
 
 /* Class = "IBUILabel"; text = "Label:"; ObjectID = "58"; */
-"58.text" = "Label:";
+"58.text" = "ラベル:";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "60"; */
-"60.text" = "Address";
+"60.text" = "アドレス";
 
 /* Class = "IBUILabel"; text = "No Addresses"; ObjectID = "68"; */
-"68.text" = "No Addresses";
+"68.text" = "アドレスがないです。";
 
 /* Class = "IBUILabel"; text = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen."; ObjectID = "69"; */
-"69.text" = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen.";
+"69.text" = "あなたのアカウントが正しくペアリングされていない可能性。画面の左上部のボタンをクリックして画面上の指示に従って。";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Archive";
+"80.normalTitle" = "アーカイブのアドレス";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Set Label";
+"81.normalTitle" = "ラベル アドレス";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Request Payment";
+"88.normalTitle" = "支払いをリクエストします。";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
-"90.text" = "Bitcoin Address ";
+"90.text" = "Bitcoin アドレス";
 
 /* Class = "IBUILabel"; text = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH"; ObjectID = "91"; */
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Copy Address";
+"92.normalTitle" = "アドレスのコピー";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
-"100.text" = "Amount:";
-
-/* Class = "IBUITextField"; text = ".1"; ObjectID = "103"; */
-"103.text" = ".1";
+"100.text" = "金額：";
 
 /* Class = "IBUILabel"; text = "5 BTC = $10"; ObjectID = "120"; */
 "120.text" = "5 BTC = $10";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "1sL-eb-Qgc"; */
-"1sL-eb-Qgc.normalTitle" = "Close";
+"1sL-eb-Qgc.normalTitle" = "閉じる";
 
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "GwZ-6f-89z"; */
 "GwZ-6f-89z.normalTitle" = "BTC";
 
 /* Class = "IBUIButton"; normalTitle = "New Address"; ObjectID = "Yez-oe-AkH"; */
-"Yez-oe-AkH.normalTitle" = "New Address";
+"Yez-oe-AkH.normalTitle" = "新しいアドレス";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
-"i1j-pG-caF.normalTitle" = "Scan Private Key";
+"i1j-pG-caF.normalTitle" = "秘密キーをスキャンします。";
+

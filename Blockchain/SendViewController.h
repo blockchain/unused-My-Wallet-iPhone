@@ -19,34 +19,33 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "ZBarSDK.h"
 #import "AddressBookView.h"
 #import "BCAlertView.h"
-#import "DropDownListView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @class Wallet;
 
-@interface SendViewController : UIViewController <ZBarReaderViewDelegate, AddressBookDelegate, kDropDownListViewDelegate> {
-    IBOutlet UITextField * toFieldContainerField;
-    IBOutlet UITextField * toField;
-    IBOutlet UITextField * amountField;
-   
-    IBOutlet UIView * amountKeyboardAccessoryView;
-    IBOutlet UILabel * currencyConversionLabel;
-
+@interface SendViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, AddressBookDelegate> {
+    IBOutlet UIButton *balanceBigButton;
+    IBOutlet UIButton *balanceSmallButton;
+    
+    IBOutlet UITextField *toFieldContainerField;
+    IBOutlet UITextField *toField;
+    IBOutlet UITextField *amountField;
+    
+    IBOutlet UIView *amountKeyboardAccessoryView;
+    IBOutlet UILabel *currencyConversionLabel;
     
     IBOutlet UILabel *fromLabel;
-    IBOutlet UIButton *selectAddressButton;
+    IBOutlet UITextField *selectAddressTextField;
     IBOutlet UIButton *addressBookButton;
-    IBOutlet UIButton * sendPaymentButton;
-    IBOutlet UIView * labelAddressView;
-    IBOutlet UILabel * labelAddressLabel;
-    IBOutlet UITextField * labelAddressTextField;
-    IBOutlet UIView * sendProgressModal;
-    IBOutlet UILabel * sendProgressModalText;
-    IBOutlet UIButton * btcCodeButton;
-    DropDownListView * fromAddressDropDown;
-    DropDownListView * addressBookdropDown;
+    IBOutlet UIButton *sendPaymentButton;
+    IBOutlet UIView *labelAddressView;
+    IBOutlet UILabel *labelAddressLabel;
+    IBOutlet UITextField *labelAddressTextField;
+    IBOutlet UIView *sendProgressModal;
+    IBOutlet UILabel *sendProgressModalText;
+    IBOutlet UIButton *btcCodeButton;
 
     BOOL displayingLocalSymbol;
 }
@@ -55,25 +54,29 @@
 @property(nonatomic) double initialToAmountDouble; // satoshi
 
 @property(nonatomic, strong) NSString *selectedAddress;
-@property(nonatomic, strong) NSArray * addressBookAddress;
-@property(nonatomic, strong) NSArray * fromAddresses;
-@property(nonatomic, strong) ZBarReaderView * readerView;
+@property(nonatomic, strong) NSArray *addressBookAddress;
+@property(nonatomic, strong) NSArray *fromAddresses;
 @property(nonatomic, strong) NSString *toAddress;
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
-- (IBAction)selectAddressClicked:(id)sender;
--(IBAction)QRCodebuttonClicked:(id)sender;
--(IBAction)addressBookClicked:(id)sender;
--(IBAction)btcCodeClicked:(id)sender;
--(IBAction)closeKeyboardClicked:(id)sender;
+- (IBAction)selectFromAddressClicked:(id)sender;
+- (IBAction)QRCodebuttonClicked:(id)sender;
+- (IBAction)addressBookClicked:(id)sender;
+- (IBAction)btcCodeClicked:(id)sender;
+- (IBAction)closeKeyboardClicked:(id)sender;
 
--(void)didSelectAddress:(NSString *)address;
+- (void)didSelectFromAddress:(NSString *)address;
+- (void)didSelectToAddress:(NSString *)address;
 
--(IBAction)sendPaymentClicked:(id)sender;
--(IBAction)labelAddressClicked:(id)sender;
+- (IBAction)sendPaymentClicked:(id)sender;
+- (IBAction)labelAddressClicked:(id)sender;
 
--(void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
+- (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
 
--(void)reload;
+- (NSString *)labelForAddress:(NSString *)address;
+
+- (void)reload;
+
+- (void)dismissKeyboard;
 
 @end

@@ -17,13 +17,20 @@
 @synthesize data;
 @synthesize latestBlock;
 
+BOOL animateNextCell;
+
+UIRefreshControl *refreshControl;
+int lastNumberTransactions = INT_MAX;
+
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [data.transactions count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
     
 	TransactionTableCell * cell = (TransactionTableCell*)[tableView dequeueReusableCellWithIdentifier:@"transaction"];
@@ -37,19 +44,29 @@
     [cell seLatestBlock:self.latestBlock];
     
     [cell reload];
+    
+    // Selected cell color
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+    [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+    [cell setSelectedBackgroundView:v];
 
     return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionTableCell *cell = (TransactionTableCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell transactionClicked:nil];
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
 	[app.tabViewController responderMayHaveChanged];
 }
 
--(void)drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
 	//Setup
 	CGContextRef context = UIGraphicsGetCurrentContext();	
@@ -59,8 +76,9 @@
     CGContextFillRect(context, CGRectMake(0, 0, 320, 15));
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    float baseHeight = 85.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    float baseHeight = 75.0f;
     
     Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
 
@@ -89,34 +107,54 @@
     }
     
     if (!isfinite(baseHeight)) {        
-        return 85.0f;
+        return 75.0f;
     }
     
     return baseHeight;
 }
 
--(UITableView*)tableView {
+- (UITableView*)tableView
+{
     return tableView;
 }
 
--(void)setText {
-    if ([data.transactions count] == 0) {
-        [self.view addSubview:noTransactionsView];
-    } else {
+- (void)setText
+{
+    // Data not loaded yet
+    if (!self.data) {
         [noTransactionsView removeFromSuperview];
+        
+        [headerLabel setHidden:YES];
+        [headerSeparator setHidden:YES];
+        
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
-    
-    NSString * finalBalanceString = [app formatMoney:data.final_balance];
-    
-    //If the balance label is likely to overfla the transaction count hide it
-//    [transactionCountLabel setHidden:[finalBalanceString length] > 16];
-    
-    [transactionCountLabel setText:[NSString stringWithFormat:BC_STRING_TRANSACTIONS_COUNT, data.n_transactions]];
-    
-    [finalBalanceLabel setText:finalBalanceString];
+    // Data loaded, but no Balance yet
+    else if (!latestBlock) {
+        [self.view addSubview:noTransactionsView];
+        
+        [headerLabel setHidden:NO];
+        [headerSeparator setHidden:NO];
+        
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
+    }
+    // Data loaded and we have a balance - display the balance and transactions
+    else {
+        [noTransactionsView removeFromSuperview];
+        
+        [headerLabel setHidden:NO];
+        [headerSeparator setHidden:NO];
+        
+        // Balance
+        [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+    }
 }
 
--(void)setLatestBlock:(LatestBlock *)_latestBlock {
+- (void)setLatestBlock:(LatestBlock *)_latestBlock
+{
     latestBlock = _latestBlock;
     
     if (latestBlock && latestBlock.blockIndex != _latestBlock.blockIndex) {
@@ -124,30 +162,91 @@
     }
 }
 
--(void)reload {
+- (void)animateNextCellAfterReload
+{
+    animateNextCell = YES;
+}
+
+- (void)reload
+{
     [self setText];
     
     [tableView reloadData];
+    
+    if (data.n_transactions > lastNumberTransactions) {
+        int numNewTransactions = data.n_transactions - lastNumberTransactions;
+        // Max number displayed
+        if (numNewTransactions > data.transactions.count) {
+            numNewTransactions = data.transactions.count;
+        }
+        // We only do this for the last five transactions at most
+        if (numNewTransactions > 5) {
+            numNewTransactions = 5;
+        }
+        
+        NSMutableArray *rows = [[NSMutableArray alloc] initWithCapacity:numNewTransactions];
+        for (int i = 0; i < numNewTransactions; i++) {
+            [rows addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        
+        [tableView reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    
+    // Animate the first cell
+    if (data.transactions.count > 0 && animateNextCell) {
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+        animateNextCell = NO;
+    }
+    
+    // If all the data is available, set the lastNumberTransactions - reload gets called once when wallet is loaded and once when latest block is loaded
+    if (app.latestResponse) {
+        lastNumberTransactions = data.n_transactions;
+    }
+}
+
+- (void)loadTransactions
+{
+    lastNumberTransactions = data.n_transactions;
+    
+    [app.wallet getHistory];
+    
+    // This should be done when request has finished but there is no callback
+    if (refreshControl && refreshControl.isRefreshing) {
+        [refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - View lifecycle
 
--(void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
+                                 app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
-    [finalBalanceLabel setMinimumScaleFactor:.5f];
-    [finalBalanceLabel setAdjustsFontSizeToFitWidth:YES];
     
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
-    } else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
-    }
+    [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Tricky way to get the refreshController to work on a UIViewController - @see http://stackoverflow.com/a/12502450/2076094
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = self.tableView;
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self
+                       action:@selector(loadTransactions)
+             forControlEvents:UIControlEventValueChanged];
+    tableViewController.refreshControl = refreshControl;
     
     [self reload];
 }
-
 
 @end

@@ -1,4 +1,3 @@
-
 /* Class = "IBUIButton"; normalTitle = "Save"; ObjectID = "48"; */
 "48.normalTitle" = "Save";
 
@@ -21,13 +20,13 @@
 "69.text" = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "Archive";
+"80.normalTitle" = "ARCHIVE ADDRESS";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "Set Label";
+"81.normalTitle" = "LABEL ADDRESS";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "Request Payment";
+"88.normalTitle" = "REQUEST PAYMENT";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
 "90.text" = "Bitcoin Address ";
@@ -36,13 +35,10 @@
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
-"92.normalTitle" = "Copy Address";
+"92.normalTitle" = "COPY ADDRESS";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "100"; */
 "100.text" = "Amount:";
-
-/* Class = "IBUITextField"; text = ".1"; ObjectID = "103"; */
-"103.text" = ".1";
 
 /* Class = "IBUILabel"; text = "5 BTC = $10"; ObjectID = "120"; */
 "120.text" = "5 BTC = $10";
@@ -58,3 +54,4 @@
 
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
 "i1j-pG-caF.normalTitle" = "Scan Private Key";
+

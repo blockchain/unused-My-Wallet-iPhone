@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2012, Ben Reeves. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -24,15 +24,15 @@
 
 @interface TransactionTableCell : UITableViewCell {
     Transaction * transaction;
-    IBOutlet UIButton * hashButton;
+    IBOutlet UIButton * dateButton;
     IBOutlet UIButton * btcButton;
-    IBOutlet UIButton * confirmationsButton;
-    IBOutlet UIImageView * typeImageView;
+    IBOutlet UILabel *confirmationsLabel;
+    IBOutlet UILabel *transactionTypeLabel;
     
     NSMutableArray * labels;
 }
 
--(IBAction)transactionHashClicked:(UIButton *)button;
+-(IBAction)transactionClicked:(UIButton *)button;
 -(IBAction)btcbuttonclicked:(id)sender;
 
 @property(nonatomic, strong)  Transaction * transaction;

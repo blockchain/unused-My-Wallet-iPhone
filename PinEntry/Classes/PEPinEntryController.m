@@ -31,7 +31,7 @@
 static PEViewController *EnterController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Please enter your pin";
+	c.prompt = BC_STRING_PLEASE_ENTER_PIN;
 	c.title = @"";
     
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -44,7 +44,7 @@ static PEViewController *EnterController()
 static PEViewController *NewController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Please enter a new pin";
+	c.prompt = BC_STRING_PLEASE_ENTER_NEW_PIN;
 	c.title = @"";
 
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -57,7 +57,7 @@ static PEViewController *NewController()
 static PEViewController *VerifyController()
 {
 	PEViewController *c = [[PEViewController alloc] init];
-	c.prompt = @"Confirm your pin";
+	c.prompt = BC_STRING_CONFIRM_PIN;
 	c.title = @"";
 
     NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
@@ -87,7 +87,7 @@ static PEViewController *VerifyController()
 	PEViewController *c = EnterController();
 	PEPinEntryController *n = [[self alloc] initWithRootViewController:c];
 	c.delegate = n;
-	c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
+    c.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:BC_STRING_CANCEL style:UIBarButtonItemStylePlain target:n action:@selector(cancelController)];
     n->pinController = c;
 	n->pinStage = PS_VERIFY;
 	n->verifyOnly = NO;
@@ -120,6 +120,13 @@ static PEViewController *VerifyController()
         [pinController.activityIndicator stopAnimating];
 }
 
+- (void)reset
+{
+    [self setActivityIndicatorAnimated:NO];
+    
+    [pinController resetPin];
+}
+
 - (void)pinEntryControllerDidEnteredPin:(PEViewController *)controller
 {
 	switch (pinStage) {
@@ -134,7 +141,7 @@ static PEViewController *VerifyController()
                         self.viewControllers = [NSArray arrayWithObject:c];
                     }
                 } else {
-                    controller.prompt = @"Incorrect pin. Please retry.";
+                    controller.prompt = BC_STRING_INCORRECT_PIN_RETRY;
                     [controller resetPin];
                 }
             }];

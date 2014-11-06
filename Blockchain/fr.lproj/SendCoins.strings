@@ -1,12 +1,11 @@
-
 /* Class = "IBUIButton"; normalTitle = "Send Payment"; ObjectID = "4"; */
-"4.normalTitle" = "Send Payment";
+"4.normalTitle" = "Envoyer";
 
 /* Class = "IBUILabel"; text = "From:"; ObjectID = "7"; */
-"7.text" = "From:";
+"7.text" = "De";
 
 /* Class = "IBUILabel"; text = "To:"; ObjectID = "13"; */
-"13.text" = "To:";
+"13.text" = "À";
 
 /* Class = "IBUITextField"; text = "0.00"; ObjectID = "52"; */
 "52.text" = "0.00";
@@ -18,28 +17,32 @@
 "61.text" = "Label:";
 
 /* Class = "IBUIButton"; normalTitle = "Save"; ObjectID = "63"; */
-"63.normalTitle" = "Save";
+"63.normalTitle" = "Enregistrer";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "64"; */
-"64.text" = "Address";
+"64.text" = "Adresse";
 
 /* Class = "IBUILabel"; text = "Address:"; ObjectID = "65"; */
-"65.text" = "Address:";
+"65.text" = "Adresse:";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "67"; */
-"67.text" = "Label Address";
+"67.text" = "Étiquette D'Adresse";
 
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "6zi-8R-Tmt"; */
 "6zi-8R-Tmt.normalTitle" = "BTC";
 
 /* Class = "IBUILabel"; text = "Amount:"; ObjectID = "7ho-GV-ikp"; */
-"7ho-GV-ikp.text" = "Amount:";
+"7ho-GV-ikp.text" = "Montant";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
-"8LN-Tc-WVh.normalTitle" = "Close";
+"8LN-Tc-WVh.normalTitle" = "Fermer";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
-"Zgn-Wx-Uwx.text" = "Please Wait";
+"Zgn-Wx-Uwx.text" = "S'Il Vous Plaît Attendre";
 
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
-"aKC-Q2-phD.text" = "Sending Payment";
+"aKC-Q2-phD.text" = "L'Envoi De Paiement";
+
+/* Class = "IBUITextField"; text = "Any Address"; ObjectID = "zyc-E3-FOM"; */
+"zyc-E3-FOM.text" = "N'importe quelle adresse";
+

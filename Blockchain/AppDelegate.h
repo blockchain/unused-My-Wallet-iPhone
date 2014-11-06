@@ -26,9 +26,9 @@
 #import "Wallet.h"
 #import "MultiAddressResponse.h"
 #import "TabViewController.h"
-#import "ZBarSDK.h"
 #import "PEPinEntryController.h"
-#import "UIModalView.h"
+#import "BCModalView.h"
+#import "ECSlidingViewController.h"
 
 #define SATOSHI 100000000
 #define LOADING_TEXT_NOTIFICAITON_KEY @"SetLoadingText"
@@ -43,7 +43,7 @@
 
 #define PIN_PBKDF2_ITERATIONS 1 //This does not need to be large because the key is already 256 bits
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, AccountViewController, SendViewController, WebViewController, NewAccountView, MulitAddressResponse, PairingCodeParser, MerchantViewController;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, SendViewController, BCCreateWalletView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController, BCWebViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet * wallet;
@@ -51,50 +51,38 @@
     SystemSoundID alertSoundID;
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
-
+    
     IBOutlet UIActivityIndicatorView * activity;
     IBOutlet BCFadeView * busyView;
     IBOutlet UILabel * busyLabel;
     IBOutlet UIButton * powerButton;
-
-    IBOutlet UIView * welcomeView;
-    IBOutlet NewAccountView * newAccountView;
-    IBOutlet UIView * pairingInstructionsView;
-
-    IBOutlet UIButton * welcomeButton1;
-    IBOutlet UIButton * welcomeButton2;
-    IBOutlet UIButton * welcomeButton3;
+    
+    IBOutlet BCCreateWalletView *newAccountView;
+    IBOutlet BCModalContentView *pairingInstructionsView;
+    IBOutlet BCManualPairView *manualPairView;
     
     BOOL validateSecondPassword;
     IBOutlet UILabel * secondPasswordDescriptionLabel;
-    IBOutlet UILabel * welcomeLabel;
-    IBOutlet UILabel * welcomeInstructionsLabel;
     IBOutlet UIView * secondPasswordView;
     IBOutlet UITextField * secondPasswordTextField;
     
     IBOutlet UIView * mainPasswordView;
     IBOutlet UITextField * mainPasswordTextField;
-
-    IBOutlet UIView * manualView;
-    IBOutlet UITextField * manualIdentifier;
-    IBOutlet UITextField * manualSharedKey;
-    IBOutlet UITextField * manualPassword;
     
     @public
     
     BOOL symbolLocal;
 }
 
+@property (strong, nonatomic) IBOutlet ECSlidingViewController *slidingViewController;
 @property (strong, nonatomic) IBOutlet TabViewcontroller * tabViewController;
 @property (strong, nonatomic) IBOutlet TransactionsViewController * transactionsViewController;
 @property (strong, nonatomic) IBOutlet ReceiveCoinsViewController * receiveViewController;
 @property (strong, nonatomic) IBOutlet SendViewController * sendViewController;
-@property (strong, nonatomic) IBOutlet AccountViewController * accountViewController;
 @property (strong, nonatomic) IBOutlet MerchantViewController * merchantViewController;
+@property (strong, nonatomic) IBOutlet BCWebViewController *bcWebViewController;
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
-
-@property (strong, nonatomic) WebViewController * webViewController;
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
 @property (strong, nonatomic) Wallet * wallet;
@@ -103,8 +91,7 @@
 
 @property (nonatomic) BOOL disableBusyView;
 
-@property (strong, nonatomic) IBOutlet MyUIModalView * modalView;
-@property(nonatomic, strong) UIView * readerViewTapSubView;
+@property (strong, nonatomic) IBOutlet BCModalView * modalView;
 @property (strong, nonatomic) NSMutableArray * modalChain;
 
 //PIN Entry
@@ -115,7 +102,6 @@
 @property(nonatomic, strong) NSNumberFormatter * btcFormatter;
 @property(nonatomic, strong) NSNumberFormatter * localCurrencyFormatter;
 
--(IBAction)manualPairClicked:(id)sender;
 -(void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey;
 
 -(void)playBeepSound;
@@ -125,7 +111,7 @@
 -(TransactionsViewController*)transactionsViewController;
 
 -(void)forgetWallet;
--(void)showWelcome;
+- (void)toggleSideMenu;
 
 -(NSString*)guid;
 -(NSString*)sharedKey;
@@ -133,10 +119,11 @@
 -(void)swipeLeft;
 -(void)swipeRight;
 
-//Simple Modal UIVIew
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
--(void)showModal:(UIView*)contentView isClosable:(BOOL)_isClosable;
--(void)closeModal;
+// BC Modal
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)closeModalWithTransition:(NSString *)transition;
 
 -(NSDictionary*)parseURI:(NSString*)string;
 
@@ -169,7 +156,7 @@
 -(IBAction)transactionsClicked:(UIButton *)sender;
 -(IBAction)sendCoinsClicked:(UIButton *)sender;
 -(IBAction)merchantClicked:(UIButton *)sender;
--(IBAction)accountSettingsClicked:(UIButton *)sender;
+-(IBAction)QRCodebuttonClicked:(id)sender;
 -(IBAction)forgetWalletClicked:(id)sender;
 -(IBAction)powerClicked:(id)sender;
 -(IBAction)scanAccountQRCodeclicked:(id)sender;
@@ -178,14 +165,14 @@
 -(IBAction)refreshClicked:(id)sender;
 -(IBAction)balanceTextClicked:(id)sender;
 
-//WelcomeMenu
--(IBAction)welcomeButton1Clicked:(id)sender;
--(IBAction)welcomeButton2Clicked:(id)sender;
--(IBAction)welcomeButton3Clicked:(id)sender;
+- (IBAction)newsClicked:(id)sender;
+- (IBAction)accountSettingsClicked:(id)sender;
+- (IBAction)changePINClicked:(id)sender;
+- (IBAction)logoutClicked:(id)sender;
 
 -(void)setStatus;
 -(void)clearPin;
--(void)showPinModal;
+- (void)showPinModalAsView:(BOOL)asView;
 -(BOOL)isPINSet;
 
 @end

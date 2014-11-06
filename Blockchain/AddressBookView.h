@@ -23,19 +23,23 @@
 @class Wallet;
 
 @protocol AddressBookDelegate <NSObject>
-@required
--(void)didSelectAddress:(NSString*)address;
+- (void)didSelectFromAddress:(NSString*)address;
+- (void)didSelectToAddress:(NSString*)address;
 @end
 
 @interface AddressBookView : UIView <UITableViewDelegate, UITableViewDataSource> {
-    IBOutlet UIView * view;
-    IBOutlet UITableView * tableView;
+    IBOutlet UILabel *headerLabel;
+    IBOutlet UIView *view;
+    IBOutlet UITableView *tableView;
 }
 
--(id)initWithWallet:(Wallet*)_wallet;
+- (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)showOwnAddresses;
+- (void)setHeader:(NSString *)headerText;
 
-@property(nonatomic, strong) NSMutableArray * addresses;
-@property(nonatomic, strong) Wallet * wallet;
+@property(nonatomic, strong) NSMutableArray *addresses;
+@property(nonatomic, strong) NSMutableArray *labels;
+
+@property(nonatomic, strong) Wallet *wallet;
 @property(nonatomic, strong) id<AddressBookDelegate> delegate;
 
 @end

@@ -25,7 +25,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 #pragma mark - Lifecycle
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     if ([[app.wallet activeAddresses] count] == 0) {
         [noaddressesView setHidden:FALSE];
     } else {
@@ -33,23 +34,33 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
 }
 
--(void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    if (APP_IS_IPHONE5) {
-        self.view.frame = CGRectMake(0, 0, 320, 450);
+    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
+                                 app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
+    
+    // iPhone4/4S
+    if ([[UIScreen mainScreen] bounds].size.height < 568) {
+        int reduceImageSizeBy = 70;
+        // Smaller QR Code Image
+        qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy/2, qrCodeMainImageView.frame.origin.y, qrCodeMainImageView.frame.size.width - reduceImageSizeBy, qrCodeMainImageView.frame.size.height - reduceImageSizeBy);
+        
+        // Move buttons up
+        requestPaymentButton.frame = CGRectMake(requestPaymentButton.frame.origin.x, requestPaymentButton.frame.origin.y - reduceImageSizeBy, requestPaymentButton.frame.size.width, requestPaymentButton.frame.size.height);
+        copyAddressButton.frame = CGRectMake(copyAddressButton.frame.origin.x, copyAddressButton.frame.origin.y - reduceImageSizeBy, copyAddressButton.frame.size.width, copyAddressButton.frame.size.height);
+        labelAddressButton.frame = CGRectMake(requestPaymentButton.frame.origin.x, labelAddressButton.frame.origin.y - reduceImageSizeBy, labelAddressButton.frame.size.width, labelAddressButton.frame.size.height);
+        archiveUnarchiveButton.frame = CGRectMake(archiveUnarchiveButton.frame.origin.x, archiveUnarchiveButton.frame.origin.y - reduceImageSizeBy, archiveUnarchiveButton.frame.size.width, archiveUnarchiveButton.frame.size.height);
     }
-    else {
-        self.view.frame = CGRectMake(0, 0, 320, 361);
-    }
-
+    
     [self reload];
 }
 
 -(void)reload {
     self.activeKeys = [app.wallet activeAddresses];
     self.archivedKeys = [app.wallet archivedAddresses];
-
+    
     if ([activeKeys count] == 0) {
         [self.view addSubview:noaddressesView];
     } else {
@@ -63,11 +74,60 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
         displayingLocalSymbol = FALSE;
     }
+
+    
+    // Get active addresses
+    NSArray *activeAddresses = [app.wallet activeAddresses];
+    
+    // Show table header with qr code and default address if we can find a default address
+    if (activeAddresses.count > 0) {
+        // Image width is adjusted to screen size
+        float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
+
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 38)];
+        
+        // Get the default address - first active address that's not watch only
+        NSString *defaultAddress;
+        for (NSString *address in activeAddresses) {
+            if (![app.wallet isWatchOnlyAddress:address]) {
+                defaultAddress = address;
+                break;
+            }
+        }
+        
+        // QR Code
+        UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
+        NSString *addressURL = [NSString stringWithFormat:@"bitcoin://%@", defaultAddress];
+        DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
+        qrCodeImageView.image = [QREncoder renderDataMatrix:data imageDimension:250];
+        qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [headerView addSubview:qrCodeImageView];
+        
+        // Address or label UILabel
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 16)];
+        NSString *label = [app.wallet labelForAddress:defaultAddress];
+        if (label.length > 0) {
+            addressLabel.text = label;
+        }
+        else {
+            addressLabel.text = defaultAddress;
+        }
+        addressLabel.font = [UIFont systemFontOfSize:14];
+        addressLabel.textAlignment = NSTextAlignmentCenter;
+        addressLabel.textColor = [UIColor blackColor];
+        [addressLabel setMinimumScaleFactor:.5f];
+        [addressLabel setAdjustsFontSizeToFitWidth:YES];
+        [headerView addSubview:addressLabel];
+        
+        tableView.tableHeaderView = headerView;
+    }
+    else {
+        tableView.tableHeaderView = nil;
+    }
     
     [tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:EVENT_NEW_ADDRESS
-                                                        object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EVENT_NEW_ADDRESS object:nil userInfo:nil];
 }
 
 #pragma mark - Helpers
@@ -85,28 +145,30 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     return addr;
 }
 
--(NSString*)uriURL {
-    
+- (NSString*)uriURL
+{
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
-
+    
     app.btcFormatter.usesGroupingSeparator = NO;
     NSString *amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]];
     app.btcFormatter.usesGroupingSeparator = YES;
-
+    
     amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
-
+    
     return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
 }
 
--(NSString*)blockchainUriURL {
+- (NSString*)blockchainUriURL
+{
     NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
     double amount = [requestAmountTextField.text doubleValue];
     return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
 }
 
--(uint64_t)getInputAmountInSatoshi {
+- (uint64_t)getInputAmountInSatoshi
+{
     NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
-
+    
     if (displayingLocalSymbol) {
         return app.latestResponse.symbol_local.conversion * [requestedAmountString doubleValue];
     } else {
@@ -114,14 +176,9 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
 }
 
--(void)doCurrencyConversion {
-    uint64_t amount = SATOSHI;
-    
-    if ([requestAmountTextField.text length] > 0) {
-        amount = [self getInputAmountInSatoshi];
-    } else if (displayingLocalSymbol) {
-        amount = app.latestResponse.symbol_local.conversion;
-    }
+- (void)doCurrencyConversion
+{
+    uint64_t amount = [self getInputAmountInSatoshi];
     
     if (displayingLocalSymbol) {
         currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
@@ -130,9 +187,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
 }
 
-
--(NSString *)getKey:(NSIndexPath*)indexPath {
-    
+- (NSString *)getKey:(NSIndexPath*)indexPath
+{
     NSString * key =  NULL;
     
     if ([indexPath section] == 0)
@@ -143,17 +199,31 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     return key;
 }
 
--(void)setQR {
-    DataMatrix * data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
+- (void)setQRPayment
+{
+    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
     
-    UIImage * image = [QREncoder renderDataMatrix:data imageDimension:250];
+    UIImage *image = [QREncoder renderDataMatrix:data imageDimension:250];
     
-    qrCodeImageView.image = image;
+    qrCodePaymentImageView.image = image;
+    qrCodePaymentImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self doCurrencyConversion];
 }
 
--(void)promptForLabelAfterGenerate {
+- (void)setQRMain
+{
+    NSString *addressURL = [NSString stringWithFormat:@"bitcoin://%@", self.clickedAddress];
+    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
+    
+    UIImage *image = [QREncoder renderDataMatrix:data imageDimension:250];
+    
+    qrCodeMainImageView.image = image;
+    qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
+}
+
+- (void)promptForLabelAfterGenerate
+{
     //newest address is the last object in activeKeys
     self.clickedAddress = [activeKeys lastObject];
     [self labelAddressClicked:nil];
@@ -216,75 +286,81 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 #pragma mark - Actions
 
--(IBAction)generateNewAddressClicked:(id)sender {
+- (IBAction)generateNewAddressClicked:(id)sender
+{
     [app.wallet generateNewKey];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(promptForLabelAfterGenerate)
                                                  name:EVENT_NEW_ADDRESS object:nil];
 }
 
--(IBAction)btcCodeClicked:(id)sender {
+- (IBAction)btcCodeClicked:(id)sender
+{
     [app toggleSymbol];
-    [self setQR];
+    [self setQRPayment];
 }
 
--(IBAction)scanKeyClicked:(id)sender {
-    
-    PrivateKeyReader * reader = [[PrivateKeyReader alloc] init];
-    
-    [reader readPrivateKey:^(NSString* privateKeyString) {
+- (IBAction)scanKeyClicked:(id)sender
+{
+    PrivateKeyReader *reader = [[PrivateKeyReader alloc] initWithSuccess:^(NSString* privateKeyString) {
         [app.wallet addKey:privateKeyString];
     } error:nil];
+    
+    [app.slidingViewController presentViewController:reader animated:YES completion:nil];
 }
 
--(IBAction)labelSaveClicked:(id)sender {
+- (IBAction)labelSaveClicked:(id)sender
+{
     labelTextField.text = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([labelTextField.text length] == 0 || [labelTextField.text length] > 255) {
         [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
         return;
     }
-        
+    
     NSString * addr = self.clickedAddress;
-
+    
     [app.wallet setLabel:labelTextField.text ForAddress:addr];
-        
+    
     [self reload];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
--(IBAction)copyAddressClicked:(id)sender {
+- (IBAction)copyAddressClicked:(id)sender
+{
     NSString * addr = self.clickedAddress;
-
-    UIView *v = (UIView *)sender;
     
-    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240, 40)];
-    [[v superview] addSubview:l];
+    UIView *lastButtonView = archiveUnarchiveButton;
     
-    l.textAlignment = NSTextAlignmentCenter;
-    [l setFont:[UIFont systemFontOfSize:12.0f]];
-    l.numberOfLines = 2;
-    l.minimumScaleFactor = .3f;
-    l.adjustsFontSizeToFitWidth = YES;
-    l.center = CGPointMake(v.center.x, v.center.y + 40);
-    l.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
-
-    l.alpha = 0;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    [[lastButtonView superview] addSubview:label];
+    
+    label.textAlignment = NSTextAlignmentCenter;
+    [label setFont:[UIFont systemFontOfSize:12.0f]];
+    label.textColor = [UIColor darkGrayColor];
+    label.numberOfLines = 2;
+    label.minimumScaleFactor = .3f;
+    label.adjustsFontSizeToFitWidth = YES;
+    label.center = CGPointMake(lastButtonView.center.x, lastButtonView.center.y + 40);
+    label.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
+    
+    label.alpha = 0;
     [UIView animateWithDuration:.1f animations:^{
-        l.alpha = 1;
+        label.alpha = 1;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:5.0f animations:^{
-            l.alpha = 0;
+            label.alpha = 0;
         } completion:^(BOOL finished) {
-            [l removeFromSuperview];
+            [label removeFromSuperview];
         }];
     }];
     
     [UIPasteboard generalPasteboard].string = addr;
 }
 
--(IBAction)shareByTwitter:(id)sender {
+- (IBAction)shareByTwitter:(id)sender
+{
     SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     
     [composeController setInitialText:[self formatPaymentRequest:@""]];
@@ -301,7 +377,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     composeController.completionHandler = myBlock;
 }
 
--(IBAction)shareByFacebook:(id)sender {
+- (IBAction)shareByFacebook:(id)sender
+{
     SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     
     [composeController setInitialText:[self formatPaymentRequest:@""]];
@@ -318,20 +395,23 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     composeController.completionHandler = myBlock;
 }
 
-
--(NSString*)formatPaymentRequest:(NSString*)url {
+- (NSString*)formatPaymentRequest:(NSString*)url
+{
     return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST, url];
 }
 
--(NSString*)formatPaymentRequestHTML:(NSString*)url {
+- (NSString*)formatPaymentRequestHTML:(NSString*)url
+{
     return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST_HTML, url];
 }
 
--(IBAction)shareByGooglePlus:(id)sender {
+- (IBAction)shareByGooglePlus:(id)sender
+{
     [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
 }
 
--(IBAction)shareByMessageClicked:(id)sender {
+- (IBAction)shareByMessageClicked:(id)sender
+{
     if([MFMessageComposeViewController canSendText]) {
         MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
         [messageController setMessageComposeDelegate:self];
@@ -345,11 +425,12 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
 }
 
--(IBAction)shareByEmailClicked:(id)sender {
+- (IBAction)shareByEmailClicked:(id)sender
+{
     if([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
         [mailController setMailComposeDelegate:self];
-        NSData *jpegData = UIImageJPEGRepresentation(qrCodeImageView.image, 1);
+        NSData *jpegData = UIImageJPEGRepresentation(qrCodePaymentImageView.image, 1);
         [mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
         [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
         [mailController setMessageBody:[self formatPaymentRequestHTML:[self blockchainUriURL]] isHTML:YES];
@@ -361,52 +442,53 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     }
 }
 
--(IBAction)requestPaymentClicked:(id)sender {
-    [self setQR];
+- (IBAction)requestPaymentClicked:(id)sender
+{
+    [self setQRPayment];
     
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
     //configure addthis -- (this step is optional)
-	[AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
-	[AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
+    [AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
     
     [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
     [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
     
-	//Facebook connect settings
-	[AddThisSDK setFacebookAPIKey:@"289188934490223"];
-	[AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
-	
-	[AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
-	[AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
-	[AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
-
+    //Facebook connect settings
+    [AddThisSDK setFacebookAPIKey:@"289188934490223"];
+    [AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
     
+    [AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
+    [AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
+    [AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
     
-    [app showModal:requestCoinsView isClosable:TRUE onDismiss:^() {
+    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
+    
     [requestAmountTextField becomeFirstResponder];
 }
 
--(IBAction)closeKeyboardClicked:(id)sender
+- (IBAction)closeKeyboardClicked:(id)sender
 {
     [requestAmountTextField resignFirstResponder];
 }
 
--(IBAction)labelAddressClicked:(id)sender {
+- (IBAction)labelAddressClicked:(id)sender
+{
     NSString * addr =  self.clickedAddress;
     NSString * label =  [app.wallet labelForAddress:addr];
-
+    
     if (label && ![label isEqualToString:@""])
         labelAddressLabel.text = label;
     else
         labelAddressLabel.text = addr;
-
-    [app showModal:labelAddressView isClosable:TRUE onDismiss:^() {
+    
+    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
     
@@ -415,11 +497,11 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     [labelTextField becomeFirstResponder];
 }
 
--(IBAction)archiveAddressClicked:(id)sender {
-
+- (IBAction)archiveAddressClicked:(id)sender
+{
     NSString * addr = self.clickedAddress;
     NSInteger tag =  [app.wallet tagForAddress:addr];
-
+    
     if (tag == 2)
         [app.wallet unArchiveAddress:addr];
     else
@@ -427,11 +509,12 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     
     [self reload];
     
-    [app closeModal];
+    [app closeModalWithTransition:kCATransitionFade];
 }
 
 
--(void)dismissKeyboard {
+- (void)dismissKeyboard
+{
     //[requestAmountTextField resignFirstResponder];
     [requestAmountTextField endEditing:YES];
     [app.modalView removeGestureRecognizer:self.tapGesture];
@@ -440,22 +523,23 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 # pragma mark - UITextField delegates
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[app.tabViewController responderMayHaveChanged];
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [app.tabViewController responderMayHaveChanged];
     self.tapGesture = [[UITapGestureRecognizer alloc]
                        initWithTarget:self
                        action:@selector(dismissKeyboard)];
     [app.modalView addGestureRecognizer:self.tapGesture];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    [aTextField resignFirstResponder];
+    [textField resignFirstResponder];
     return YES;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     NSArray  *points = [newString componentsSeparatedByString:@"."];
     NSArray  *commas = [newString componentsSeparatedByString:@","];
@@ -463,16 +547,15 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     if ([points count] > 2 || [commas count] > 2)
         return NO;
     
-    [self performSelector:@selector(setQR) withObject:nil afterDelay:0.1f];
+    [self performSelector:@selector(setQRPayment) withObject:nil afterDelay:0.1f];
     
     return YES;
 }
 
 #pragma mark - UITableview Delegates
 
-- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
+- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
     NSInteger tag =  [app.wallet tagForAddress:addr];
     NSString *label =  [app.wallet labelForAddress:addr];
@@ -484,17 +567,24 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     else
         [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
     
-    [app showModal:optionsModalView isClosable:TRUE];
+    [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose onDismiss:^() {
+        // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
+        [optionsModalView removeFromSuperview];
+    } onResume:nil];
     
-    if (label)
+    if (label.length > 0)
         optionsTitleLabel.text = label;
     else
-        optionsTitleLabel.text = BC_STRING_BITCOIN_ADDRESS;
+        optionsTitleLabel.text = addr;
     
-    optionsAddressLabel.text = addr;
+    // Put QR code in ImageView
+    [self setQRMain];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 70.0f;
 }
 
@@ -503,7 +593,8 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     return 40.0f;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     if (section == 0)
         return BC_STRING_ACTIVE;
     else if (section == 1)
@@ -512,14 +603,16 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         @throw @"Unknown Secion";
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if (section == 0)
         return [activeKeys count];
     else
         return [archivedKeys count];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     int n = 0;
     
     if ([archivedKeys count]) ++n;
@@ -528,36 +621,59 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     return n;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ReceiveTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
+- (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString * addr =  [self getAddress:indexPath];
+    
+    Boolean isWatchOnlyAddress = [app.wallet isWatchOnlyAddress:addr];
+    
+    ReceiveTableCell *cell;
+    if (isWatchOnlyAddress) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"receiveWatchOnly"];
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"receiveNormal"];
+    }
     
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        
+        if (isWatchOnlyAddress) {
+            // Show the watch only tag and resize the label and balance labels so there is enough space
+            cell.labelLabel.frame = CGRectMake(20, 11, 148, 21);
+            
+            cell.balanceLabel.frame = CGRectMake(254, 11, 83, 21);
+            
+            [cell.watchLabel setHidden:FALSE];
+        }
+        else {
+            // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
+            cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);
+            
+            cell.balanceLabel.frame = CGRectMake(217, 11, 120, 21);
+            
+            [cell.watchLabel setHidden:TRUE];
+        }
     }
-
-    NSString * addr =  [self getAddress:indexPath];
+    
     NSString * label =  [app.wallet labelForAddress:addr];
     
     if (label)
         cell.labelLabel.text = label;
-    else 
+    else
         cell.labelLabel.text = BC_STRING_NO_LABEL;
     
     cell.addressLabel.text = addr;
     
-    if ([app.wallet isWatchOnlyAddress:addr])
-        [cell.watchLabel setHidden:TRUE];
-    else
-        [cell.watchLabel setHidden:FALSE];
-    
     uint64_t balance = [app.wallet getAddressBalance:addr];
     
+    // Selected cell color
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
     [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
     [cell setSelectedBackgroundView:v];
     
     cell.balanceLabel.text = [app formatMoney:balance];
- 
+    
     return cell;
 }
 

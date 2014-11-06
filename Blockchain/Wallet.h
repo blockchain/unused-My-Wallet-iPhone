@@ -67,6 +67,9 @@
 -(void)didFailPutPin:(NSString*)value;
 -(void)didPutPinSuccess:(NSDictionary*)dictionary;
 -(void)didFailGetPin:(NSString*)value;
+-(void)didFailGetPinTimeout;
+-(void)didFailGetPinNoResponse;
+-(void)didFailGetPinInvalidResponse;
 -(void)didGetPinSuccess:(NSDictionary*)dictionary;
 
 @end
@@ -152,7 +155,7 @@
 -(void)newAccount:(NSString*)password email:(NSString *)email;
 
 -(void)pinServerPutKeyOnPinServerServer:(NSString*)key value:(NSString*)value pin:(NSString*)pin;
--(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin;
+-(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin withWalletDownload:(BOOL)withWalletDownload;
 
 -(NSString*)encrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
 -(NSString*)decrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;

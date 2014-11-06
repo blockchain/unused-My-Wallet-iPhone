@@ -217,15 +217,3 @@ void SignalHandler(int signal)
 						forKey:UncaughtExceptionHandlerSignalKey]]
 		waitUntilDone:YES];
 }
-
-void InstallUncaughtExceptionHandler()
-{
-	NSSetUncaughtExceptionHandler(&HandleException);
-	/*signal(SIGABRT, SignalHandler);
-	signal(SIGILL, SignalHandler);
-	signal(SIGSEGV, SignalHandler);
-	signal(SIGFPE, SignalHandler);
-	signal(SIGBUS, SignalHandler);
-	signal(SIGPIPE, SignalHandler);*/
-}
-

@@ -30,9 +30,13 @@ window.onerror = function(errorMsg, url, lineNumber) {
 }
 
 $(document).ajaxStart(function() {
+    // Disconnect WS when we send another request to the server - this was leading to crashes
+    webSocketDisconnect();
     device.execute('ajaxStart');
 }).ajaxStop(function() {
     device.execute('ajaxStop');
+    // Re-connent WS again when the request is finished
+    simpleWebSocketConnect();
 });
 
 console.log = function(message) {
@@ -46,7 +50,7 @@ APP_VERSION = '0.1 BETA';
 root = "https://blockchain.info/";
 resource = '';
 
-//Hack to prevent JS Error
+// Hack to prevent JS Error
 function showLabelAddressModal() {}
 
 $(document).ready(function() {
@@ -186,7 +190,7 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
 }
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
-    MyWallet.setLoadingText('Retreiving PIN Code');
+    MyWallet.setLoadingText('Retrieving PIN Code');
 
     $.ajax({
         type: "POST",
@@ -295,8 +299,7 @@ MyWalletPhone.setPassword = function(password) {
 
 MyStore.get_old = MyStore.get;
 MyStore.get = function(key, callback) {
-    
-    //Disallow fetching of the guid
+    // Disallow fetching of the guid
     if (key == 'guid') {
         callback();
         return;
@@ -304,7 +307,6 @@ MyStore.get = function(key, callback) {
     
     MyStore.get_old(key, callback);
 }
-
 
 MyWalletPhone.newAccount = function(password, email) {
     loadScript('wallet-signup', function() {
@@ -385,7 +387,70 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
     })(privateKeyString);
 }
 
-//Overrides
+
+// Shared functions
+
+function simpleWebSocketConnect() {
+    console.log('Connecting websocket...');
+    
+    if (!window.WebSocket) {
+        console.log('No websocket support in JS runtime');
+        return;
+    }
+    
+    if (!MyWallet.getIsInitialized()) {
+        console.log('Wallet is not initialized yet');
+        return;
+    }
+    
+    if (ws && reconnectInterval) {
+        console.log('Websocket already exists. Connection status: ' + ws.readyState);
+        return;
+    }
+    
+    // This should never really happen - try to recover gracefully
+    if (ws) {
+        console.log('Websocket already exists but no reconnectInverval. Connection status: ' + ws.readyState);
+        webSocketDisconnect();
+    }
+    
+    MyWallet.connectWebSocket();
+}
+
+function webSocketDisconnect() {
+    console.log('Disconnecting websocket...');
+    
+    if (!window.WebSocket) {
+        console.log('No websocket support in JS runtime');
+        return;
+    }
+    
+    if (!MyWallet.getIsInitialized()) {
+        console.log('Wallet is not initialized yet');
+        return;
+    }
+    
+    if (reconnectInterval) {
+        clearInterval(reconnectInterval);
+        reconnectInterval = null;
+    }
+    else {
+        console.log('No reconnectInterval');
+    }
+    
+    if (!ws) {
+        console.log('No websocket object');
+        return;
+    }
+    
+    ws.close();
+    
+    ws = null;
+}
+
+
+// Overrides
+
 MyWallet.setLoadingText = function(txt) {
     device.execute('setLoadingText:', [txt]);
 }

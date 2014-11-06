@@ -11,27 +11,27 @@
 #import "JSBridgeWebView.h"
 
 @interface MerchantViewController : UIViewController <UIWebViewDelegate, JSBridgeWebViewDelegate, CLLocationManagerDelegate> {
-    IBOutlet JSBridgeWebView * webView;
+    IBOutlet JSBridgeWebView *webView;
     CLLocationManager *locationManager;
     
-    IBOutlet UIButton * coffeeButton;
-    IBOutlet UIButton * drinkButton;
-    IBOutlet UIButton * foodButton;
-    IBOutlet UIButton * spendButton;
-    IBOutlet UIButton * atmButton;
+    IBOutlet UIButton *coffeeButton;
+    IBOutlet UIButton *drinkButton;
+    IBOutlet UIButton *foodButton;
+    IBOutlet UIButton *spendButton;
+    IBOutlet UIButton *atmButton;
     
     NSTimeInterval lastLoadedMap;
     BOOL didLoadGoogleMaps;
 }
 
--(void)setLocation:(float)latitude long:(float)longitude;
+- (void)setLocation:(float)latitude long:(float)longitude;
 
--(IBAction)coffeeClicked:(UIButton*)sender;
--(IBAction)drinkClicked:(UIButton*)sender;
--(IBAction)foodClicked:(UIButton*)sender;
--(IBAction)spendClicked:(UIButton*)sender;
--(IBAction)atmClicked:(UIButton*)sender;
+- (IBAction)coffeeClicked:(UIButton*)sender;
+- (IBAction)drinkClicked:(UIButton*)sender;
+- (IBAction)foodClicked:(UIButton*)sender;
+- (IBAction)spendClicked:(UIButton*)sender;
+- (IBAction)atmClicked:(UIButton*)sender;
 
--(void)refresh;
+- (void)refresh;
 
 @end

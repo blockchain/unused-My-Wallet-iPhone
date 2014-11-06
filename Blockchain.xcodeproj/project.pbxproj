@@ -75,6 +75,7 @@
 		220348AC19A4D60000611AC3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220348AB19A4D60000611AC3 /* Social.framework */; };
 		220348AE19A4D6F700611AC3 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 220348AD19A4D6F700611AC3 /* libsqlite3.dylib */; };
 		220348B219A4D7E600611AC3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220348B119A4D7E600611AC3 /* Accounts.framework */; };
+		220348B619A4D90E00611AC3 /* libc++abi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 220348B519A4D90E00611AC3 /* libc++abi.dylib */; };
 		220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 220ADA6819A3796200EB7599 /* Localizable.strings */; };
 		220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375119A3604500E06996 /* ReceiveCoins.xib */; };
 		220E375719A3613600E06996 /* AddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* AddressBookView.xib */; };
@@ -448,6 +449,7 @@
 		220348AD19A4D6F700611AC3 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		220348AF19A4D76100611AC3 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		220348B119A4D7E600611AC3 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		220348B519A4D90E00611AC3 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
 		220ADA6919A3796200EB7599 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		220ADA6C19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AddressBookView.strings; sourceTree = "<group>"; };
 		220ADA6E19A3798A00EB7599 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ReceiveCoins.strings; sourceTree = "<group>"; };
@@ -908,6 +910,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */,
+				220348B619A4D90E00611AC3 /* libc++abi.dylib in Frameworks */,
 				220348B219A4D7E600611AC3 /* Accounts.framework in Frameworks */,
 				220348AE19A4D6F700611AC3 /* libsqlite3.dylib in Frameworks */,
 				220348AC19A4D60000611AC3 /* Social.framework in Frameworks */,
@@ -1422,6 +1426,7 @@
 		9FB3637414B60128004BEA02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				220348B519A4D90E00611AC3 /* libc++abi.dylib */,
 				220348B119A4D7E600611AC3 /* Accounts.framework */,
 				220348AF19A4D76100611AC3 /* libsqlite3.0.dylib */,
 				220348AD19A4D6F700611AC3 /* libsqlite3.dylib */,

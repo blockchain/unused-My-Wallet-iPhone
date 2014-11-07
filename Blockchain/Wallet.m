@@ -714,14 +714,22 @@
         [delegate walletFailedToLoad];
 }
 
+- (void)hd_wallets_does_not_exist
+{
+    DLog(@"hd_wallets_does_not_exist");
+    
+    DLog(@"Creating new HD Wallet");
+    [self.webView executeJS:@"MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase())"];
+}
+
 - (void)did_set_guid
 {
     DLog(@"did_set_guid");
     
     if (self.password) {
-        DLog(@"Setting Password");
+        DLog(@"Restore Wallet");
         
-        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
+        [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
     }
     
     if ([delegate respondsToSelector:@selector(walletDidLoad)])

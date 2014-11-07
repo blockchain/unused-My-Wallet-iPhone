@@ -170,9 +170,12 @@ BOOL isReadingQRCode;
         
         app.disableBusyView = FALSE;
         
-        // Clear fields
+        // Reset fields
+        selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
         toField.text = @"";
         amountField.text = @"";
+        self.selectedAddress = @"";
+        self.toAddress = @"";
         
         // Close transaction modal, go to transactions view, scroll to top and animate new transaction
         [app closeModalWithTransition:kCATransitionFade];

@@ -1,6 +1,6 @@
-[submodule "Submodules/My-Wallet"]
-	path = Submodules/My-Wallet
-	url = git@github.com:blockchain/My-Wallet.git
+[submodule "Submodules/My-Wallet-HD"]
+	path = Submodules/My-Wallet-HD
+	url = git@github.com:blockchain/My-Wallet-HD.git
 [submodule "Submodules/OpenSSL-for-iPhone"]
 	path = Submodules/OpenSSL-for-iPhone
 	url = git@github.com:x2on/OpenSSL-for-iPhone.git

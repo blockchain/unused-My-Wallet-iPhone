@@ -26,6 +26,9 @@ BOOL isReadingQRCode;
 
 float containerOffset;
 
+uint64_t originalBtcAmount = 0.0;
+BOOL didChangeDollarAmount = NO;
+
 #pragma mark - Lifecycle
 
 - (void)viewDidAppear:(BOOL)animated
@@ -98,8 +101,8 @@ float containerOffset;
         amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
         app.btcFormatter.usesGroupingSeparator = YES;
         
-        // Popup kb so user can change value & see conversion
-        [amountField becomeFirstResponder];
+        originalBtcAmount = amountInSymbolBTC;
+        didChangeDollarAmount = NO;
         
         self.initialToAmountDouble = 0;
     }
@@ -120,7 +123,13 @@ float containerOffset;
         // If we are switching currency display, get the amount with the other currency
         if (currencyChange) {
             if (!displayingLocalSymbol) {
-                amount =  app.latestResponse.symbol_local.conversion * [amountString doubleValue];
+                // Restore original BTC amount instead of using conversion from fiat if there is an original amount
+                if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
+                    amount = originalBtcAmount;
+                }
+                else {
+                    amount = app.latestResponse.symbol_local.conversion * [amountString doubleValue];
+                }
             } else {
                 amount = [app.wallet parseBitcoinValue:amountString];
             }
@@ -211,6 +220,9 @@ float containerOffset;
         amountField.text = @"";
         self.selectedAddress = @"";
         self.toAddress = @"";
+        originalBtcAmount = 0.0;
+        didChangeDollarAmount = NO;
+        [self doCurrencyConversion];
         
         // Close transaction modal, go to transactions view, scroll to top and animate new transaction
         [app closeModalWithTransition:kCATransitionFade];
@@ -240,6 +252,9 @@ float containerOffset;
     NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
     if (displayingLocalSymbol) {
+        if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
+            return originalBtcAmount;
+        }
         return app.latestResponse.symbol_local.conversion * [amountString doubleValue];
     } else {
         return [app.wallet parseBitcoinValue:amountString];
@@ -281,9 +296,14 @@ float containerOffset;
     }
     
     if (displayingLocalSymbol) {
+        if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
+            amount = originalBtcAmount;
+        }
+        
         convertedAmountLabel.text = [app formatMoney:amount localCurrency:FALSE];
     } else {
         convertedAmountLabel.text = [app formatMoney:amount localCurrency:TRUE];
+        originalBtcAmount = amount;
     }
 }
 
@@ -381,6 +401,8 @@ float containerOffset;
             return NO;
         
         [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+        
+        didChangeDollarAmount = displayingLocalSymbol;
         
         return YES;
     } else if (textField == toField) {
@@ -536,11 +558,15 @@ float containerOffset;
                 // If the amount is empty, open the amount field
                 if ([amountString isEqualToString:@"0"]) {
                     amountField.text = nil;
+                    originalBtcAmount = 0.0;
+                    didChangeDollarAmount = NO;
                     [amountField becomeFirstResponder];
                 }
                 // otherwise set the amountField to the amount from the URI
                 else {
                     amountField.text = amountString;
+                    originalBtcAmount = [app.wallet parseBitcoinValue:amountString];
+                    didChangeDollarAmount = NO;
                 }
                 
                 if (toggledSymbolForURL) {

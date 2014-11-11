@@ -183,8 +183,8 @@
                     <rect key="frame" x="235" y="-11" width="69" height="51"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Close">
-                        <color key="titleColor" red="0.1058823529" green="0.54117647059999996" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.1058823529" green="0.54117647059999996" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="closeKeyboardClicked:" destination="-1" eventType="touchUpInside" id="5P8-IL-lZJ"/>

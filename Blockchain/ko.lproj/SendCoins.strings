@@ -35,7 +35,7 @@
 "7ho-GV-ikp.text" = "금액";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
-"8LN-Tc-WVh.normalTitle" = "닫기";
+"8LN-Tc-WVh.normalTitle" = "완료";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
 "Zgn-Wx-Uwx.text" = "잠시만 기다려 주십시오";

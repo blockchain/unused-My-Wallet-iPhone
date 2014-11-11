@@ -38,9 +38,17 @@ int numMyAddresses;
         
         // Select from address
         if (_showFromAddresses) {
-            // Only show user's active addresses with a positive balance
+            // First show user's active addresses with a positive balance
             for (NSString * addr in _wallet.activeAddresses) {
                 if ([_wallet getAddressBalance:addr] > 0) {
+                    [addresses addObject:addr];
+                    [labels addObject:[_wallet labelForAddress:addr]];
+                }
+            }
+            
+            // Then show the active addresses with a zero balance
+            for (NSString * addr in _wallet.activeAddresses) {
+                if (![_wallet getAddressBalance:addr] > 0) {
                     [addresses addObject:addr];
                     [labels addObject:[_wallet labelForAddress:addr]];
                 }
@@ -176,6 +184,20 @@ int numMyAddresses;
     if (showFromAddresses) {
         uint64_t balance = [app.wallet getAddressBalance:addr];
         cell.balanceLabel.text = [app formatMoney:balance];
+        
+        // Cells with empty balance can't be clicked and are dimmed
+        if (balance == 0) {
+            cell.userInteractionEnabled = NO;
+            cell.balanceLabel.enabled = NO;
+            cell.labelLabel.alpha = 0.5;
+            cell.addressLabel.alpha = 0.5;
+        }
+        else {
+            cell.userInteractionEnabled = YES;
+            cell.balanceLabel.enabled = YES;
+            cell.labelLabel.alpha = 1.0;
+            cell.addressLabel.alpha = 1.0;
+        }
     }
     else {
         cell.balanceLabel.text = nil;

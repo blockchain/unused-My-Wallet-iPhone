@@ -26,15 +26,14 @@
 @class Wallet;
 
 @interface SendViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, AddressBookDelegate> {
-    IBOutlet UIButton *balanceBigButton;
-    IBOutlet UIButton *balanceSmallButton;
+    IBOutlet UIView *containerView;
     
     IBOutlet UITextField *toFieldContainerField;
     IBOutlet UITextField *toField;
     IBOutlet UITextField *amountField;
+    IBOutlet UILabel *convertedAmountLabel;
     
     IBOutlet UIView *amountKeyboardAccessoryView;
-    IBOutlet UILabel *currencyConversionLabel;
     
     IBOutlet UILabel *fromLabel;
     IBOutlet UITextField *selectAddressTextField;
@@ -62,7 +61,6 @@
 - (IBAction)selectFromAddressClicked:(id)sender;
 - (IBAction)QRCodebuttonClicked:(id)sender;
 - (IBAction)addressBookClicked:(id)sender;
-- (IBAction)btcCodeClicked:(id)sender;
 - (IBAction)closeKeyboardClicked:(id)sender;
 
 - (void)didSelectFromAddress:(NSString *)address;
@@ -75,7 +73,7 @@
 
 - (NSString *)labelForAddress:(NSString *)address;
 
-- (void)reload;
+- (void)reloadWithCurrencyChange:(BOOL)currencyChange;
 
 - (void)dismissKeyboard;
 

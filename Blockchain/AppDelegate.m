@@ -180,7 +180,7 @@ BOOL showSendCoins = NO;
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [_transactionsViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:YES];
     [_receiveViewController reload];
 }
 
@@ -314,7 +314,7 @@ BOOL showSendCoins = NO;
     
     [_transactionsViewController reload];
     [_receiveViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
     
     [app closeAllModals];
     
@@ -338,7 +338,7 @@ BOOL showSendCoins = NO;
     
     [_transactionsViewController reload];
     [_receiveViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
 }
 
 - (void)didSetLatestBlock:(LatestBlock*)block
@@ -552,7 +552,7 @@ BOOL showSendCoins = NO;
     NSString * amount = [dict objectForKey:@"amount"];
     
     [_sendViewController setAmountFromUrlHandler:amount withToAddress:addr];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
     
     return YES;
 }
@@ -787,7 +787,7 @@ BOOL showSendCoins = NO;
 {
     [_transactionsViewController reload];
     [_receiveViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
 }
 
 - (void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey
@@ -881,7 +881,7 @@ BOOL showSendCoins = NO;
     
     [_transactionsViewController reload];
     [_receiveViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
 }
 
 - (void)forgetWallet
@@ -904,7 +904,7 @@ BOOL showSendCoins = NO;
     
     [_transactionsViewController reload];
     [_receiveViewController reload];
-    [_sendViewController reload];
+    [_sendViewController reloadWithCurrencyChange:NO];
     
     [self transitionToIndex:1];
 }

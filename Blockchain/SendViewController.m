@@ -24,6 +24,8 @@ AVCaptureSession *captureSession;
 AVCaptureVideoPreviewLayer *videoPreviewLayer;
 BOOL isReadingQRCode;
 
+float containerOffset;
+
 #pragma mark - Lifecycle
 
 - (void)viewDidAppear:(BOOL)animated
@@ -37,20 +39,27 @@ BOOL isReadingQRCode;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LOADING_TEXT_NOTIFICAITON_KEY object:nil];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    CGRect frame = containerView.frame;
+    containerOffset = (app.window.frame.size.height - frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT)/3;
+    frame.origin.y = containerOffset;
+    containerView.frame = frame;
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(keyboardWillHide:)
+     name:UIKeyboardWillHideNotification
+     object:nil];
+    
     [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
         return FALSE;
     }];
-    
-    // Invert the balance display. Local currency becomes Bitcoin and the other way around
-    [balanceBigButton addTarget:self action:@selector(btcCodeClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [balanceSmallButton addTarget:self action:@selector(btcCodeClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     self.selectedAddress = @"";
     
@@ -64,29 +73,11 @@ BOOL isReadingQRCode;
     self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
                                  app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
-    [self reload];
+    [self reloadWithCurrencyChange:NO];
 }
 
-- (void)reload
+- (void)reloadWithCurrencyChange:(BOOL)currencyChange
 {
-    // Balance
-    [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
-    [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
-    
-    [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
-    [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
-    
-    uint64_t balance = app.latestResponse.final_balance;
-    
-    if (app.latestResponse) {
-        [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
-        [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
-    }
-    else {
-        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
-        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
-    }
-    
     self.fromAddresses = [app.wallet activeAddresses];
     
     // Populate address field from URL handler if available.
@@ -119,6 +110,50 @@ BOOL isReadingQRCode;
     } else if (app.latestResponse.symbol_btc) {
         [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
         displayingLocalSymbol = FALSE;
+    }
+    
+    // Convert the amount field when the local currency changes
+    uint64_t amount = SATOSHI;
+    if ([amountField.text length] > 0) {
+        NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        
+        // If we are switching currency display, get the amount with the other currency
+        if (currencyChange) {
+            if (!displayingLocalSymbol) {
+                amount =  app.latestResponse.symbol_local.conversion * [amountString doubleValue];
+            } else {
+                amount = [app.wallet parseBitcoinValue:amountString];
+            }
+        }
+        else {
+            if (displayingLocalSymbol) {
+                amount =  app.latestResponse.symbol_local.conversion * [amountString doubleValue];
+            } else {
+                amount = [app.wallet parseBitcoinValue:amountString];
+            }
+        }
+        
+        if (displayingLocalSymbol) {
+            @try {
+                NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amount] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)app.latestResponse.symbol_local.conversion]];
+                
+                app.localCurrencyFormatter.usesGroupingSeparator = NO;
+                amountField.text = [app.localCurrencyFormatter stringFromNumber:number];
+                app.localCurrencyFormatter.usesGroupingSeparator = YES;
+            } @catch (NSException * e) {
+                DLog(@"Exception: %@", e);
+            }
+        } else {
+            @try {
+                NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amount] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:app.latestResponse.symbol_btc.conversion]];
+                
+                app.btcFormatter.usesGroupingSeparator = NO;
+                amountField.text = [app.btcFormatter stringFromNumber:number];
+                app.btcFormatter.usesGroupingSeparator = YES;
+            } @catch (NSException * e) {
+                DLog(@"Exception: %@", e);
+            }
+        }
     }
     
     [self doCurrencyConversion];
@@ -241,13 +276,14 @@ BOOL isReadingQRCode;
     
     if ([amountField.text length] > 0) {
         amount = [self getInputAmountInSatoshi];
-    } else if (displayingLocalSymbol) {
-        amount = app.latestResponse.symbol_local.conversion;
-    }
-    if (displayingLocalSymbol) {
-        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
     } else {
-        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+        amount = 0;
+    }
+    
+    if (displayingLocalSymbol) {
+        convertedAmountLabel.text = [app formatMoney:amount localCurrency:FALSE];
+    } else {
+        convertedAmountLabel.text = [app formatMoney:amount localCurrency:TRUE];
     }
 }
 
@@ -307,16 +343,30 @@ BOOL isReadingQRCode;
 {
     if (textField == amountField) {
         [self doCurrencyConversion];
-        if (self.tapGesture == nil) {
-            self.tapGesture = [[UITapGestureRecognizer alloc]
-                               initWithTarget:self
-                               action:@selector(dismissKeyboard)];
-            
-            [self.view addGestureRecognizer:self.tapGesture];
-        }
     }
     
-    [app.tabViewController responderMayHaveChanged];
+    if (self.tapGesture == nil) {
+        self.tapGesture = [[UITapGestureRecognizer alloc]
+                           initWithTarget:self
+                           action:@selector(dismissKeyboard)];
+        
+        [self.view addGestureRecognizer:self.tapGesture];
+    }
+    
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        CGRect frame = containerView.frame;
+        frame.origin.y = 0;
+        containerView.frame = frame;
+    }];
+}
+
+- (void) keyboardWillHide:(NSNotification *)note
+{
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            CGRect frame = containerView.frame;
+            frame.origin.y = containerOffset;
+            containerView.frame = frame;
+        }];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -461,7 +511,9 @@ BOOL isReadingQRCode;
             dispatch_sync(dispatch_get_main_queue(), ^{
                 // Make sure we are displaying the BTC symbol
                 // As amounts from uri's are in BTC
+                BOOL toggledSymbolForURL = NO;
                 if (app->symbolLocal) {
+                    toggledSymbolForURL = YES;
                     [app toggleSymbol];
                 }
                 
@@ -490,8 +542,14 @@ BOOL isReadingQRCode;
                 else {
                     amountField.text = amountString;
                 }
+                
+                if (toggledSymbolForURL) {
+                    [app toggleSymbol];
+                }
+                else {
+                    [self doCurrencyConversion];
+                }
             });
-            
         }
     }
 }

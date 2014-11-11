@@ -579,8 +579,8 @@
                             <action selector="powerClicked:" destination="3" eventType="touchUpInside" id="FFL-mF-Op1"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="693" userLabel="Merchant Directory Button">
-                        <rect key="frame" x="249" y="19" width="36" height="45"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="693" userLabel="Merchant Directory Button">
+                        <rect key="frame" x="235" y="19" width="42" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" image="merchant_directory_icon.png">
@@ -595,7 +595,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wjv-R8-p0e" userLabel="Merchant Directory Button">
-                        <rect key="frame" x="278" y="19" width="42" height="45"/>
+                        <rect key="frame" x="277" y="19" width="43" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" image="qrscanner_icon.png">

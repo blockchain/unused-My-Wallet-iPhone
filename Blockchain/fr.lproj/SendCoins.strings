@@ -35,7 +35,7 @@
 "7ho-GV-ikp.text" = "Montant";
 
 /* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "8LN-Tc-WVh"; */
-"8LN-Tc-WVh.normalTitle" = "Fermer";
+"8LN-Tc-WVh.normalTitle" = "Fait";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
 "Zgn-Wx-Uwx.text" = "S'Il Vous Plaît Attendre";

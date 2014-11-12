@@ -67,6 +67,11 @@ MyWallet.getWebWorkerLoadPrefix = function() {
 }
 
 MyWallet.addEventListener(function (event, obj) {
+    var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_guid", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open "];
+
+    if (eventsWithObjCHandlers.indexOf(event) == -1)
+         return;
+
     if (obj) {
         event += ':';
     }
@@ -169,13 +174,13 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                         obj.from_addresses = MyWallet.getActiveAddresses();
                     }
 
-                    var value = BigInteger.valueOf(valueString);
+                    var value = Bitcoin.BigInteger.valueOf(valueString);
 
-                    if (!value || value.compareTo(BigInteger.ZERO) == 0) {
+                    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
                         throw 'Invalid Send Value';
                     }
 
-                    obj.to_addresses.push({address: new Bitcoin.Address(to), value: value});
+                    obj.to_addresses.push({address: Bitcoin.Address.fromBase58Check(to), value: value});
 
                     obj.addListener(listener);
                        
@@ -280,16 +285,6 @@ MyWalletPhone.getWsReadyState = function() {
     if (!ws) return -1;
 
     return ws.readyState;
-}
-
-MyWalletPhone.isValidAddress = function(addrstring) {
-    try {
-        new Bitcoin.Address(addrstring).toString();
-
-        return true;
-    } catch (e) {
-        return false;
-    }
 }
 
 MyWalletPhone.get_wallet_and_history = function() {
@@ -456,9 +451,11 @@ function webSocketDisconnect() {
 
 // Overrides
 
-MyWallet.setLoadingText = function(txt) {
-    device.execute('setLoadingText:', [txt]);
-}
+MyWallet.monitor(function (obj) {
+   if (obj.type == "loadingText") {
+      device.execute('setLoadingText:', [obj.message]);
+   }
+});
 
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
@@ -632,6 +629,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
 </head>
 
 <body>
+<!-- TODO clean up - don't need all of those anymore -->
 <input type="text" id="restore-password">
 <input type="text" id="restore-guid">
 <input type="submit" id="restore-wallet-continue">

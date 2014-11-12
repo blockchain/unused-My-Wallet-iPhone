@@ -310,7 +310,7 @@
         return FALSE;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWalletPhone.isValidAddress(\"%@\");", [string escapeStringForJS]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.isValidAddress(\"%@\");", [string escapeStringForJS]] boolValue];
 }
 
 - (NSArray*)allAddresses
@@ -573,13 +573,6 @@
     return [[self.webView executeJSSynchronous:@"precisionToSatoshiBN(\"%@\").toString()", input] longLongValue];
 }
 
-- (void)on_generate_key:(NSString*)address
-{
-    DLog(@"on_generate_key");
-    
-    [delegate didGenerateNewAddress:address];
-}
-
 - (void)error_restoring_wallet
 {
     DLog(@"error_restoring_wallet");
@@ -722,6 +715,13 @@
     [self.webView executeJS:@"MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase())"];
 }
 
+- (void)hw_wallet_balance_updated
+{
+    DLog(@"hw_wallet_balance_updated");
+    
+    // TODO implement this
+}
+
 - (void)did_set_guid
 {
     DLog(@"did_set_guid");
@@ -734,6 +734,13 @@
     
     if ([delegate respondsToSelector:@selector(walletDidLoad)])
         [delegate walletDidLoad];
+}
+
+- (void)logging_out
+{
+    DLog(@"logging_out");
+    
+    // TODO implement this
 }
 
 - (BOOL)hasEncryptedWalletData
@@ -751,7 +758,9 @@
     if (password) {
         DLog(@"Setting Password");
         
-        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
+        // TODO
+        [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
+//        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
     }
 }
 

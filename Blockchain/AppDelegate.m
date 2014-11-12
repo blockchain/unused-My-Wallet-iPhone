@@ -564,7 +564,6 @@ BOOL showSendCoins = NO;
     }
     else if (textField == mainPasswordTextField) {
         [self mainPasswordClicked:textField];
-        [mainPasswordTextField resignFirstResponder];
     }
     
     return YES;
@@ -1189,14 +1188,6 @@ BOOL showSendCoins = NO;
     [mainPasswordTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
     
     NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    if ([mainPasswordTextField.text length] < 10) {
-        [app standardNotify:BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER];
-        
-        mainPasswordTextField.text = nil;
-        return;
-    }
-    
     NSString * guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
     NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     

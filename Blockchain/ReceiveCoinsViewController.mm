@@ -364,7 +364,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     
     [composeController setInitialText:[self formatPaymentRequest:@""]];
-    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    [composeController addURL: [NSURL URLWithString:[self uriURL]]];
     
     [self presentViewController:composeController
                        animated:YES completion:nil];
@@ -382,7 +382,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
     SLComposeViewController *composeController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     
     [composeController setInitialText:[self formatPaymentRequest:@""]];
-    [composeController addURL: [NSURL URLWithString:[self blockchainUriURL]]];
+    [composeController addURL: [NSURL URLWithString:[self uriURL]]];
     
     [self presentViewController:composeController animated:YES completion:nil];
     
@@ -407,7 +407,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 - (IBAction)shareByGooglePlus:(id)sender
 {
-    [AddThisSDK shareURL:[self blockchainUriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
+    [AddThisSDK shareURL:[self uriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
 }
 
 - (IBAction)shareByMessageClicked:(id)sender
@@ -416,7 +416,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
         [messageController setMessageComposeDelegate:self];
         [messageController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
-        [messageController setBody:[self formatPaymentRequest:[self blockchainUriURL]]];
+        [messageController setBody:[self formatPaymentRequest:[self uriURL]]];
         [app.tabViewController presentViewController:messageController animated:YES completion:nil];
     }
     else {
@@ -433,7 +433,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         NSData *jpegData = UIImageJPEGRepresentation(qrCodePaymentImageView.image, 1);
         [mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
         [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
-        [mailController setMessageBody:[self formatPaymentRequestHTML:[self blockchainUriURL]] isHTML:YES];
+        [mailController setMessageBody:[self formatPaymentRequestHTML:[self uriURL]] isHTML:YES];
         [app.tabViewController presentViewController:mailController animated:YES completion:nil];
     }
     else {

@@ -200,7 +200,7 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
 }
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
-    MyWallet.setLoadingText('Retrieving PIN Code');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Retrieving PIN Code", code: 0});
 
     $.ajax({
         type: "POST",
@@ -237,7 +237,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
 }
 
 MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
-    MyWallet.setLoadingText('Saving PIN Code');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Saving PIN Code", code: 0});
     
     $.ajax({
         type: "POST",
@@ -517,7 +517,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
 
         var encrypted_data = components[2];
 
-        MyWallet.setLoadingText('Decrypting Pairing Code');
+        MyWallet.sendMonitorEvent({type: "loadingText", message: "Decrypting Pairing Code", code: 0});
 
         $.ajax({
             type: "POST",
@@ -563,7 +563,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
 }
 
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
-    MyWallet.setLoadingText('Loading transactions');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Loading transactions", code: 0});
 
     var clientTime=(new Date()).getTime();
 

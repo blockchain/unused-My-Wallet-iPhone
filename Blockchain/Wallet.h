@@ -110,8 +110,6 @@
 
 -(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress satoshiValue:(NSString*)value listener:(transactionProgressListeners*)listener;
 
--(void)generateNewKey;
-
 -(NSString*)labelForAddress:(NSString*)address;
 -(NSInteger)tagForAddress:(NSString*)address;
 

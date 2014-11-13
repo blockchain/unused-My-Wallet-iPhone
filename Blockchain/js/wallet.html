@@ -66,6 +66,9 @@ MyWallet.getWebWorkerLoadPrefix = function() {
     return '';
 }
 
+
+// Register for JS event handlers and forward to Obj-C handlers
+
 MyWallet.addEventListener(function (event, obj) {
     var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_guid", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open "];
 
@@ -79,9 +82,33 @@ MyWallet.addEventListener(function (event, obj) {
     device.execute(event, [obj]);
 });
 
-MyWalletPhone.generateNewKey = function() {
-    $("#new-addr").click();
-}
+MyWallet.monitor(function (obj) {
+    console.log('Monitor event. Type: ' + (obj.type ? obj.type : 'null') +
+                ' Code: ' + (obj.code ? obj.code : 'null') +
+                ' Message: ' + (obj.message ? obj.message : 'null'))
+
+    if (obj.type == 'loadingText') {
+        device.execute('setLoadingText:', [obj.message])
+    }
+
+    else if (obj.type == 'error') {
+        // TODO Ignore 2fa errors for now, Tim is working on fixing this in wallet.js
+        if (obj.message == 'Two Factor Authentication code this null')
+            return
+        // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
+        if (obj.message == 'No free outputs to spend')
+            return
+
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+
+    else if (obj.type == 'success') {
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+});
+
+
+// My Wallet phone functions
 
 MyWalletPhone.cancelTxSigning = function() {
     for (var key in pendingTransactions) {
@@ -275,6 +302,112 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
     });
 }
 
+MyWalletPhone.newAccount = function(password, email) {
+    loadScript('wallet-signup', function() {
+               MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
+                                                MyStore.clear();
+                                                device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
+                                                }, function (e) {
+                                                device.execute('on_error_creating_new_account:', [''+e]);
+                                                });
+               });
+}
+
+MyWalletPhone.parsePairingCode = function (raw_code) {
+    
+    var success = function (pairing_code) {
+        device.execute("didParsePairingCode:", [pairing_code]);
+    }
+    
+    var error = function (e) {
+        device.execute("errorParsingPairingCode:", [e]);
+    }
+    
+    try {
+        if (raw_code == null || raw_code.length == 0) {
+            throw "Invalid Pairing QR Code";
+        }
+        
+        if (raw_code[0] != '1') {
+            throw "Invalid Pairing Version Code " + raw_code[0];
+        }
+        
+        var components = raw_code.split("|");
+        
+        if (components.length < 3) {
+            throw "Invalid Pairing QR Code. Not enough components.";
+        }
+        
+        var guid = components[1];
+        if (guid.length != 36) {
+            throw "Invalid Pairing QR Code. GUID wrong length.";
+        }
+        
+        var encrypted_data = components[2];
+        
+        MyWallet.sendMonitorEvent({type: "loadingText", message: "Decrypting Pairing Code", code: 0});
+        
+        $.ajax({
+               type: "POST",
+               url: root + 'wallet',
+               timeout: 60000,
+               data: {
+               format: 'plain',
+               method: 'pairing-encryption-password',
+               guid: guid
+               },
+               success: function (encryption_phrase) {
+               try {
+               
+               var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                                                return decrypted != null;
+                                                }, function () {
+                                                error('Decryption Error');
+                                                });
+               
+               if (decrypted != null) {
+               var components2 = decrypted.split("|");
+               
+               success({
+                       version: raw_code[0],
+                       guid: guid,
+                       sharedKey: components2[0],
+                       password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                       });
+               } else {
+               error('Decryption Error');
+               }
+               } catch(e) {
+               error(''+e);
+               }
+               },
+               error: function (res) {
+               error('Pairing Code Server Error');
+               }
+               });
+    } catch (e) {
+        error(''+e);
+    }
+}
+
+MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
+    MyWallet.addAddressBookEntry(bitcoinAddress, label);
+    
+    MyWallet.backupWallet();
+}
+
+MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
+    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
+}
+
+MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
+    try {
+        return MyWallet.detectPrivateKeyFormat(privateKeyString);
+    } catch(e) {
+        return null;
+    }
+}
+
 MyWalletPhone.hasEncryptedWalletData = function() {
     var data = MyWallet.getEncryptedWalletData();
     
@@ -288,35 +421,9 @@ MyWalletPhone.getWsReadyState = function() {
 }
 
 MyWalletPhone.get_wallet_and_history = function() {
-    $('#refresh').click();
-}
-
-MyWalletPhone.setPassword = function(password) {
-    $('#restore-password').val(password);
-
-    $('#restore-wallet-continue').click();
-}
-
-MyStore.get_old = MyStore.get;
-MyStore.get = function(key, callback) {
-    // Disallow fetching of the guid
-    if (key == 'guid') {
-        callback();
-        return;
-    }
-    
-    MyStore.get_old(key, callback);
-}
-
-MyWalletPhone.newAccount = function(password, email) {
-    loadScript('wallet-signup', function() {
-        MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
-            MyStore.clear();
-            device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
-        }, function (e) {
-            device.execute('on_error_creating_new_account:', [''+e]);
-        });
-    });
+    MyWallet.getWallet(function() {
+        MyWallet.get_history()
+    })
 }
 
 MyWalletPhone.getMultiAddrResponse = function() {
@@ -451,115 +558,27 @@ function webSocketDisconnect() {
 
 // Overrides
 
-MyWallet.monitor(function (obj) {
-   if (obj.type == "loadingText") {
-      device.execute('setLoadingText:', [obj.message]);
-   }
-});
-
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
 }
 
+// TODO deprecated?
 MyWallet.makeNotice = function(type, _id, msg) {
     device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
 }
 
-MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
-    MyWallet.addAddressBookEntry(bitcoinAddress, label);
-
-    MyWallet.backupWallet();
-}
-
-MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
-    try {
-        return MyWallet.detectPrivateKeyFormat(privateKeyString);
-    } catch(e) {
-        return null;
-    }
-}
-
+// TODO deprecated?
 MyWallet.showNotification = function() { }
 
-MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
-    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
-}
-
-MyWalletPhone.parsePairingCode = function (raw_code) {
-
-    var success = function (pairing_code) {
-        device.execute("didParsePairingCode:", [pairing_code]);
+MyStore.get_old = MyStore.get;
+MyStore.get = function(key, callback) {
+    // Disallow fetching of the guid
+    if (key == 'guid') {
+        callback();
+        return;
     }
-
-    var error = function (e) {
-        device.execute("errorParsingPairingCode:", [e]);
-    }
-
-    try {
-        if (raw_code == null || raw_code.length == 0) {
-            throw "Invalid Pairing QR Code";
-        }
-
-        if (raw_code[0] != '1') {
-            throw "Invalid Pairing Version Code " + raw_code[0];
-        }
-
-        var components = raw_code.split("|");
-
-        if (components.length < 3) {
-            throw "Invalid Pairing QR Code. Not enough components.";
-        }
-
-        var guid = components[1];
-        if (guid.length != 36) {
-            throw "Invalid Pairing QR Code. GUID wrong length.";
-        }
-
-        var encrypted_data = components[2];
-
-        MyWallet.sendMonitorEvent({type: "loadingText", message: "Decrypting Pairing Code", code: 0});
-
-        $.ajax({
-            type: "POST",
-            url: root + 'wallet',
-            timeout: 60000,
-            data: {
-                format: 'plain',
-                method: 'pairing-encryption-password',
-                guid: guid
-            },
-            success: function (encryption_phrase) {
-                try {
-               
-                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
-                        return decrypted != null;
-                    }, function () {
-                        error('Decryption Error');
-                    });
-
-                    if (decrypted != null) {
-                        var components2 = decrypted.split("|");
-
-                        success({
-                            version: raw_code[0],
-                            guid: guid,
-                            sharedKey: components2[0],
-                            password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
-                        });
-                    } else {
-                        error('Decryption Error');
-                    }
-                } catch(e) {
-                    error(''+e);
-                }
-            },
-            error: function (res) {
-                error('Pairing Code Server Error');
-            }
-        });
-    } catch (e) {
-        error(''+e);
-    }
+    
+    MyStore.get_old(key, callback);
 }
 
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
@@ -629,13 +648,6 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
 </head>
 
 <body>
-<!-- TODO clean up - don't need all of those anymore -->
-<input type="text" id="restore-password">
-<input type="text" id="restore-guid">
-<input type="submit" id="restore-wallet-continue">
-
-<button id="new-addr"></button>
-<button id="refresh"></button>
 
 </body>
 </html>

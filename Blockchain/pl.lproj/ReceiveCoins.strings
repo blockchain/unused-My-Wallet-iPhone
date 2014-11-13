@@ -49,9 +49,6 @@
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "GwZ-6f-89z"; */
 "GwZ-6f-89z.normalTitle" = "BTC";
 
-/* Class = "IBUIButton"; normalTitle = "New Address"; ObjectID = "Yez-oe-AkH"; */
-"Yez-oe-AkH.normalTitle" = "Nowy Adres";
-
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
 "i1j-pG-caF.normalTitle" = "Skan Klucza Prywatnego";
 

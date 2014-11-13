@@ -162,12 +162,6 @@
     [self.transactionProgressListeners setObject:listener forKey:txProgressID];
 }
 
-// generateNewAddress
-- (void)generateNewKey
-{
-    [self.webView executeJS:@"MyWalletPhone.generateNewKey()"];
-}
-
 - (void)loadJS
 {
     NSError * error = nil;
@@ -758,9 +752,7 @@
     if (password) {
         DLog(@"Setting Password");
         
-        // TODO
         [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
-//        [self.webView executeJS:@"MyWalletPhone.setPassword(\"%@\")", [self.password escapeStringForJS]];
     }
 }
 

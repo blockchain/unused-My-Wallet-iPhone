@@ -64,7 +64,6 @@
 
 - (IBAction)labelAddressClicked:(id)sender;
 - (IBAction)archiveAddressClicked:(id)sender;
-- (IBAction)generateNewAddressClicked:(id)sender;
 - (IBAction)copyAddressClicked:(id)sender;
 - (IBAction)labelSaveClicked:(id)sender;
 - (IBAction)shareByTwitter:(id)sender;

@@ -1065,7 +1065,7 @@ BOOL showSendCoins = NO;
         [[UIApplication sharedApplication] openURL:zeroBlockAppURL];
     }
     else {
-        [self pushWebViewController:@"https://zeroblock.com/mobile/"];
+        [self pushWebViewController:@"https://zeroblock.com/"];
     }
 }
 

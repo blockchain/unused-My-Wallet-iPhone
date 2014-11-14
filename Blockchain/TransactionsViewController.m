@@ -157,8 +157,16 @@ int lastNumberTransactions = INT_MAX;
 {
     latestBlock = _latestBlock;
     
-    if (latestBlock && latestBlock.blockIndex != _latestBlock.blockIndex) {
-        [tableView reloadData];
+    if (latestBlock) {
+        // Update block index for new transactions
+        for (int i = 0; i < self.data.transactions.count; i++) {
+            if (((Transaction *) self.data.transactions[i]).block_height == 0) {
+                ((Transaction *) self.data.transactions[i]).block_height = latestBlock.height;
+            }
+            else {
+                break;
+            }
+        }
     }
 }
 

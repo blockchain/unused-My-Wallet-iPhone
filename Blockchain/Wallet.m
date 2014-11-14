@@ -720,11 +720,7 @@
 {
     DLog(@"did_set_guid");
     
-    if (self.password) {
-        DLog(@"Restore Wallet");
-        
-        [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
-    }
+    [self restoreWallet];
     
     if ([delegate respondsToSelector:@selector(walletDidLoad)])
         [delegate walletDidLoad];
@@ -747,10 +743,14 @@
 
 - (void)setPassword:(NSString *)pw
 {
+    DLog(@"Setting Password");
     password = pw;
-    
-    if (password) {
-        DLog(@"Setting Password");
+}
+
+- (void)restoreWallet
+{
+    if (self.password) {
+        DLog(@"Restore Wallet");
         
         [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
     }

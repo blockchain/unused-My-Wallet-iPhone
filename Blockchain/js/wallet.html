@@ -92,9 +92,6 @@ MyWallet.monitor(function (obj) {
     }
 
     else if (obj.type == 'error') {
-        // TODO Ignore 2fa errors for now, Tim is working on fixing this in wallet.js
-        if (obj.message == 'Two Factor Authentication code this null')
-            return
         // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
         if (obj.message == 'No free outputs to spend')
             return

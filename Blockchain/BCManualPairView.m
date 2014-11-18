@@ -55,9 +55,7 @@
     
     passwordTextField.text = @"";
     
-    [app.wallet loadGuid:guid];
-    
-    app.wallet.password = password;
+    [app.wallet loadWalletWithGuid:guid sharedKey:nil password:password];
     
     app.wallet.delegate = app;
 }

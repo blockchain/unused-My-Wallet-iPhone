@@ -832,9 +832,7 @@ BOOL showSendCoins = NO;
             
             [app standardNotify:[NSString stringWithFormat:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_DETAIL] title:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_TITLE delegate:nil];
             
-            [self.wallet loadGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"]];
-            
-            self.wallet.password = [code objectForKey:@"password"];
+            [self.wallet loadWalletWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
             
             self.wallet.delegate = self;
             
@@ -1187,15 +1185,12 @@ BOOL showSendCoins = NO;
 {
     [mainPasswordTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
     
-    NSString * password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString * guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
-    NSString * sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    NSString *password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
+    NSString *sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
     
     if (guid && sharedKey && password) {
-        
-        [self.wallet loadGuid:guid sharedKey:sharedKey];
-        
-        self.wallet.password = password;
+        [self.wallet loadWalletWithGuid:guid sharedKey:sharedKey password:password];
         
         self.wallet.delegate = self;
     }
@@ -1312,22 +1307,23 @@ BOOL showSendCoins = NO;
     [self askIfUserWantsToResetPIN];
 }
 
--(void)didFailGetPinTimeout
+- (void)didFailGetPinTimeout
 {
     [self showPinErrorWithMessage:BC_STRING_TIMED_OUT];
 }
 
--(void)didFailGetPinNoResponse
+- (void)didFailGetPinNoResponse
 {
     [self showPinErrorWithMessage:BC_STRING_EMPTY_RESPONSE];
 }
 
--(void)didFailGetPinInvalidResponse
+- (void)didFailGetPinInvalidResponse
 {
     [self showPinErrorWithMessage:BC_STRING_INVALID_RESPONSE];
 }
 
-- (void)didGetPinSuccess:(NSDictionary*)dictionary {
+- (void)didGetPinSuccess:(NSDictionary*)dictionary
+{
     [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
     
     NSNumber * code = [dictionary objectForKey:@"code"]; //This is a status code from the server
@@ -1370,7 +1366,7 @@ BOOL showSendCoins = NO;
             return;
         }
         
-        NSString * decrypted = [app.wallet decrypt:encryptedPINPassword password:success pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
+        NSString *decrypted = [app.wallet decrypt:encryptedPINPassword password:success pbkdf2_iterations:PIN_PBKDF2_ITERATIONS];
         
         if ([decrypted length] == 0) {
             [app standardNotify:BC_STRING_DECRYPTED_PIN_PASSWORD_LENGTH_0];
@@ -1378,14 +1374,12 @@ BOOL showSendCoins = NO;
             return;
         }
         
-        NSString * guid = [self guid];
-        NSString * sharedKey = [self sharedKey];
+        NSString *guid = [self guid];
+        NSString *sharedKey = [self sharedKey];
         
         if (guid && sharedKey) {
-            [self.wallet loadGuid:guid sharedKey:sharedKey];
+            [self.wallet loadWalletWithGuid:guid sharedKey:sharedKey password:decrypted];
         }
-        
-        app.wallet.password = decrypted;
         
         [self closePINModal:YES];
         

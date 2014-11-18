@@ -94,9 +94,8 @@
 #pragma mark Init Methods
 -(id)init;
 
--(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey;
--(void)loadGuid:(NSString *)_guid;
--(void)loadBlankWallet;
+- (void)loadWalletWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
+- (void)loadBlankWallet;
 
 -(NSDictionary*)addressBook;
 

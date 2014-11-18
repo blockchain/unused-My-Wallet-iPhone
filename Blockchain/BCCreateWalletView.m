@@ -156,27 +156,28 @@
     app.wallet.delegate = self;
 }
 
--(void)networkActivityStart {
+- (void)networkActivityStart
+{
     [app networkActivityStart];
 }
 
--(void)networkActivityStop {
+- (void)networkActivityStop
+{
     [app networkActivityStop];
 }
 
--(IBAction)termsOfServiceClicked:(id)sender
+- (IBAction)termsOfServiceClicked:(id)sender
 {
     [app pushWebViewController:[WebROOT stringByAppendingString:@"terms_of_service"]];
 }
 
--(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
+- (void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password
+{
     [app forgetWallet];
     
     [app clearPin];
-        
-    [app.wallet loadGuid:guid sharedKey:sharedKey];
     
-    app.wallet.password = password;
+    [app.wallet loadWalletWithGuid:guid sharedKey:sharedKey password:password];
     
     app.wallet.delegate = app;
     
@@ -185,7 +186,8 @@
                delegate:nil];
 }
 
--(void)errorCreatingNewAccount:(NSString*)message {
+- (void)errorCreatingNewAccount:(NSString*)message
+{
     [app standardNotify:message];
 }
 

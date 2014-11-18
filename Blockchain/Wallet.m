@@ -225,28 +225,13 @@
     return self;
 }
 
-// Called when entering guid manually
-- (void)loadGuid:(NSString *)_guid
+// Load wallet
+- (void)loadWalletWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password
 {
-    if (![self.guid isEqualToString:_guid]) {
-        self.sharedKey = nil;
-        self.password = nil;
-    }
-    
     self.guid = _guid;
-
-    [self loadJS];
-}
-
-// Normal load with sharedKey to skip two factor
-- (void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey
-{
-    if (![self.guid isEqualToString:_guid]) {
-        self.password = nil;
-    }
-    
-    self.guid = _guid;
+    // Shared Key can be empty
     self.sharedKey = _sharedKey;
+    self.password = _password;
     
     // Load the JS. Proceed in the webviewDidLoad callback
     [self loadJS];
@@ -716,16 +701,6 @@
     // TODO implement this
 }
 
-- (void)did_set_guid
-{
-    DLog(@"did_set_guid");
-    
-    [self restoreWallet];
-    
-    if ([delegate respondsToSelector:@selector(walletDidLoad)])
-        [delegate walletDidLoad];
-}
-
 - (void)logging_out
 {
     DLog(@"logging_out");
@@ -747,15 +722,6 @@
     password = pw;
 }
 
-- (void)restoreWallet
-{
-    if (self.password) {
-        DLog(@"Restore Wallet");
-        
-        [self.webView executeJS:@"MyWallet.restoreWallet(\"%@\", null)", [self.password escapeStringForJS]];
-    }
-}
-
 - (void)webViewDidStartLoad:(UIWebView *)webView 
 {
     DLog(@"Start load");
@@ -772,6 +738,15 @@
     
     if ([delegate respondsToSelector:@selector(walletJSReady)])
         [delegate walletJSReady];
+    
+    if ([delegate respondsToSelector:@selector(walletDidLoad)])
+        [delegate walletDidLoad];
+    
+    if (self.guid && self.password) {
+        DLog(@"Fetch Wallet");
+        
+        [self.webView executeJS:@"MyWallet.fetchWalletJson(\"%@\", \"%@\", \"%@\", \"%@\")", [self.guid escapeStringForJS], [self.sharedKey escapeStringForJS], false, [self.password escapeStringForJS]];
+    }
 }
 
 - (void)dealloc 

@@ -11,6 +11,7 @@
 #import "TransactionTableCell.h"
 #import "MultiAddressResponse.h"
 #import "AppDelegate.h"
+#import "AccountView.h"
 
 @implementation TransactionsViewController
 
@@ -21,6 +22,8 @@ BOOL animateNextCell;
 
 UIRefreshControl *refreshControl;
 int lastNumberTransactions = INT_MAX;
+
+AccountView *accountView;
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
@@ -177,6 +180,8 @@ int lastNumberTransactions = INT_MAX;
 
 - (void)reload
 {
+    [accountView reload];
+    
     [self setText];
     
     [tableView reloadData];
@@ -253,6 +258,11 @@ int lastNumberTransactions = INT_MAX;
                        action:@selector(loadTransactions)
              forControlEvents:UIControlEventValueChanged];
     tableViewController.refreshControl = refreshControl;
+    
+    // TODO
+    // Account pull down
+    accountView = [[AccountView alloc] init];
+    [self.view addSubview:accountView];
     
     [self reload];
 }

@@ -169,6 +169,7 @@
 		67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC519E3325900DBBFC9 /* ECSlidingSegue.m */; };
 		67EE1DCE19E3325900DBBFC9 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */; };
 		67EE1DCF19E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */; };
+		67F999EA1A1A84AF008788B9 /* AccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67F999E91A1A84AF008788B9 /* AccountView.m */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
@@ -722,6 +723,8 @@
 		67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingViewController.m; path = SideMenu/ECSlidingViewController.m; sourceTree = "<group>"; };
 		67EE1DC819E3325900DBBFC9 /* UIViewController+ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ECSlidingViewController.h"; path = "SideMenu/UIViewController+ECSlidingViewController.h"; sourceTree = "<group>"; };
 		67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ECSlidingViewController.m"; path = "SideMenu/UIViewController+ECSlidingViewController.m"; sourceTree = "<group>"; };
+		67F999E81A1A84AF008788B9 /* AccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountView.h; sourceTree = "<group>"; };
+		67F999E91A1A84AF008788B9 /* AccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountView.m; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -1656,6 +1659,8 @@
 			isa = PBXGroup;
 			children = (
 				678AD5EC19D4731C00E9A778 /* Modal Content Views */,
+				67F999E81A1A84AF008788B9 /* AccountView.h */,
+				67F999E91A1A84AF008788B9 /* AccountView.m */,
 				9F61B89C151519EF0083C57A /* AddressBookView.h */,
 				9F61B89D151519EF0083C57A /* AddressBookView.m */,
 				9F0CBAD61513CA2600CD945D /* BCFadeView.h */,
@@ -2002,6 +2007,7 @@
 				2203488019A4D51300611AC3 /* FBNativeDialogs.m in Sources */,
 				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
 				67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */,
+				67F999EA1A1A84AF008788B9 /* AccountView.m in Sources */,
 				2203488F19A4D51300611AC3 /* FBViewController.m in Sources */,
 				2203488419A4D51300611AC3 /* FBRequest.m in Sources */,
 				220348A419A4D51300611AC3 /* OAPlaintextSignatureProvider.m in Sources */,

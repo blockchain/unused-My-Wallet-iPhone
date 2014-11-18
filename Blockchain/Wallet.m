@@ -125,7 +125,7 @@
     if (self.guid && self.password) {
         DLog(@"Fetch Wallet");
         
-        [self.webView executeJS:@"MyWallet.fetchWalletJson(\"%@\", \"%@\", \"%@\", \"%@\")", [self.guid escapeStringForJS], [self.sharedKey escapeStringForJS], false, [self.password escapeStringForJS]];
+        [self.webView executeJS:@"MyWallet.fetchWalletJson(\"%@\", \"%@\", false, \"%@\")", [self.guid escapeStringForJS], [self.sharedKey escapeStringForJS], [self.password escapeStringForJS]];
     }
 }
 

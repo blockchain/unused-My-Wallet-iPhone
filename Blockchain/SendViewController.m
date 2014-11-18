@@ -35,14 +35,14 @@ BOOL didChangeDollarAmount = NO;
 {
     sendProgressModalText.text = nil;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICATION_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
         
         sendProgressModalText.text = [notification object];
     }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:LOADING_TEXT_NOTIFICAITON_KEY object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LOADING_TEXT_NOTIFICATION_KEY object:nil];
 }
 
 - (void)viewDidLoad

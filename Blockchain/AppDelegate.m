@@ -81,7 +81,7 @@ BOOL showSendCoins = NO;
     NSSetUncaughtExceptionHandler(&HandleException);
 #endif
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICAITON_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICATION_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
         self.loadingText = [notification object];
     }];
     
@@ -172,7 +172,9 @@ BOOL showSendCoins = NO;
 }
 
 #pragma mark - UI State
-- (void)toggleSymbol {
+
+- (void)toggleSymbol
+{
     symbolLocal = !symbolLocal;
     
     // Save this setting here and load it on start
@@ -185,7 +187,8 @@ BOOL showSendCoins = NO;
 }
 
 
-- (void)setDisableBusyView:(BOOL)__disableBusyView {
+- (void)setDisableBusyView:(BOOL)__disableBusyView
+{
     _disableBusyView = __disableBusyView;
     
     if (_disableBusyView) {
@@ -196,43 +199,30 @@ BOOL showSendCoins = NO;
     }
 }
 
-- (void)didWalletDecryptStart {
+- (void)didWalletDecryptStart
+{
     [self networkActivityStart];
 }
 
-- (void)didWalletDecryptFinish {
+- (void)didWalletDecryptFinish
+{
     [self networkActivityStop];
 }
 
-
-- (void)networkActivityStart {
+- (void)networkActivityStart
+{
     [busyView fadeIn];
-    
-    [powerButton setEnabled:FALSE];
     
     if (self.loadingText) {
         [busyLabel setText:self.loadingText];
     }
-    
-    [self setStatus];
 }
 
-- (void)networkActivityStop {
-    [powerButton setEnabled:TRUE];
-    
+- (void)networkActivityStop
+{
     [busyView fadeOut];
     
     [activity stopAnimating];
-    
-    [self setStatus];
-}
-
-- (void)setStatus {
-    if ([app.wallet getWebsocketReadyState] != 1) {
-        [powerButton setHighlighted:TRUE];
-    } else {
-        [powerButton setHighlighted:FALSE];
-    }
 }
 
 #pragma mark - AlertView Helpers
@@ -364,7 +354,7 @@ BOOL showSendCoins = NO;
     [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
 }
 
-- (void) beginBackgroundUpdateTask
+- (void)beginBackgroundUpdateTask
 {
     // We're using a background task to insure we get enough time to sync. The bg task has to be ended before or when the timer expires, otherwise the app gets killed by the system.
     // Always kill the old handler before starting a new one. In case the system starts a bg task when the app goes into background, comes to foreground and goes to background before the first background task was ended. In that case the first background task is never killed and the system kills the app when the maximum time is up.
@@ -375,7 +365,7 @@ BOOL showSendCoins = NO;
     }];
 }
 
-- (void) endBackgroundUpdateTask
+- (void)endBackgroundUpdateTask
 {
     if (self.backgroundUpdateTask != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundUpdateTask];
@@ -1045,7 +1035,7 @@ BOOL showSendCoins = NO;
 
 #pragma mark - Actions
 
-- (IBAction)powerClicked:(id)sender
+- (IBAction)menuClicked:(id)sender
 {
     if (_sendViewController) {
         [_sendViewController dismissKeyboard];
@@ -1053,7 +1043,7 @@ BOOL showSendCoins = NO;
     [self toggleSideMenu];
 }
 
-// Open ZeroBlock if it's installed, otherwise go to the ZeroBlock mobile homepage in the web modal
+// Open ZeroBlock if it's installed, otherwise go to the ZeroBlock homepage in the web modal
 - (IBAction)newsClicked:(id)sender
 {
     // TODO ZeroBlock does not have the URL scheme in it's .plist yet
@@ -1141,7 +1131,6 @@ BOOL showSendCoins = NO;
             [app showWelcome];
         }
     }];
-    
 }
 
 - (IBAction)receiveCoinClicked:(UIButton *)sender

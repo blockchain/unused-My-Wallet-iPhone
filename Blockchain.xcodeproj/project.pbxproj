@@ -160,7 +160,6 @@
 		67E9677219E31F9100305358 /* marker_spend_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9676C19E31F9100305358 /* marker_spend_off@2x.png */; };
 		67E9677619E320D100305358 /* marker_atm_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9677319E320D100305358 /* marker_atm_off.png */; };
 		67E9677819E320D100305358 /* marker_spend_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67E9677519E320D100305358 /* marker_spend_off.png */; };
-		67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */ = {isa = PBXBuildFile; fileRef = 67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */; };
 		67EE1DBB19E3309500DBBFC9 /* marker_drink_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EE1DB919E3309500DBBFC9 /* marker_drink_off.png */; };
 		67EE1DBC19E3309500DBBFC9 /* marker_drink_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EE1DBA19E3309500DBBFC9 /* marker_drink_off@2x.png */; };
 		67EE1DCA19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DBE19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m */; };
@@ -707,7 +706,6 @@
 		67E9676C19E31F9100305358 /* marker_spend_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_spend_off@2x.png"; sourceTree = "<group>"; };
 		67E9677319E320D100305358 /* marker_atm_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_atm_off.png; sourceTree = "<group>"; };
 		67E9677519E320D100305358 /* marker_spend_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_spend_off.png; sourceTree = "<group>"; };
-		67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet_pre.html; sourceTree = "<group>"; };
 		67EE1DB919E3309500DBBFC9 /* marker_drink_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_drink_off.png; sourceTree = "<group>"; };
 		67EE1DBA19E3309500DBBFC9 /* marker_drink_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker_drink_off@2x.png"; sourceTree = "<group>"; };
 		67EE1DBD19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECPercentDrivenInteractiveTransition.h; path = SideMenu/ECPercentDrivenInteractiveTransition.h; sourceTree = "<group>"; };
@@ -1224,7 +1222,6 @@
 			children = (
 				C9C17A8B197FCE1900BF8A4E /* My-Wallet */,
 				844BC7AF1949BD710024160B /* bridge.js */,
-				67EA4CD819CCB5E600B3A1F5 /* wallet_pre.html */,
 				9F0CBAAD15135DF200CD945D /* wallet.html */,
 				84AEEC631987B5E9000E8DC8 /* merchant.html */,
 			);
@@ -1876,7 +1873,6 @@
 				ECD244F019A8AC45004B1F40 /* PEKeyboard-4-done.png in Resources */,
 				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
 				67D7AC251A0C36A7007CD81D /* jquery.min.js in Resources */,
-				67EA4CD919CCB5E600B3A1F5 /* wallet_pre.html in Resources */,
 				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
 				678AD62E19D57FAC00E9A778 /* menu_icon@3x.png in Resources */,
 				678AD62219D56EEB00E9A778 /* receive_icon@2x.png in Resources */,

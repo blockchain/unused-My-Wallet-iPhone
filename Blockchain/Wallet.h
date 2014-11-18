@@ -99,8 +99,6 @@
 
 -(NSDictionary*)addressBook;
 
-+(NSString*)generateUUID;
-
 -(void)setLabel:(NSString*)label ForAddress:(NSString*)address;
 
 -(void)archiveAddress:(NSString*)address;
@@ -146,8 +144,6 @@
 -(void)parsePairingCode:(NSString*)code;
 
 -(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString;
-
--(NSInteger)getWebsocketReadyState;
 
 -(void)newAccount:(NSString*)password email:(NSString *)email;
 

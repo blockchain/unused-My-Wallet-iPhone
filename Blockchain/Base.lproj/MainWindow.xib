@@ -576,7 +576,7 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="powerClicked:" destination="3" eventType="touchUpInside" id="FFL-mF-Op1"/>
+                            <action selector="menuClicked:" destination="3" eventType="touchUpInside" id="Jw6-EJ-48e"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="693" userLabel="Merchant Directory Button">

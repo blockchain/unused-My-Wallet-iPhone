@@ -124,6 +124,13 @@ function setScryptImportExport() {
     }
 }
 
+MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
+    var success = function() {
+        device.execute('did_decrypt')
+    }
+    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error)
+}
+
 MyWalletPhone.quickSend = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 

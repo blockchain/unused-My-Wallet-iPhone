@@ -53,17 +53,19 @@ DisplayState lastDisplayState;
         balanceBigButton.titleLabel.font = [UIFont boldSystemFontOfSize:34.0];
         [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
         [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
         [accountsView addSubview:balanceBigButton];
         
         balanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 40, appFrame.size.width - 40, 27)];
         balanceSmallButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
         [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
         [accountsView addSubview:balanceSmallButton];
         
         sliderButton = [[UIButton alloc] initWithFrame:CGRectMake(0, HEIGHT_DEFAULT - HEIGHT_SLIDER, appFrame.size.width, HEIGHT_SLIDER)];
         sliderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        sliderButton.backgroundColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+//        sliderButton.backgroundColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
         [sliderButton addTarget:self action:@selector(toggleDisplayStateClicked:) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:sliderButton];
         
@@ -72,7 +74,8 @@ DisplayState lastDisplayState;
                                            initWithTarget:self
                                            action:@selector(handlePan:)];
         recognizer.delegate = self;
-        [sliderButton addGestureRecognizer:recognizer];
+        // TODO no gesture for now
+//        [sliderButton addGestureRecognizer:recognizer];
         
         [self reload];
     }
@@ -118,24 +121,33 @@ DisplayState lastDisplayState;
 {
     // TODO let the parent viewController know about the change and resize accordingly for small and default sizes
     
-    // TODO
-    if (height > HEIGHT_DEFAULT) {
-        accountsView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    }
-    else {
-        accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    }
-//    if ((lastDisplayState == DisplayStateDefault && displayState == DisplayStateMaximized) ||
-//        (lastDisplayState == DisplayStateMaximized && displayState == DisplayStateDefault)) {
+    // TODO partial solution for gestures, but not quite there yet
+//    float oldHeight = contentView.frame.size.height;
+//    if ((oldHeight < HEIGHT_DEFAULT && height > HEIGHT_DEFAULT) ||
+//        (oldHeight > HEIGHT_DEFAULT && height < HEIGHT_DEFAULT)) {
+//        height = HEIGHT_DEFAULT;
+//    }
+//    
+//    if (height > HEIGHT_DEFAULT) {
 //        accountsView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 //    }
 //    else {
 //        accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 //    }
     
+    // TODO only works for click, not for gesture resizing
+    if ((lastDisplayState == DisplayStateDefault && displayState == DisplayStateMaximized) ||
+        (lastDisplayState == DisplayStateMaximized && displayState == DisplayStateDefault)) {
+        accountsView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    }
+    else {
+        accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    }
+    
     CGRect frame = contentView.frame;
     frame.size.height = height;
     
+    // TODO only animate when not touching anymore for gestures
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         self.frame = frame;
         contentView.frame = frame;
@@ -191,17 +203,10 @@ DisplayState lastDisplayState;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)recognizer
 {
-    // TODO might have to change views
-    // Relative movement from starting point (finger down)
+    // Relative movement from starting point
     CGPoint translation = [recognizer translationInView:contentView];
-    // Check for the right gesture:
-    // must be a vertical gesture
+    // Check for the right gesture: must be a vertical gesture
     if (fabsf(translation.y) > fabsf(translation.x)) {
-//        // can not be a swipe left
-//        if (translation.x < 0) {
-//            return NO;
-//        }
-        
         CGPoint location = [recognizer locationInView:contentView];
         // Not when we are close to the left of the screen - this is reserved for the menu swipe gesture
         if (location.x < 20) {
@@ -210,6 +215,7 @@ DisplayState lastDisplayState;
         
         return YES;
     }
+    
     return NO;
 }
 
@@ -217,13 +223,13 @@ DisplayState lastDisplayState;
 {
     // In motion - resize view
     if (recognizer.state == UIGestureRecognizerStateChanged) {
-        // CGPoint translation = [recognizer translationInView:contentView];
         [self setHeight:[recognizer locationInView:contentView].y];
     }
     
     // Motion finished
     else if (recognizer.state == UIGestureRecognizerStateEnded) {
         // If user moved far enough, animate to that state
+        // TODO take velocity into account. Should at least go to min/max on high speed, ideally even with bounce based on speed
         float locationY = [recognizer locationInView:contentView].y;
         if (locationY < HEIGHT_DEFAULT * 0.5) {
             [self setHeight:HEIGHT_MINIMIZED];

@@ -9,11 +9,11 @@
 #import "AccountView.h"
 #import "AppDelegate.h"
 
-#define HEIGHT_MINIMIZED 20
-#define HEIGHT_DEFAULT 90
-#define HEIGHT_MAXIMIZED 320
+#define HEIGHT_SLIDER 30
 
-#define HEIGHT_SLIDER 10
+#define HEIGHT_MINIMIZED HEIGHT_SLIDER
+#define HEIGHT_DEFAULT 90
+#define HEIGHT_MAXIMIZED 420
 
 @implementation AccountView
 
@@ -49,13 +49,13 @@ DisplayState lastDisplayState;
         [self addSubview:accountsView];
         
         // Balance
-        balanceBigButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 10, appFrame.size.width - 40, 42)];
+        balanceBigButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 5, appFrame.size.width - 40, 42)];
         balanceBigButton.titleLabel.font = [UIFont boldSystemFontOfSize:34.0];
         [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
         [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
         [accountsView addSubview:balanceBigButton];
         
-        balanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 45, appFrame.size.width - 40, 27)];
+        balanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 40, appFrame.size.width - 40, 27)];
         balanceSmallButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
         [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
@@ -66,6 +66,13 @@ DisplayState lastDisplayState;
         sliderButton.backgroundColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
         [sliderButton addTarget:self action:@selector(toggleDisplayStateClicked:) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:sliderButton];
+        
+        // Swipe gesture recognizer to pull down the account view
+        UIGestureRecognizer* recognizer = [[UIPanGestureRecognizer alloc]
+                                           initWithTarget:self
+                                           action:@selector(handlePan:)];
+        recognizer.delegate = self;
+        [sliderButton addGestureRecognizer:recognizer];
         
         [self reload];
     }
@@ -112,13 +119,19 @@ DisplayState lastDisplayState;
     // TODO let the parent viewController know about the change and resize accordingly for small and default sizes
     
     // TODO
-    if ((lastDisplayState == DisplayStateDefault && displayState == DisplayStateMaximized) ||
-        (lastDisplayState == DisplayStateMaximized && displayState == DisplayStateDefault)) {
+    if (height > HEIGHT_DEFAULT) {
         accountsView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     else {
         accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
+//    if ((lastDisplayState == DisplayStateDefault && displayState == DisplayStateMaximized) ||
+//        (lastDisplayState == DisplayStateMaximized && displayState == DisplayStateDefault)) {
+//        accountsView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+//    }
+//    else {
+//        accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    }
     
     CGRect frame = contentView.frame;
     frame.size.height = height;
@@ -171,6 +184,56 @@ DisplayState lastDisplayState;
             displayState = DisplayStateMinimized;
             [self setHeight:HEIGHT_MINIMIZED];
             break;
+    }
+}
+
+#pragma mark - Gesture methods
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)recognizer
+{
+    // TODO might have to change views
+    // Relative movement from starting point (finger down)
+    CGPoint translation = [recognizer translationInView:contentView];
+    // Check for the right gesture:
+    // must be a vertical gesture
+    if (fabsf(translation.y) > fabsf(translation.x)) {
+//        // can not be a swipe left
+//        if (translation.x < 0) {
+//            return NO;
+//        }
+        
+        CGPoint location = [recognizer locationInView:contentView];
+        // Not when we are close to the left of the screen - this is reserved for the menu swipe gesture
+        if (location.x < 20) {
+            return NO;
+        }
+        
+        return YES;
+    }
+    return NO;
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer
+{
+    // In motion - resize view
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        // CGPoint translation = [recognizer translationInView:contentView];
+        [self setHeight:[recognizer locationInView:contentView].y];
+    }
+    
+    // Motion finished
+    else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        // If user moved far enough, animate to that state
+        float locationY = [recognizer locationInView:contentView].y;
+        if (locationY < HEIGHT_DEFAULT * 0.5) {
+            [self setHeight:HEIGHT_MINIMIZED];
+        }
+        else if (locationY < HEIGHT_MAXIMIZED * 0.7) {
+            [self setHeight:HEIGHT_DEFAULT];
+        }
+        else {
+            [self setHeight:HEIGHT_MAXIMIZED];
+        }
     }
 }
 

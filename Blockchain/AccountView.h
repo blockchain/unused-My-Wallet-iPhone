@@ -15,7 +15,7 @@ typedef enum {
     DisplayStateMaximized = 300,
 } DisplayState;
 
-@interface AccountView : UIView
+@interface AccountView : UIView <UIGestureRecognizerDelegate>
 
 - (void)reload;
 

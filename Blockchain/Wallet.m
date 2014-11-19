@@ -490,7 +490,7 @@
     }
 }
 
-#pragma mark - Calls from JS to Obj-C
+#pragma mark - Callbacks from JS to Obj-C
 
 - (void)log:(NSString*)message
 {
@@ -796,6 +796,39 @@
     if ([delegate respondsToSelector:@selector(walletFailedToLoad)])
         [delegate walletFailedToLoad];
 }
+
+# pragma mark - Calls from Obj-C to JS for HD wallet
+
+// TODO
+
+- (int)getAccountsCount
+{
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.getAccountsCount()"] intValue];
+}
+
+- (uint64_t)getBalanceForAccount:(int)account
+{
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.getBalanceForAccount(%d)", account] longLongValue];
+}
+
+- (NSString *)getLabelForAccount:(int)account
+{
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
+    return [self.webView executeJSSynchronous:@"MyWallet.getLabelForAccount(%d)", account];
+}
+
+#pragma mark - Callbacks from JS to Obj-C for HD wallet
 
 - (void)hd_wallets_does_not_exist
 {

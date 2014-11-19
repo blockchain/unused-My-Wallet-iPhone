@@ -26,6 +26,8 @@ UIButton *sliderButton;
 DisplayState displayState;
 DisplayState lastDisplayState;
 
+BOOL isAccountsDisplayed = NO;
+
 #pragma mark - View lifecycle
 
 - (id)init
@@ -46,6 +48,7 @@ DisplayState lastDisplayState;
         // Accounts holder view
         accountsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, HEIGHT_DEFAULT - HEIGHT_SLIDER)];
         accountsView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        accountsView.clipsToBounds = YES;
         [self addSubview:accountsView];
         
         // Balance
@@ -158,14 +161,64 @@ DisplayState lastDisplayState;
 {
     uint64_t balance = app.latestResponse.final_balance;
 
-    // Balance not loaded yet
+    // Balance loaded
     if (app.latestResponse) {
         [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
         [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+        
+        if (!isAccountsDisplayed) {
+            [self displayAccounts];
+        }
+        
+        for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+            // Update balances for all HD accounts
+        }
     }
     else {
         [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
         [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
+    }
+}
+
+- (void)displayAccounts
+{
+    float y = balanceSmallButton.frame.origin.y + balanceSmallButton.frame.size.height;
+    
+    for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+        isAccountsDisplayed = YES;
+        
+        UIButton *accountHeaderButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 20, app.window.frame.size.width - 40, 27)];
+        UIButton *accountBalanceBigButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 40, app.window.frame.size.width - 40, 42)];
+        UIButton *accountBalanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 75, app.window.frame.size.width - 40, 27)];
+        y = accountBalanceSmallButton.frame.origin.y + accountBalanceSmallButton.frame.size.height;
+        
+        accountHeaderButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        [accountHeaderButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountHeaderButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        // TOOD i18n
+        NSString *label = [NSString stringWithFormat:@"%@ %@", [app.wallet getLabelForAccount:i], @"Account"];
+        [accountHeaderButton setTitle:label forState:UIControlStateNormal];
+        [accountHeaderButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountHeaderButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountHeaderButton];
+        
+        accountBalanceBigButton.titleLabel.font = [UIFont boldSystemFontOfSize:34.0];
+        [accountBalanceBigButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountBalanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        // TODO only temporary
+        [accountBalanceBigButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [accountBalanceBigButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountBalanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountBalanceBigButton];
+        
+        accountBalanceSmallButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        [accountBalanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountBalanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        // TODO only temporary
+        [accountBalanceSmallButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+        [accountBalanceSmallButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountBalanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountBalanceSmallButton];
     }
 }
 
@@ -175,26 +228,18 @@ DisplayState lastDisplayState;
 {
     switch (displayState) {
         case DisplayStateMinimized:
-            lastDisplayState = DisplayStateMinimized;
-            displayState = DisplayStateDefault;
-            [self setHeight:HEIGHT_DEFAULT];
+            [self setDisplayState:DisplayStateDefault];
             break;
             
         case DisplayStateDefault:
-            lastDisplayState = DisplayStateDefault;
-            displayState = DisplayStateMaximized;
-            [self setHeight:HEIGHT_MAXIMIZED];
+            [self setDisplayState:DisplayStateMaximized];
             break;
             
         case DisplayStateMaximized:
             // TODO this two step does not work yet and should not be used this way anyways when finalized
-            lastDisplayState = DisplayStateMaximized;
-            displayState = DisplayStateDefault;
-            [self setHeight:HEIGHT_DEFAULT];
+            [self setDisplayState:DisplayStateDefault];
             
-            lastDisplayState = DisplayStateMaximized;
-            displayState = DisplayStateMinimized;
-            [self setHeight:HEIGHT_MINIMIZED];
+            [self setDisplayState:DisplayStateMinimized];
             break;
     }
 }

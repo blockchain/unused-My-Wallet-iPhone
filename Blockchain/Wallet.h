@@ -35,9 +35,9 @@
 @interface Key : NSObject {
     int tag;
 }
-@property(nonatomic, strong) NSString * addr;
-@property(nonatomic, strong) NSString * priv;
-@property(nonatomic, strong) NSString * label;
+@property(nonatomic, strong) NSString *addr;
+@property(nonatomic, strong) NSString *priv;
+@property(nonatomic, strong) NSString *label;
 @property(nonatomic, assign) int tag;
 @end
 
@@ -45,113 +45,116 @@
 
 @protocol WalletDelegate <NSObject>
 @optional
--(void)didSetLatestBlock:(LatestBlock*)block;
--(void)didGetMultiAddressResponse:(MulitAddressResponse*)response;
--(void)walletDidDecrypt;
--(void)walletFailedToDecrypt;
--(void)walletDidLoad;
--(void)walletFailedToLoad;
--(void)didBackupWallet;
--(void)didFailBackupWallet;
--(void)walletJSReady;
--(void)didGenerateNewAddress:(NSString*)address;
--(void)networkActivityStart;
--(void)networkActivityStop;
--(void)didParsePairingCode:(NSDictionary *)dict;
--(void)errorParsingPairingCode:(NSString*)message;
--(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password;
--(void)errorCreatingNewAccount:(NSString*)message;
--(void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error;
--(void)didWalletDecryptStart;
--(void)didWalletDecryptFinish;
--(void)didFailPutPin:(NSString*)value;
--(void)didPutPinSuccess:(NSDictionary*)dictionary;
--(void)didFailGetPin:(NSString*)value;
--(void)didFailGetPinTimeout;
--(void)didFailGetPinNoResponse;
--(void)didFailGetPinInvalidResponse;
--(void)didGetPinSuccess:(NSDictionary*)dictionary;
-
+- (void)didSetLatestBlock:(LatestBlock*)block;
+- (void)didGetMultiAddressResponse:(MulitAddressResponse*)response;
+- (void)walletDidDecrypt;
+- (void)walletFailedToDecrypt;
+- (void)walletDidLoad;
+- (void)walletFailedToLoad;
+- (void)didBackupWallet;
+- (void)didFailBackupWallet;
+- (void)walletJSReady;
+- (void)didGenerateNewAddress:(NSString *)address;
+- (void)networkActivityStart;
+- (void)networkActivityStop;
+- (void)didParsePairingCode:(NSDictionary *)dict;
+- (void)errorParsingPairingCode:(NSString *)message;
+- (void)didCreateNewAccount:(NSString *)guid sharedKey:(NSString *)sharedKey password:(NSString *)password;
+- (void)errorCreatingNewAccount:(NSString *)message;
+- (void)askForPrivateKey:(NSString *)address success:(void(^)(id))_success error:(void(^)(id))_error;
+- (void)didWalletDecryptStart;
+- (void)didWalletDecryptFinish;
+- (void)didFailPutPin:(NSString *)value;
+- (void)didPutPinSuccess:(NSDictionary *)dictionary;
+- (void)didFailGetPin:(NSString *)value;
+- (void)didFailGetPinTimeout;
+- (void)didFailGetPinNoResponse;
+- (void)didFailGetPinInvalidResponse;
+- (void)didGetPinSuccess:(NSDictionary *)dictionary;
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, JSBridgeWebViewDelegate> {
 }
 
-//Core Wallet Init Properties
-@property(nonatomic, strong) NSString * guid;
-@property(nonatomic, strong) NSString * sharedKey;
-@property(nonatomic, strong) NSString * password;
+// Core Wallet Init Properties
+@property(nonatomic, strong) NSString *guid;
+@property(nonatomic, strong) NSString *sharedKey;
+@property(nonatomic, strong) NSString *password;
 
 @property(nonatomic, strong) id<WalletDelegate> delegate;
-@property(nonatomic, strong) JSBridgeWebView * webView;
+@property(nonatomic, strong) JSBridgeWebView *webView;
 
 @property(nonatomic) uint64_t final_balance;
 @property(nonatomic) uint64_t total_sent;
 @property(nonatomic) uint64_t total_received;
 
-@property(nonatomic, strong) NSMutableDictionary * transactionProgressListeners;
+@property(nonatomic, strong) NSMutableDictionary *transactionProgressListeners;
 
-#pragma mark Init Methods
--(id)init;
+- (id)init;
 
-- (void)loadWalletWithGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password;
+- (void)loadWalletWithGuid:(NSString *)_guid sharedKey:(NSString *)_sharedKey password:(NSString *)_password;
 - (void)loadBlankWallet;
 
--(NSDictionary*)addressBook;
+- (NSDictionary *)addressBook;
 
--(void)setLabel:(NSString*)label ForAddress:(NSString*)address;
+- (void)setLabel:(NSString *)label ForAddress:(NSString *)address;
 
--(void)archiveAddress:(NSString*)address;
--(void)unArchiveAddress:(NSString*)address;
--(void)removeAddress:(NSString*)address;
+- (void)archiveAddress:(NSString *)address;
+- (void)unArchiveAddress:(NSString *)address;
+- (void)removeAddress:(NSString *)address;
 
--(void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress satoshiValue:(NSString*)value listener:(transactionProgressListeners*)listener;
+- (void)sendPaymentTo:(NSString *)toAddress from:(NSString *)fromAddress satoshiValue:(NSString *)value listener:(transactionProgressListeners*)listener;
 
--(NSString*)labelForAddress:(NSString*)address;
--(NSInteger)tagForAddress:(NSString*)address;
+- (NSString *)labelForAddress:(NSString *)address;
+- (NSInteger)tagForAddress:(NSString *)address;
 
--(void)addToAddressBook:(NSString*)address label:(NSString*)label;
+- (void)addToAddressBook:(NSString *)address label:(NSString *)label;
 
--(BOOL)isValidAddress:(NSString*)string;
--(BOOL)isWatchOnlyAddress:(NSString*)address;
+- (BOOL)isValidAddress:(NSString *)string;
+- (BOOL)isWatchOnlyAddress:(NSString*)address;
 
--(void)cancelTxSigning;
+- (void)cancelTxSigning;
 
--(BOOL)addKey:(NSString*)privateKeyString;
+- (BOOL)addKey:(NSString *)privateKeyString;
 
-//Fetch String Array Of Addresses
--(NSArray*)activeAddresses;
--(NSArray*)allAddresses;
--(NSArray*)archivedAddresses;
+// Fetch String Array Of Addresses
+- (NSArray *)activeAddresses;
+- (NSArray *)allAddresses;
+- (NSArray *)archivedAddresses;
 
--(BOOL)isDoubleEncrypted;
--(BOOL)isInitialized;
--(BOOL)hasEncryptedWalletData;
+- (BOOL)isDoubleEncrypted;
+- (BOOL)isInitialized;
+- (BOOL)hasEncryptedWalletData;
 
--(BOOL)validateSecondPassword:(NSString*)secondPassword;
+- (BOOL)validateSecondPassword:(NSString *)secondPassword;
 
--(void)getHistory;
--(void)getWalletAndHistory;
+- (void)getHistory;
+- (void)getWalletAndHistory;
 
--(uint64_t)getAddressBalance:(NSString*)address;
--(uint64_t)parseBitcoinValue:(NSString*)input;
+- (uint64_t)getAddressBalance:(NSString *)address;
+- (uint64_t)parseBitcoinValue:(NSString *)input;
 
--(CurrencySymbol*)getLocalSymbol;
--(CurrencySymbol*)getBTCSymbol;
+- (CurrencySymbol *)getLocalSymbol;
+- (CurrencySymbol *)getBTCSymbol;
 
--(void)clearLocalStorage;
+- (void)clearLocalStorage;
 
--(void)parsePairingCode:(NSString*)code;
+- (void)parsePairingCode:(NSString *)code;
 
--(NSString*)detectPrivateKeyFormat:(NSString*)privateKeyString;
+- (NSString *)detectPrivateKeyFormat:(NSString *)privateKeyString;
 
--(void)newAccount:(NSString*)password email:(NSString *)email;
+- (void)newAccount:(NSString *)password email:(NSString *)email;
 
--(void)pinServerPutKeyOnPinServerServer:(NSString*)key value:(NSString*)value pin:(NSString*)pin;
--(void)apiGetPINValue:(NSString*)key pin:(NSString*)pin withWalletDownload:(BOOL)withWalletDownload;
+- (void)pinServerPutKeyOnPinServerServer:(NSString *)key value:(NSString *)value pin:(NSString *)pin;
+- (void)apiGetPINValue:(NSString *)key pin:(NSString *)pin withWalletDownload:(BOOL)withWalletDownload;
 
--(NSString*)encrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
--(NSString*)decrypt:(NSString*)data password:(NSString*)password pbkdf2_iterations:(int)pbkdf2_iterations;
+- (NSString *)encrypt:(NSString *)data password:(NSString *)password pbkdf2_iterations:(int)pbkdf2_iterations;
+- (NSString *)decrypt:(NSString *)data password:(NSString *)password pbkdf2_iterations:(int)pbkdf2_iterations;
 
-    
+// HD Wallet
+- (int)getAccountsCount;
+
+- (uint64_t)getBalanceForAccount:(int)account;
+- (NSString *)getLabelForAccount:(int)account;
+
 @end

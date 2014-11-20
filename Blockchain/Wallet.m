@@ -82,11 +82,8 @@
 
 - (void)cancelTxSigning
 {
-    if (![self.webView isLoaded]) {
-        return;
-    }
-    
-    [self.webView executeJSSynchronous:@"MyWalletPhone.cancelTxSigning();"];
+    if ([self isInitialized])
+        [self.webView executeJSSynchronous:@"MyWalletPhone.cancelTxSigning();"];
 }
 
 - (void)tx_on_success:(NSString*)txProgressID

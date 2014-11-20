@@ -96,6 +96,12 @@ MyWalletPhone.getWsReadyState = function() {
     return ws.readyState;
 }
 
+MyWalletPhone.cancelTxSigning = function() {}
+
+MyWallet.getIsInitialized = function() {
+    return false;
+}
+
 //Overrides
 MyWallet.setLoadingText = function(txt) {
     device.execute('setLoadingText:', [txt]);

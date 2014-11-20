@@ -102,25 +102,35 @@ BOOL isAccountsDisplayed = NO;
 
 - (void)setDisplayState:(DisplayState)_displayState
 {
+    [self setDisplayState:_displayState completion:nil];
+}
+
+- (void)setDisplayState:(DisplayState)_displayState completion:(void (^)(BOOL))completion
+{
     lastDisplayState = displayState;
     displayState = _displayState;
     
     switch (displayState) {
         case DisplayStateMinimized:
-            [self setHeight:HEIGHT_MINIMIZED];
+            [self setHeight:HEIGHT_MINIMIZED completion:completion];
             break;
             
         case DisplayStateDefault:
-            [self setHeight:HEIGHT_DEFAULT];
+            [self setHeight:HEIGHT_DEFAULT completion:completion];
             break;
             
         case DisplayStateMaximized:
-            [self setHeight:HEIGHT_MAXIMIZED];
+            [self setHeight:HEIGHT_MAXIMIZED completion:completion];
             break;
     }
 }
 
 - (void)setHeight:(int)height
+{
+    [self setHeight:height completion:nil];
+}
+
+- (void)setHeight:(int)height completion:(void (^)(BOOL))completion
 {
     // TODO let the parent viewController know about the change and resize accordingly for small and default sizes
     
@@ -154,7 +164,7 @@ BOOL isAccountsDisplayed = NO;
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         self.frame = frame;
         contentView.frame = frame;
-    } completion:nil];
+    } completion:completion];
 }
 
 - (void)setText
@@ -166,15 +176,24 @@ BOOL isAccountsDisplayed = NO;
         [balanceBigButton setTitle:[app formatMoney:balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
         [balanceSmallButton setTitle:[app formatMoney:balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
         
+        // Display HD accounts
         if (!isAccountsDisplayed) {
             [self displayAccounts];
         }
         
+        // Update balances for all HD accounts
         for (int i = 0; i < app.wallet.getAccountsCount; i++) {
-            // Update balances for all HD accounts
+            UIButton *accountBalanceBigButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+0];
+            [accountBalanceBigButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+            
+            UIButton *accountBalanceSmallButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+1];
+            [accountBalanceSmallButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
         }
     }
     else {
+        // When coming back from the background, reset the display state
+        [self setDisplayState:DisplayStateDefault];
+        
         [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
         [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
@@ -205,8 +224,7 @@ BOOL isAccountsDisplayed = NO;
         accountBalanceBigButton.titleLabel.font = [UIFont boldSystemFontOfSize:34.0];
         [accountBalanceBigButton.titleLabel setMinimumScaleFactor:.5f];
         [accountBalanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        // TODO only temporary
-        [accountBalanceBigButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [accountBalanceBigButton setTag:10*(i+1)+0];
         [accountBalanceBigButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
         [accountBalanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
         [accountsView addSubview:accountBalanceBigButton];
@@ -214,8 +232,7 @@ BOOL isAccountsDisplayed = NO;
         accountBalanceSmallButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
         [accountBalanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
         [accountBalanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        // TODO only temporary
-        [accountBalanceSmallButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+        [accountBalanceSmallButton setTag:10*(i+1)+1];
         [accountBalanceSmallButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
         [accountBalanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
         [accountsView addSubview:accountBalanceSmallButton];
@@ -236,10 +253,10 @@ BOOL isAccountsDisplayed = NO;
             break;
             
         case DisplayStateMaximized:
-            // TODO this two step does not work yet and should not be used this way anyways when finalized
-            [self setDisplayState:DisplayStateDefault];
-            
-            [self setDisplayState:DisplayStateMinimized];
+            [self setDisplayState:DisplayStateDefault completion:^(BOOL test) {
+                // XCode warns that capturing self strongly in block could lead to retain cycle, but self doesn't capture the block strongly, so we should be fine
+                [self setDisplayState:DisplayStateMinimized];
+            }];
             break;
     }
 }

@@ -810,6 +810,24 @@
     return [[self.webView executeJSSynchronous:@"MyWallet.getAccountsCount()"] intValue];
 }
 
+- (BOOL)hasLegacyAddresses
+{
+    if (![self.webView isLoaded]) {
+        return false;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.hasLegacyAddresses()"] boolValue];
+}
+
+- (uint64_t)getTotalBalanceForActiveLegacyAddresses
+{
+    if (![self.webView isLoaded]) {
+        return 0;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.getTotalBalanceForActiveLegacyAddresses()"] longLongValue];
+}
+
 - (uint64_t)getBalanceForAccount:(int)account
 {
     if (![self.webView isLoaded]) {

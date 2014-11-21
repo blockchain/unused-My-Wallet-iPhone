@@ -182,12 +182,21 @@ BOOL isAccountsDisplayed = NO;
         }
         
         // Update balances for all HD accounts
-        for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+        int i = 0;
+        for (; i < app.wallet.getAccountsCount; i++) {
             UIButton *accountBalanceBigButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+0];
             [accountBalanceBigButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:app->symbolLocal] forState:UIControlStateNormal];
             
             UIButton *accountBalanceSmallButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+1];
             [accountBalanceSmallButton setTitle:[app formatMoney:[app.wallet getBalanceForAccount:i] localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
+        }
+        
+        if ([app.wallet hasLegacyAddresses]) {
+            UIButton *accountBalanceBigButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+0];
+            [accountBalanceBigButton setTitle:[app formatMoney:[app.wallet getTotalBalanceForActiveLegacyAddresses] localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+            
+            UIButton *accountBalanceSmallButton = (UIButton *)[accountsView viewWithTag:10*(i+1)+1];
+            [accountBalanceSmallButton setTitle:[app formatMoney:[app.wallet getTotalBalanceForActiveLegacyAddresses] localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
         }
     }
     else {
@@ -201,11 +210,12 @@ BOOL isAccountsDisplayed = NO;
 
 - (void)displayAccounts
 {
+    isAccountsDisplayed = YES;
+    
     float y = balanceSmallButton.frame.origin.y + balanceSmallButton.frame.size.height;
     
-    for (int i = 0; i < app.wallet.getAccountsCount; i++) {
-        isAccountsDisplayed = YES;
-        
+    int i = 0;
+    for (; i < app.wallet.getAccountsCount; i++) {
         UIButton *accountHeaderButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 20, app.window.frame.size.width - 40, 27)];
         UIButton *accountBalanceBigButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 40, app.window.frame.size.width - 40, 42)];
         UIButton *accountBalanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 75, app.window.frame.size.width - 40, 27)];
@@ -216,6 +226,39 @@ BOOL isAccountsDisplayed = NO;
         [accountHeaderButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
         // TOOD i18n
         NSString *label = [NSString stringWithFormat:@"%@ %@", [app.wallet getLabelForAccount:i], @"Account"];
+        [accountHeaderButton setTitle:label forState:UIControlStateNormal];
+        [accountHeaderButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountHeaderButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountHeaderButton];
+        
+        accountBalanceBigButton.titleLabel.font = [UIFont boldSystemFontOfSize:34.0];
+        [accountBalanceBigButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountBalanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [accountBalanceBigButton setTag:10*(i+1)+0];
+        [accountBalanceBigButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountBalanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountBalanceBigButton];
+        
+        accountBalanceSmallButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        [accountBalanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountBalanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [accountBalanceSmallButton setTag:10*(i+1)+1];
+        [accountBalanceSmallButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
+        [accountBalanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+        [accountsView addSubview:accountBalanceSmallButton];
+    }
+    
+    if ([app.wallet hasLegacyAddresses]) {
+        UIButton *accountHeaderButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 20, app.window.frame.size.width - 40, 27)];
+        UIButton *accountBalanceBigButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 40, app.window.frame.size.width - 40, 42)];
+        UIButton *accountBalanceSmallButton = [[UIButton alloc] initWithFrame:CGRectMake(20, y + 75, app.window.frame.size.width - 40, 27)];
+        y = accountBalanceSmallButton.frame.origin.y + accountBalanceSmallButton.frame.size.height;
+        
+        accountHeaderButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        [accountHeaderButton.titleLabel setMinimumScaleFactor:.5f];
+        [accountHeaderButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        // TOOD i18n
+        NSString *label = @"Imported Addresses";
         [accountHeaderButton setTitle:label forState:UIControlStateNormal];
         [accountHeaderButton setTitleColor:COLOR_BLOCKCHAIN_LIGHTEST_BLUE forState:UIControlStateNormal];
         [accountHeaderButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];

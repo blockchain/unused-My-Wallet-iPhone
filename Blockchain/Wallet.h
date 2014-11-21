@@ -153,7 +153,9 @@
 
 // HD Wallet
 - (int)getAccountsCount;
+- (BOOL)hasLegacyAddresses;
 
+- (uint64_t)getTotalBalanceForActiveLegacyAddresses;
 - (uint64_t)getBalanceForAccount:(int)account;
 - (NSString *)getLabelForAccount:(int)account;
 

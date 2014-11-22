@@ -16,8 +16,10 @@
 
 @implementation AddressBookView
 
-@synthesize addresses;
-@synthesize labels;
+@synthesize legacyAddresses;
+@synthesize legacyAddressLabels;
+@synthesize accounts;
+@synthesize accountLabels;
 @synthesize wallet;
 @synthesize delegate;
 
@@ -33,46 +35,72 @@ int numMyAddresses;
         self.wallet = _wallet;
         showFromAddresses = _showFromAddresses;
         
-        addresses = [NSMutableArray array];
-        labels = [NSMutableArray array];
+        legacyAddresses = [NSMutableArray array];
+        legacyAddressLabels = [NSMutableArray array];
+        
+        accounts = [NSMutableArray array];
+        accountLabels = [NSMutableArray array];
         
         // Select from address
         if (_showFromAddresses) {
-            // First show user's active addresses with a positive balance
-            for (NSString * addr in _wallet.activeAddresses) {
-                if ([_wallet getAddressBalance:addr] > 0) {
-                    [addresses addObject:addr];
-                    [labels addObject:[_wallet labelForAddress:addr]];
+            // First show the HD accounts with positive balance
+            for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+                if ([app.wallet getBalanceForAccount:i] > 0) {
+                    [accounts addObject:[NSNumber numberWithInt:i]];
+                    [accountLabels addObject:[_wallet getLabelForAccount:i]];
                 }
             }
             
-            // Then show the active addresses with a zero balance
-            for (NSString * addr in _wallet.activeAddresses) {
-                if (![_wallet getAddressBalance:addr] > 0) {
-                    [addresses addObject:addr];
-                    [labels addObject:[_wallet labelForAddress:addr]];
+            // Then show the HD accounts with a zero balance
+            for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+                if (![app.wallet getBalanceForAccount:i] > 0) {
+                    [accounts addObject:[NSNumber numberWithInt:i]];
+                    [accountLabels addObject:[_wallet getLabelForAccount:i]];
                 }
             }
             
-            numMyAddresses = addresses.count;
-            numAddressBookAddresses = addresses.count;
+            // Then show user's active legacy addresses with a positive balance
+            for (NSString * addr in _wallet.activeLegacyAddresses) {
+                if ([_wallet getLegacyAddressBalance:addr] > 0) {
+                    [legacyAddresses addObject:addr];
+                    [legacyAddressLabels addObject:[_wallet labelForLegacyAddress:addr]];
+                }
+            }
+            
+            // Then show the active legacy addresses with a zero balance
+            for (NSString * addr in _wallet.activeLegacyAddresses) {
+                if (![_wallet getLegacyAddressBalance:addr] > 0) {
+                    [legacyAddresses addObject:addr];
+                    [legacyAddressLabels addObject:[_wallet labelForLegacyAddress:addr]];
+                }
+            }
+            
+            numMyAddresses = legacyAddresses.count;
+            numAddressBookAddresses = legacyAddresses.count;
         }
         // Select to address
         else {
-            // Show the address book and all the user's active addresses
+            // Show the address book
             for (NSString * addr in [_wallet.addressBook allKeys]) {
-                [addresses addObject:addr];
-                [labels addObject:[app.sendViewController labelForAddress:addr]];
+                [legacyAddresses addObject:addr];
+                [legacyAddressLabels addObject:[app.sendViewController labelForLegacyAddress:addr]];
             }
             
-            numAddressBookAddresses = addresses.count;
+            numAddressBookAddresses = legacyAddresses.count;
             
-            for (NSString * addr in _wallet.activeAddresses) {
-                [addresses addObject:addr];
-                [labels addObject:[_wallet labelForAddress:addr]];
+            // Then show the HD accounts
+            for (int i = 0; i < app.wallet.getAccountsCount; i++) {
+                [accounts addObject:[NSNumber numberWithInt:i]];
+                [accountLabels addObject:[_wallet getLabelForAccount:i]];
             }
             
-            numMyAddresses = addresses.count - numAddressBookAddresses;
+            // Finally show all the user's active legacy addresses
+            for (NSString * addr in _wallet.activeLegacyAddresses) {
+                [legacyAddresses addObject:addr];
+                [legacyAddressLabels addObject:[_wallet labelForLegacyAddress:addr]];
+            }
+            
+            numMyAddresses = legacyAddresses.count - numAddressBookAddresses;
         }
         
         [self addSubview:view];
@@ -80,12 +108,12 @@ int numMyAddresses;
         view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
         
         // Hacky way to make sure the table view doesn't show empty entries (with divider lines)
-        float tableHeight = ROW_HEIGHT * self.addresses.count;
+        float tableHeight = ROW_HEIGHT * (self.legacyAddresses.count + self.accounts.count);
         float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT - 49;
         
         if (tableHeight < tableSpace) {
             CGRect frame = tableView.frame;
-            frame.size.height = ROW_HEIGHT * self.addresses.count + 55 + (showFromAddresses ? 0 : 48);
+            frame.size.height = tableHeight + 55 + 48 + (showFromAddresses ? 0 : 48);
             tableView.frame = frame;
             
             tableView.scrollEnabled = NO;
@@ -107,14 +135,22 @@ int numMyAddresses;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (showFromAddresses) {
-        [delegate didSelectFromAddress:[addresses objectAtIndex:[indexPath row]]];
-    }
-    else {
-        if (indexPath.section == 1) {
-            [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row] + numAddressBookAddresses]];
+        if (indexPath.section == 0) {
+            [delegate didSelectFromAccount:indexPath.row];
         }
         else {
-            [delegate didSelectToAddress:[addresses objectAtIndex:[indexPath row]]];
+            [delegate didSelectFromAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
+        }
+    }
+    else {
+        if (indexPath.section == 0) {
+            [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
+        }
+        else if (indexPath.section == 1) {
+            [delegate didSelectToAccount:indexPath.row];
+        }
+        else {
+            [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row] + numAddressBookAddresses]];
         }
     }
     
@@ -124,24 +160,48 @@ int numMyAddresses;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (showFromAddresses) {
-        return  1;
+        return  1 + (self.legacyAddresses.count > 0 ? 1 : 0);
     }
-    return 2;
+    return 2 + (self.legacyAddresses.count > 0 ? 1 : 0);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && !showFromAddresses) {
-        return @"Address Book";
+    if (showFromAddresses) {
+        if (section == 0) {
+            // TODO i18n
+            return @"Accounts";
+        }
+    }
+    else {
+        if (section == 0) {
+            // TODO i18n
+            return @"Address Book";
+        }
+        else if (section == 1) {
+            // TODO i18n
+            return @"Accounts";
+        }
     }
     
-    return @"My Addresses";
+    // TODO i18n
+    return @"Imported Addresses";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return numAddressBookAddresses;
+    if (showFromAddresses) {
+        if (section == 0) {
+            return self.accounts.count;
+        }
+    }
+    else {
+        if (section == 0) {
+            return numAddressBookAddresses;
+        }
+        else if (section == 1) {
+            return self.accounts.count;
+        }
     }
     
     return numMyAddresses;
@@ -155,10 +215,11 @@ int numMyAddresses;
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;
-    if (!showFromAddresses && indexPath.section == 1) {
+    
+    if (!showFromAddresses && indexPath.section == 2) {
         row = indexPath.row + numAddressBookAddresses;
     }
-    NSString *addr = [addresses objectAtIndex:row];
+    NSString *addr = [legacyAddresses objectAtIndex:row];
     
     ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
@@ -172,17 +233,30 @@ int numMyAddresses;
         [cell.watchLabel setHidden:TRUE];
     }
     
-    NSString *label = [labels objectAtIndex:row];
+    NSString *label;
+    if ((showFromAddresses && indexPath.section == 0) ||
+        (!showFromAddresses && indexPath.section == 1)) {
+        label = accountLabels[indexPath.row];
+        cell.addressLabel.text = @"";
+    }
+    else {
+        label = [legacyAddressLabels objectAtIndex:row];
+        cell.addressLabel.text = addr;
+    }
     
     if (label)
         cell.labelLabel.text = label;
     else
         cell.labelLabel.text = BC_STRING_NO_LABEL;
     
-    cell.addressLabel.text = addr;
-    
     if (showFromAddresses) {
-        uint64_t balance = [app.wallet getAddressBalance:addr];
+        uint64_t balance;
+        if (indexPath.section == 0) {
+            balance = [app.wallet getBalanceForAccount:indexPath.row];
+        }
+        else {
+            balance = [app.wallet getLegacyAddressBalance:addr];
+        }
         cell.balanceLabel.text = [app formatMoney:balance];
         
         // Cells with empty balance can't be clicked and are dimmed

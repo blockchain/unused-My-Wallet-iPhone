@@ -52,10 +52,13 @@
 @property(nonatomic, strong) NSString *initialToAddressString;
 @property(nonatomic) double initialToAmountDouble; // satoshi
 
-@property(nonatomic, strong) NSString *selectedAddress;
-@property(nonatomic, strong) NSArray *addressBookAddress;
-@property(nonatomic, strong) NSArray *fromAddresses;
+@property(nonatomic, strong) NSString *fromAddress;
 @property(nonatomic, strong) NSString *toAddress;
+@property int fromAccount;
+@property int toAccount;
+@property BOOL sendFromAddress;
+@property BOOL sendToAddress;
+
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 - (IBAction)selectFromAddressClicked:(id)sender;
@@ -65,13 +68,15 @@
 
 - (void)didSelectFromAddress:(NSString *)address;
 - (void)didSelectToAddress:(NSString *)address;
+- (void)didSelectFromAccount:(int)account;
+- (void)didSelectToAccount:(int)account;
 
 - (IBAction)sendPaymentClicked:(id)sender;
 - (IBAction)labelAddressClicked:(id)sender;
 
 - (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
 
-- (NSString *)labelForAddress:(NSString *)address;
+- (NSString *)labelForLegacyAddress:(NSString *)address;
 
 - (void)reloadWithCurrencyChange:(BOOL)currencyChange;
 

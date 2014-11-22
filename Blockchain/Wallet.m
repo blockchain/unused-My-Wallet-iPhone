@@ -206,10 +206,31 @@
     [self.webView executeJSSynchronous:@"MyWalletPhone.cancelTxSigning();"];
 }
 
-- (void)sendPaymentTo:(NSString*)toAddress from:(NSString*)fromAddress satoshiValue:(NSString*)satoshiValue listener:(transactionProgressListeners*)listener
+- (void)sendPaymentFromAddress:(NSString*)fromAddress toAddress:(NSString*)toAddress satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener
 {
-    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSend(\"%@\", \"%@\", \"%@\")", [fromAddress escapeStringForJS], [toAddress escapeStringForJS], [satoshiValue escapeStringForJS]];
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSendFromAddressToAddress(\"%@\", \"%@\", \"%@\")", [fromAddress escapeStringForJS], [toAddress escapeStringForJS], [satoshiValue escapeStringForJS]];
         
+    [self.transactionProgressListeners setObject:listener forKey:txProgressID];
+}
+
+- (void)sendPaymentFromAddress:(NSString*)fromAddress toAccount:(int)toAccount satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener
+{
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSendFromAddressToAccount(\"%@\", %d, \"%@\")", [fromAddress escapeStringForJS], toAccount, [satoshiValue escapeStringForJS]];
+    
+    [self.transactionProgressListeners setObject:listener forKey:txProgressID];
+}
+
+- (void)sendPaymentFromAccount:(int)fromAccount toAddress:(NSString*)toAddress satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener
+{
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSendFromAccountToAddress(%d, \"%@\", \"%@\")", fromAccount, [toAddress escapeStringForJS], satoshiValue];
+    
+    [self.transactionProgressListeners setObject:listener forKey:txProgressID];
+}
+
+- (void)sendPaymentFromAccount:(int)fromAccount toAccount:(int)toAccount satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener
+{
+    NSString * txProgressID = [self.webView executeJSSynchronous:@"MyWalletPhone.quickSendFromAccountToAccount(%d, %d, \"%@\")", fromAccount, toAccount, satoshiValue];
+    
     [self.transactionProgressListeners setObject:listener forKey:txProgressID];
 }
 
@@ -285,31 +306,31 @@
     } command:@"MyWallet.getTotalSent()"];
 }
 
-- (BOOL)isWatchOnlyAddress:(NSString*)address
+- (BOOL)isWatchOnlyLegacyAddress:(NSString*)address
 {
     if (![self.webView isLoaded]) {
         return FALSE;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.isWatchOnly(\"%@\")", [address escapeStringForJS]] boolValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.isWatchOnlyLegacyAddress(\"%@\")", [address escapeStringForJS]] boolValue];
 }
 
-- (NSString*)labelForAddress:(NSString*)address
+- (NSString*)labelForLegacyAddress:(NSString*)address
 {
     if (![self.webView isLoaded]) {
         return nil;
     }
     
-    return [self.webView executeJSSynchronous:@"MyWallet.getAddressLabel(\"%@\")", [address escapeStringForJS]];
+    return [self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressLabel(\"%@\")", [address escapeStringForJS]];
 }
 
-- (NSInteger)tagForAddress:(NSString*)address
+- (NSInteger)tagForLegacyAddress:(NSString*)address
 {
     if (![self.webView isLoaded]) {
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
 }
 
 - (BOOL)isValidAddress:(NSString*)string
@@ -321,66 +342,66 @@
     return [[self.webView executeJSSynchronous:@"MyWallet.isValidAddress(\"%@\");", [string escapeStringForJS]] boolValue];
 }
 
-- (NSArray*)allAddresses
+- (NSArray*)allLegacyAddresses
 {
     if (![self.webView isLoaded]) {
         return nil;
     }
     
-    NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllAddresses())"];
+    NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllLegacyAddresses())"];
     
     return [allAddressesJSON getJSONObject];        
 }
 
-- (NSArray*)activeAddresses
+- (NSArray*)activeLegacyAddresses
 {
     if (![self.webView isLoaded]) {
         return nil;
     }
     
-    NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getActiveAddresses())"];
+    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getLegacyActiveAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
 }
 
-- (NSArray*)archivedAddresses
+- (NSArray*)archivedLegacyAddresses
 {
     if (![self.webView isLoaded]) {
         return nil;
     }
     
-    NSString * activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getArchivedAddresses())"];
+    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getLegacyArchivedAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
 }
 
-- (void)setLabel:(NSString*)label ForAddress:(NSString*)address
+- (void)setLabel:(NSString*)label forLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.setLabel(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
+    [self.webView executeJS:@"MyWallet.setLegacyAddressLabel(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
 }
 
-- (void)archiveAddress:(NSString*)address
+- (void)archiveLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.archiveAddr(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"MyWallet.archiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
 }
 
-- (void)unArchiveAddress:(NSString*)address
+- (void)unArchiveLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.unArchiveAddr(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"MyWallet.unArchiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
 }
 
-- (void)removeAddress:(NSString*)address
+- (void)removeLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.deleteAddress(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"MyWallet.deleteLegacyAddress(\"%@\")", [address escapeStringForJS]];
 }
 
-- (uint64_t)getAddressBalance:(NSString*)address
+- (uint64_t)getLegacyAddressBalance:(NSString*)address
 {
     if (![self.webView isLoaded]) {
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
+    return [[self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
 }
 
 - (BOOL)addKey:(NSString*)privateKeyString
@@ -860,7 +881,8 @@
 {
     DLog(@"hw_wallet_balance_updated");
     
-    // TODO implement this
+    // TODO update AccountView
+    [app.transactionsViewController reload];
 }
 
 - (void)logging_out

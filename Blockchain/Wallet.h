@@ -97,30 +97,33 @@
 
 - (NSDictionary *)addressBook;
 
-- (void)setLabel:(NSString *)label ForAddress:(NSString *)address;
+- (void)setLabel:(NSString *)label forLegacyAddress:(NSString *)address;
 
-- (void)archiveAddress:(NSString *)address;
-- (void)unArchiveAddress:(NSString *)address;
-- (void)removeAddress:(NSString *)address;
+- (void)archiveLegacyAddress:(NSString *)address;
+- (void)unArchiveLegacyAddress:(NSString *)address;
+- (void)removeLegacyAddress:(NSString *)address;
 
-- (void)sendPaymentTo:(NSString *)toAddress from:(NSString *)fromAddress satoshiValue:(NSString *)value listener:(transactionProgressListeners*)listener;
+- (void)sendPaymentFromAddress:(NSString*)fromAddress toAddress:(NSString*)toAddress satoshiValue:(NSString*)satoshiValue listener:(transactionProgressListeners*)listener;
+- (void)sendPaymentFromAddress:(NSString*)fromAddress toAccount:(int)toAccount satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener;
+- (void)sendPaymentFromAccount:(int)fromAccount toAddress:(NSString*)toAddress satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener;
+- (void)sendPaymentFromAccount:(int)fromAccount toAccount:(int)toAccount satoshiValue:(NSString *)satoshiValue listener:(transactionProgressListeners*)listener;
 
-- (NSString *)labelForAddress:(NSString *)address;
-- (NSInteger)tagForAddress:(NSString *)address;
+- (NSString *)labelForLegacyAddress:(NSString *)address;
+- (NSInteger)tagForLegacyAddress:(NSString *)address;
 
 - (void)addToAddressBook:(NSString *)address label:(NSString *)label;
 
 - (BOOL)isValidAddress:(NSString *)string;
-- (BOOL)isWatchOnlyAddress:(NSString*)address;
+- (BOOL)isWatchOnlyLegacyAddress:(NSString*)address;
 
 - (void)cancelTxSigning;
 
 - (BOOL)addKey:(NSString *)privateKeyString;
 
 // Fetch String Array Of Addresses
-- (NSArray *)activeAddresses;
-- (NSArray *)allAddresses;
-- (NSArray *)archivedAddresses;
+- (NSArray *)activeLegacyAddresses;
+- (NSArray *)allLegacyAddresses;
+- (NSArray *)archivedLegacyAddresses;
 
 - (BOOL)isDoubleEncrypted;
 - (BOOL)isInitialized;
@@ -131,7 +134,7 @@
 - (void)getHistory;
 - (void)getWalletAndHistory;
 
-- (uint64_t)getAddressBalance:(NSString *)address;
+- (uint64_t)getLegacyAddressBalance:(NSString *)address;
 - (uint64_t)parseBitcoinValue:(NSString *)input;
 
 - (CurrencySymbol *)getLocalSymbol;

@@ -132,6 +132,76 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error)
 }
 
+MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
+    return MyWalletPhone.quickSend(from, to, valueString);
+}
+
+MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
+    var wallet = MyWallet.getHDWallet();
+    var account = wallet.getAccount(to);
+    
+    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
+    
+    return MyWalletPhone.quickSend(from, toAddress, valueString);
+}
+
+MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
+    var id = ''+Math.round(Math.random()*100000);
+        
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
+    
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
+    
+    var value = parseInt(valueString);
+    
+    if (!value || value == 0) {
+        throw 'Invalid Send Value';
+    }
+    
+    var fee = null;
+    var note = null;
+    
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error);
+    
+    return id;
+}
+
+MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
+    var id = ''+Math.round(Math.random()*100000);
+    
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
+    
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
+    
+    var value = parseInt(valueString);
+    
+    if (!value || value == 0) {
+        throw 'Invalid Send Value';
+    }
+    
+    var wallet = MyWallet.getHDWallet();
+    var account = wallet.getAccount(to);
+    
+    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
+    
+    var fee = null;
+    var note = null;
+    
+    MyWallet.sendBitcoinsForAccount(from, toAddress, value, fee, note, success, error);
+    
+    return id;
+}
+
 MyWalletPhone.quickSend = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
@@ -203,7 +273,7 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                     if (from && from.length > 0) {
                         obj.from_addresses = [from];
                     } else {
-                        obj.from_addresses = MyWallet.getActiveAddresses();
+                        obj.from_addresses = MyWallet.getLegacyActiveAddresses();
                     }
 
                     var value = Bitcoin.BigInteger.valueOf(valueString);
@@ -439,7 +509,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
     obj.n_transactions = MyWallet.getNTransactions();
-    obj.addresses = MyWallet.getAllAddresses();
+    obj.addresses = MyWallet.getAllLegacyAddresses();
 
     obj.symbol_local = symbol_local;
     obj.symbol_btc = symbol_btc;
@@ -596,7 +666,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
     if (!n) n = 0;
 
     var data = {
-        active : MyWallet.getActiveAddresses().join('|'),
+        active : MyWallet.getLegacyActiveAddresses().join('|'),
         format : 'json',
         filter : tx_filter,
         offset : offset,

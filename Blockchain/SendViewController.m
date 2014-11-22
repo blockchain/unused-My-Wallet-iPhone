@@ -64,7 +64,7 @@ BOOL didChangeDollarAmount = NO;
         return FALSE;
     }];
     
-    self.selectedAddress = @"";
+    self.fromAddress = @"";
     
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
@@ -81,14 +81,12 @@ BOOL didChangeDollarAmount = NO;
 
 - (void)reloadWithCurrencyChange:(BOOL)currencyChange
 {
-    self.fromAddresses = [app.wallet activeAddresses];
-    
     // Populate address field from URL handler if available.
     if (self.initialToAddressString && toField != nil) {
         self.toAddress = self.initialToAddressString;
         DLog(@"toAddress: %@", self.toAddress);
         
-        toField.text = [self labelForAddress:self.toAddress];
+        toField.text = [self labelForLegacyAddress:self.toAddress];
         self.initialToAddressString = nil;
     }
     
@@ -172,18 +170,7 @@ BOOL didChangeDollarAmount = NO;
 
 - (void)reallyDoPayment
 {
-    uint64_t satoshiValue = [self getInputAmountInSatoshi];
-    
-    NSString * to   = self.toAddress;
-    NSString * from = self.selectedAddress;
-    
-    DLog(@"Sending uint64_t %llu Satoshi (String value: %@)", satoshiValue, [[NSNumber numberWithLongLong:satoshiValue] stringValue]);
-    DLog(@"From: %@", self.selectedAddress);
-    DLog(@"To: %@", self.toAddress);
-    
     transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
-    
-    [sendPaymentButton setEnabled:FALSE];
     
     listener.on_start = ^() {
         app.disableBusyView = TRUE;
@@ -218,7 +205,7 @@ BOOL didChangeDollarAmount = NO;
         selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
         toField.text = @"";
         amountField.text = @"";
-        self.selectedAddress = @"";
+        self.fromAddress = @"";
         self.toAddress = @"";
         originalBtcAmount = 0.0;
         didChangeDollarAmount = NO;
@@ -243,9 +230,38 @@ BOOL didChangeDollarAmount = NO;
         [app closeModalWithTransition:kCATransitionFade];
     };
     
-    [app.wallet sendPaymentTo:to from:from satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    [sendPaymentButton setEnabled:FALSE];
+    
+    uint64_t satoshiValue = [self getInputAmountInSatoshi];
+    
+    DLog(@"Sending uint64_t %llu Satoshi (String value: %@)", satoshiValue, [[NSNumber numberWithLongLong:satoshiValue] stringValue]);
+    
+    // Different ways of sending (from/to address or account
+    if (self.sendFromAddress && self.sendToAddress) {
+        DLog(@"From: %@", self.fromAddress);
+        DLog(@"To: %@", self.toAddress);
+        
+        [app.wallet sendPaymentFromAddress:self.fromAddress toAddress:self.toAddress satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    }
+    else if (self.sendFromAddress && !self.sendToAddress) {
+        DLog(@"From: %@", self.fromAddress);
+        DLog(@"To account: %d", self.toAccount);
+        
+        [app.wallet sendPaymentFromAddress:self.fromAddress toAccount:self.toAccount satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    }
+    else if (!self.sendFromAddress && self.sendToAddress) {
+        DLog(@"From account: %d", self.fromAccount);
+        DLog(@"To: %@", self.toAddress);
+        
+        [app.wallet sendPaymentFromAccount:self.fromAccount toAddress:self.toAddress satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    }
+    else if (!self.sendFromAddress && !self.sendToAddress) {
+        DLog(@"From account: %d", self.fromAccount);
+        DLog(@"To account: %d", self.toAccount);
+        
+        [app.wallet sendPaymentFromAccount:self.fromAccount toAccount:self.toAccount satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+    }
 }
-
 
 - (uint64_t)getInputAmountInSatoshi
 {
@@ -323,14 +339,14 @@ BOOL didChangeDollarAmount = NO;
     self.initialToAmountDouble = [amountString doubleValue] * SATOSHI;
 }
 
-- (NSString *)labelForAddress:(NSString *)address
+- (NSString *)labelForLegacyAddress:(NSString *)address
 {
     if ([[app.wallet.addressBook objectForKey:address] length] > 0) {
         return [app.wallet.addressBook objectForKey:address];
         
     }
-    else if ([app.wallet.allAddresses containsObject:address]) {
-        NSString *label = [app.wallet labelForAddress:address];
+    else if ([app.wallet.allLegacyAddresses containsObject:address]) {
+        NSString *label = [app.wallet labelForLegacyAddress:address];
         if (label && ![label isEqualToString:@""])
             return label;
     }
@@ -419,12 +435,14 @@ BOOL didChangeDollarAmount = NO;
     return YES;
 }
 
-# pragma mark- Addres book delegate
+# pragma mark - AddressBook delegate
 
 - (void)didSelectFromAddress:(NSString *)address
 {
+    self.sendFromAddress = true;
+    
     NSString *addressOrLabel;
-    NSString *label = [app.wallet labelForAddress:address];
+    NSString *label = [app.wallet labelForLegacyAddress:address];
     if (label && ![label isEqualToString:@""]) {
         addressOrLabel = label;
     }
@@ -433,15 +451,35 @@ BOOL didChangeDollarAmount = NO;
     }
         
     selectAddressTextField.text = addressOrLabel;
-    self.selectedAddress = address;
+    self.fromAddress = address;
     DLog(@"fromAddress: %@", address);
 }
 
 - (void)didSelectToAddress:(NSString *)address
 {
-    toField.text = [self labelForAddress:address];
+    self.sendToAddress = true;
+    
+    toField.text = [self labelForLegacyAddress:address];
     self.toAddress = address;
     DLog(@"toAddress: %@", address);
+}
+
+- (void)didSelectFromAccount:(int)account
+{
+    self.sendFromAddress = false;
+    
+    selectAddressTextField.text = [app.wallet getLabelForAccount:account];
+    self.fromAccount = account;
+    DLog(@"fromAccount: %@", [app.wallet getLabelForAccount:account]);
+}
+
+- (void)didSelectToAccount:(int)account
+{
+    self.sendToAddress = false;
+    
+    toField.text = [app.wallet getLabelForAccount:account];
+    self.toAccount = account;
+    DLog(@"toAccount: %@", [app.wallet getLabelForAccount:account]);
 }
 
 #pragma mark - Actions
@@ -541,7 +579,7 @@ BOOL didChangeDollarAmount = NO;
                 
                 NSDictionary *dict = [app parseURI:[metadataObj stringValue]];
                 
-                toField.text = [self labelForAddress:[dict objectForKey:@"address"]];
+                toField.text = [self labelForLegacyAddress:[dict objectForKey:@"address"]];
                 self.toAddress = [dict objectForKey:@"address"];
                 DLog(@"toAddress: %@", self.toAddress);
                 
@@ -609,6 +647,7 @@ BOOL didChangeDollarAmount = NO;
 - (IBAction)sendPaymentClicked:(id)sender
 {
     // If user pasted an address into the toField, assign it to toAddress
+    // TOOD not possible anymore?
     if ([self.toAddress length] == 0) {
         self.toAddress = toField.text;
         DLog(@"toAddress: %@", self.toAddress);
@@ -619,7 +658,7 @@ BOOL didChangeDollarAmount = NO;
         return;
     }
     
-    if (![app.wallet isValidAddress:self.toAddress]) {
+    if (self.sendToAddress && ![app.wallet isValidAddress:self.toAddress]) {
         [app standardNotify:BC_STRING_INVALID_TO_BITCOIN_ADDRESS];
         return;
     }
@@ -630,7 +669,7 @@ BOOL didChangeDollarAmount = NO;
         return;
     }
     
-    int countPriv = [[app.wallet activeAddresses] count];
+    int countPriv = [[app.wallet activeLegacyAddresses] count];
     
     if (countPriv == 0) {
         [app standardNotify:BC_STRING_NO_ACTIVE_BITCOIN_ADDRESSES_AVAILABLE];
@@ -639,7 +678,7 @@ BOOL didChangeDollarAmount = NO;
     
     [self confirmPayment];
 
-//    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allAddresses containsObject:self.toAddress]) {
+//    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allLegacyAddresses containsObject:self.toAddress]) {
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_ADD_TO_ADDRESS_BOOK
 //                                                        message:[NSString stringWithFormat:BC_STRING_ASK_TO_ADD_TO_ADDRESS_BOOK, self.toAddress]
 //                                                       delegate:nil

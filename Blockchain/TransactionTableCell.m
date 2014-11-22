@@ -77,7 +77,7 @@
             }
             else {
                 Input *input = [inputs objectAtIndex:i];
-                NSString *addressString = [app.wallet labelForAddress:[[input prev_out] addr]];
+                NSString *addressString = [app.wallet labelForLegacyAddress:[[input prev_out] addr]];
                 
                 if ([addressString length] > 0)
                     [label setText:addressString];
@@ -119,7 +119,7 @@
                 [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [outputs count] - i]];
             } else {
                 Output *output = [outputs objectAtIndex:i];
-                NSString * addressString = [app.wallet labelForAddress:[output addr]];
+                NSString * addressString = [app.wallet labelForLegacyAddress:[output addr]];
                 
                 if ([addressString length] > 0)
                     [label setText:addressString];

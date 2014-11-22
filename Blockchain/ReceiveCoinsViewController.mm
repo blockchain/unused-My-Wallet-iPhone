@@ -25,7 +25,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ([[app.wallet activeAddresses] count] == 0) {
+    if ([[app.wallet activeLegacyAddresses] count] == 0) {
         [noaddressesView setHidden:FALSE];
     } else {
         [noaddressesView setHidden:TRUE];
@@ -56,8 +56,8 @@
 }
 
 -(void)reload {
-    self.activeKeys = [app.wallet activeAddresses];
-    self.archivedKeys = [app.wallet archivedAddresses];
+    self.activeKeys = [app.wallet activeLegacyAddresses];
+    self.archivedKeys = [app.wallet archivedLegacyAddresses];
     
     if ([activeKeys count] == 0) {
         [self.view addSubview:noaddressesView];
@@ -75,7 +75,7 @@
 
     
     // Get active addresses
-    NSArray *activeAddresses = [app.wallet activeAddresses];
+    NSArray *activeAddresses = [app.wallet activeLegacyAddresses];
     
     // Show table header with qr code and default address if we can find a default address
     if (activeAddresses.count > 0) {
@@ -87,7 +87,7 @@
         // Get the default address - first active address that's not watch only
         NSString *defaultAddress;
         for (NSString *address in activeAddresses) {
-            if (![app.wallet isWatchOnlyAddress:address]) {
+            if (![app.wallet isWatchOnlyLegacyAddress:address]) {
                 defaultAddress = address;
                 break;
             }
@@ -103,7 +103,7 @@
         
         // Address or label UILabel
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 16)];
-        NSString *label = [app.wallet labelForAddress:defaultAddress];
+        NSString *label = [app.wallet labelForLegacyAddress:defaultAddress];
         if (label.length > 0) {
             addressLabel.text = label;
         }
@@ -299,7 +299,7 @@
     
     NSString * addr = self.clickedAddress;
     
-    [app.wallet setLabel:labelTextField.text ForAddress:addr];
+    [app.wallet setLabel:labelTextField.text forLegacyAddress:addr];
     
     [self reload];
     
@@ -460,7 +460,7 @@
 - (IBAction)labelAddressClicked:(id)sender
 {
     NSString * addr =  self.clickedAddress;
-    NSString * label =  [app.wallet labelForAddress:addr];
+    NSString * label =  [app.wallet labelForLegacyAddress:addr];
     
     if (label && ![label isEqualToString:@""])
         labelAddressLabel.text = label;
@@ -479,12 +479,12 @@
 - (IBAction)archiveAddressClicked:(id)sender
 {
     NSString * addr = self.clickedAddress;
-    NSInteger tag =  [app.wallet tagForAddress:addr];
+    NSInteger tag =  [app.wallet tagForLegacyAddress:addr];
     
     if (tag == 2)
-        [app.wallet unArchiveAddress:addr];
+        [app.wallet unArchiveLegacyAddress:addr];
     else
-        [app.wallet archiveAddress:addr];
+        [app.wallet archiveLegacyAddress:addr];
     
     [self reload];
     
@@ -536,8 +536,8 @@
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
-    NSInteger tag =  [app.wallet tagForAddress:addr];
-    NSString *label =  [app.wallet labelForAddress:addr];
+    NSInteger tag =  [app.wallet tagForLegacyAddress:addr];
+    NSString *label =  [app.wallet labelForLegacyAddress:addr];
     
     self.clickedAddress = addr;
     
@@ -604,10 +604,10 @@
 {
     NSString * addr =  [self getAddress:indexPath];
     
-    Boolean isWatchOnlyAddress = [app.wallet isWatchOnlyAddress:addr];
+    Boolean isWatchOnlyLegacyAddress = [app.wallet isWatchOnlyLegacyAddress:addr];
     
     ReceiveTableCell *cell;
-    if (isWatchOnlyAddress) {
+    if (isWatchOnlyLegacyAddress) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"receiveWatchOnly"];
     }
     else {
@@ -617,7 +617,7 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
         
-        if (isWatchOnlyAddress) {
+        if (isWatchOnlyLegacyAddress) {
             // Show the watch only tag and resize the label and balance labels so there is enough space
             cell.labelLabel.frame = CGRectMake(20, 11, 148, 21);
             
@@ -635,7 +635,7 @@
         }
     }
     
-    NSString * label =  [app.wallet labelForAddress:addr];
+    NSString * label =  [app.wallet labelForLegacyAddress:addr];
     
     if (label)
         cell.labelLabel.text = label;
@@ -644,7 +644,7 @@
     
     cell.addressLabel.text = addr;
     
-    uint64_t balance = [app.wallet getAddressBalance:addr];
+    uint64_t balance = [app.wallet getLegacyAddressBalance:addr];
     
     // Selected cell color
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];

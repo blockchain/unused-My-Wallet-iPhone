@@ -25,6 +25,8 @@
 @protocol AddressBookDelegate <NSObject>
 - (void)didSelectFromAddress:(NSString*)address;
 - (void)didSelectToAddress:(NSString*)address;
+- (void)didSelectFromAccount:(int)account;
+- (void)didSelectToAccount:(int)account;
 @end
 
 @interface AddressBookView : UIView <UITableViewDelegate, UITableViewDataSource> {
@@ -36,8 +38,11 @@
 - (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)showOwnAddresses;
 - (void)setHeader:(NSString *)headerText;
 
-@property(nonatomic, strong) NSMutableArray *addresses;
-@property(nonatomic, strong) NSMutableArray *labels;
+@property(nonatomic, strong) NSMutableArray *legacyAddresses;
+@property(nonatomic, strong) NSMutableArray *legacyAddressLabels;
+
+@property(nonatomic, strong) NSMutableArray *accounts;
+@property(nonatomic, strong) NSMutableArray *accountLabels;
 
 @property(nonatomic, strong) Wallet *wallet;
 @property(nonatomic, strong) id<AddressBookDelegate> delegate;

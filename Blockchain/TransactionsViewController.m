@@ -11,7 +11,6 @@
 #import "TransactionTableCell.h"
 #import "MultiAddressResponse.h"
 #import "AppDelegate.h"
-#import "AccountView.h"
 
 @implementation TransactionsViewController
 
@@ -22,8 +21,6 @@ BOOL animateNextCell;
 
 UIRefreshControl *refreshControl;
 int lastNumberTransactions = INT_MAX;
-
-AccountView *accountView;
 
 #define MAX_ADDRESS_ROWS_PER_CELL 5
 
@@ -129,6 +126,9 @@ AccountView *accountView;
         
         [headerLabel setHidden:YES];
         [headerSeparator setHidden:YES];
+        
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
     // Data loaded, but no Balance yet
     else if (!latestBlock) {
@@ -136,6 +136,9 @@ AccountView *accountView;
         
         [headerLabel setHidden:NO];
         [headerSeparator setHidden:NO];
+        
+        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
     // Data loaded and we have a balance - display the balance and transactions
     else {
@@ -143,6 +146,10 @@ AccountView *accountView;
         
         [headerLabel setHidden:NO];
         [headerSeparator setHidden:NO];
+        
+        // Balance
+        [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
     }
 }
 
@@ -170,8 +177,6 @@ AccountView *accountView;
 
 - (void)reload
 {
-    [accountView reload];
-    
     [self setText];
     
     [tableView reloadData];
@@ -231,6 +236,15 @@ AccountView *accountView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     
+    [balanceBigButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceBigButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceSmallButton.titleLabel setMinimumScaleFactor:.5f];
+    [balanceSmallButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
+    
     // Tricky way to get the refreshController to work on a UIViewController - @see http://stackoverflow.com/a/12502450/2076094
     UITableViewController *tableViewController = [[UITableViewController alloc] init];
     tableViewController.tableView = self.tableView;
@@ -239,11 +253,6 @@ AccountView *accountView;
                        action:@selector(loadTransactions)
              forControlEvents:UIControlEventValueChanged];
     tableViewController.refreshControl = refreshControl;
-    
-    // TODO
-    // Account pull down
-    accountView = [[AccountView alloc] init];
-    [self.view addSubview:accountView];
     
     [self reload];
 }

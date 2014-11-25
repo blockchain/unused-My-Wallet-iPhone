@@ -11,4 +11,6 @@
 
 @interface SideMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ECSlidingViewControllerDelegate>
 
+- (void)reload;
+
 @end

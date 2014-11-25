@@ -18,7 +18,8 @@
 
 @implementation SideMenuViewController
 
-int entries = 4;
+int menuEntries = 4;
+int accountEntries = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,7 +33,7 @@ int entries = 4;
     [topBarView addSubview:logo];
     
     self.tableView = ({
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * entries) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * menuEntries) style:UITableViewStylePlain];
         tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         tableView.delegate = self;
         tableView.dataSource = self;
@@ -79,6 +80,16 @@ int entries = 4;
     
     [app.tabViewController.activeViewController.view addGestureRecognizer:swipeLeft];
     [app.tabViewController.activeViewController.view addGestureRecognizer:swipeRight];
+}
+
+- (void)reload
+{
+    // Account entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
+    accountEntries = 1 + app.wallet.getAccountsCount + ([app.wallet hasLegacyAddresses] ? 1 : 0);
+    
+    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * (menuEntries + accountEntries));
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - SlidingViewController Delegate
@@ -133,6 +144,10 @@ int entries = 4;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1) {
+        return;
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger row = indexPath.row;
@@ -177,17 +192,28 @@ int entries = 4;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    return entries;
+    if (sectionIndex == 0) {
+        return menuEntries;
+    }
+    
+    return accountEntries;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"Cell";
+    static NSString *cellIdentifier;
+    
+    if (indexPath.section == 0) {
+        cellIdentifier = @"CellMenu";
+    }
+    else {
+        cellIdentifier = @"CellBalance";
+    }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
@@ -201,19 +227,47 @@ int entries = 4;
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
         [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
         cell.selectedBackgroundView = v;
-    }
-    
-    if (indexPath.row == 2) {
         
+        if (indexPath.section == 1) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:20.0];
+            cell.textLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+            
+            cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
+            cell.detailTextLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+        }
     }
     
-    NSArray *titles;
-    NSArray *images;
-    titles = @[BC_STRING_ACCOUNT_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
-    images = @[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"];
-
-    cell.textLabel.text = titles[indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
+    if (indexPath.section == 0) {
+        NSArray *titles;
+        NSArray *images;
+        titles = @[BC_STRING_ACCOUNT_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
+        images = @[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"];
+        
+        cell.textLabel.text = titles[indexPath.row];
+        cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
+    }
+    else {
+        if (indexPath.row == 0) {
+            uint64_t totalBalance = app.latestResponse.final_balance;
+            
+            cell.textLabel.text = [app formatMoney:totalBalance localCurrency:app->symbolLocal];
+            cell.detailTextLabel.text = @"Total Balance";
+        }
+        else if (indexPath.row < accountEntries-1) {
+            uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1];
+            
+            cell.textLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
+            cell.detailTextLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
+        }
+        else {
+            uint64_t legacyBalance = [app.wallet getTotalBalanceForActiveLegacyAddresses];
+            
+            cell.textLabel.text = [app formatMoney:legacyBalance localCurrency:app->symbolLocal];
+            cell.detailTextLabel.text = @"Imported Addresses";
+        }
+    }
     
     return cell;
 }

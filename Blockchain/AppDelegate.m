@@ -329,6 +329,9 @@ BOOL showSendCoins = NO;
     [_transactionsViewController reload];
     [_receiveViewController reload];
     [_sendViewController reloadWithCurrencyChange:NO];
+    
+    SideMenuViewController *sideMenuViewController = (SideMenuViewController *)_slidingViewController.underLeftViewController;
+    [sideMenuViewController reload];
 }
 
 - (void)didSetLatestBlock:(LatestBlock*)block

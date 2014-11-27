@@ -459,19 +459,18 @@
 
 - (IBAction)labelAddressClicked:(id)sender
 {
-    NSString * addr =  self.clickedAddress;
-    NSString * label =  [app.wallet labelForLegacyAddress:addr];
+    NSString *addr = self.clickedAddress;
+    NSString *label = [app.wallet labelForLegacyAddress:addr];
     
-    if (label && ![label isEqualToString:@""])
-        labelAddressLabel.text = label;
-    else
-        labelAddressLabel.text = addr;
+    labelAddressLabel.text = addr;
+    
+    if (label && ![label isEqualToString:@""]) {
+        labelTextField.text = label;
+    }
     
     [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
     } onResume:nil];
-    
-    labelTextField.text = nil;
     
     [labelTextField becomeFirstResponder];
 }

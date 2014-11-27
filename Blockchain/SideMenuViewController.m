@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "ECSlidingViewController.h"
 
+#define SECTION_HEADER_HEIGHT 44
+
 @interface SideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) UITableView *tableView;
@@ -87,7 +89,7 @@ int accountEntries = 0;
     // Account entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
     accountEntries = 1 + app.wallet.getAccountsCount + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     
-    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * (menuEntries + accountEntries));
+    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
     
     [self.tableView reloadData];
 }
@@ -195,6 +197,30 @@ int accountEntries = 0;
     return 2;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return SECTION_HEADER_HEIGHT;
+    }
+    
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
+        headerLabel.text = @"Account Balances";
+        headerLabel.textColor = [UIColor lightGrayColor];
+        headerLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        [view addSubview:headerLabel];
+        return view;
+    }
+    
+    return nil;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
     if (sectionIndex == 0) {
@@ -232,9 +258,11 @@ int accountEntries = 0;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell.textLabel.font = [UIFont boldSystemFontOfSize:20.0];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
             
-            cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+            cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
             cell.detailTextLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
         }
     }

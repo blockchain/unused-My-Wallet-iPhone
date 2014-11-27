@@ -13,6 +13,7 @@
 #import "SendViewController.h"
 
 #define ROW_HEIGHT 68
+#define ROW_HEIGHT_ACCOUNT 44
 
 @implementation AddressBookView
 
@@ -209,6 +210,11 @@ int numMyAddresses;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ((showFromAddresses && indexPath.section == 0) ||
+        (!showFromAddresses && indexPath.section == 1)) {
+        return ROW_HEIGHT_ACCOUNT;
+    }
+    
     return ROW_HEIGHT;
 }
 

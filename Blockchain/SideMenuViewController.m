@@ -270,13 +270,16 @@ int accountEntries = 0;
     if (indexPath.section == 0) {
         NSArray *titles;
         NSArray *images;
-        titles = @[BC_STRING_ACCOUNT_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
+        titles = @[BC_STRING_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
         images = @[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"];
         
         cell.textLabel.text = titles[indexPath.row];
         cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
     }
     else {
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(toggleSymbol)];
+        [cell.textLabel addGestureRecognizer:tapGestureRecognizer];
+        cell.textLabel.userInteractionEnabled = YES;
         if (indexPath.row == 0) {
             uint64_t totalBalance = app.latestResponse.final_balance;
             

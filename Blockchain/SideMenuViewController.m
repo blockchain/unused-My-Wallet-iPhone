@@ -9,6 +9,7 @@
 #import "SideMenuViewController.h"
 #import "AppDelegate.h"
 #import "ECSlidingViewController.h"
+#import "BCCreateAccountView.h"
 
 #define SECTION_HEADER_HEIGHT 44
 
@@ -59,10 +60,10 @@ int accountEntries = 0;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [self reset];
+    [self resetSideMenuGestures];
 }
 
-- (void)reset
+- (void)resetSideMenuGestures
 {
     // Reset Pan gestures
     for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
@@ -180,7 +181,7 @@ int accountEntries = 0;
             break;
     }
     
-    [self reset];
+    [self resetSideMenuGestures];
     
     [app toggleSideMenu];
 }
@@ -210,11 +211,23 @@ int accountEntries = 0;
 {
     if (section == 1) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
+        
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
-        headerLabel.text = @"Account Balances";
-        headerLabel.textColor = [UIColor lightGrayColor];
-        headerLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        // TODO i18n
+        headerLabel.text = @"My Accounts";
+        headerLabel.textColor = [UIColor darkGrayColor];
+        headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
         [view addSubview:headerLabel];
+        
+        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        addButton.tintColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+        CGRect buttonFrame = addButton.frame;
+        buttonFrame.origin.x = headerLabel.frame.origin.x + headerLabel.frame.size.width - buttonFrame.size.width - 80;
+        buttonFrame.origin.y += 11;
+        addButton.frame = buttonFrame;
+        [addButton addTarget:self action:@selector(addAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:addButton];
+        
         return view;
     }
     
@@ -301,6 +314,30 @@ int accountEntries = 0;
     }
     
     return cell;
+}
+
+# pragma mark - Button actions
+
+- (IBAction)addAccountClicked:(id)sender
+{
+    BCCreateAccountView *createAccountView = [[BCCreateAccountView alloc] init];
+    
+    [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose];
+    
+    [self resetSideMenuGestures];
+    
+    [app toggleSideMenu];
+}
+
+- (IBAction)editAccountLabelClicked:(id)sender
+{
+    BCCreateAccountView *createAccountView = [[BCCreateAccountView alloc] init];
+    
+    [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose];
+    
+    [self resetSideMenuGestures];
+    
+    [app toggleSideMenu];
 }
 
 @end

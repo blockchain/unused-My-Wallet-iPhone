@@ -290,16 +290,19 @@
 
 - (IBAction)labelSaveClicked:(id)sender
 {
-    labelTextField.text = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *label = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    if ([labelTextField.text length] == 0 || [labelTextField.text length] > 255) {
-        [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
+    NSMutableCharacterSet *allowedCharSet = [[NSCharacterSet alphanumericCharacterSet] mutableCopy];
+    [allowedCharSet formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
+     
+    if ([label rangeOfCharacterFromSet:[allowedCharSet invertedSet]].location != NSNotFound) {
+        [app standardNotify:BC_STRING_LABEL_MUST_BE_ALPHANUMERIC];
         return;
     }
     
     NSString * addr = self.clickedAddress;
     
-    [app.wallet setLabel:labelTextField.text forLegacyAddress:addr];
+    [app.wallet setLabel:label forLegacyAddress:addr];
     
     [self reload];
     
@@ -464,12 +467,13 @@
     
     labelAddressLabel.text = addr;
     
-    if (label && ![label isEqualToString:@""]) {
+    if (label && label.length > 0) {
         labelTextField.text = label;
     }
     
     [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
+        labelTextField.text = nil;
     } onResume:nil];
     
     [labelTextField becomeFirstResponder];

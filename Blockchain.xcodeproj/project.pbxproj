@@ -130,6 +130,7 @@
 		678AD65019D5AA7500E9A778 /* contacts_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64A19D5AA7500E9A778 /* contacts_icon.png */; };
 		678AD65119D5AA7500E9A778 /* contacts_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64B19D5AA7500E9A778 /* contacts_icon@2x.png */; };
 		678AD65219D5AA7500E9A778 /* contacts_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */; };
+		678CD7481A2777E600748AA5 /* BCCreateAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678CD7471A2777E600748AA5 /* BCCreateAccountView.m */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
 		67D7AC1B1A0C3566007CD81D /* wallet-signup.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC1A1A0C3566007CD81D /* wallet-signup.js */; };
 		67D7AC1D1A0C3575007CD81D /* bitcoinjs.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC1C1A0C3575007CD81D /* bitcoinjs.js */; };
@@ -674,6 +675,8 @@
 		678AD64A19D5AA7500E9A778 /* contacts_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts_icon.png; sourceTree = "<group>"; };
 		678AD64B19D5AA7500E9A778 /* contacts_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts_icon@2x.png"; sourceTree = "<group>"; };
 		678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts_icon@3x.png"; sourceTree = "<group>"; };
+		678CD7461A2777E600748AA5 /* BCCreateAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCCreateAccountView.h; sourceTree = "<group>"; };
+		678CD7471A2777E600748AA5 /* BCCreateAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateAccountView.m; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
 		67D7AC1A1A0C3566007CD81D /* wallet-signup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-signup.js"; path = "Submodules/My-Wallet-HD/wallet-signup.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC1C1A0C3575007CD81D /* bitcoinjs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bitcoinjs.js; path = "Submodules/My-Wallet-HD/bitcoinjs.js"; sourceTree = SOURCE_ROOT; };
@@ -1176,6 +1179,8 @@
 				67470A0719D43AFE00757D46 /* BCManualPairView.m */,
 				674709EA19D1D14300757D46 /* BCWelcomeView.h */,
 				674709EB19D1D14300757D46 /* BCWelcomeView.m */,
+				678CD7461A2777E600748AA5 /* BCCreateAccountView.h */,
+				678CD7471A2777E600748AA5 /* BCCreateAccountView.m */,
 			);
 			name = "Modal Content Views";
 			sourceTree = "<group>";
@@ -2007,6 +2012,7 @@
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
 				9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */,
 				67EE1DCA19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m in Sources */,
+				678CD7481A2777E600748AA5 /* BCCreateAccountView.m in Sources */,
 				2203488E19A4D51300611AC3 /* FBUtility.m in Sources */,
 				2203489519A4D51300611AC3 /* NSString+SBJSON.m in Sources */,
 				2203488719A4D51300611AC3 /* FBSession.m in Sources */,

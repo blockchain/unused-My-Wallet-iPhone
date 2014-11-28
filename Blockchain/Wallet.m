@@ -820,11 +820,9 @@
 
 # pragma mark - Calls from Obj-C to JS for HD wallet
 
-// TODO
-
 - (int)getAccountsCount
 {
-    if (![self.webView isLoaded]) {
+    if (![self isInitialized]) {
         return 0;
     }
     
@@ -833,7 +831,7 @@
 
 - (BOOL)hasLegacyAddresses
 {
-    if (![self.webView isLoaded]) {
+    if (![self isInitialized]) {
         return false;
     }
     
@@ -842,7 +840,7 @@
 
 - (uint64_t)getTotalBalanceForActiveLegacyAddresses
 {
-    if (![self.webView isLoaded]) {
+    if (![self isInitialized]) {
         return 0;
     }
     
@@ -851,7 +849,7 @@
 
 - (uint64_t)getBalanceForAccount:(int)account
 {
-    if (![self.webView isLoaded]) {
+    if (![self isInitialized]) {
         return 0;
     }
     
@@ -860,11 +858,25 @@
 
 - (NSString *)getLabelForAccount:(int)account
 {
-    if (![self.webView isLoaded]) {
+    if (![self isInitialized]) {
         return nil;
     }
     
     return [self.webView executeJSSynchronous:@"MyWallet.getLabelForAccount(%d)", account];
+}
+
+- (void)setLabelForAccount:(int)account label:(NSString *)label
+{
+    if ([self isInitialized]) {
+        [self.webView executeJSSynchronous:@"MyWallet.setLabelForAccount(%d, \"%@\")", account, label];
+    }
+}
+
+- (void)createAccountWithLabel:(NSString *)label
+{
+    if ([self isInitialized]) {
+        [self.webView executeJSSynchronous:@"MyWallet.createAccount(\"%@\")", label];
+    }
 }
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet

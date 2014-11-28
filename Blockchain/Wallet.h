@@ -160,6 +160,10 @@
 
 - (uint64_t)getTotalBalanceForActiveLegacyAddresses;
 - (uint64_t)getBalanceForAccount:(int)account;
+
 - (NSString *)getLabelForAccount:(int)account;
+- (void)setLabelForAccount:(int)account label:(NSString *)label;
+
+- (void)createAccountWithLabel:(NSString *)label;
 
 @end

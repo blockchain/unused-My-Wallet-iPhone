@@ -15,18 +15,20 @@
 
 <script type="text/javascript" src="jquery.min.js"></script>
 
-<script type="text/javascript" src="old_bitcoinjs.js"></script>
 <script type="text/javascript" src="shared.js"></script>
 <script type="text/javascript" src="blockchainapi.js"></script>
-<script type="text/javascript" src="wallet.js"></script>
-
-<!-- HD Wallet -->
+<script type="text/javascript" src="crypto_util-legacy.js"></script>
+<script type="text/javascript" src="aes.js"></script>
+<script type="text/javascript" src="sha256.js"></script>
+<script type="text/javascript" src="pbkdf2.js"></script>
+<script type="text/javascript" src="cipher-core.js"></script>
+<script type="text/javascript" src="pad-iso10126.js"></script>
 <script type="text/javascript" src="bitcoinjs.js"></script>
 <script type="text/javascript" src="hdwallet.js"></script>
 <script type="text/javascript" src="mnemonic.js"></script>
 <script type="text/javascript" src="bip39.js"></script>
+<script type="text/javascript" src="wallet.js"></script>
 
-<!-- JS <-> Obj-C Bridge -->
 <script type="text/javascript" src="bridge.js"></script>
 
 <script type="text/javascript">
@@ -119,7 +121,7 @@ MyWalletPhone.cancelTxSigning = function() {
 function setScryptImportExport() {
     ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
         device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
-            var bytes = Crypto.util.hexToBytes(buffer);
+            var bytes = CryptoJS.enc.hex.parse(buffer);
             callback(bytes);
         }, function(e) {
             error(''+e);
@@ -450,7 +452,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
                        version: raw_code[0],
                        guid: guid,
                        sharedKey: components2[0],
-                       password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
+                       password: UTF8.bytesToString(CryptoJS.enc.hex.parse(components2[1]))
                        });
                } else {
                error('Decryption Error');
@@ -472,10 +474,6 @@ MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
     MyWallet.addAddressBookEntry(bitcoinAddress, label);
     
     MyWallet.backupWallet();
-}
-
-MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
-    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
 }
 
 MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {

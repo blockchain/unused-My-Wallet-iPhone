@@ -164,7 +164,7 @@
 
 - (NSString*)decrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations
 {
-    return [self.webView executeJSSynchronous:@"MyWalletPhone.decrypt(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
+    return [self.webView executeJSSynchronous:@"MyWallet.decryptPasswordWithProcessedPin(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
 }
 
 - (void)getHistory

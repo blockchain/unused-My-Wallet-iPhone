@@ -154,6 +154,11 @@
 #define BC_STRING_NEW_WALLET NSLocalizedString(@"New Wallet", nil)
 
 #define BC_STRING_CREATE_ACCOUNT NSLocalizedString(@"Create Account", nil)
+#define BC_STRING_EDIT_ACCOUNT NSLocalizedString(@"Edit Account", nil)
 #define BC_STRING_LABEL NSLocalizedString(@"Label", nil)
-#define BC_STRING_NEW_WALLET NSLocalizedString(@"New Wallet", nil)
-#define BC_STRING_NEW_WALLET NSLocalizedString(@"New Wallet", nil)
+
+#define BC_STRING_DONE NSLocalizedString(@"Done", nil)
+
+#define BC_STRING_MY_ACCOUNTS NSLocalizedString(@"My Accounts", nil)
+#define BC_STRING_TOTAL_BALANCE NSLocalizedString(@"Total Balance", nil)
+#define BC_STRING_IMPORTED_ADDRESSES NSLocalizedString(@"Imported Addresses", nil)

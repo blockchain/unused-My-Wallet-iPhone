@@ -1,17 +1,15 @@
 //
-//  BCCreateAccountView.m
+//  BCEditAccountView.m
 //  Blockchain
 //
-//  Created by Mark Pfluger on 11/27/14.
+//  Created by Mark Pfluger on 12/1/14.
 //  Copyright (c) 2014 Qkos Services Ltd. All rights reserved.
 //
 
-#import "BCCreateAccountView.h"
+#import "BCEditAccountView.h"
 #import "AppDelegate.h"
 
-@implementation BCCreateAccountView
-
-UITextField *labelTextField;
+@implementation BCEditAccountView
 
 -(id)init
 {
@@ -23,7 +21,7 @@ UITextField *labelTextField;
         self.backgroundColor = [UIColor whiteColor];
         
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, window.frame.size.width - 40, 30)];
-        headerLabel.text = BC_STRING_CREATE_ACCOUNT;
+        headerLabel.text = BC_STRING_EDIT_ACCOUNT;
         headerLabel.textAlignment = NSTextAlignmentCenter;
         headerLabel.textColor = [UIColor darkGrayColor];
         headerLabel.font = [UIFont systemFontOfSize:21.0];
@@ -36,37 +34,32 @@ UITextField *labelTextField;
         labelLabel.font = [UIFont systemFontOfSize:17.0];
         [self addSubview:labelLabel];
         
-        labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
-        labelTextField.borderStyle = UITextBorderStyleRoundedRect;
-        labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-        [self addSubview:labelTextField];
-
-        UIButton *createAccountButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        createAccountButton.frame = CGRectMake(window.frame.size.width - 20 - 120, 130, 120, 40);
-        createAccountButton.backgroundColor = COLOR_BUTTON_GRAY;
-        [createAccountButton setTitle:BC_STRING_DONE forState:UIControlStateNormal];
-        [createAccountButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        createAccountButton.titleLabel.font = [UIFont systemFontOfSize:17.0];
-        createAccountButton.layer.cornerRadius = 5;
-        [self addSubview:createAccountButton];
+        _labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
+        _labelTextField.borderStyle = UITextBorderStyleRoundedRect;
+        _labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+        [self addSubview:_labelTextField];
         
-        [createAccountButton addTarget:self action:@selector(createAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *editAccountButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        editAccountButton.frame = CGRectMake(window.frame.size.width - 20 - 120, 130, 120, 40);
+        editAccountButton.backgroundColor = COLOR_BUTTON_GRAY;
+        [editAccountButton setTitle:BC_STRING_DONE forState:UIControlStateNormal];
+        [editAccountButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        editAccountButton.titleLabel.font = [UIFont systemFontOfSize:17.0];
+        editAccountButton.layer.cornerRadius = 5;
+        [self addSubview:editAccountButton];
+        
+        [editAccountButton addTarget:self action:@selector(editAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return self;
 }
 
-- (void)didMoveToSuperview
-{
-    [labelTextField becomeFirstResponder];
-}
-
 # pragma mark - Button actions
 
-- (IBAction)createAccountClicked:(id)sender
+- (IBAction)editAccountClicked:(id)sender
 {
     // Remove whitespace
-    NSString *label = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *label = [self.labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if (label.length == 0) {
         [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
@@ -81,7 +74,7 @@ UITextField *labelTextField;
         return;
     }
     
-    [app.wallet createAccountWithLabel:labelTextField.text];
+    [app.wallet setLabelForAccount:self.accountIdx label:label];
     
     [app closeModalWithTransition:kCATransitionFade];
     

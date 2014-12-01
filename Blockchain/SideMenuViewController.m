@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "ECSlidingViewController.h"
 #import "BCCreateAccountView.h"
+#import "BCEditAccountView.h"
 
 #define SECTION_HEADER_HEIGHT 44
 
@@ -116,24 +117,6 @@ int accountEntries = 0;
         castsShadowView.layer.shadowOpacity = 0.3f;
         castsShadowView.layer.shadowRadius = 10.0f;
         castsShadowView.layer.shadowColor = [UIColor blackColor].CGColor;
-        
-        // Old one - shadow is over topViewController
-        //        UIView *grayOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, _window.frame.size.width, _window.frame.size.height)];
-        //        grayOverlayView.backgroundColor = [UIColor blackColor];
-        //        grayOverlayView.tag = 200;
-        //        grayOverlayView.alpha = 0.0;
-        //        [_tabViewController.view addSubview:grayOverlayView];
-        //        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-        //            grayOverlayView.alpha = 0.165;
-        //        }];
-        //
-        //        CAGradientLayer *l = [CAGradientLayer layer];
-        //        l.frame = grayOverlayView.bounds;
-        //        l.colors = [NSArray arrayWithObjects:(id)[UIColor whiteColor].CGColor, (id)[UIColor clearColor].CGColor, nil];
-        //        l.startPoint = CGPointMake(0.0f, 1.0f);
-        //        l.endPoint = CGPointMake(0.05f, 1.0f);
-        //        grayOverlayView.layer.mask = l;
-
     }
     // SideMenu will slide out
     else if (operation == ECSlidingViewControllerOperationResetFromRight) {
@@ -213,8 +196,7 @@ int accountEntries = 0;
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
         
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
-        // TODO i18n
-        headerLabel.text = @"My Accounts";
+        headerLabel.text = BC_STRING_MY_ACCOUNTS;
         headerLabel.textColor = [UIColor darkGrayColor];
         headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
         [view addSubview:headerLabel];
@@ -297,19 +279,23 @@ int accountEntries = 0;
             uint64_t totalBalance = app.latestResponse.final_balance;
             
             cell.textLabel.text = [app formatMoney:totalBalance localCurrency:app->symbolLocal];
-            cell.detailTextLabel.text = @"Total Balance";
+            cell.detailTextLabel.text = BC_STRING_TOTAL_BALANCE;
         }
         else if (indexPath.row < accountEntries-1) {
             uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1];
             
             cell.textLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
+            // TODO UI?
+            cell.imageView.image = [UIImage imageNamed:@"settings_icon"];
+            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editAccountClicked:)];
+            [cell addGestureRecognizer:tapGestureRecognizer];
             cell.detailTextLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
         }
         else {
             uint64_t legacyBalance = [app.wallet getTotalBalanceForActiveLegacyAddresses];
             
             cell.textLabel.text = [app formatMoney:legacyBalance localCurrency:app->symbolLocal];
-            cell.detailTextLabel.text = @"Imported Addresses";
+            cell.detailTextLabel.text = BC_STRING_IMPORTED_ADDRESSES;
         }
     }
     
@@ -329,11 +315,17 @@ int accountEntries = 0;
     [app toggleSideMenu];
 }
 
-- (IBAction)editAccountLabelClicked:(id)sender
+- (IBAction)editAccountClicked:(id)sender
 {
-    BCCreateAccountView *createAccountView = [[BCCreateAccountView alloc] init];
+    BCEditAccountView *editAccountView = [[BCEditAccountView alloc] init];
     
-    [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose];
+    [app showModalWithContent:editAccountView closeType:ModalCloseTypeClose onDismiss:nil onResume:^{
+        // TODO set fields according to account clicked on
+        int accountIdx = 0;
+        editAccountView.accountIdx = accountIdx;
+        editAccountView.labelTextField.text = [app.wallet getLabelForAccount:accountIdx];
+        [editAccountView.labelTextField becomeFirstResponder];
+    }];
     
     [self resetSideMenuGestures];
     

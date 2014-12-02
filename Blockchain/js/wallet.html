@@ -639,13 +639,9 @@ MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
 }
 
-// TODO deprecated?
 MyWallet.makeNotice = function(type, _id, msg) {
     device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
 }
-
-// TODO deprecated?
-MyWallet.showNotification = function() { }
 
 MyStore.get_old = MyStore.get;
 MyStore.get = function(key, callback) {

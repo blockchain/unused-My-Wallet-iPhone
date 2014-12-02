@@ -10,4 +10,6 @@
 
 @interface BCCreateAccountView : UIView
 
+@property (nonatomic, strong) UITextField *labelTextField;
+
 @end

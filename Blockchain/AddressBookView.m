@@ -170,23 +170,19 @@ int numMyAddresses;
 {
     if (showFromAddresses) {
         if (section == 0) {
-            // TODO i18n
-            return @"Accounts";
+            return BC_STRING_MY_ACCOUNTS;
         }
     }
     else {
         if (section == 0) {
-            // TODO i18n
-            return @"Address Book";
+            return BC_STRING_ADDRESS_BOOK;
         }
         else if (section == 1) {
-            // TODO i18n
-            return @"Accounts";
+            return BC_STRING_MY_ACCOUNTS;
         }
     }
     
-    // TODO i18n
-    return @"Imported Addresses";
+    return BC_STRING_IMPORTED_ADDRESSES;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

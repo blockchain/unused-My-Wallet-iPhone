@@ -162,3 +162,5 @@
 #define BC_STRING_MY_ACCOUNTS NSLocalizedString(@"My Accounts", nil)
 #define BC_STRING_TOTAL_BALANCE NSLocalizedString(@"Total Balance", nil)
 #define BC_STRING_IMPORTED_ADDRESSES NSLocalizedString(@"Imported Addresses", nil)
+
+#define BC_STRING_ADDRESS_BOOK NSLocalizedString(@"Address book", nil)

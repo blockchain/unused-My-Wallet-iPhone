@@ -11,8 +11,6 @@
 
 @implementation BCCreateAccountView
 
-UITextField *labelTextField;
-
 -(id)init
 {
     UIWindow *window = app.window;
@@ -36,10 +34,10 @@ UITextField *labelTextField;
         labelLabel.font = [UIFont systemFontOfSize:17.0];
         [self addSubview:labelLabel];
         
-        labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
-        labelTextField.borderStyle = UITextBorderStyleRoundedRect;
-        labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-        [self addSubview:labelTextField];
+        _labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
+        _labelTextField.borderStyle = UITextBorderStyleRoundedRect;
+        _labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+        [self addSubview:_labelTextField];
 
         UIButton *createAccountButton = [UIButton buttonWithType:UIButtonTypeCustom];
         createAccountButton.frame = CGRectMake(window.frame.size.width - 20 - 120, 130, 120, 40);
@@ -56,17 +54,12 @@ UITextField *labelTextField;
     return self;
 }
 
-- (void)didMoveToSuperview
-{
-    [labelTextField becomeFirstResponder];
-}
-
 # pragma mark - Button actions
 
 - (IBAction)createAccountClicked:(id)sender
 {
     // Remove whitespace
-    NSString *label = [labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *label = [self.labelTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if (label.length == 0) {
         [app standardNotify:BC_STRING_YOU_MUST_ENTER_A_LABEL];
@@ -81,7 +74,7 @@ UITextField *labelTextField;
         return;
     }
     
-    [app.wallet createAccountWithLabel:labelTextField.text];
+    [app.wallet createAccountWithLabel:label];
     
     [app closeModalWithTransition:kCATransitionFade];
     

@@ -11,6 +11,7 @@
 #import "ECSlidingViewController.h"
 #import "BCCreateAccountView.h"
 #import "BCEditAccountView.h"
+#import "AccountTableCell.h"
 
 #define SECTION_HEADER_HEIGHT 44
 
@@ -21,6 +22,8 @@
 @end
 
 @implementation SideMenuViewController
+
+ECSlidingViewController *sideMenu;
 
 int menuEntries = 4;
 int accountEntries = 0;
@@ -36,8 +39,10 @@ int accountEntries = 0;
     logo.frame = CGRectMake(88, 22, 143, 40);
     [topBarView addSubview:logo];
     
+    sideMenu = app.slidingViewController;
+    
     self.tableView = ({
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * menuEntries) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * menuEntries) style:UITableViewStylePlain];
         tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         tableView.delegate = self;
         tableView.dataSource = self;
@@ -52,9 +57,12 @@ int accountEntries = 0;
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
     
+    // TODO get scrolling to work if the tableview size is larger than the view frame
+//    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
+//    self.tableView.scrollEnabled = YES;
+    
     [self.view addSubview:self.tableView];
     
-    ECSlidingViewController *sideMenu = app.slidingViewController;
     sideMenu.delegate = self;
 }
 
@@ -71,7 +79,6 @@ int accountEntries = 0;
         [view setUserInteractionEnabled:YES];
     }
     
-    ECSlidingViewController *sideMenu = app.slidingViewController;
     [app.tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
     
     [app.tabViewController.menuSwipeRecognizerView setUserInteractionEnabled:YES];
@@ -91,7 +98,7 @@ int accountEntries = 0;
     // Account entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
     accountEntries = 1 + app.wallet.getAccountsCount + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     
-    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
+    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
     
     [self.tableView reloadData];
 }
@@ -193,18 +200,19 @@ int accountEntries = 0;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, SECTION_HEADER_HEIGHT)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         headerLabel.text = BC_STRING_MY_ACCOUNTS;
-        headerLabel.textColor = [UIColor darkGrayColor];
+        headerLabel.textColor = [UIColor lightGrayColor];
         headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        headerLabel.textAlignment = NSTextAlignmentCenter;
         [view addSubview:headerLabel];
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
         addButton.tintColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
         CGRect buttonFrame = addButton.frame;
-        buttonFrame.origin.x = headerLabel.frame.origin.x + headerLabel.frame.size.width - buttonFrame.size.width - 80;
+        buttonFrame.origin.x = headerLabel.frame.origin.x + headerLabel.frame.size.width - buttonFrame.size.width - 20;
         buttonFrame.origin.y += 11;
         addButton.frame = buttonFrame;
         [addButton addTarget:self action:@selector(addAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -231,38 +239,21 @@ int accountEntries = 0;
     
     if (indexPath.section == 0) {
         cellIdentifier = @"CellMenu";
-    }
-    else {
-        cellIdentifier = @"CellBalance";
-    }
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-        cell.textLabel.highlightedTextColor = [UIColor whiteColor];
         
-        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
-        [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
-        cell.selectedBackgroundView = v;
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         
-        if (indexPath.section == 1) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
+            cell.textLabel.textColor = [UIColor lightGrayColor];
+            cell.textLabel.highlightedTextColor = [UIColor whiteColor];
             
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:20.0];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
-            
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-            cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
-            cell.detailTextLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+            UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
+            [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+            cell.selectedBackgroundView = v;
         }
-    }
-    
-    if (indexPath.section == 0) {
+        
         NSArray *titles;
         NSArray *images;
         titles = @[BC_STRING_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
@@ -270,36 +261,45 @@ int accountEntries = 0;
         
         cell.textLabel.text = titles[indexPath.row];
         cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
+        
+        return cell;
     }
     else {
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(toggleSymbol)];
-        [cell.textLabel addGestureRecognizer:tapGestureRecognizer];
-        cell.textLabel.userInteractionEnabled = YES;
+        cellIdentifier = @"CellBalance";
+        
+        AccountTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[AccountTableCell alloc] init];
+            cell.backgroundColor = [UIColor clearColor];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
         if (indexPath.row == 0) {
             uint64_t totalBalance = app.latestResponse.final_balance;
             
-            cell.textLabel.text = [app formatMoney:totalBalance localCurrency:app->symbolLocal];
-            cell.detailTextLabel.text = BC_STRING_TOTAL_BALANCE;
+            cell.amountLabel.text = [app formatMoney:totalBalance localCurrency:app->symbolLocal];
+            cell.labelLabel.text = BC_STRING_TOTAL_BALANCE;
+            cell.editButton.hidden = YES;
         }
         else if (indexPath.row < accountEntries-1) {
             uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1];
             
-            cell.textLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
-            // TODO UI?
-            cell.imageView.image = [UIImage imageNamed:@"settings_icon"];
-            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editAccountClicked:)];
-            [cell addGestureRecognizer:tapGestureRecognizer];
-            cell.detailTextLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
+            cell.amountLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
+            cell.labelLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
+            cell.accountIdx = indexPath.row - 1;
         }
         else {
             uint64_t legacyBalance = [app.wallet getTotalBalanceForActiveLegacyAddresses];
             
-            cell.textLabel.text = [app formatMoney:legacyBalance localCurrency:app->symbolLocal];
-            cell.detailTextLabel.text = BC_STRING_IMPORTED_ADDRESSES;
+            cell.amountLabel.text = [app formatMoney:legacyBalance localCurrency:app->symbolLocal];
+            cell.labelLabel.text = BC_STRING_IMPORTED_ADDRESSES;
+            cell.editButton.hidden = YES;
         }
+        
+        return cell;
     }
-    
-    return cell;
 }
 
 # pragma mark - Button actions
@@ -310,24 +310,9 @@ int accountEntries = 0;
     
     [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose];
     
-    [self resetSideMenuGestures];
-    
-    [app toggleSideMenu];
-}
-
-- (IBAction)editAccountClicked:(id)sender
-{
-    BCEditAccountView *editAccountView = [[BCEditAccountView alloc] init];
-    
-    [app showModalWithContent:editAccountView closeType:ModalCloseTypeClose onDismiss:nil onResume:^{
-        // TODO set fields according to account clicked on
-        int accountIdx = 0;
-        editAccountView.accountIdx = accountIdx;
-        editAccountView.labelTextField.text = [app.wallet getLabelForAccount:accountIdx];
-        [editAccountView.labelTextField becomeFirstResponder];
-    }];
-    
-    [self resetSideMenuGestures];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [createAccountView.labelTextField becomeFirstResponder];
+    });
     
     [app toggleSideMenu];
 }

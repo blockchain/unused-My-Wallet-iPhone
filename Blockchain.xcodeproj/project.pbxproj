@@ -105,6 +105,7 @@
 		6762507A1A28ECE70052B63F /* wallet-signup.js in Resources */ = {isa = PBXBuildFile; fileRef = 676250791A28ECE70052B63F /* wallet-signup.js */; };
 		6762507D1A2CC5800052B63F /* BCEditAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6762507C1A2CC5800052B63F /* BCEditAccountView.m */; };
 		6762507F1A2DC6FE0052B63F /* HDWalletAccount.js in Resources */ = {isa = PBXBuildFile; fileRef = 6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */; };
+		676250821A2DDF360052B63F /* AccountTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 676250811A2DDF360052B63F /* AccountTableCell.m */; };
 		6775569419E749CC0054699B /* back_chevron_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569119E749CC0054699B /* back_chevron_icon@3x.png */; };
 		6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569219E749CC0054699B /* back_chevron_icon@2x.png */; };
 		6775569619E749CC0054699B /* back_chevron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569319E749CC0054699B /* back_chevron_icon.png */; };
@@ -655,6 +656,8 @@
 		6762507B1A2CC5800052B63F /* BCEditAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEditAccountView.h; sourceTree = "<group>"; };
 		6762507C1A2CC5800052B63F /* BCEditAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEditAccountView.m; sourceTree = "<group>"; };
 		6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = HDWalletAccount.js; path = "Submodules/My-Wallet-HD/HDWalletAccount.js"; sourceTree = SOURCE_ROOT; };
+		676250801A2DDF360052B63F /* AccountTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableCell.h; sourceTree = "<group>"; };
+		676250811A2DDF360052B63F /* AccountTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableCell.m; sourceTree = "<group>"; };
 		6775569119E749CC0054699B /* back_chevron_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@3x.png"; sourceTree = "<group>"; };
 		6775569219E749CC0054699B /* back_chevron_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@2x.png"; sourceTree = "<group>"; };
 		6775569319E749CC0054699B /* back_chevron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_chevron_icon.png; sourceTree = "<group>"; };
@@ -1677,13 +1680,15 @@
 		C9D4B2B2193E032200EDA9EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				678AD5EC19D4731C00E9A778 /* Modal Content Views */,
+				676250801A2DDF360052B63F /* AccountTableCell.h */,
+				676250811A2DDF360052B63F /* AccountTableCell.m */,
 				9F61B89C151519EF0083C57A /* AddressBookView.h */,
 				9F61B89D151519EF0083C57A /* AddressBookView.m */,
 				9F0CBAD61513CA2600CD945D /* BCFadeView.h */,
 				9F0CBAD71513CA2600CD945D /* BCFadeView.m */,
 				84B601C8197AD03800DA1829 /* BCModalView.h */,
 				84B601C9197AD03800DA1829 /* BCModalView.m */,
+				678AD5EC19D4731C00E9A778 /* Modal Content Views */,
 				9F45F8191514D7D600018AED /* MultiValueField.h */,
 				9F45F81A1514D7D600018AED /* MultiValueField.m */,
 				9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */,
@@ -1973,6 +1978,7 @@
 				674709EC19D1D14300757D46 /* BCWelcomeView.m in Sources */,
 				2203488819A4D51300611AC3 /* FBSessionManualTokenCachingStrategy.m in Sources */,
 				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
+				676250821A2DDF360052B63F /* AccountTableCell.m in Sources */,
 				2203489719A4D51300611AC3 /* SBJsonBase.m in Sources */,
 				2203487519A4D51300611AC3 /* FBFrictionlessRequestSettings.m in Sources */,
 				2203487819A4D51300611AC3 /* FBGraphObject.m in Sources */,

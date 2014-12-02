@@ -49,17 +49,12 @@ int accountEntries = 0;
         tableView.opaque = NO;
         tableView.backgroundColor = [UIColor clearColor];
         tableView.backgroundView = nil;
-        tableView.bounces = NO;
         tableView;
     });
     
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
-    
-    // TODO get scrolling to work if the tableview size is larger than the view frame
-//    self.view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
-//    self.tableView.scrollEnabled = YES;
     
     [self.view addSubview:self.tableView];
     
@@ -99,6 +94,14 @@ int accountEntries = 0;
     accountEntries = 1 + app.wallet.getAccountsCount + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     
     self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
+    
+    // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
+    if (self.tableView.frame.size.height > self.view.frame.size.height - DEFAULT_HEADER_HEIGHT) {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 86, 0);
+    }
+    else {
+        self.tableView.scrollEnabled = NO;
+    }
     
     [self.tableView reloadData];
 }

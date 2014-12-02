@@ -36,7 +36,7 @@
         _labelLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_labelLabel];
         
-        _editButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30 - 25, 0, 54, 54)];
+        _editButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30 - 30, 0, 54, 54)];
         [_editButton setImage:[UIImage imageNamed:@"account-settings"] forState:UIControlStateNormal];
         [_editButton addTarget:self action:@selector(editButtonclicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_editButton];

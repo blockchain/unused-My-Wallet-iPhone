@@ -169,7 +169,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
         throw 'Invalid Send Value';
     }
     
-    var fee = null;
+    var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
     MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error);
@@ -200,7 +200,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
     var toAddress = account.getAddressForPaymentRequest(paymentRequest);
     
-    var fee = null;
+    var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
     MyWallet.sendBitcoinsForAccount(from, toAddress, value, fee, note, success, error);

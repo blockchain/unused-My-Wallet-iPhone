@@ -415,7 +415,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
                        version: raw_code[0],
                        guid: guid,
                        sharedKey: components2[0],
-                       password: UTF8.bytesToString(CryptoJS.enc.hex.parse(components2[1]))
+                       password: CryptoJS.enc.Hex.parse(components2[1]).toString(CryptoJS.enc.Utf8)
                        });
                } else {
                error('Decryption Error');

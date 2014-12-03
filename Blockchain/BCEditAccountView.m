@@ -37,6 +37,9 @@
         _labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
         _labelTextField.borderStyle = UITextBorderStyleRoundedRect;
         _labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+        _labelTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _labelTextField.spellCheckingType = UITextSpellCheckingTypeNo;
+        // TODO Done keyboard return type
         [self addSubview:_labelTextField];
         
         UIButton *editAccountButton = [UIButton buttonWithType:UIButtonTypeCustom];

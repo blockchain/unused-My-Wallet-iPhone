@@ -106,7 +106,7 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 
     message =  [message stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-	NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://blockchain.info/exception_log?device=iphone&message=%@", message]];
+	NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"https://blockchain.info/exception_log?device=iphone&message=%@", message]];
         
     NSHTTPURLResponse * repsonse = NULL;
     NSError * error = NULL;

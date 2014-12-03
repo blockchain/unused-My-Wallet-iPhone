@@ -151,7 +151,7 @@
     lastLoadedMap = now;
     
     NSError * error = nil;
-    NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    NSString * merchantHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"merchant-map" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
     NSURL * baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
     

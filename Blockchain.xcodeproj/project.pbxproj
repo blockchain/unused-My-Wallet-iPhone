@@ -143,6 +143,7 @@
 		678AD65219D5AA7500E9A778 /* contacts_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */; };
 		678CD7481A2777E600748AA5 /* BCCreateAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678CD7471A2777E600748AA5 /* BCCreateAccountView.m */; };
 		67C6704019CAF558004BD8FC /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C6703F19CAF558004BD8FC /* bluedot.png */; };
+		67D2B6EE1A2F2DEF0078782C /* wallet-ios.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D2B6ED1A2F2DEF0078782C /* wallet-ios.js */; };
 		67D7AC1D1A0C3575007CD81D /* bitcoinjs.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC1C1A0C3575007CD81D /* bitcoinjs.js */; };
 		67D7AC1F1A0C3585007CD81D /* blockchainapi.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC1E1A0C3585007CD81D /* blockchainapi.js */; };
 		67D7AC251A0C36A7007CD81D /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC241A0C36A7007CD81D /* jquery.min.js */; };
@@ -179,7 +180,7 @@
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */; };
-		84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC631987B5E9000E8DC8 /* merchant.html */; };
+		84AEEC641987B5E9000E8DC8 /* merchant-map.html in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC631987B5E9000E8DC8 /* merchant-map.html */; };
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
 		84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */; };
 		84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */; };
@@ -206,7 +207,7 @@
 		84FC0302198162AE00B97D5B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC0300198162AE00B97D5B /* libssl.a */; };
 		84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */; };
 		9F0CBAAA151351F400CD945D /* Wallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA9151351F400CD945D /* Wallet.m */; };
-		9F0CBAB015135DF200CD945D /* wallet.html in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAAD15135DF200CD945D /* wallet.html */; };
+		9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAAD15135DF200CD945D /* wallet-ios.html */; };
 		9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAB215138AE100CD945D /* payment_moved.png */; };
 		9F0CBAD11513BF9D00CD945D /* busy-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBACF1513BF9D00CD945D /* busy-background.png */; };
 		9F0CBAD21513BF9D00CD945D /* busy-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */; };
@@ -698,6 +699,7 @@
 		678CD7461A2777E600748AA5 /* BCCreateAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCCreateAccountView.h; sourceTree = "<group>"; };
 		678CD7471A2777E600748AA5 /* BCCreateAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateAccountView.m; sourceTree = "<group>"; };
 		67C6703F19CAF558004BD8FC /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
+		67D2B6ED1A2F2DEF0078782C /* wallet-ios.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "wallet-ios.js"; sourceTree = "<group>"; };
 		67D7AC1C1A0C3575007CD81D /* bitcoinjs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bitcoinjs.js; path = "Submodules/My-Wallet-HD/bitcoinjs.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC1E1A0C3585007CD81D /* blockchainapi.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = blockchainapi.js; path = "Submodules/My-Wallet-HD/blockchainapi.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC241A0C36A7007CD81D /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jquery.min.js; path = "Submodules/My-Wallet-HD/jquery.min.js"; sourceTree = SOURCE_ROOT; };
@@ -744,7 +746,7 @@
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
 		84AEEC591987A779000E8DC8 /* MerchantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantViewController.h; sourceTree = "<group>"; };
 		84AEEC5A1987A779000E8DC8 /* MerchantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
-		84AEEC631987B5E9000E8DC8 /* merchant.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = merchant.html; sourceTree = "<group>"; };
+		84AEEC631987B5E9000E8DC8 /* merchant-map.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "merchant-map.html"; sourceTree = "<group>"; };
 		84AEEC651987C49A000E8DC8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84AEEC6B1987D5EC000E8DC8 /* marker_atm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_atm.png; sourceTree = "<group>"; };
 		84AEEC6E1987D5EC000E8DC8 /* marker_cafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_cafe.png; sourceTree = "<group>"; };
@@ -783,7 +785,7 @@
 		84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		9F0CBAA8151351F400CD945D /* Wallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wallet.h; sourceTree = "<group>"; };
 		9F0CBAA9151351F400CD945D /* Wallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wallet.m; sourceTree = "<group>"; };
-		9F0CBAAD15135DF200CD945D /* wallet.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = wallet.html; sourceTree = "<group>"; };
+		9F0CBAAD15135DF200CD945D /* wallet-ios.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "wallet-ios.html"; sourceTree = "<group>"; };
 		9F0CBAB215138AE100CD945D /* payment_moved.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = payment_moved.png; sourceTree = "<group>"; };
 		9F0CBACF1513BF9D00CD945D /* busy-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "busy-background.png"; sourceTree = "<group>"; };
 		9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "busy-background@2x.png"; sourceTree = "<group>"; };
@@ -1242,8 +1244,9 @@
 			children = (
 				C9C17A8B197FCE1900BF8A4E /* My-Wallet */,
 				844BC7AF1949BD710024160B /* bridge.js */,
-				9F0CBAAD15135DF200CD945D /* wallet.html */,
-				84AEEC631987B5E9000E8DC8 /* merchant.html */,
+				84AEEC631987B5E9000E8DC8 /* merchant-map.html */,
+				9F0CBAAD15135DF200CD945D /* wallet-ios.html */,
+				67D2B6ED1A2F2DEF0078782C /* wallet-ios.js */,
 			);
 			name = JavaScript;
 			path = js;
@@ -1794,6 +1797,7 @@
 				2203486D19A4D51300611AC3 /* LICENSE in Resources */,
 				67E9677619E320D100305358 /* marker_atm_off.png in Resources */,
 				678AD63819D5833A00E9A778 /* qrscanner_icon.png in Resources */,
+				67D2B6EE1A2F2DEF0078782C /* wallet-ios.js in Resources */,
 				678AD61D19D56EEB00E9A778 /* home_icon@3x.png in Resources */,
 				678AD65119D5AA7500E9A778 /* contacts_icon@2x.png in Resources */,
 				678AD63919D5833A00E9A778 /* qrscanner_icon@2x.png in Resources */,
@@ -1811,7 +1815,7 @@
 				67E9677819E320D100305358 /* marker_spend_off.png in Resources */,
 				84AEEC8E1987D9C7000E8DC8 /* marker_drink@2x.png in Resources */,
 				84AEEC901987D9C7000E8DC8 /* marker_spend@2x.png in Resources */,
-				84AEEC641987B5E9000E8DC8 /* merchant.html in Resources */,
+				84AEEC641987B5E9000E8DC8 /* merchant-map.html in Resources */,
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				678AD64F19D5AA7500E9A778 /* camera_icon@3x.png in Resources */,
 				67C6704019CAF558004BD8FC /* bluedot.png in Resources */,
@@ -1849,7 +1853,7 @@
 				C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */,
 				84AEEC8D1987D9C7000E8DC8 /* marker_cafe@2x.png in Resources */,
 				678AD63719D5833A00E9A778 /* merchant_directory_icon@3x.png in Resources */,
-				9F0CBAB015135DF200CD945D /* wallet.html in Resources */,
+				9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */,
 				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				678AD64E19D5AA7500E9A778 /* camera_icon@2x.png in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,

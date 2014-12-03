@@ -91,11 +91,9 @@
 - (void)loadJS
 {
     NSError *error = nil;
-    NSString *walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
+    NSString *walletHTML = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wallet-ios" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     
     NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
-    
-    walletHTML = [walletHTML stringByReplacingOccurrencesOfString:@"${resource_url}" withString:[baseURL absoluteString]];
     
     [webView loadHTMLString:walletHTML baseURL:baseURL];
 }

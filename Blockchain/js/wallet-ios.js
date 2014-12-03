@@ -37,7 +37,15 @@ MyWallet.getWebWorkerLoadPrefix = function() {
     return '';
 }
 
+
+// Register for JS event handlers and forward to Obj-C handlers
+
 MyWallet.addEventListener(function (event, obj) {
+    var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open "];
+
+    if (eventsWithObjCHandlers.indexOf(event) == -1)
+         return;
+
     if (obj) {
         event += ':';
     }
@@ -45,9 +53,30 @@ MyWallet.addEventListener(function (event, obj) {
     device.execute(event, [obj]);
 });
 
-MyWalletPhone.generateNewKey = function() {
-    $("#new-addr").click();
-}
+MyWallet.monitor(function (obj) {
+    console.log('Monitor event. Type: ' + (obj.type ? obj.type : 'null') +
+                ' Code: ' + (obj.code ? obj.code : 'null') +
+                ' Message: ' + (obj.message ? obj.message : 'null'))
+
+    if (obj.type == 'loadingText') {
+        device.execute('setLoadingText:', [obj.message])
+    }
+
+    else if (obj.type == 'error') {
+        // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
+        if (obj.message == 'No free outputs to spend')
+            return
+
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+
+    else if (obj.type == 'success') {
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+});
+
+
+// My Wallet phone functions
 
 MyWalletPhone.cancelTxSigning = function() {
     for (var key in pendingTransactions) {
@@ -58,12 +87,90 @@ MyWalletPhone.cancelTxSigning = function() {
 function setScryptImportExport() {
     ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
         device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
-            var bytes = Crypto.util.hexToBytes(buffer);
+            var bytes = CryptoJS.enc.hex.parse(buffer);
             callback(bytes);
         }, function(e) {
             error(''+e);
         });
     }
+}
+
+MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
+    var success = function() {
+        device.execute('did_decrypt')
+    }
+    var other_error = function() { }
+    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error)
+}
+
+MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
+    return MyWalletPhone.quickSend(from, to, valueString);
+}
+
+MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
+    var wallet = MyWallet.getHDWallet();
+    var account = wallet.getAccount(to);
+    
+    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
+    
+    return MyWalletPhone.quickSend(from, toAddress, valueString);
+}
+
+MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
+    var id = ''+Math.round(Math.random()*100000);
+        
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
+    
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
+    
+    var value = parseInt(valueString);
+    
+    if (!value || value == 0) {
+        throw 'Invalid Send Value';
+    }
+    
+    var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
+    var note = null;
+    
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error);
+    
+    return id;
+}
+
+MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
+    var id = ''+Math.round(Math.random()*100000);
+    
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
+    
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
+    
+    var value = parseInt(valueString);
+    
+    if (!value || value == 0) {
+        throw 'Invalid Send Value';
+    }
+    
+    var wallet = MyWallet.getHDWallet();
+    var account = wallet.getAccount(to);
+    
+    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
+    
+    var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
+    var note = null;
+    
+    MyWallet.sendBitcoinsForAccount(from, toAddress, value, fee, note, success, error);
+    
+    return id;
 }
 
 MyWalletPhone.quickSend = function(from, to, valueString) {
@@ -137,16 +244,16 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                     if (from && from.length > 0) {
                         obj.from_addresses = [from];
                     } else {
-                        obj.from_addresses = MyWallet.getActiveAddresses();
+                        obj.from_addresses = MyWallet.getLegacyActiveAddresses();
                     }
 
-                    var value = BigInteger.valueOf(valueString);
+                    var value = Bitcoin.BigInteger.valueOf(valueString);
 
-                    if (!value || value.compareTo(BigInteger.ZERO) == 0) {
+                    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
                         throw 'Invalid Send Value';
                     }
 
-                    obj.to_addresses.push({address: new Bitcoin.Address(to), value: value});
+                    obj.to_addresses.push({address: Bitcoin.Address.fromBase58Check(to), value: value});
 
                     obj.addListener(listener);
                        
@@ -166,7 +273,7 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
 }
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
-    MyWallet.setLoadingText('Retrieving PIN Code');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Retrieving PIN Code", code: 0});
 
     $.ajax({
         type: "POST",
@@ -203,7 +310,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
 }
 
 MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
-    MyWallet.setLoadingText('Saving PIN Code');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Saving PIN Code", code: 0});
     
     $.ajax({
         type: "POST",
@@ -241,6 +348,108 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
     });
 }
 
+MyWalletPhone.newAccount = function(password, email) {
+    loadScript('wallet-signup', function() {
+               MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
+                                                MyStore.clear();
+                                                device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
+                                                }, function (e) {
+                                                device.execute('on_error_creating_new_account:', [''+e]);
+                                                });
+               });
+}
+
+MyWalletPhone.parsePairingCode = function (raw_code) {
+    
+    var success = function (pairing_code) {
+        device.execute("didParsePairingCode:", [pairing_code]);
+    }
+    
+    var error = function (e) {
+        device.execute("errorParsingPairingCode:", [e]);
+    }
+    
+    try {
+        if (raw_code == null || raw_code.length == 0) {
+            throw "Invalid Pairing QR Code";
+        }
+        
+        if (raw_code[0] != '1') {
+            throw "Invalid Pairing Version Code " + raw_code[0];
+        }
+        
+        var components = raw_code.split("|");
+        
+        if (components.length < 3) {
+            throw "Invalid Pairing QR Code. Not enough components.";
+        }
+        
+        var guid = components[1];
+        if (guid.length != 36) {
+            throw "Invalid Pairing QR Code. GUID wrong length.";
+        }
+        
+        var encrypted_data = components[2];
+        
+        MyWallet.sendMonitorEvent({type: "loadingText", message: "Decrypting Pairing Code", code: 0});
+        
+        $.ajax({
+               type: "POST",
+               url: root + 'wallet',
+               timeout: 60000,
+               data: {
+               format: 'plain',
+               method: 'pairing-encryption-password',
+               guid: guid
+               },
+               success: function (encryption_phrase) {
+               try {
+               
+               var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                                                return decrypted != null;
+                                                }, function () {
+                                                error('Decryption Error');
+                                                });
+               
+               if (decrypted != null) {
+               var components2 = decrypted.split("|");
+               
+               success({
+                       version: raw_code[0],
+                       guid: guid,
+                       sharedKey: components2[0],
+                       password: UTF8.bytesToString(CryptoJS.enc.hex.parse(components2[1]))
+                       });
+               } else {
+               error('Decryption Error');
+               }
+               } catch(e) {
+               error(''+e);
+               }
+               },
+               error: function (res) {
+               error('Pairing Code Server Error');
+               }
+               });
+    } catch (e) {
+        error(''+e);
+    }
+}
+
+MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
+    MyWallet.addAddressBookEntry(bitcoinAddress, label);
+    
+    MyWallet.backupWallet();
+}
+
+MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
+    try {
+        return MyWallet.detectPrivateKeyFormat(privateKeyString);
+    } catch(e) {
+        return null;
+    }
+}
+
 MyWalletPhone.hasEncryptedWalletData = function() {
     var data = MyWallet.getEncryptedWalletData();
     
@@ -253,46 +462,10 @@ MyWalletPhone.getWsReadyState = function() {
     return ws.readyState;
 }
 
-MyWalletPhone.isValidAddress = function(addrstring) {
-    try {
-        new Bitcoin.Address(addrstring).toString();
-
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-
 MyWalletPhone.get_wallet_and_history = function() {
-    $('#refresh').click();
-}
-
-MyWalletPhone.setPassword = function(password) {
-    $('#restore-password').val(password);
-
-    $('#restore-wallet-continue').click();
-}
-
-MyStore.get_old = MyStore.get;
-MyStore.get = function(key, callback) {
-    // Disallow fetching of the guid
-    if (key == 'guid') {
-        callback();
-        return;
-    }
-    
-    MyStore.get_old(key, callback);
-}
-
-MyWalletPhone.newAccount = function(password, email) {
-    loadScript('wallet-signup', function() {
-        MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
-            MyStore.clear();
-            device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
-        }, function (e) {
-            device.execute('on_error_creating_new_account:', [''+e]);
-        });
-    });
+    MyWallet.getWallet(function() {
+        MyWallet.get_history()
+    })
 }
 
 MyWalletPhone.getMultiAddrResponse = function() {
@@ -303,7 +476,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
     obj.n_transactions = MyWallet.getNTransactions();
-    obj.addresses = MyWallet.getAllAddresses();
+    obj.addresses = MyWallet.getAllLegacyAddresses();
 
     obj.symbol_local = symbol_local;
     obj.symbol_btc = symbol_btc;
@@ -427,10 +600,6 @@ function webSocketDisconnect() {
 
 // Overrides
 
-MyWallet.setLoadingText = function(txt) {
-    device.execute('setLoadingText:', [txt]);
-}
-
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
 }
@@ -439,105 +608,19 @@ MyWallet.makeNotice = function(type, _id, msg) {
     device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
 }
 
-MyWalletPhone.addAddressBookEntry = function(bitcoinAddress, label) {
-    MyWallet.addAddressBookEntry(bitcoinAddress, label);
-
-    MyWallet.backupWallet();
-}
-
-MyWalletPhone.detectPrivateKeyFormat = function(privateKeyString) {
-    try {
-        return MyWallet.detectPrivateKeyFormat(privateKeyString);
-    } catch(e) {
-        return null;
+MyStore.get_old = MyStore.get;
+MyStore.get = function(key, callback) {
+    // Disallow fetching of the guid
+    if (key == 'guid') {
+        callback();
+        return;
     }
-}
-
-MyWallet.showNotification = function() { }
-
-MyWalletPhone.decrypt = function(data, password, pbkdf2_iterations) {
-    return Crypto.AES.decrypt(data, password, { mode: new Crypto.mode.CBC(Crypto.pad.iso10126), iterations : pbkdf2_iterations});
-}
-
-MyWalletPhone.parsePairingCode = function (raw_code) {
-
-    var success = function (pairing_code) {
-        device.execute("didParsePairingCode:", [pairing_code]);
-    }
-
-    var error = function (e) {
-        device.execute("errorParsingPairingCode:", [e]);
-    }
-
-    try {
-        if (raw_code == null || raw_code.length == 0) {
-            throw "Invalid Pairing QR Code";
-        }
-
-        if (raw_code[0] != '1') {
-            throw "Invalid Pairing Version Code " + raw_code[0];
-        }
-
-        var components = raw_code.split("|");
-
-        if (components.length < 3) {
-            throw "Invalid Pairing QR Code. Not enough components.";
-        }
-
-        var guid = components[1];
-        if (guid.length != 36) {
-            throw "Invalid Pairing QR Code. GUID wrong length.";
-        }
-
-        var encrypted_data = components[2];
-
-        MyWallet.setLoadingText('Decrypting Pairing Code');
-
-        $.ajax({
-            type: "POST",
-            url: root + 'wallet',
-            timeout: 60000,
-            data: {
-                format: 'plain',
-                method: 'pairing-encryption-password',
-                guid: guid
-            },
-            success: function (encryption_phrase) {
-                try {
-               
-                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
-                        return decrypted != null;
-                    }, function () {
-                        error('Decryption Error');
-                    });
-
-                    if (decrypted != null) {
-                        var components2 = decrypted.split("|");
-
-                        success({
-                            version: raw_code[0],
-                            guid: guid,
-                            sharedKey: components2[0],
-                            password: UTF8.bytesToString(Crypto.util.hexToBytes(components2[1]))
-                        });
-                    } else {
-                        error('Decryption Error');
-                    }
-                } catch(e) {
-                    error(''+e);
-                }
-            },
-            error: function (res) {
-                error('Pairing Code Server Error');
-            }
-        });
-    } catch (e) {
-        error(''+e);
-    }
+    
+    MyStore.get_old(key, callback);
 }
 
 BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
-    MyWallet.setLoadingText('Loading transactions');
+    MyWallet.sendMonitorEvent({type: "loadingText", message: "Loading transactions", code: 0});
 
     var clientTime=(new Date()).getTime();
 
@@ -546,7 +629,7 @@ BlockchainAPI.get_history = function(success, error, tx_filter, offset, n) {
     if (!n) n = 0;
 
     var data = {
-        active : MyWallet.getActiveAddresses().join('|'),
+        active : MyWallet.getLegacyActiveAddresses().join('|'),
         format : 'json',
         filter : tx_filter,
         offset : offset,

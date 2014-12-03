@@ -26,9 +26,6 @@ APP_VERSION = '0.1 BETA';
 root = "https://blockchain.info/";
 resource = '';
 
-// Hack to prevent JS Error
-function showLabelAddressModal() {}
-
 $(document).ready(function() {
     MyWallet.logout = function() {}
 });

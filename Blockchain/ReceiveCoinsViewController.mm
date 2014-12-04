@@ -575,14 +575,40 @@
     return 40.0f;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
-        return BC_STRING_ACTIVE;
+    // TODO My Accounts
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    view.backgroundColor = COLOR_BACKGROUND_GRAY;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, self.view.frame.size.width, 14)];
+    label.textColor = COLOR_FOREGROUND_GRAY;
+    label.font = [UIFont systemFontOfSize:14.0];
+    
+    [view addSubview:label];
+    
+    NSString *labelString;
+    
+    if (section == 0) {
+        labelString = BC_STRING_IMPORTED_ADDRESSES;
+        
+        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        addButton.tintColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
+        CGRect buttonFrame = addButton.frame;
+        buttonFrame.origin.x = self.view.frame.size.width - buttonFrame.size.width - 20;
+        buttonFrame.origin.y = 15;
+        addButton.frame = buttonFrame;
+        [addButton addTarget:self action:@selector(scanKeyClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:addButton];
+    }
     else if (section == 1)
-        return BC_STRING_ARCHIVED;
+        labelString =  BC_STRING_IMPORTED_ADDRESSES_ARCHIVED;
     else
-        @throw @"Unknown Secion";
+        @throw @"Unknown Section";
+    
+    label.text = [labelString uppercaseString];
+    
+    return view;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

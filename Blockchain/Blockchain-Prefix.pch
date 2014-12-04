@@ -30,6 +30,9 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define COLOR_BUTTON_GRAY UIColorFromRGB(0xebebeb)
 #define COLOR_BUTTON_DARK_GRAY UIColorFromRGB(0xb9b9b9)
 
+#define COLOR_BACKGROUND_GRAY UIColorFromRGB(0xf7f7f7)
+#define COLOR_FOREGROUND_GRAY UIColorFromRGB(0x6d6d72)
+
 #define DEFAULT_HEADER_HEIGHT 65
 #define DEFAULT_FOOTER_HEIGHT 54
 

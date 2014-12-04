@@ -39,8 +39,6 @@
 #define BC_STRING_LABEL_MUST_BE_ALPHANUMERIC NSLocalizedString(@"Label must contain letters and numbers only", nil)
 #define BC_STRING_UNARCHIVE NSLocalizedString(@"Unarchive", nil)
 #define BC_STRING_ARCHIVE NSLocalizedString(@"Archive", nil)
-#define BC_STRING_ACTIVE NSLocalizedString(@"Active", nil)
-#define BC_STRING_ARCHIVED NSLocalizedString(@"Archived", nil)
 #define BC_STRING_NO_LABEL NSLocalizedString(@"No Label", nil)
 #define BC_STRING_TRANSACTIONS_COUNT NSLocalizedString(@"%d Transactions", nil)
 #define BC_STRING_LOADING_EXTERNAL_PAGE NSLocalizedString(@"Loading External Page", nil)
@@ -162,5 +160,6 @@
 #define BC_STRING_MY_ACCOUNTS NSLocalizedString(@"My Accounts", nil)
 #define BC_STRING_TOTAL_BALANCE NSLocalizedString(@"Total Balance", nil)
 #define BC_STRING_IMPORTED_ADDRESSES NSLocalizedString(@"Imported Addresses", nil)
+#define BC_STRING_IMPORTED_ADDRESSES_ARCHIVED NSLocalizedString(@"Imported Addresses (Archived)", nil)
 
 #define BC_STRING_ADDRESS_BOOK NSLocalizedString(@"Address book", nil)

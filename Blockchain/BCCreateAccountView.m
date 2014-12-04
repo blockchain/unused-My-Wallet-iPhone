@@ -80,8 +80,6 @@
     [app.wallet createAccountWithLabel:label];
     
     [app closeModalWithTransition:kCATransitionFade];
-    
-    // TODO refresh list
 }
 
 @end

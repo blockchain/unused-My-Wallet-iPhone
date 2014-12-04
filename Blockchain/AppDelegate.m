@@ -48,6 +48,8 @@ AppDelegate * app;
 
 BOOL showSendCoins = NO;
 
+SideMenuViewController *sideMenuViewController;
+
 #pragma mark - Lifecycle
 
 - (id)init
@@ -90,7 +92,8 @@ BOOL showSendCoins = NO;
     // Side menu
     _slidingViewController = [[ECSlidingViewController alloc] init];
     _slidingViewController.topViewController = _tabViewController;
-    _slidingViewController.underLeftViewController = [[SideMenuViewController alloc] init];
+    sideMenuViewController = [[SideMenuViewController alloc] init];
+    _slidingViewController.underLeftViewController = sideMenuViewController;
     _window.rootViewController = _slidingViewController;
     
     [_window makeKeyAndVisible];
@@ -173,6 +176,15 @@ BOOL showSendCoins = NO;
 
 #pragma mark - UI State
 
+- (void)reload
+{
+    [_sendViewController reloadWithCurrencyChange:NO];
+    [_transactionsViewController reload];
+    [_receiveViewController reload];
+    
+    [sideMenuViewController reload];
+}
+
 - (void)toggleSymbol
 {
     symbolLocal = !symbolLocal;
@@ -185,7 +197,6 @@ BOOL showSendCoins = NO;
     [_sendViewController reloadWithCurrencyChange:YES];
     [_receiveViewController reload];
     
-    SideMenuViewController *sideMenuViewController = (SideMenuViewController *)_slidingViewController.underLeftViewController;
     [sideMenuViewController reload];
 }
 
@@ -305,9 +316,7 @@ BOOL showSendCoins = NO;
     
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
     
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [self reload];
     
     [app closeAllModals];
     
@@ -329,12 +338,7 @@ BOOL showSendCoins = NO;
     
     _transactionsViewController.data = response;
     
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reloadWithCurrencyChange:NO];
-    
-    SideMenuViewController *sideMenuViewController = (SideMenuViewController *)_slidingViewController.underLeftViewController;
-    [sideMenuViewController reload];
+    [self reload];
 }
 
 - (void)didSetLatestBlock:(LatestBlock*)block
@@ -780,9 +784,7 @@ BOOL showSendCoins = NO;
 
 - (void)didBackupWallet
 {
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [self reload];
 }
 
 - (void)setAccountData:(NSString*)guid sharedKey:(NSString*)sharedKey
@@ -872,9 +874,7 @@ BOOL showSendCoins = NO;
     
     _transactionsViewController.data = nil;
     
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [self reload];
 }
 
 - (void)forgetWallet
@@ -895,9 +895,7 @@ BOOL showSendCoins = NO;
     
     [_transactionsViewController setData:nil];
     
-    [_transactionsViewController reload];
-    [_receiveViewController reload];
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [self reload];
     
     [self transitionToIndex:1];
 }

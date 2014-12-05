@@ -529,7 +529,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
             success: function (encryption_phrase) {
                 try {
                
-                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, 10, function (decrypted) {
                         return decrypted != null;
                     }, function () {
                         error('Decryption Error');

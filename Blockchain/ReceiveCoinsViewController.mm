@@ -97,7 +97,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
         
         // QR Code
         UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
-        NSString *addressURL = [NSString stringWithFormat:@"bitcoin://%@", defaultAddress];
+        NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", defaultAddress];
         DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
         qrCodeImageView.image = [QREncoder renderDataMatrix:data imageDimension:250];
         qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -213,7 +213,7 @@ NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
 
 - (void)setQRMain
 {
-    NSString *addressURL = [NSString stringWithFormat:@"bitcoin://%@", self.clickedAddress];
+    NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", self.clickedAddress];
     DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
     
     UIImage *image = [QREncoder renderDataMatrix:data imageDimension:250];

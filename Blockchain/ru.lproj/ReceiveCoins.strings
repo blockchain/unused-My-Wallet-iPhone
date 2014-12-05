@@ -2,37 +2,37 @@
 "48.normalTitle" = "Сохранить";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "56"; */
-"56.text" = "Адреса Метки";
+"56.text" = "Пометить адрес";
 
 /* Class = "IBUILabel"; text = "Address:"; ObjectID = "57"; */
 "57.text" = "Адрес:";
 
 /* Class = "IBUILabel"; text = "Label:"; ObjectID = "58"; */
-"58.text" = "Метки:";
+"58.text" = "Метка:";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "60"; */
 "60.text" = "Адрес";
 
 /* Class = "IBUILabel"; text = "No Addresses"; ObjectID = "68"; */
-"68.text" = "Нет Адреса";
+"68.text" = "Нет адресов";
 
 /* Class = "IBUILabel"; text = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen."; ObjectID = "69"; */
-"69.text" = "Ваш счет, наверное, не в паре правильно. Нажмите кнопку в правом верхнем углу экрана и следуйте инструкциям на экране.";
+"69.text" = "Возможно, привязка вашей учетной записи осуществлена неверно. Нажмите на кнопку в левом верхнем углу экрана и следуйте инструкциям.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "АДРЕС АРХИВА";
+"80.normalTitle" = "Переместить адрес в архив";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "АДРЕС ЭТИКЕТКИ";
+"81.normalTitle" = "ПОМЕТИТЬ АДРЕС";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
 "88.normalTitle" = "ЗАПРОСИТЬ ПЛАТЕЖ";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
-"90.text" = "Bitcoin-Адрес ";
+"90.text" = "Биткоин-адрес ";
 
 /* Class = "IBUILabel"; text = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH"; ObjectID = "91"; */
-"91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
+"91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH";
 
 /* Class = "IBUIButton"; normalTitle = "Copy Address"; ObjectID = "92"; */
 "92.normalTitle" = "СКОПИРОВАТЬ АДРЕС";
@@ -50,8 +50,8 @@
 "GwZ-6f-89z.normalTitle" = "BTC";
 
 /* Class = "IBUIButton"; normalTitle = "New Address"; ObjectID = "Yez-oe-AkH"; */
-"Yez-oe-AkH.normalTitle" = "Новый Адрес";
+"Yez-oe-AkH.normalTitle" = "Новый адрес";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
-"i1j-pG-caF.normalTitle" = "Сканирование Закрытого Ключа";
+"i1j-pG-caF.normalTitle" = "Отсканировать закрытый ключ";
 

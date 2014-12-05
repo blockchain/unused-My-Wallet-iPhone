@@ -22,6 +22,8 @@
 #import <MessageUI/MessageUI.h>
 #import "Wallet.h"
 
+#define EVENT_NEW_ADDRESS @"EVENT_NEW_ADDRESS"
+
 @interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UIImageView *qrCodeMainImageView;

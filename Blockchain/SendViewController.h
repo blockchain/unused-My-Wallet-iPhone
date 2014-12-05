@@ -77,4 +77,6 @@
 
 - (void)dismissKeyboard;
 
+- (void)reset;
+
 @end

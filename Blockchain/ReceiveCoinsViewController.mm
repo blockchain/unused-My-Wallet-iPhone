@@ -16,8 +16,6 @@
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
 
-NSString *const EVENT_NEW_ADDRESS = @"EVENT_NEW_ADDRESS";
-
 @implementation ReceiveCoinsViewController
 
 @synthesize activeKeys;

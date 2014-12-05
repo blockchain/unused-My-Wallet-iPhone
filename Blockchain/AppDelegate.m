@@ -399,7 +399,13 @@ BOOL showSendCoins = NO;
     // Dismiss sendviewController keyboard
     if (_sendViewController) {
         [_sendViewController dismissKeyboard];
+        
+        // Make sure the the send payment button on send screen is enabled (bug when second password requested and app is backgrounded)
+        [_sendViewController reset];
     }
+    
+    // Cancel Notification for new address on receive coins view controller (bug when second password requested and app is backgrounded)
+    [[NSNotificationCenter defaultCenter] removeObserver:_receiveViewController name:EVENT_NEW_ADDRESS object:nil];
     
     // Show the LaunchImage so the list of running apps does not show the user's information
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

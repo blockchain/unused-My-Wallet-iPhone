@@ -5,7 +5,7 @@
 "263.text" = "загрузка";
 
 /* Class = "IBUILabel"; text = "Automatic Pairing"; ObjectID = "353"; */
-"353.text" = "Автоматическое Сопряжение";
+"353.text" = "Автоматическая привязка";
 
 /* Class = "IBUILabel"; text = "Create Wallet"; ObjectID = "358"; */
 "358.text" = "Создать новый кошелек";
@@ -14,22 +14,22 @@
 "360.text" = "1";
 
 /* Class = "IBUILabel"; text = "Login to your Blockchain Wallet via your PC or Mac at http://blockchain.info/wallet"; ObjectID = "361"; */
-"361.text" = "Login to your Blockchain кошелек через Ваш ПК или Mac на http://blockchain.info/wallet";
+"361.text" = "Войдите в ваш кошелек Blockchain с вашего ПК или Mac на http://blockchain.info/wallet";
 
 /* Class = "IBUILabel"; text = "2"; ObjectID = "363"; */
 "363.text" = "2";
 
 /* Class = "IBUILabel"; text = "Click the [Account Settings] button. Then choose the [Devices] tab."; ObjectID = "364"; */
-"364.text" = "Нажмите [настройки аккаунта]. Затем выберите вкладку [устройства].";
+"364.text" = "Нажмите на кнопку [Настройки учетной записи]. Затем выберите вкладку [Devices].";
 
 /* Class = "IBUILabel"; text = "3"; ObjectID = "368"; */
 "368.text" = "3";
 
 /* Class = "IBUILabel"; text = "Click 'Show Pairing Code' to reveal a QR Code (a square black & white barcode). Scan the code with your camera."; ObjectID = "369"; */
-"369.text" = "Нажмите кнопку \" Показать код\", чтобы открыть QR-код (квадрат черно-белый штрих-код). Отсканируйте код с вашей камеры.";
+"369.text" = "Нажмите \"Показать код привязки\", чтобы открыть QR-код (квадратный черно-белый штрихкод). Отсканируйте этот код с помощью вашей камеры.";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Pairing Code"; ObjectID = "370"; */
-"370.normalTitle" = "Сканировать Код";
+"370.normalTitle" = "Отсканировать код привязки";
 
 /* Class = "IBUIButton"; normalTitle = "Button 2"; ObjectID = "376"; */
 "376.normalTitle" = "Кнопка 2";
@@ -38,31 +38,31 @@
 "377.normalTitle" = "Кнопка 1";
 
 /* Class = "IBUILabel"; text = "If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required."; ObjectID = "378"; */
-"378.text" = "Если у вас уже есть Blockchain кошелек, выбрать пару устройством; в противном случае, выберите \" создать кошелек. Это бесплатно! Нет электронной почты требуется.";
+"378.text" = "Если у вас уже есть кошелек Blockchain, выберите \"Привязка устройства\"; в противном случае выберите \"Создать кошелек\". Это бесплатно! Не требуется электронная почта.";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet"; ObjectID = "380"; */
-"380.text" = "Добро пожаловать в Blockchain кошелек";
+"380.text" = "Добро пожаловать в кошелек Blockchain";
 
 /* Class = "IBUILabel"; text = "TRANSACTIONS"; ObjectID = "2je-u4-PB2"; */
-"2je-u4-PB2.text" = "ОПЕРАЦИИ";
+"2je-u4-PB2.text" = "ТРАНЗАКЦИИ";
 
 /* Class = "IBUILabel"; text = "Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection."; ObjectID = "387"; */
-"387.text" = "Добро пожаловать в Blockchain кошелек. Этот экран содержит сделок. Если вы уже заключили сделки с данной бумажник, там, возможно, были ошибки, связавшись с нашим сервером. Пожалуйста, убедитесь, что ваша учетная запись является корректной настройки и у вас есть активное подключение к интернету.";
+"387.text" = "Добро пожаловать в кошелек Blockchain. На этом экране показаны ваши транзакции. Если вы уже осуществляли транзакции с этого кошелька, возможно, произошла ошибка соединения с нашим сервером. Убедитесь, что ваша учетная запись настроена правильно и у вас есть подключение к интернету.";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "394"; */
 "394.text" = "Пароль:";
 
 /* Class = "IBUILabel"; text = "Confirm:"; ObjectID = "396"; */
-"396.text" = "Подтверждение:";
+"396.text" = "Подтвердить:";
 
 /* Class = "IBUIButton"; normalTitle = "Create Wallet"; ObjectID = "398"; */
-"398.normalTitle" = "Создать Кошелек";
+"398.normalTitle" = "Создать кошелек";
 
 /* Class = "IBUILabel"; text = "Password Required"; ObjectID = "465"; */
-"465.text" = "Пароль Требуется";
+"465.text" = "Требуется пароль";
 
 /* Class = "IBUILabel"; text = "Password Request Description"; ObjectID = "467"; */
-"467.text" = "Запрос Пароля Описание";
+"467.text" = "Password Request Description";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "468"; */
 "468.text" = "Пароль:";
@@ -71,19 +71,19 @@
 "471.normalTitle" = "Продолжить";
 
 /* Class = "IBUILabel"; text = "Wallet Identifier:"; ObjectID = "586"; */
-"586.text" = "Кошелек Идентификатор:";
+"586.text" = "Идентификатор кошелька:";
 
 /* Class = "IBUILabel"; text = "You have chosen to pair manually (or automatic pairing is not supported with your device). Please enter your login details below."; ObjectID = "588"; */
-"588.text" = "Вы выбрали для сопряжения вручную (или автоматическое сопряжение не поддерживаемых вашим устройством). Пожалуйста, введите свои регистрационные данные ниже.";
+"588.text" = "Вы выбрали опцию привязки устройства вручную (или автоматическая привязка не поддерживается вашим устройством). Введите ваши регистрационные данные ниже.";
 
 /* Class = "IBUILabel"; text = "Password:"; ObjectID = "591"; */
 "591.text" = "Пароль:";
 
 /* Class = "IBUILabel"; text = "You must have two-factor authentication disabled to pair manually!"; ObjectID = "602"; */
-"602.text" = "Вы должны иметь двух-факторной аутентификации для гостей с ограниченными физическими пары вручную!";
+"602.text" = "Двухфакторная аутентификация должна быть отключена для привязки устройств вручную!";
 
 /* Class = "IBUILabel"; text = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login."; ObjectID = "624"; */
-"624.text" = "Вы вышли, или произошла ошибка расшифровки Вашего кошелька файла. Введите ниже Ваш пароль для входа в систему.";
+"624.text" = "Вы вышли из системы, или произошла ошибка при расшифровке файла вашего кошелька. Введите ниже ваш пароль для входа.";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "625"; */
 "625.normalTitle" = "Продолжить";
@@ -92,13 +92,13 @@
 "627.text" = "Пароль:";
 
 /* Class = "IBUILabel"; text = "Login"; ObjectID = "630"; */
-"630.text" = "Логин";
+"630.text" = "Вход";
 
 /* Class = "IBUIButton"; normalTitle = "Forget Wallet"; ObjectID = "5gL-FG-Zcc"; */
-"5gL-FG-Zcc.normalTitle" = "Забыть Кошелек";
+"5gL-FG-Zcc.normalTitle" = "Забыть кошелек";
 
 /* Class = "IBUILabel"; text = "If you would like to forget this wallet and start over, press 'Forget Wallet'."; ObjectID = "C0R-wB-wF1"; */
-"C0R-wB-wF1.text" = "Если вы хотели бы забыть этот кошелек и начать заново, нажмите \" забыть кошелек\".";
+"C0R-wB-wF1.text" = "Если вы хотите перестать пользоваться этим кошельком и начать заново, нажмите \"Забыть кошелек\".";
 
 /* Class = "IBUIButton"; normalTitle = "Button 3"; ObjectID = "OKS-md-gDQ"; */
 "OKS-md-gDQ.normalTitle" = "Кнопка 3";
@@ -110,13 +110,13 @@
 "VcH-wh-BEs.text" = "Email:";
 
 /* Class = "IBUILabel"; text = "* required for wallet backups"; ObjectID = "jUZ-5W-4qw"; */
-"jUZ-5W-4qw.text" = "* требуется для Кошелька резервных копий";
+"jUZ-5W-4qw.text" = "* требуется для резервных копий кошелька";
 
 /* Class = "IBUILabel"; text = "0 Transactions"; ObjectID = "kK3-Xs-d3Q"; */
-"kK3-Xs-d3Q.text" = "0 сделок";
+"kK3-Xs-d3Q.text" = "0 транзакций";
 
 /* Class = "IBUILabel"; text = "Manual Pairing"; ObjectID = "qIf-DM-Gtq"; */
-"qIf-DM-Gtq.text" = "Руководство По Эксплуатации Подключение";
+"qIf-DM-Gtq.text" = "Привязка вручную";
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
 "wvh-x7-hB8.text" = "* минимум 10 символов";

@@ -26,7 +26,7 @@
 "65.text" = "Adresse:";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "67"; */
-"67.text" = "Label-Adresse";
+"67.text" = "Adresse bezeichnen";
 
 /* Class = "IBUIButton"; normalTitle = "BTC"; ObjectID = "6zi-8R-Tmt"; */
 "6zi-8R-Tmt.normalTitle" = "BTC";
@@ -38,11 +38,11 @@
 "8LN-Tc-WVh.normalTitle" = "Fertig";
 
 /* Class = "IBUILabel"; text = "Please Wait"; ObjectID = "Zgn-Wx-Uwx"; */
-"Zgn-Wx-Uwx.text" = "Bitte Warten";
+"Zgn-Wx-Uwx.text" = "Bitte warten";
 
 /* Class = "IBUILabel"; text = "Sending Payment"; ObjectID = "aKC-Q2-phD"; */
-"aKC-Q2-phD.text" = "Senden Zahlung";
+"aKC-Q2-phD.text" = "Zahlung wird gesendet";
 
 /* Class = "IBUITextField"; text = "Any Address"; ObjectID = "zyc-E3-FOM"; */
-"zyc-E3-FOM.text" = "Jede Adresse";
+"zyc-E3-FOM.text" = "Beliebige Adresse";
 

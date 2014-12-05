@@ -166,6 +166,11 @@ BOOL didChangeDollarAmount = NO;
     [self doCurrencyConversion];
 }
 
+- (void)reset
+{
+    [sendPaymentButton setEnabled:YES];
+}
+
 #pragma mark - Payment
 
 - (void)reallyDoPayment

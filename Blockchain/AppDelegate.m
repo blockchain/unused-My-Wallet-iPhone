@@ -72,6 +72,10 @@ BOOL showSendCoins = NO;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Make sure the server session id SID is persisted for new UIWebViews
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    [cookieStorage setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+    
     // Allocate the global wallet
     self.wallet = [[Wallet alloc] init];
     self.wallet.delegate = self;
@@ -268,6 +272,11 @@ BOOL showSendCoins = NO;
 
 - (void)walletFailedToLoad
 {
+    // When doing a manual pair the wallet fails to load the first time because the server needs to verify via email that the user grants access to this device. In that case we don't want to display any additional errors besides the server error telling the user to check his email.
+    if ([manualPairView isDescendantOfView:_window.rootViewController.view]) {
+        return;
+    }
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_FAILED_TO_LOAD_WALLET_TITLE
                                                     message:[NSString stringWithFormat:BC_STRING_FAILED_TO_LOAD_WALLET_DETAIL]
                                                    delegate:nil
@@ -892,6 +901,12 @@ BOOL showSendCoins = NO;
 - (void)forgetWallet
 {
     [self clearPin];
+    
+    // Clear all cookies (important one is the server session id SID)
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *each in cookieStorage.cookies) {
+        [cookieStorage deleteCookie:each];
+    }
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];

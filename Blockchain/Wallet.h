@@ -97,6 +97,7 @@
 -(void)loadGuid:(NSString*)_guid sharedKey:(NSString*)_sharedKey;
 -(void)loadGuid:(NSString *)_guid;
 -(void)loadBlankWallet;
+- (void)loadWalletLogin;
 
 -(NSDictionary*)addressBook;
 

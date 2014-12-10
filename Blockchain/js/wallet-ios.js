@@ -108,7 +108,8 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var wallet = MyWallet.getHDWallet();
     var account = wallet.getAccount(to);
     
-    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var paymentRequest = account.generatePaymentRequest(valueString, "");
+    
     var toAddress = account.getAddressForPaymentRequest(paymentRequest);
     
     return MyWalletPhone.quickSend(from, toAddress, valueString);
@@ -596,6 +597,10 @@ function webSocketDisconnect() {
 
 
 // Overrides
+
+function loadScript(src, success, error) {
+    success();
+}
 
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);

@@ -160,7 +160,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var wallet = MyWallet.getHDWallet();
     var account = wallet.getAccount(to);
     
-    var paymentRequest = MyWallet.generatePaymentRequestForAccount(to, valueString);
+    var paymentRequest = account.generatePaymentRequest(valueString, "");
     var toAddress = account.getAddressForPaymentRequest(paymentRequest);
     
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);

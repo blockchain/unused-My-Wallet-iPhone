@@ -106,14 +106,28 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
 }
 
 MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
-    var wallet = MyWallet.getHDWallet();
-    var account = wallet.getAccount(to);
+    var id = ''+Math.round(Math.random()*100000);
     
-    var paymentRequest = account.generatePaymentRequest(valueString, "");
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
     
-    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
     
-    return MyWalletPhone.quickSend(from, toAddress, valueString);
+    var value = parseInt(valueString);
+    
+    if (!value || value == 0) {
+        throw 'Invalid Send Value';
+    }
+    
+    var fee = null;
+    var note = null;
+    
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error);
+    
+    return id;
 }
 
 MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {

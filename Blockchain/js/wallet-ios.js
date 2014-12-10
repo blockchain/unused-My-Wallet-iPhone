@@ -23,8 +23,9 @@ min = false;
 isExtension = true;
 APP_NAME = 'javascript_iphone_app';
 APP_VERSION = '0.1 BETA';
-root = "https://blockchain.info/";
-resource = '';
+
+// Set the API code for the iOS Wallet for the server calls
+MyWallet.setAPICode('iOS-Wallet-3.0.0');
 
 $(document).ready(function() {
     MyWallet.logout = function() {}
@@ -275,7 +276,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
 
     $.ajax({
         type: "POST",
-        url: root + 'pin-store',
+        url: BlockchainAPI.getRootURL() + 'pin-store',
         timeout: 30000,
         dataType: 'json',
         data: {
@@ -312,7 +313,7 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
     
     $.ajax({
         type: "POST",
-        url: root + 'pin-store',
+        url: BlockchainAPI.getRootURL() + 'pin-store',
         timeout: 30000,
         data: {
             format: 'plain',
@@ -393,7 +394,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
         
         $.ajax({
                type: "POST",
-               url: root + 'wallet',
+               url: BlockchainAPI.getRootURL() + 'wallet',
                timeout: 60000,
                data: {
                format: 'plain',

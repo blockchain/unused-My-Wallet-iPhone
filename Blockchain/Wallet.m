@@ -917,8 +917,7 @@
 {
     DLog(@"hw_wallet_balance_updated");
     
-    // TODO update AccountView
-    [app.transactionsViewController reload];
+    [app reload];
 }
 
 - (void)logging_out

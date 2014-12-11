@@ -142,6 +142,7 @@
 - (NSString*)formatMoney:(uint64_t)value;
 - (NSString*)formatMoney:(uint64_t)value localCurrency:(BOOL)fsymbolLocal;
 
+- (void)reload;
 - (void)toggleSymbol;
   
 - (void)pushWebViewController:(NSString*)url;

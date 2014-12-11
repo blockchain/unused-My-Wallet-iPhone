@@ -19,8 +19,6 @@ console.log = function(message) {
     device.execute("log:", [message]);
 }
 
-min = false;
-isExtension = true;
 APP_NAME = 'javascript_iphone_app';
 APP_VERSION = '0.1 BETA';
 
@@ -213,7 +211,6 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
         };
 
         MyWallet.getSecondPassword(function() {
-            loadScript('signer', function() {
                 try {
                     if (Object.keys(pendingTransactions).length > 0) {
                         throw 'Transaction already pending';
@@ -227,13 +224,11 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                                 var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
 
                                 if (format == 'bip38') {
-                                    loadScript('import-export', function() {
-                                        setScryptImportExport();
+                                    setScryptImportExport();
 
-                                        MyWallet.getPassword($('#import-private-key-password'), function(_password) {
-                                            ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
-                                                success(key);
-                                            }, error);
+                                    MyWallet.getPassword($('#import-private-key-password'), function(_password) {
+                                        ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
+                                            success(key);
                                         }, error);
                                     }, error);
                                 } else {
@@ -273,9 +268,6 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                 } catch (e){
                     listener.on_error(e);
                 }
-            }, function(e) {
-                listener.on_error(e);
-            });
         }, function(e) {
             listener.on_error(e);
         });
@@ -361,14 +353,12 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
 }
 
 MyWalletPhone.newAccount = function(password, email) {
-    loadScript('wallet-signup', function() {
-               MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
-                                                MyStore.clear();
-                                                device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
-                                                }, function (e) {
-                                                device.execute('on_error_creating_new_account:', [''+e]);
-                                                });
-               });
+    MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
+                                     MyStore.clear();
+                                     device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
+                                     }, function (e) {
+                                     device.execute('on_error_creating_new_account:', [''+e]);
+                                     });
 }
 
 MyWalletPhone.parsePairingCode = function (raw_code) {
@@ -526,14 +516,12 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
                 var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
 
                 if (format == 'bip38') {
-                    loadScript('import-export', function() {
-                        setScryptImportExport();
+                    setScryptImportExport();
 
-                        MyWallet.getPassword($('#import-private-key-password'), function(_password) {
-                            ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
-                                //success
-                                reallyInsertKey(key, isCompPoint);
-                            }, error);
+                    MyWallet.getPassword($('#import-private-key-password'), function(_password) {
+                        ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
+                            //success
+                            reallyInsertKey(key, isCompPoint);
                         }, error);
                     }, error);
                 } else {
@@ -621,7 +609,8 @@ function webSocketDisconnect() {
 // Overrides
 
 function loadScript(src, success, error) {
-    success();
+    console.log("WARNING: unnecessary call to loadScript")
+    success()
 }
 
 MyWallet.getPassword = function(modal, success, error) {

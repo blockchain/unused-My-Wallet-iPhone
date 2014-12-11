@@ -82,16 +82,11 @@
         // Image width is adjusted to screen size
         float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
 
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 38)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
         
-        // Get the default address - first active address that's not watch only
-        NSString *defaultAddress;
-        for (NSString *address in activeAddresses) {
-            if (![app.wallet isWatchOnlyLegacyAddress:address]) {
-                defaultAddress = address;
-                break;
-            }
-        }
+        // Get the default address: the first empty payment request address for the default HD account
+        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+        NSString *defaultAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:defaultAccountIndex];
         
         // QR Code
         UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
@@ -101,15 +96,9 @@
         qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
         [headerView addSubview:qrCodeImageView];
         
-        // Address or label UILabel
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 16)];
-        NSString *label = [app.wallet labelForLegacyAddress:defaultAddress];
-        if (label.length > 0) {
-            addressLabel.text = label;
-        }
-        else {
-            addressLabel.text = defaultAddress;
-        }
+        // Label of the default HD account
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
+        addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
         addressLabel.font = [UIFont systemFontOfSize:14];
         addressLabel.textAlignment = NSTextAlignmentCenter;
         addressLabel.textColor = [UIColor blackColor];

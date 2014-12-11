@@ -172,8 +172,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
         throw 'Invalid Send Value';
     }
     
-    var wallet = MyWallet.getHDWallet();
-    var account = wallet.getAccount(to);
+    var account = MyWallet.getAccount(to);
     
     var paymentRequest = account.generatePaymentRequest(valueString, "");
     var toAddress = account.getAddressForPaymentRequest(paymentRequest);
@@ -547,6 +546,14 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
             }
         }, error);
     })(privateKeyString);
+}
+
+MyWalletPhone.getEmptyPaymentRequestAddressForAccount = function(accountIdx) {
+    var account = MyWallet.getAccount(accountIdx);
+    
+    var paymentRequest = MyWallet.generateOrReuseEmptyPaymentRequestForAccount(accountIdx);
+    
+    return account.getAddressForPaymentRequest(paymentRequest);
 }
 
 

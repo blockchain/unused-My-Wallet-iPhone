@@ -155,6 +155,7 @@
 - (NSString *)decrypt:(NSString *)data password:(NSString *)password pbkdf2_iterations:(int)pbkdf2_iterations;
 
 // HD Wallet
+- (int)getDefaultAccountIndex;
 - (int)getAccountsCount;
 - (BOOL)hasLegacyAddresses;
 
@@ -165,5 +166,7 @@
 - (void)setLabelForAccount:(int)account label:(NSString *)label;
 
 - (void)createAccountWithLabel:(NSString *)label;
+
+- (NSString *)getEmptyPaymentRequestAddressForAccount:(int)account;
 
 @end

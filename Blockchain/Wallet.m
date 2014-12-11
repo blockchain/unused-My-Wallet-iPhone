@@ -827,6 +827,15 @@
     return [[self.webView executeJSSynchronous:@"MyWallet.getAccountsCount()"] intValue];
 }
 
+- (int)getDefaultAccountIndex
+{
+    if (![self isInitialized]) {
+        return 0;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.getDefaultAccountIndex()"] intValue];
+}
+
 - (BOOL)hasLegacyAddresses
 {
     if (![self isInitialized]) {
@@ -875,6 +884,15 @@
     if ([self isInitialized]) {
         [self.webView executeJSSynchronous:@"MyWallet.createAccount(\"%@\")", label];
     }
+}
+
+- (NSString *)getEmptyPaymentRequestAddressForAccount:(int)account
+{
+    if (![self isInitialized]) {
+        return nil;
+    }
+    
+    return [self.webView executeJSSynchronous:@"MyWalletPhone.getEmptyPaymentRequestAddressForAccount(%d)", account];
 }
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet

@@ -23,7 +23,7 @@ APP_NAME = 'javascript_iphone_app';
 APP_VERSION = '0.1 BETA';
 
 // Set the API code for the iOS Wallet for the server calls
-MyWallet.setAPICode('iOS-Wallet-3.0.0');
+MyWallet.setAPICode('35e77459-723f-48b0-8c9e-6e9e8f54fbd3');
 
 $(document).ready(function() {
     MyWallet.logout = function() {}

@@ -456,6 +456,8 @@ function webSocketDisconnect() {
 
 // Overrides
 
+MyWallet.loadAdverts = function(obj) {}
+
 MyWallet.setLoadingText = function(txt) {
     device.execute('setLoadingText:', [txt]);
 }

@@ -99,6 +99,8 @@
 
 - (void)setLabel:(NSString *)label forLegacyAddress:(NSString *)address;
 
+- (void)loadWalletLogin;
+
 - (void)archiveLegacyAddress:(NSString *)address;
 - (void)unArchiveLegacyAddress:(NSString *)address;
 - (void)removeLegacyAddress:(NSString *)address;

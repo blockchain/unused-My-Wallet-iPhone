@@ -15,6 +15,9 @@
 {
     walletIdentifierTextField.delegate = self;
     passwordTextField.delegate = self;
+    
+    // Get the session id SID from the server
+    [app.wallet loadWalletLogin];
 }
 
 - (void)prepareForModalDismissal

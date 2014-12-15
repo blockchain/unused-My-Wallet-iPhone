@@ -1267,7 +1267,7 @@ SideMenuViewController *sideMenuViewController;
         return;
     }
     
-    [app.wallet apiGetPINValue:pinKey pin:pin withWalletDownload:!c.verifyOnly];
+    [app.wallet apiGetPINValue:pinKey pin:pin];
     
     self.pinViewControllerCallback = callback;
 }

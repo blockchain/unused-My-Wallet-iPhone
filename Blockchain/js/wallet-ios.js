@@ -39,6 +39,28 @@ MyWallet.getWebWorkerLoadPrefix = function() {
 MyWallet.addEventListener(function (event, obj) {
     var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open "];
 
+    // TODO this will change again
+    if (event == 'msg') {
+
+    if (obj.platform == 'iOS' && obj.type == 'info') {
+        device.execute('setLoadingText:', [obj.message])
+    }
+
+    if (obj.type == 'error') {
+        // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
+        if (obj.message == 'No free outputs to spend')
+            return
+                          
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+                          
+    else if (obj.type == 'success') {
+        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
+    }
+
+    return
+    }
+
     if (eventsWithObjCHandlers.indexOf(event) == -1)
          return;
 
@@ -54,6 +76,7 @@ MyWallet.monitor(function (obj) {
                 ' Code: ' + (obj.code ? obj.code : 'null') +
                 ' Message: ' + (obj.message ? obj.message : 'null'))
 
+    // TODO depcrecated - change in own calls
     if (obj.type == 'loadingText') {
         device.execute('setLoadingText:', [obj.message])
     }
@@ -277,8 +300,10 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
 }
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
+    console.log(1)
     MyWallet.sendMonitorEvent({type: "loadingText", message: "Retrieving PIN Code", code: 0});
 
+    console.log(2)
     $.ajax({
         type: "POST",
         url: BlockchainAPI.getRootURL() + 'pin-store',
@@ -291,6 +316,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
            key : key
        },
        success: function (responseObject) {
+           console.log(3)
            device.execute('on_pin_code_get_response:', [responseObject])
        },
        error: function (res) {
@@ -608,17 +634,8 @@ function webSocketDisconnect() {
 
 // Overrides
 
-function loadScript(src, success, error) {
-    console.log("WARNING: unnecessary call to loadScript")
-    success()
-}
-
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
-}
-
-MyWallet.makeNotice = function(type, _id, msg) {
-    device.execute('makeNotice:id:message:', [''+type, ''+_id, ''+msg]);
 }
 
 MyStore.get_old = MyStore.get;

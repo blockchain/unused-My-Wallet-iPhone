@@ -65,7 +65,7 @@
     self.webView.JSDelegate = nil;
 }
 
-- (void)apiGetPINValue:(NSString*)key pin:(NSString*)pin withWalletDownload:(BOOL)withWalletDownload
+- (void)apiGetPINValue:(NSString*)key pin:(NSString*)pin
 {
     [self loadJS];
     

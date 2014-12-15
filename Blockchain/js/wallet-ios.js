@@ -137,9 +137,9 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error.message]);
     }
     
-    var value = parseInt(valueString);
+    var value = Bitcoin.BigInteger.valueOf(valueString);
     
-    if (!value || value == 0) {
+    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
         throw 'Invalid Send Value';
     }
     
@@ -162,9 +162,9 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error.message]);
     }
     
-    var value = parseInt(valueString);
+    var value = Bitcoin.BigInteger.valueOf(valueString);
     
-    if (!value || value == 0) {
+    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
         throw 'Invalid Send Value';
     }
     
@@ -187,9 +187,9 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error.message]);
     }
     
-    var value = parseInt(valueString);
+    var value = Bitcoin.BigInteger.valueOf(valueString);
     
-    if (!value || value == 0) {
+    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
         throw 'Invalid Send Value';
     }
     

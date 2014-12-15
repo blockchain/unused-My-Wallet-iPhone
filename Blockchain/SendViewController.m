@@ -660,13 +660,6 @@ BOOL didChangeDollarAmount = NO;
         return;
     }
     
-    int countPriv = [[app.wallet activeLegacyAddresses] count];
-    
-    if (countPriv == 0) {
-        [app standardNotify:BC_STRING_NO_ACTIVE_BITCOIN_ADDRESSES_AVAILABLE];
-        return;
-    }
-    
     [self confirmPayment];
 
 //    if ([[app.wallet.addressBook objectForKey:self.toAddress] length] == 0 && ![app.wallet.allLegacyAddresses containsObject:self.toAddress]) {

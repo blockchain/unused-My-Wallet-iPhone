@@ -177,26 +177,6 @@ BOOL didChangeDollarAmount = NO;
 {
     transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
     
-    listener.on_start = ^() {
-        app.disableBusyView = TRUE;
-        
-        sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
-        
-        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone];
-    };
-    
-    listener.on_begin_signing = ^() {
-        sendProgressModalText.text = BC_STRING_SIGNING_INPUTS;
-    };
-    
-    listener.on_sign_progress = ^(int input) {
-        sendProgressModalText.text = [NSString stringWithFormat:BC_STRING_SIGNING_INPUT, input];
-    };
-    
-    listener.on_finish_signing = ^() {
-        sendProgressModalText.text = BC_STRING_FINISHED_SIGNING_INPUTS;
-    };
-    
     listener.on_success = ^() {
         [app playBeepSound];
         
@@ -236,6 +216,12 @@ BOOL didChangeDollarAmount = NO;
     };
     
     [sendPaymentButton setEnabled:FALSE];
+    
+    app.disableBusyView = TRUE;
+    
+    sendProgressModalText.text = BC_STRING_SENDING_TRANSACTION;
+    
+    [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone];
     
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     

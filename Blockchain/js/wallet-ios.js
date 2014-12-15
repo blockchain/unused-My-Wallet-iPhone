@@ -215,21 +215,9 @@ MyWalletPhone.quickSend = function(from, to, valueString) {
                 device.execute('tx_on_success:', [id]);
                 delete pendingTransactions[id];
             },
-            on_start : function() {
-                device.execute('tx_on_start:', [id]);
-            },
             on_error : function(e) {
                 device.execute('tx_on_error:error:', [id, ''+e]);
                 delete pendingTransactions[id];
-            },
-            on_begin_signing : function() {
-                device.execute('tx_on_begin_signing:', [id]);
-            },
-            on_sign_progress : function(i) {
-                device.execute('tx_on_sign_progress:input:', [id, i]);
-            },
-            on_finish_signing : function() {
-                device.execute('tx_on_finish_signing:', [id]);
             }
         };
 

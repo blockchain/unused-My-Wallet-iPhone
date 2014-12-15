@@ -462,17 +462,6 @@
     }
 }
 
-- (void)tx_on_start:(NSString*)txProgressID
-{
-    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
-    
-    if (listener) {
-        if (listener.on_start) {
-            listener.on_start();
-        }
-    }
-}
-
 - (void)tx_on_error:(NSString*)txProgressID error:(NSString*)error
 {
     transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
@@ -480,39 +469,6 @@
     if (listener) {
         if (listener.on_error) {
             listener.on_error(error);
-        }
-    }
-}
-
-- (void)tx_on_begin_signing:(NSString*)txProgressID
-{
-    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
-    
-    if (listener) {
-        if (listener.on_begin_signing) {
-            listener.on_begin_signing();
-        }
-    }
-}
-
-- (void)tx_on_sign_progress:(NSString*)txProgressID input:(NSString*)input
-{
-    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
-    
-    if (listener) {
-        if (listener.on_sign_progress) {
-            listener.on_sign_progress([input integerValue]);
-        }
-    }
-}
-
-- (void)tx_on_finish_signing:(NSString*)txProgressID
-{
-    transactionProgressListeners * listener = [self.transactionProgressListeners objectForKey:txProgressID];
-    
-    if (listener) {
-        if (listener.on_finish_signing) {
-            listener.on_finish_signing();
         }
     }
 }

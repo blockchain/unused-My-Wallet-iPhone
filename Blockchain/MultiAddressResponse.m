@@ -45,7 +45,7 @@
 
 @end
 
-@implementation MulitAddressResponse
+@implementation MultiAddressResponse
 
 @synthesize transactions;
 @synthesize total_received;

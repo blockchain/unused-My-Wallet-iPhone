@@ -42,7 +42,7 @@
 @protocol WalletDelegate <NSObject>
 @optional
 - (void)didSetLatestBlock:(LatestBlock*)block;
-- (void)didGetMultiAddressResponse:(MulitAddressResponse*)response;
+- (void)didGetMultiAddressResponse:(MultiAddressResponse*)response;
 - (void)walletDidDecrypt;
 - (void)walletFailedToDecrypt;
 - (void)walletDidLoad;

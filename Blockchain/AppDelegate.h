@@ -40,7 +40,7 @@
 
 #define PIN_PBKDF2_ITERATIONS 1 // This does not need to be large because the key is already 256 bits
 
-@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, SendViewController, BCCreateWalletView, BCManualPairView, MulitAddressResponse, PairingCodeParser, MerchantViewController, BCWebViewController;
+@class TransactionsViewController, Wallet, BCFadeView, ReceiveCoinsViewController, SendViewController, BCCreateWalletView, BCManualPairView, MultiAddressResponse, PairingCodeParser, MerchantViewController, BCWebViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, WalletDelegate, PEPinEntryControllerDelegate> {
     Wallet *wallet;
@@ -82,7 +82,7 @@
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
 @property (strong, nonatomic) Wallet *wallet;
-@property (strong, nonatomic) MulitAddressResponse *latestResponse;
+@property (strong, nonatomic) MultiAddressResponse *latestResponse;
 @property (nonatomic, strong) NSString *loadingText;
 
 @property (nonatomic) BOOL disableBusyView;

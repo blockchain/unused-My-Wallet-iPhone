@@ -555,7 +555,7 @@
     
     NSDictionary *dict = [multiAddrJSON getJSONObject];
     
-    MulitAddressResponse *response = [[MulitAddressResponse alloc] init];
+    MultiAddressResponse *response = [[MultiAddressResponse alloc] init];
     
     response.transactions = [NSMutableArray array];
 

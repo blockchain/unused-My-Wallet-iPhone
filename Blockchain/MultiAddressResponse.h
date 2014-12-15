@@ -41,7 +41,7 @@
 
 @end
 
-@interface MulitAddressResponse : NSObject
+@interface MultiAddressResponse : NSObject
 
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;

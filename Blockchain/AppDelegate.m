@@ -341,7 +341,7 @@ SideMenuViewController *sideMenuViewController;
     }
 }
 
-- (void)didGetMultiAddressResponse:(MulitAddressResponse*)response
+- (void)didGetMultiAddressResponse:(MultiAddressResponse*)response
 {
     self.latestResponse = response;
     

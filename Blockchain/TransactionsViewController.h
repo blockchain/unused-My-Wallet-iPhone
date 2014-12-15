@@ -19,7 +19,7 @@
  */
 
 #import <UIKit/UIKit.h>
-@class MulitAddressResponse;
+@class MultiAddressResponse;
 @class LatestBlock;
 
 @interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
@@ -34,11 +34,11 @@
     IBOutlet UILabel *headerLabel;
     IBOutlet UIView *headerSeparator;
     
-    MulitAddressResponse * data;
+    MultiAddressResponse * data;
     LatestBlock * latestBlock;
 }
 
-@property(nonatomic, strong) MulitAddressResponse * data;
+@property(nonatomic, strong) MultiAddressResponse * data;
 @property(nonatomic, strong) LatestBlock * latestBlock;
 
 - (void)reload;

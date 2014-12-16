@@ -544,28 +544,30 @@
     [self getFinalBalance];
     
     [self.webView executeJSWithCallback:^(NSString * multiAddrJSON) {
-        [self parseMultiAddrJSON:multiAddrJSON];
+        MultiAddressResponse *response = [self parseMultiAddrJSON:multiAddrJSON];
+        
+        response.transactions = [NSMutableArray array];
+        
+        NSArray *transactionsArray = [self getAllTransactions];
+        
+        for (NSDictionary *dict in transactionsArray) {
+            Transaction *tx = [Transaction fromJSONDict:dict];
+            
+            [response.transactions addObject:tx];
+        }
+        
+        [delegate didGetMultiAddressResponse:response];
     } command:@"JSON.stringify(MyWalletPhone.getMultiAddrResponse())"];
 }
 
-- (void)parseMultiAddrJSON:(NSString*)multiAddrJSON
+- (MultiAddressResponse *)parseMultiAddrJSON:(NSString*)multiAddrJSON
 {
     if (multiAddrJSON == nil)
-        return;
+        return nil;
     
     NSDictionary *dict = [multiAddrJSON getJSONObject];
     
     MultiAddressResponse *response = [[MultiAddressResponse alloc] init];
-    
-    response.transactions = [NSMutableArray array];
-
-    NSArray * transactionsArray = [dict objectForKey:@"transactions"];
-    
-    for (NSDictionary *dict in transactionsArray) {
-        Transaction *tx = [Transaction fromJSONDict:dict];
-        
-        [response.transactions addObject:tx];
-    }
         
     response.final_balance = [[dict objectForKey:@"final_balance"] longLongValue];
     response.total_received = [[dict objectForKey:@"total_received"] longLongValue];
@@ -587,7 +589,18 @@
         }
     }
     
-    [delegate didGetMultiAddressResponse:response];
+    return response;
+}
+
+- (NSArray *)getAllTransactions
+{
+    if (![self.webView isLoaded]) {
+        return nil;
+    }
+    
+    NSString *allTransactionsJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllTransactions())"];
+    
+    return [allTransactionsJSON getJSONObject];
 }
 
 - (void)on_tx

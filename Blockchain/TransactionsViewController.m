@@ -22,8 +22,6 @@ BOOL animateNextCell;
 UIRefreshControl *refreshControl;
 int lastNumberTransactions = INT_MAX;
 
-#define MAX_ADDRESS_ROWS_PER_CELL 5
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [data.transactions count];
@@ -76,39 +74,11 @@ int lastNumberTransactions = INT_MAX;
     CGContextFillRect(context, CGRectMake(0, 0, 320, 15));
 }
 
+// TODO
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     float baseHeight = 75.0f;
-    
-    Transaction * transaction = [data.transactions objectAtIndex:[indexPath row]];
-
-    if (transaction.result < 0) {
-        
-        NSArray * outputs = [transaction outputsNotToAddresses:data.addresses];
-        
-        if ([outputs count] == 0)
-            outputs = transaction.outputs;
-        
-        if ([outputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
-            baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
-        else
-            baseHeight += [outputs count] * 22;
-    } else if (transaction.result > 0){
-        
-        NSArray * inputs = [transaction inputsNotFromAddresses:data.addresses];
-        
-        if ([inputs count] == 0)
-            inputs = transaction.inputs;
-        
-        if ([inputs count] >= MAX_ADDRESS_ROWS_PER_CELL)
-            baseHeight += (MAX_ADDRESS_ROWS_PER_CELL + 1) * 22;
-        else
-            baseHeight += [inputs count] * 22;
-    }
-    
-    if (!isfinite(baseHeight)) {        
-        return 75.0f;
-    }
+    baseHeight += 22;
     
     return baseHeight;
 }

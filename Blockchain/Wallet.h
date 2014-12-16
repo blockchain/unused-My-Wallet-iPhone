@@ -18,12 +18,11 @@
  * MA 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
 #import "JSBridgeWebView.h"
 #import "MultiAddressResponse.h"
 
 
-@interface transactionProgressListeners : NSObject {}
+@interface transactionProgressListeners : NSObject
 @property(nonatomic, copy) void (^on_success)();
 @property(nonatomic, copy) void (^on_error)(NSString*error);
 @end

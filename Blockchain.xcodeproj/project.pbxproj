@@ -110,6 +110,9 @@
 		6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569219E749CC0054699B /* back_chevron_icon@2x.png */; };
 		6775569619E749CC0054699B /* back_chevron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569319E749CC0054699B /* back_chevron_icon.png */; };
 		6775569919E752A00054699B /* BCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6775569819E752A00054699B /* BCWebViewController.m */; };
+		6780DB921A40BDA70048EED2 /* AddressInOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB911A40BDA70048EED2 /* AddressInOut.m */; };
+		6780DB951A40BDCF0048EED2 /* InOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB941A40BDCF0048EED2 /* InOut.m */; };
+		6780DB981A40BDF40048EED2 /* AccountInOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB971A40BDF40048EED2 /* AccountInOut.m */; };
 		678AD5E919D4610000E9A778 /* BCModalContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678AD5E819D4610000E9A778 /* BCModalContentView.m */; };
 		678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD60F19D56EEA00E9A778 /* home_icon.png */; };
 		678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD61019D56EEA00E9A778 /* home_icon@2x.png */; };
@@ -254,8 +257,6 @@
 		9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3114BC622E00048EFB /* TransactionsViewController.m */; };
 		9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */; };
 		9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3C14BC7C4F00048EFB /* Transaction.m */; };
-		9F765F4014BC7C5E00048EFB /* Input.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3F14BC7C5E00048EFB /* Input.m */; };
-		9F765F4314BC7C6D00048EFB /* Output.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4214BC7C6D00048EFB /* Output.m */; };
 		9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */; };
 		9F7DCC8B153451B2000CBFC8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCC8A153451B2000CBFC8 /* CoreData.framework */; };
 		9F7DCCEB15345213000CBFC8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCCEA15345213000CBFC8 /* Security.framework */; };
@@ -664,6 +665,12 @@
 		6775569319E749CC0054699B /* back_chevron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_chevron_icon.png; sourceTree = "<group>"; };
 		6775569719E752A00054699B /* BCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCWebViewController.h; sourceTree = "<group>"; };
 		6775569819E752A00054699B /* BCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCWebViewController.m; sourceTree = "<group>"; };
+		6780DB901A40BDA70048EED2 /* AddressInOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressInOut.h; sourceTree = "<group>"; };
+		6780DB911A40BDA70048EED2 /* AddressInOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressInOut.m; sourceTree = "<group>"; };
+		6780DB931A40BDCF0048EED2 /* InOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InOut.h; sourceTree = "<group>"; };
+		6780DB941A40BDCF0048EED2 /* InOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InOut.m; sourceTree = "<group>"; };
+		6780DB961A40BDF40048EED2 /* AccountInOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInOut.h; sourceTree = "<group>"; };
+		6780DB971A40BDF40048EED2 /* AccountInOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInOut.m; sourceTree = "<group>"; };
 		678AD5E519D45FA300E9A778 /* BCModalContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCModalContentView.h; sourceTree = "<group>"; };
 		678AD5E819D4610000E9A778 /* BCModalContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCModalContentView.m; sourceTree = "<group>"; };
 		678AD60F19D56EEA00E9A778 /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
@@ -856,10 +863,6 @@
 		9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableCell.m; sourceTree = "<group>"; };
 		9F765F3B14BC7C4F00048EFB /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
 		9F765F3C14BC7C4F00048EFB /* Transaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
-		9F765F3E14BC7C5E00048EFB /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
-		9F765F3F14BC7C5E00048EFB /* Input.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Input.m; sourceTree = "<group>"; };
-		9F765F4114BC7C6D00048EFB /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output.h; sourceTree = "<group>"; };
-		9F765F4214BC7C6D00048EFB /* Output.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Output.m; sourceTree = "<group>"; };
 		9F765F4514BC8AEF00048EFB /* MultiAddressResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiAddressResponse.h; sourceTree = "<group>"; };
 		9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiAddressResponse.m; sourceTree = "<group>"; };
 		9F7DCC8A153451B2000CBFC8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -1420,16 +1423,18 @@
 		9F765F3A14BC7C3100048EFB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9F0CBAA8151351F400CD945D /* Wallet.h */,
-				9F0CBAA9151351F400CD945D /* Wallet.m */,
+				6780DB961A40BDF40048EED2 /* AccountInOut.h */,
+				6780DB971A40BDF40048EED2 /* AccountInOut.m */,
 				9F2D934814C05DD00053F0FF /* Address.h */,
 				9F2D934914C05DD00053F0FF /* Address.m */,
-				9F765F3E14BC7C5E00048EFB /* Input.h */,
-				9F765F3F14BC7C5E00048EFB /* Input.m */,
-				9F765F4114BC7C6D00048EFB /* Output.h */,
-				9F765F4214BC7C6D00048EFB /* Output.m */,
+				6780DB901A40BDA70048EED2 /* AddressInOut.h */,
+				6780DB911A40BDA70048EED2 /* AddressInOut.m */,
+				6780DB931A40BDCF0048EED2 /* InOut.h */,
+				6780DB941A40BDCF0048EED2 /* InOut.m */,
 				9F765F3B14BC7C4F00048EFB /* Transaction.h */,
 				9F765F3C14BC7C4F00048EFB /* Transaction.m */,
+				9F0CBAA8151351F400CD945D /* Wallet.h */,
+				9F0CBAA9151351F400CD945D /* Wallet.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2001,9 +2006,7 @@
 				2203488C19A4D51300611AC3 /* FBURLConnection.m in Sources */,
 				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				2203489119A4D51300611AC3 /* FBSBJsonBase.m in Sources */,
-				9F765F4014BC7C5E00048EFB /* Input.m in Sources */,
 				2203486F19A4D51300611AC3 /* FBCacheDescriptor.m in Sources */,
-				9F765F4314BC7C6D00048EFB /* Output.m in Sources */,
 				2203487F19A4D51300611AC3 /* FBLoginView.m in Sources */,
 				2203489F19A4D51300611AC3 /* OAAsynchronousDataFetcher.m in Sources */,
 				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
@@ -2025,6 +2028,7 @@
 				2203489A19A4D51300611AC3 /* NSMutableURLRequest+Parameters.m in Sources */,
 				6762507D1A2CC5800052B63F /* BCEditAccountView.m in Sources */,
 				2203487419A4D51300611AC3 /* FBError.m in Sources */,
+				6780DB951A40BDCF0048EED2 /* InOut.m in Sources */,
 				2203488119A4D51300611AC3 /* FBPlacePickerCacheDescriptor.m in Sources */,
 				2203487B19A4D51300611AC3 /* FBGraphObjectTableDataSource.m in Sources */,
 				67EE1DCC19E3325900DBBFC9 /* ECSlidingInteractiveTransition.m in Sources */,
@@ -2057,6 +2061,7 @@
 				9F1831E21516A39500FB3D52 /* NSData+Hex.m in Sources */,
 				67EE1DCE19E3325900DBBFC9 /* ECSlidingViewController.m in Sources */,
 				2203487219A4D51300611AC3 /* FBDataDiskCache.m in Sources */,
+				6780DB981A40BDF40048EED2 /* AccountInOut.m in Sources */,
 				2203487119A4D51300611AC3 /* FBContentLink.m in Sources */,
 				9F1831E51516A45700FB3D52 /* NSString+SHA256.m in Sources */,
 				2203487A19A4D51300611AC3 /* FBGraphObjectTableCell.m in Sources */,
@@ -2073,6 +2078,7 @@
 				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
+				6780DB921A40BDA70048EED2 /* AddressInOut.m in Sources */,
 				9F2780B715343A7D0015F83F /* UncaughtExceptionHandler.m in Sources */,
 				2203488519A4D51300611AC3 /* FBRequestBody.m in Sources */,
 				C9C3998319885FAC001B3922 /* BCAlertView.m in Sources */,

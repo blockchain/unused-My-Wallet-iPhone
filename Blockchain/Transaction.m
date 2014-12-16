@@ -7,80 +7,68 @@
 //
 
 #import "Transaction.h"
-#import "AppDelegate.h"
-#import "Input.h"
-#import "Output.h"
+#import "AccountInOut.h"
+#import "AddressInOut.h"
 
 @implementation Transaction
 
 
-+(Transaction*)fromJSONDict:(NSDictionary*)transactionDict {
++ (Transaction*)fromJSONDict:(NSDictionary *)transactionDict {
     
     Transaction * transaction = [[Transaction alloc] init];
-    transaction.inputs = [[NSMutableArray alloc] init];
-    transaction.outputs = [[NSMutableArray alloc] init];
+    
+    transaction.from = [[InOut alloc] init];
+    transaction.to = [[InOut alloc] init];
+
+    transaction.block_height = [[transactionDict objectForKey:@"block_height"] intValue];
+    transaction.confirmations = [[transactionDict objectForKey:@"confirmations"] intValue];
+    transaction.fee = [[transactionDict objectForKey:@"fee"] longLongValue];
     transaction.myHash = [transactionDict objectForKey:@"hash"];
+    transaction.intraWallet = [[transactionDict objectForKey:@"intraWallet"] boolValue];
+    transaction.note = [transactionDict objectForKey:@"note"];
+    transaction.result = [[transactionDict objectForKey:@"result"] longLongValue];
     transaction.size = [[transactionDict objectForKey:@"size"] intValue];
+    transaction.time =[[transactionDict objectForKey:@"txTime"] longLongValue];
     transaction.tx_index = [[transactionDict objectForKey:@"tx_index"] intValue];
     
-    transaction.time =[[transactionDict objectForKey:@"time"] longLongValue];
-    transaction.block_height = [[transactionDict objectForKey:@"blockHeight"] intValue];
+    NSDictionary *fromDict = [transactionDict objectForKey:@"from"];
     
-    
-    NSArray * inputsJSONArray = [transactionDict objectForKey:@"inputs"];
-    for (NSDictionary * inputDict in inputsJSONArray) {
-        NSDictionary * prev_out_dict = [inputDict objectForKey:@"prev_out"];
+    AccountInOut *fromAccount = nil;
+    if ([fromDict objectForKey:@"account"] != [NSNull null]) {
+        fromAccount = [[AccountInOut alloc] init];
+        NSDictionary *fromAccountDict = [fromDict objectForKey:@"account"];
         
-        Input * input = [[Input alloc] init];
-        Output * prev_out = [[Output alloc] init];
-        prev_out.value = [[prev_out_dict objectForKey:@"value"] longLongValue];
-        prev_out.addr = [prev_out_dict objectForKey:@"addr"];
-        input.prev_out = prev_out;
+        fromAccount.accountIndex = [[fromAccountDict objectForKey:@"index"] intValue];
+        fromAccount.amount = [[fromAccountDict objectForKey:@"amount"] longLongValue];
+    }
+    transaction.from.account = fromAccount;
+    
+    AddressInOut *fromExternalAddresses = nil;
+    if ([fromDict objectForKey:@"externalAddresses"] != [NSNull null]) {
+        fromExternalAddresses = [[AddressInOut alloc] init];
+        NSDictionary *fromExternalAddressesDict = [fromDict objectForKey:@"externalAddresses"];
         
-        [((NSMutableArray*)transaction.inputs) addObject:input];
+        fromExternalAddresses.address = [fromExternalAddressesDict objectForKey:@"address"];
+        fromExternalAddresses.amount = [[fromExternalAddressesDict objectForKey:@"amount"] longLongValue];
     }
+    transaction.from.externalAddresses = fromExternalAddresses;
     
-    NSArray * outputsJSONArray = [transactionDict objectForKey:@"out"];
-    for (NSDictionary * outputDict in outputsJSONArray) {
-        Output * output = [[Output alloc] init];
-        output.value = [[outputDict objectForKey:@"value"] longLongValue];
-        output.addr = [outputDict objectForKey:@"addr"];
-        [((NSMutableArray*)transaction.outputs) addObject:output];
-    }
-    
-    
-    NSString * result = [transactionDict objectForKey:@"result"];
-    if (result) {
-        transaction.result = [result longLongValue];
-    } else {
-        for (Output * out in transaction.outputs) {
-            transaction.result += out.value;
+    NSMutableArray *fromLegacyAddresses = nil;
+    if ([fromDict objectForKey:@"legacyAddresses"] != [NSNull null]) {
+        fromLegacyAddresses = [[NSMutableArray alloc] init];
+        NSArray *fromLegacyAddressesArray = [fromDict objectForKey:@"legacyAddresses"];
+        
+        for (NSDictionary *inputDict in fromLegacyAddressesArray) {
+            AddressInOut *addressInOut = [[AddressInOut alloc] init];
+            addressInOut.address = [inputDict objectForKey:@"address"];
+            addressInOut.amount = [[inputDict objectForKey:@"amount"] longLongValue];
+            
+            [fromLegacyAddresses addObject:addressInOut];
         }
     }
+    transaction.from.legacyAddresses = fromLegacyAddresses;
+    
     return transaction;
-}
-
-
--(NSArray*)inputsNotFromAddresses:(NSArray*)addresses {
-    NSMutableArray * array = [NSMutableArray array];
-    for (Input * input in self.inputs) {
-        if ([addresses containsObject:[[input prev_out] addr]])
-            continue;
-        
-        [array addObject:input];
-    }
-    return array;
-}
-
--(NSArray*)outputsNotToAddresses:(NSArray*)addresses {
-    NSMutableArray * array = [NSMutableArray array];
-    for (Output * output in self.outputs) {
-        if ([addresses containsObject:[output addr]])
-            continue;
-        
-        [array addObject:output];
-    }
-    return array;
 }
 
 @end

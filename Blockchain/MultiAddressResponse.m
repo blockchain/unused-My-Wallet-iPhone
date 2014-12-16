@@ -10,8 +10,6 @@
 #import "AppDelegate.h"
 #import "Address.h"
 #import "Transaction.h"
-#import "Input.h"
-#import "Output.h"
 #import "Wallet.h"
 #import "NSString+SHA256.h"
 #import "NSString+URLEncode.h"

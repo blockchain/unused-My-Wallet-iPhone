@@ -9,12 +9,8 @@
 #import "TransactionTableCell.h"
 #import "Transaction.h"
 #import "AppDelegate.h"
-#import "Output.h"
-#import "Input.h"
 #import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
-
-#define MAX_ADDRESS_ROWS_PER_CELL 5
 
 @implementation TransactionTableCell
 
@@ -49,94 +45,85 @@
     
     // Payment Received
     if (transaction.result >= 0) {
+        NSString *labelString;
         
-        if (transaction.result == 0) {
+        if (transaction.intraWallet) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
+            
+            labelString = @"You transferred bitcoin between accounts";
         } else {
             [transactionTypeLabel setText:@""];
             [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
-        }
-        
-        NSArray * inputs = [transaction inputsNotFromAddresses:[[app transactionsViewController].data addresses]];
-        
-        if ([inputs count] == 0) {
-            inputs = transaction.inputs;
-        }
-        
-        // Show the inouts i.e. where the coins are from
-        for (NSInteger i = 0; i < [inputs count] && i <= MAX_ADDRESS_ROWS_PER_CELL; i++)
-        {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
-            [label setFont:[UIFont systemFontOfSize:13]];
-            [label setTextColor:[UIColor darkGrayColor]];
-            label.adjustsFontSizeToFitWidth = YES;
             
-            if (i == MAX_ADDRESS_ROWS_PER_CELL) {
-                [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [inputs count] - i]];
+            InOut *from = transaction.from;
+            
+            NSString *labelForAddressString = [app.wallet labelForLegacyAddress:from.externalAddresses.address];
+            
+            if (labelForAddressString && labelForAddressString.length > 0) {
+                labelString = [NSString stringWithFormat:@"You received bitcoin from %@", labelForAddressString];
             }
             else {
-                Input *input = [inputs objectAtIndex:i];
-                NSString *addressString = [app.wallet labelForLegacyAddress:[[input prev_out] addr]];
-                
-                if ([addressString length] > 0)
-                    [label setText:addressString];
-                else
-                    [label setText:[[input prev_out] addr]];
+                labelString = [NSString stringWithFormat:@"You received bitcoin from %@", @"a bitcoin address"];
             }
-            
-            [labels addObject:label];
-            [self addSubview:label];
-            
-            y += 22;
         }
-    } else if (transaction.result < 0) {
         
-        NSArray * outputs = [transaction outputsNotToAddresses:[app transactionsViewController].data.addresses];
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
+        [label setFont:[UIFont systemFontOfSize:13]];
+        [label setTextColor:[UIColor darkGrayColor]];
+        label.adjustsFontSizeToFitWidth = YES;
         
-        if ([outputs count] == 0) {
+        [label setText:labelString];
+        
+        [labels addObject:label];
+        [self addSubview:label];
+        
+        y += 22;
+    }
+    // Payment sent
+    else if (transaction.result < 0) {
+        NSString *labelString;
+        
+        if (transaction.intraWallet) {
             [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
+            
+            labelString = @"You transferred bitcoin between accounts";
         } else {
             [transactionTypeLabel setText:@""];
             [btcButton setBackgroundColor:COLOR_BUTTON_RED];
-        }
-        
-        // Show the addresses involved anyway
-        if ([outputs count] == 0) {
-            outputs = transaction.outputs;
-        }
-        
-        // limit to MAX_ADDRESS_ROWS_PER_CELL outputs
-        for (NSInteger i = 0; i < [outputs count] && i < MAX_ADDRESS_ROWS_PER_CELL; i++)
-        {
-            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
-            [label setFont:[UIFont systemFontOfSize:13]];
-            [label setTextColor:[UIColor darkGrayColor]];
-            label.adjustsFontSizeToFitWidth = YES;
             
-            if (i == MAX_ADDRESS_ROWS_PER_CELL) {
-                [label setText:[NSString stringWithFormat:BC_STRING_COUNT_MORE, [outputs count] - i]];
-            } else {
-                Output *output = [outputs objectAtIndex:i];
-                NSString * addressString = [app.wallet labelForLegacyAddress:[output addr]];
-                
-                if ([addressString length] > 0)
-                    [label setText:addressString];
-                else
-                    [label setText:[output addr]];
+            [transactionTypeLabel setText:@""];
+            [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
+            
+            InOut *to = transaction.to;
+            
+            NSString *labelForAddressString = [app.wallet labelForLegacyAddress:to.externalAddresses.address];
+            
+            if (labelForAddressString && labelForAddressString.length > 0) {
+                labelString = [NSString stringWithFormat:@"You sent bitcoin to %@", labelForAddressString];
             }
-            
-            [labels addObject:label];
-            [self addSubview:label];
-            
-            y += 22;
+            else {
+                labelString = [NSString stringWithFormat:@"You sent bitcoin to %@", @"a bitcoin address"];
+            }
         }
+        
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
+        [label setFont:[UIFont systemFontOfSize:13]];
+        [label setTextColor:[UIColor darkGrayColor]];
+        label.adjustsFontSizeToFitWidth = YES;
+        
+        [label setText:labelString];
+        
+        [labels addObject:label];
+        [self addSubview:label];
+        
+        y += 22;
     }
-    
+
     y += 5;
-    
-    // Make the transaction lable minimal size to fit the text, then move it to it's position on the right and resize and move the date label to use up the rest of the space
+
+    // Make the transaction label minimal size to fit the text, then move it to it's position on the right and resize and move the date label to use up the rest of the space
     [transactionTypeLabel sizeToFit];
     float transactionTypeLabelX = self.frame.size.width - transactionTypeLabel.frame.size.width - 20;
     [transactionTypeLabel setFrame:CGRectMake(transactionTypeLabelX, transactionTypeLabel.frame.origin.y, transactionTypeLabel.frame.size.width, transactionTypeLabel.frame.size.height)];

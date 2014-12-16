@@ -162,9 +162,9 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error.message]);
     }
     
-    var value = Bitcoin.BigInteger.valueOf(valueString);
+    var value = parseInt(valueString);
     
-    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
+    if (!value || value == 0) {
         throw 'Invalid Send Value';
     }
     
@@ -187,9 +187,9 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error.message]);
     }
     
-    var value = Bitcoin.BigInteger.valueOf(valueString);
+    var value = parseInt(valueString);
     
-    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
+    if (!value || value == 0) {
         throw 'Invalid Send Value';
     }
     
@@ -635,4 +635,9 @@ MyStore.get = function(key, callback) {
     }
     
     MyStore.get_old(key, callback);
+}
+
+// TODO what should this value be?
+MyWallet.getNTransactionsPerPage = function() {
+    return 50;
 }

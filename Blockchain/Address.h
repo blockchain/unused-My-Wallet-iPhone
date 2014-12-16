@@ -6,13 +6,9 @@
 //  Copyright (c) 2012 Qkos Services Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@interface Address : NSObject
 
-@interface Address : NSObject {
-
-}
-
-@property(nonatomic, strong) NSString * address;
+@property(nonatomic, strong) NSString *address;
 @property(nonatomic, assign) uint64_t total_received;
 @property(nonatomic, assign) uint64_t total_sent;
 @property(nonatomic, assign) uint64_t final_balance;

@@ -49,8 +49,6 @@
 #define BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE NSLocalizedString(@"Your wallet was successfully created.", nil)
 
 
-
-#define BC_STRING_COUNT_MORE NSLocalizedString(@"%d more", nil)
 #define BC_STRING_UNCONFIRMED NSLocalizedString(@"Unconfirmed", nil)
 #define BC_STRING_COUNT_CONFIRMATIONS NSLocalizedString(@"%d Confirmations", nil)
 

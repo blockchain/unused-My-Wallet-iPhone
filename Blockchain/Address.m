@@ -7,7 +7,6 @@
 //
 
 #import "Address.h"
-#import "AppDelegate.h"
 
 @implementation Address
 

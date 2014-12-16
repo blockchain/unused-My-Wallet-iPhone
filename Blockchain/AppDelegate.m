@@ -19,8 +19,6 @@
 #import "BCManualPairView.h"
 #import "NSString+SHA256.h"
 #import "Transaction.h"
-#import "Input.h"
-#import "Output.h"
 #import "UIDevice+Hardware.h"
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"

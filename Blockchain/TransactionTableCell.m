@@ -26,8 +26,6 @@
     if (transaction == NULL)
         return;
     
-    float y = 30;
-    
     if (transaction.time > 0)  {
         [dateButton setHidden:FALSE];
         [dateButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction.time] shortHandDateWithTime] forState:UIControlStateNormal];
@@ -48,12 +46,10 @@
         NSString *labelString;
         
         if (transaction.intraWallet) {
-            [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
             
             labelString = @"You transferred bitcoin between accounts";
         } else {
-            [transactionTypeLabel setText:@""];
             [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
             
             InOut *from = transaction.from;
@@ -68,7 +64,7 @@
             }
         }
         
-        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, 280, 20)];
         [label setFont:[UIFont systemFontOfSize:13]];
         [label setTextColor:[UIColor darkGrayColor]];
         label.adjustsFontSizeToFitWidth = YES;
@@ -77,24 +73,18 @@
         
         [labels addObject:label];
         [self addSubview:label];
-        
-        y += 22;
     }
     // Payment sent
     else if (transaction.result < 0) {
         NSString *labelString;
         
         if (transaction.intraWallet) {
-            [transactionTypeLabel setText:BC_STRING_TRANSACTION_MOVED];
             [btcButton setBackgroundColor:COLOR_BUTTON_LIGHT_BLUE];
             
             labelString = @"You transferred bitcoin between accounts";
-        } else {
-            [transactionTypeLabel setText:@""];
+        }
+        else {
             [btcButton setBackgroundColor:COLOR_BUTTON_RED];
-            
-            [transactionTypeLabel setText:@""];
-            [btcButton setBackgroundColor:COLOR_BUTTON_GREEN];
             
             InOut *to = transaction.to;
             
@@ -108,7 +98,7 @@
             }
         }
         
-        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 280, 20)];
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, 280, 20)];
         [label setFont:[UIFont systemFontOfSize:13]];
         [label setTextColor:[UIColor darkGrayColor]];
         label.adjustsFontSizeToFitWidth = YES;
@@ -117,23 +107,12 @@
         
         [labels addObject:label];
         [self addSubview:label];
-        
-        y += 22;
     }
-
-    y += 5;
-
-    // Make the transaction label minimal size to fit the text, then move it to it's position on the right and resize and move the date label to use up the rest of the space
-    [transactionTypeLabel sizeToFit];
-    float transactionTypeLabelX = self.frame.size.width - transactionTypeLabel.frame.size.width - 20;
-    [transactionTypeLabel setFrame:CGRectMake(transactionTypeLabelX, transactionTypeLabel.frame.origin.y, transactionTypeLabel.frame.size.width, transactionTypeLabel.frame.size.height)];
-    
-    [dateButton setFrame:CGRectMake(20, dateButton.frame.origin.y, transactionTypeLabelX - 20 - 5, dateButton.frame.size.height)];
     
     // Move down the btc button and the confirmations label according to the number of inouts from above
-    [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, y, btcButton.frame.size.width, btcButton.frame.size.height)];
+    [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, 57, btcButton.frame.size.width, btcButton.frame.size.height)];
     
-    [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, y, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];
+    [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, 57, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];
 }
 
 - (void)seLatestBlock:(LatestBlock*)block

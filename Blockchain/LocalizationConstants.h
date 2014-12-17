@@ -52,10 +52,6 @@
 #define BC_STRING_UNCONFIRMED NSLocalizedString(@"Unconfirmed", nil)
 #define BC_STRING_COUNT_CONFIRMATIONS NSLocalizedString(@"%d Confirmations", nil)
 
-#define BC_STRING_TRANSACTION_MOVED NSLocalizedString(@"MOVED", nil)
-#define BC_STRING_TRANSACTION_RECEIVED NSLocalizedString(@"RECEIVED", nil)
-#define BC_STRING_TRANSACTION_SENT NSLocalizedString(@"SENT", nil)
-
 #define BC_STRING_ERROR NSLocalizedString(@"Error", nil)
 
 #define BC_STRING_INFORMATION NSLocalizedString(@"Information", nil)

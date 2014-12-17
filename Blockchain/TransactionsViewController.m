@@ -74,13 +74,9 @@ int lastNumberTransactions = INT_MAX;
     CGContextFillRect(context, CGRectMake(0, 0, 320, 15));
 }
 
-// TODO
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float baseHeight = 75.0f;
-    baseHeight += 22;
-    
-    return baseHeight;
+    return 97.0f;
 }
 
 - (UITableView*)tableView

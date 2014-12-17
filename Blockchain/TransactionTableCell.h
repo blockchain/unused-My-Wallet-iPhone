@@ -27,7 +27,6 @@
     IBOutlet UIButton * dateButton;
     IBOutlet UIButton * btcButton;
     IBOutlet UILabel *confirmationsLabel;
-    IBOutlet UILabel *transactionTypeLabel;
     
     NSMutableArray * labels;
 }

@@ -558,6 +558,14 @@ MyWalletPhone.getEmptyPaymentRequestAddressForAccount = function(accountIdx) {
     return account.getAddressForPaymentRequest(paymentRequest);
 }
 
+MyWalletPhone.getPaymentRequestAddress = function(accountIdx, amount, label) {
+    var account = MyWallet.getAccount(accountIdx);
+    
+    var paymentRequest = MyWallet.generateOrReuseEmptyPaymentRequestForAccount(accountIdx, amount, label);
+    
+    return account.getAddressForPaymentRequest(paymentRequest);
+}
+
 
 // Shared functions
 

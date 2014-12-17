@@ -21,6 +21,9 @@
 @synthesize activeKeys;
 @synthesize archivedKeys;
 
+Boolean didClickAccount = NO;
+int clickedAccount;
+
 #pragma mark - Lifecycle
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,11 +58,13 @@
     [self reload];
 }
 
--(void)reload {
+- (void)reload
+{
     self.activeKeys = [app.wallet activeLegacyAddresses];
     self.archivedKeys = [app.wallet archivedLegacyAddresses];
     
-    if ([activeKeys count] == 0) {
+    // Show no addresses view if we have no accounts and no active legacy addresses
+    if ([app.wallet getAccountsCount] == 0 && activeKeys.count == 0) {
         [self.view addSubview:noaddressesView];
     } else {
         [noaddressesView removeFromSuperview];
@@ -72,65 +77,53 @@
         [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
         displayingLocalSymbol = FALSE;
     }
-
     
-    // Get active addresses
-    NSArray *activeAddresses = [app.wallet activeLegacyAddresses];
+    // Show table header with the QR code of an address from the default account
+    // Image width is adjusted to screen size
+    float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
     
-    // Show table header with qr code and default address if we can find a default address
-    if (activeAddresses.count > 0) {
-        // Image width is adjusted to screen size
-        float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
-
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
-        
-        // Get the default address: the first empty payment request address for the default HD account
-        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-        NSString *defaultAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:defaultAccountIndex];
-        
-        // QR Code
-        UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
-        NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", defaultAddress];
-        DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
-        qrCodeImageView.image = [QREncoder renderDataMatrix:data imageDimension:250];
-        qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [headerView addSubview:qrCodeImageView];
-        
-        // Label of the default HD account
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
-        addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
-        addressLabel.font = [UIFont systemFontOfSize:14];
-        addressLabel.textAlignment = NSTextAlignmentCenter;
-        addressLabel.textColor = [UIColor blackColor];
-        [addressLabel setMinimumScaleFactor:.5f];
-        [addressLabel setAdjustsFontSizeToFitWidth:YES];
-        [headerView addSubview:addressLabel];
-        
-        tableView.tableHeaderView = headerView;
-    }
-    else {
-        tableView.tableHeaderView = nil;
-    }
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
+    
+    // Get an address: the first empty payment request address for the default HD account
+    int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+    NSString *defaultAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:defaultAccountIndex];
+    
+    // QR Code
+    UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
+    qrCodeImageView.image = [self qrImageFromAddress:defaultAddress];
+    qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [headerView addSubview:qrCodeImageView];
+    
+    // Label of the default HD account
+    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
+    addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+    addressLabel.font = [UIFont systemFontOfSize:14];
+    addressLabel.textAlignment = NSTextAlignmentCenter;
+    addressLabel.textColor = [UIColor blackColor];
+    [addressLabel setMinimumScaleFactor:.5f];
+    [addressLabel setAdjustsFontSizeToFitWidth:YES];
+    [headerView addSubview:addressLabel];
+    
+    tableView.tableHeaderView = headerView;
     
     [tableView reloadData];
 }
 
 #pragma mark - Helpers
 
--(NSString *)getAddress:(NSIndexPath*)indexPath {
-    
+- (NSString *)getAddress:(NSIndexPath*)indexPath
+{
     NSString *addr = nil;
     
-    if ([indexPath section] == 0)
+    if ([indexPath section] == 1)
         addr = [activeKeys objectAtIndex:[indexPath row]];
-    else if ([indexPath section] == 1)
+    else if ([indexPath section] == 2)
         addr = [archivedKeys objectAtIndex:[indexPath row]];
-    
     
     return addr;
 }
 
-- (NSString*)uriURL
+- (NSString *)uriURL
 {
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
     
@@ -141,13 +134,6 @@
     amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
     return [NSString stringWithFormat:@"bitcoin://%@?amount=%@", self.clickedAddress, amountString];
-}
-
-- (NSString*)blockchainUriURL
-{
-    NSString* address = [self getKey:[tableView indexPathForSelectedRow]];
-    double amount = [requestAmountTextField.text doubleValue];
-    return [NSString stringWithFormat:@"https://blockchain.info/uri?uri=bitcoin://%@?amount=%.8f", address, amount];
 }
 
 - (uint64_t)getInputAmountInSatoshi
@@ -184,27 +170,44 @@
     return key;
 }
 
+- (UIImage *)qrImageFromAddress:(NSString *)address
+{
+    NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", address];
+    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
+    
+    return [QREncoder renderDataMatrix:data imageDimension:250];
+}
+
+- (UIImage *)qrImageFromAddress:(NSString *)address amount:(double)amount
+{
+    app.btcFormatter.usesGroupingSeparator = NO;
+    NSString *amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amount]];
+    app.btcFormatter.usesGroupingSeparator = YES;
+    
+    amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
+    
+    NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@?amount=%@", address, amountString];
+    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
+    
+    return [QREncoder renderDataMatrix:data imageDimension:250];
+}
+
 - (void)setQRPayment
 {
-    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:[self uriURL]];
+    double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
     
-    UIImage *image = [QREncoder renderDataMatrix:data imageDimension:250];
+    // Generate new payment request if it's an account
+    if (didClickAccount) {
+        NSString *amountString = [[NSNumber numberWithLongLong:[self getInputAmountInSatoshi]] stringValue];
+        self.clickedAddress = [app.wallet getPaymentRequestAddressForAccount:clickedAccount amount:amountString label:nil];
+    }
+    
+    UIImage *image = [self qrImageFromAddress:self.clickedAddress amount:amount];
     
     qrCodePaymentImageView.image = image;
     qrCodePaymentImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self doCurrencyConversion];
-}
-
-- (void)setQRMain
-{
-    NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", self.clickedAddress];
-    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
-    
-    UIImage *image = [QREncoder renderDataMatrix:data imageDimension:250];
-    
-    qrCodeMainImageView.image = image;
-    qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 # pragma mark - MFMailComposeViewControllerDelegate delegates
@@ -289,7 +292,7 @@
         return;
     }
     
-    NSString * addr = self.clickedAddress;
+    NSString *addr = self.clickedAddress;
     
     [app.wallet setLabel:label forLegacyAddress:addr];
     
@@ -300,7 +303,7 @@
 
 - (IBAction)copyAddressClicked:(id)sender
 {
-    NSString * addr = self.clickedAddress;
+    NSString *addr = self.clickedAddress;
     
     UIView *lastButtonView = archiveUnarchiveButton;
     
@@ -439,6 +442,7 @@
     
     [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
+        requestAmountTextField.text = nil;
     } onResume:nil];
     
     [requestAmountTextField becomeFirstResponder];
@@ -527,35 +531,55 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * addr =  [self getAddress:[_tableView indexPathForSelectedRow]];
-    NSInteger tag =  [app.wallet tagForLegacyAddress:addr];
-    NSString *label =  [app.wallet labelForLegacyAddress:addr];
+    [archiveUnarchiveButton setHidden:(indexPath.section == 0)];
+    [labelAddressButton setHidden:(indexPath.section == 0)];
     
-    self.clickedAddress = addr;
+    didClickAccount = (indexPath.section == 0);
     
-    if (tag == 2)
-        [archiveUnarchiveButton setTitle:BC_STRING_UNARCHIVE forState:UIControlStateNormal];
-    else
-        [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
+    if (indexPath.section == 0) {
+        self.clickedAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:indexPath.row];
+        clickedAccount = indexPath.row;
+        
+        optionsTitleLabel.text = [app.wallet getLabelForAccount:indexPath.row];
+    }
+    else {
+        NSString *addr = [self getAddress:[_tableView indexPathForSelectedRow]];
+        NSInteger tag = [app.wallet tagForLegacyAddress:addr];
+        NSString *label = [app.wallet labelForLegacyAddress:addr];
+        
+        self.clickedAddress = addr;
+        
+        if (tag == 2)
+            [archiveUnarchiveButton setTitle:BC_STRING_UNARCHIVE forState:UIControlStateNormal];
+        else
+            [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
+        
+        if (label.length > 0)
+            optionsTitleLabel.text = label;
+        else
+            optionsTitleLabel.text = addr;
+    }
     
     [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose onDismiss:^() {
         // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
         [optionsModalView removeFromSuperview];
     } onResume:nil];
     
-    if (label.length > 0)
-        optionsTitleLabel.text = label;
-    else
-        optionsTitleLabel.text = addr;
-    
     // Put QR code in ImageView
-    [self setQRMain];
+    UIImage *image = [self qrImageFromAddress:self.clickedAddress];
+    
+    qrCodeMainImageView.image = image;
+    qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0) {
+        return 44.0f;
+    }
+    
     return 70.0f;
 }
 
@@ -566,7 +590,6 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    // TODO My Accounts
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
     view.backgroundColor = COLOR_BACKGROUND_GRAY;
     
@@ -578,7 +601,9 @@
     
     NSString *labelString;
     
-    if (section == 0) {
+    if (section == 0)
+        labelString = BC_STRING_MY_ACCOUNTS;
+    else if (section == 1) {
         labelString = BC_STRING_IMPORTED_ADDRESSES;
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
@@ -590,8 +615,8 @@
         [addButton addTarget:self action:@selector(scanKeyClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:addButton];
     }
-    else if (section == 1)
-        labelString =  BC_STRING_IMPORTED_ADDRESSES_ARCHIVED;
+    else if (section == 2)
+        labelString = BC_STRING_IMPORTED_ADDRESSES_ARCHIVED;
     else
         @throw @"Unknown Section";
     
@@ -603,6 +628,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
+        return [app.wallet getAccountsCount];
+    else if (section == 1)
         return [activeKeys count];
     else
         return [archivedKeys count];
@@ -610,7 +637,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    int n = 0;
+    int n = 1;
     
     if ([archivedKeys count]) ++n;
     if ([activeKeys count]) ++n;
@@ -620,7 +647,37 @@
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * addr =  [self getAddress:indexPath];
+    if (indexPath.section == 0) {
+        int accountIndex = indexPath.row;
+        NSString *accountLabelString = [app.wallet getLabelForAccount:accountIndex];
+        
+        ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receiveAccount"];
+        
+        if (cell == nil) {
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        
+            // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
+            cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);
+            cell.balanceLabel.frame = CGRectMake(217, 11, 120, 21);
+            [cell.watchLabel setHidden:TRUE];
+        }
+        
+        cell.labelLabel.text = accountLabelString;
+        cell.addressLabel.text = @"";
+        
+        uint64_t balance = [app.wallet getBalanceForAccount:accountIndex];
+        
+        // Selected cell color
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+        [v setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
+        [cell setSelectedBackgroundView:v];
+        
+        cell.balanceLabel.text = [app formatMoney:balance];
+        
+        return cell;
+    }
+    
+    NSString *addr = [self getAddress:indexPath];
     
     Boolean isWatchOnlyLegacyAddress = [app.wallet isWatchOnlyLegacyAddress:addr];
     
@@ -653,7 +710,7 @@
         }
     }
     
-    NSString * label =  [app.wallet labelForLegacyAddress:addr];
+    NSString *label =  [app.wallet labelForLegacyAddress:addr];
     
     if (label)
         cell.labelLabel.text = label;

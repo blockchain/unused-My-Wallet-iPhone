@@ -91,7 +91,7 @@ int accountEntries = 0;
 - (void)reload
 {
     // Account entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
-    accountEntries = 1 + app.wallet.getAccountsCount + ([app.wallet hasLegacyAddresses] ? 1 : 0);
+    accountEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     
     self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
     

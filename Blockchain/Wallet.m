@@ -872,6 +872,15 @@
     return [self.webView executeJSSynchronous:@"MyWalletPhone.getEmptyPaymentRequestAddressForAccount(%d)", account];
 }
 
+- (NSString *)getPaymentRequestAddressForAccount:(int)account amount:(NSString *)amount label:(NSString *)label
+{
+    if (![self isInitialized]) {
+        return nil;
+    }
+    
+    return [self.webView executeJSSynchronous:@"MyWalletPhone.getPaymentRequestAddress(%d, %@, \"%@\")", account, amount, label];
+}
+
 #pragma mark - Callbacks from JS to Obj-C for HD wallet
 
 - (void)hd_wallets_does_not_exist

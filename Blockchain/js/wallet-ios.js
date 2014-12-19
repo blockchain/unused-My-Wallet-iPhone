@@ -220,10 +220,8 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
 }
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
-    console.log(1)
     MyWallet.sendMonitorEvent({type: "loadingText", message: "Retrieving PIN Code", code: 0});
 
-    console.log(2)
     $.ajax({
         type: "POST",
         url: BlockchainAPI.getRootURL() + 'pin-store',
@@ -236,7 +234,6 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
            key : key
        },
        success: function (responseObject) {
-           console.log(3)
            device.execute('on_pin_code_get_response:', [responseObject])
        },
        error: function (res) {

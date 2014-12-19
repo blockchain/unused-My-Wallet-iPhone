@@ -37,7 +37,7 @@ MyWallet.getWebWorkerLoadPrefix = function() {
 // Register for JS event handlers and forward to Obj-C handlers
 
 MyWallet.addEventListener(function (event, obj) {
-    var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open "];
+    var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open ", "on_backup_wallet_start"];
 
     // TODO this will change again
     if (event == 'msg') {
@@ -64,6 +64,7 @@ MyWallet.addEventListener(function (event, obj) {
     if (eventsWithObjCHandlers.indexOf(event) == -1)
          return;
 
+    // Obj-C part of handling events (calls function of event name in Wallet.m)
     if (obj) {
         event += ':';
     }

@@ -776,6 +776,11 @@
         [delegate didWalletDecryptFinish];
 }
 
+- (void)on_backup_wallet_start
+{
+    DLog(@"on_backup_wallet_start");
+}
+
 - (void)on_backup_wallet_error
 {
     DLog(@"on_backup_wallet_error");

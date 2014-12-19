@@ -164,7 +164,6 @@
 		9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D934F14C07B2D0053F0FF /* funds_moved.png */; };
 		9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D935014C07B2D0053F0FF /* payment_received.png */; };
 		9F2D935414C07B2D0053F0FF /* payment_sent.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2D935114C07B2D0053F0FF /* payment_sent.png */; };
-		9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F45F81A1514D7D600018AED /* MultiValueField.m */; };
 		9F45F8201514D8C300018AED /* 21-circle-east.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F81E1514D8C300018AED /* 21-circle-east.png */; };
 		9F45F8211514D8C300018AED /* 21-circle-east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F45F81F1514D8C300018AED /* 21-circle-east@2x.png */; };
 		9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */; };
@@ -612,8 +611,6 @@
 		9F2D934F14C07B2D0053F0FF /* funds_moved.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = funds_moved.png; sourceTree = "<group>"; };
 		9F2D935014C07B2D0053F0FF /* payment_received.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = payment_received.png; sourceTree = "<group>"; };
 		9F2D935114C07B2D0053F0FF /* payment_sent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = payment_sent.png; sourceTree = "<group>"; };
-		9F45F8191514D7D600018AED /* MultiValueField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiValueField.h; sourceTree = "<group>"; };
-		9F45F81A1514D7D600018AED /* MultiValueField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiValueField.m; sourceTree = "<group>"; };
 		9F45F81C1514D81700018AED /* UIButtonPressAndHold.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIButtonPressAndHold.h; sourceTree = "<group>"; };
 		9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIButtonPressAndHold.m; sourceTree = "<group>"; };
 		9F45F81E1514D8C300018AED /* 21-circle-east.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "21-circle-east.png"; sourceTree = "<group>"; };
@@ -1278,8 +1275,6 @@
 				84B601C8197AD03800DA1829 /* BCModalView.h */,
 				84B601C9197AD03800DA1829 /* BCModalView.m */,
 				678AD5EC19D4731C00E9A778 /* Modal Content Views */,
-				9F45F8191514D7D600018AED /* MultiValueField.h */,
-				9F45F81A1514D7D600018AED /* MultiValueField.m */,
 				9F1831EC151744EA00FB3D52 /* ReceiveTableCell.h */,
 				9F1831ED151744EB00FB3D52 /* ReceiveTableCell.m */,
 				9F765F3714BC7BAC00048EFB /* TransactionTableCell.h */,
@@ -1580,7 +1575,6 @@
 				6780DB951A40BDCF0048EED2 /* InOut.m in Sources */,
 				67EE1DCC19E3325900DBBFC9 /* ECSlidingInteractiveTransition.m in Sources */,
 				6775569919E752A00054699B /* BCWebViewController.m in Sources */,
-				9F45F81B1514D7D600018AED /* MultiValueField.m in Sources */,
 				67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */,
 				9F61B89E151519EF0083C57A /* AddressBookView.m in Sources */,
 				9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */,

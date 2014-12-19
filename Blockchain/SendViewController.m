@@ -8,7 +8,6 @@
 
 #import "SendViewController.h"
 #import "Wallet.h"
-#import "MultiValueField.h"
 #import "AppDelegate.h"
 #import "AddressBookView.h"
 #import "TabViewController.h"

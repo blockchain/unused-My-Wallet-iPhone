@@ -123,7 +123,24 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
 }
 
 MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
-    return MyWalletPhone.quickSend(from, to, valueString);
+    var id = ''+Math.round(Math.random()*100000);
+    
+    var success = function() {
+        device.execute('tx_on_success:', [id]);
+    }
+    
+    var error = function(error) {
+        device.execute('tx_on_error:error:', [id, ''+error.message]);
+    }
+    
+    var value = Bitcoin.BigInteger.valueOf(valueString);
+    
+    var fee = null;
+    var note = null;
+    
+    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
+    
+    return id;
 }
 
 MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
@@ -138,10 +155,6 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     }
     
     var value = Bitcoin.BigInteger.valueOf(valueString);
-    
-    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
-        throw 'Invalid Send Value';
-    }
     
     var fee = null;
     var note = null;
@@ -164,10 +177,6 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     
     var value = parseInt(valueString);
     
-    if (!value || value == 0) {
-        throw 'Invalid Send Value';
-    }
-    
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
@@ -189,10 +198,6 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     
     var value = parseInt(valueString);
     
-    if (!value || value == 0) {
-        throw 'Invalid Send Value';
-    }
-    
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
@@ -210,87 +215,6 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     
     MyWallet.sendToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
     
-    return id;
-}
-
-MyWalletPhone.quickSend = function(from, to, valueString) {
-    var id = ''+Math.round(Math.random()*100000);
-
-    (function(id) {
-        var listener = {
-            on_success : function(e) {
-                device.execute('tx_on_success:', [id]);
-                delete pendingTransactions[id];
-            },
-            on_error : function(e) {
-                device.execute('tx_on_error:error:', [id, ''+e]);
-                delete pendingTransactions[id];
-            }
-        };
-
-        MyWallet.getSecondPassword(function() {
-                try {
-                    if (Object.keys(pendingTransactions).length > 0) {
-                        throw 'Transaction already pending';
-                    }
-
-                    var obj = initNewTx();
-
-                    obj.ask_for_private_key = function(success, error, address) {
-                        device.execute('ask_for_private_key:', [address], function(privateKeyString) {
-                            try {
-                                var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
-
-                                if (format == 'bip38') {
-                                    setScryptImportExport();
-
-                                    MyWallet.getPassword($('#import-private-key-password'), function(_password) {
-                                        ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
-                                            success(key);
-                                        }, error);
-                                    }, error);
-                                } else {
-                                    var key = MyWallet.privateKeyStringToKey(privateKeyString, format);
-
-                                    if (key == null) {
-                                        throw 'Could not decode private key';
-                                    }
-
-                                    success(key);
-                                }
-                            } catch(e) {
-                                error(e);
-                            }
-                        }, error);
-                    }
-
-                    pendingTransactions[id] = obj;
-
-                    if (from && from.length > 0) {
-                        obj.from_addresses = [from];
-                    } else {
-                        obj.from_addresses = MyWallet.getLegacyActiveAddresses();
-                    }
-
-                    var value = Bitcoin.BigInteger.valueOf(valueString);
-
-                    if (!value || value.compareTo(Bitcoin.BigInteger.ZERO) == 0) {
-                        throw 'Invalid Send Value';
-                    }
-
-                    obj.to_addresses.push({address: Bitcoin.Address.fromBase58Check(to), value: value});
-
-                    obj.addListener(listener);
-                       
-                    obj.start();
-                } catch (e){
-                    listener.on_error(e);
-                }
-        }, function(e) {
-            listener.on_error(e);
-        });
-    })(id);
-
     return id;
 }
 

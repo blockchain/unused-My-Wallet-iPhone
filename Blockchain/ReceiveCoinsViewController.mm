@@ -195,8 +195,8 @@ int clickedAccount;
 {
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
     
-    // Generate new payment request if it's an account
-    if (didClickAccount) {
+    // Update payment request if it's an account and the amount entered is positive
+    if (didClickAccount && amount > 0) {
         NSString *amountString = [[NSNumber numberWithLongLong:[self getInputAmountInSatoshi]] stringValue];
         [app.wallet updatePaymentRequestForAccount:clickedAccount address:self.clickedAddress amount:amountString];
     }

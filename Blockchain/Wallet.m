@@ -634,6 +634,13 @@
     }
 }
 
+- (void)getSecondPassword:(NSString *)canDiscard success:(void(^)(id))_success error:(void(^)(id))_error
+{
+    [app getSecondPassword:^(NSString *secondPassword) {
+        _success(secondPassword);
+    } error:nil];
+}
+
 - (void)setLoadingText:(NSString*)message
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:LOADING_TEXT_NOTIFICATION_KEY object:message];
@@ -859,7 +866,7 @@
 - (void)createAccountWithLabel:(NSString *)label
 {
     if ([self isInitialized]) {
-        [self.webView executeJSSynchronous:@"MyWallet.createAccount(\"%@\")", label];
+        [self.webView executeJSSynchronous:@"MyWallet.createAccount(\"%@\", MyWallet.getPassword)", label];
     }
 }
 
@@ -872,13 +879,13 @@
     return [self.webView executeJSSynchronous:@"MyWalletPhone.getEmptyPaymentRequestAddressForAccount(%d)", account];
 }
 
-- (NSString *)getPaymentRequestAddressForAccount:(int)account amount:(NSString *)amount label:(NSString *)label
+- (NSString *)updatePaymentRequestForAccount:(int)account address:(NSString *)address amount:(NSString *)amount
 {
     if (![self isInitialized]) {
         return nil;
     }
     
-    return [self.webView executeJSSynchronous:@"MyWalletPhone.getPaymentRequestAddress(%d, %@, \"%@\")", account, amount, label];
+    return [self.webView executeJSSynchronous:@"MyWallet.updatePaymentRequestForAccount(%d, \"%@\", %@)", account, address, amount];
 }
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet

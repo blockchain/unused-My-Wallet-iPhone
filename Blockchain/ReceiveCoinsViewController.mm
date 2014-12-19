@@ -199,7 +199,7 @@ int clickedAccount;
     // Generate new payment request if it's an account
     if (didClickAccount) {
         NSString *amountString = [[NSNumber numberWithLongLong:[self getInputAmountInSatoshi]] stringValue];
-        self.clickedAddress = [app.wallet getPaymentRequestAddressForAccount:clickedAccount amount:amountString label:nil];
+        [app.wallet updatePaymentRequestForAccount:clickedAccount address:self.clickedAddress amount:amountString];
     }
     
     UIImage *image = [self qrImageFromAddress:self.clickedAddress amount:amount];

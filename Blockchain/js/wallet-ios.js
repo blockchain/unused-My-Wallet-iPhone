@@ -146,7 +146,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var fee = null;
     var note = null;
     
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error);
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
     
     return id;
 }
@@ -171,7 +171,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error);
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
     
     return id;
 }
@@ -193,15 +193,22 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
         throw 'Invalid Send Value';
     }
     
-    var account = MyWallet.getAccount(to);
-    
-    var paymentRequest = account.generatePaymentRequest(valueString, "");
-    var toAddress = account.getAddressForPaymentRequest(paymentRequest);
-    
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
-    MyWallet.sendBitcoinsForAccount(from, toAddress, value, fee, note, success, error);
+    // TODO temporary to set/unset second password
+//    var _success = function() {
+//        console.log('Success: Second password saved')
+//    }
+//    
+//    var _error = function(e) {
+//        console.log('Error: Second password not saved: ' + e)
+//    }
+//    
+//    var _password = "test"
+//    MyWallet.setSecondPassword(_password, _success, _error);
+    
+    MyWallet.sendToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
     
     return id;
 }
@@ -558,14 +565,6 @@ MyWalletPhone.getEmptyPaymentRequestAddressForAccount = function(accountIdx) {
     return account.getAddressForPaymentRequest(paymentRequest);
 }
 
-MyWalletPhone.getPaymentRequestAddress = function(accountIdx, amount, label) {
-    var account = MyWallet.getAccount(accountIdx);
-    
-    var paymentRequest = MyWallet.generateOrReuseEmptyPaymentRequestForAccount(accountIdx, amount, label);
-    
-    return account.getAddressForPaymentRequest(paymentRequest);
-}
-
 
 // Shared functions
 
@@ -632,6 +631,14 @@ function webSocketDisconnect() {
 
 MyWallet.getPassword = function(modal, success, error) {
     device.execute("getPassword:", [modal.selector], success, error);
+}
+
+MyWalletPhone.getSecondPassword = function(success) {
+    // TODO clean up
+    console.log('getSecondPassword - success fn:' + success)
+    device.execute("getSecondPassword:", ["discard"], success, function(e) {
+                   error(''+e);
+                   });
 }
 
 MyStore.get_old = MyStore.get;

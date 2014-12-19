@@ -18,7 +18,6 @@
  * MA 02110-1301  USA
  */
 
-#import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "Wallet.h"
 
@@ -68,7 +67,6 @@
 - (IBAction)labelSaveClicked:(id)sender;
 - (IBAction)shareByTwitter:(id)sender;
 - (IBAction)shareByFacebook:(id)sender;
-- (IBAction)shareByGooglePlus:(id)sender;
 - (IBAction)shareByEmailClicked:(id)sender;
 - (IBAction)shareByMessageClicked:(id)sender;
 - (IBAction)requestPaymentClicked:(id)sender;

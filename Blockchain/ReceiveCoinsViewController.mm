@@ -12,7 +12,6 @@
 #import "ReceiveTableCell.h"
 #import "Address.h"
 #import "PrivateKeyReader.h"
-#import "AddThis.h"
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
 
@@ -379,11 +378,6 @@ int clickedAccount;
     return [NSString stringWithFormat:BC_STRING_PAYMENT_REQUEST_HTML, url];
 }
 
-- (IBAction)shareByGooglePlus:(id)sender
-{
-    [AddThisSDK shareURL:[self uriURL] withService:@"google" title:BC_STRING_MY_BITCOIN_ADDRESS description:BC_STRING_PAY_ME_WITH_BITCOIN];
-}
-
 - (IBAction)shareByMessageClicked:(id)sender
 {
     if([MFMessageComposeViewController canSendText]) {
@@ -423,22 +417,6 @@ int clickedAccount;
     requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
-    
-    //configure addthis -- (this step is optional)
-    [AddThisSDK setNavigationBarColor:[UIColor lightGrayColor]];
-    [AddThisSDK setToolBarColor:[UIColor lightGrayColor]];
-    [AddThisSDK setSearchBarColor:[UIColor lightGrayColor]];
-    
-    [AddThisSDK setAddThisPubId:@"ra-4f841fb17ecdac5e"];
-    [AddThisSDK setAddThisApplicationId:@"4f841fed1608c356"];
-    
-    //Facebook connect settings
-    [AddThisSDK setFacebookAPIKey:@"289188934490223"];
-    [AddThisSDK setFacebookAuthenticationMode:ATFacebookAuthenticationTypeFBConnect];
-    
-    [AddThisSDK setTwitterConsumerKey:@"o7MGZkxywxYgUnZFyBcecQ"];
-    [AddThisSDK setTwitterConsumerSecret:@"oDkfGTdj8gKqqwxae6TgulvvIeQ96Qo3ilc9CdFBU"];
-    [AddThisSDK setTwitterCallBackURL:@"http://blockchain.info/twitter_callback"];
     
     [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;

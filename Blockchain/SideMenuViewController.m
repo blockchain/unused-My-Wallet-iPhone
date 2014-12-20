@@ -98,6 +98,7 @@ int accountEntries = 0;
     // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
     if (self.tableView.frame.size.height > self.view.frame.size.height - DEFAULT_HEADER_HEIGHT) {
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 86, 0);
+        self.tableView.scrollEnabled = YES;
     }
     else {
         self.tableView.scrollEnabled = NO;

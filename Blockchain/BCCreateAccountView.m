@@ -79,6 +79,8 @@
     
     [app.wallet createAccountWithLabel:label];
     
+    [app reload];
+    
     [app closeModalWithTransition:kCATransitionFade];
 }
 

@@ -79,6 +79,8 @@
     
     [app.wallet setLabelForAccount:self.accountIdx label:label];
     
+    [app reload];
+    
     [app closeModalWithTransition:kCATransitionFade];
 }
 

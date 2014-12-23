@@ -26,6 +26,7 @@
 ECSlidingViewController *sideMenu;
 
 int menuEntries = 4;
+int balanceEntries = 0;
 int accountEntries = 0;
 
 - (void)viewDidLoad {
@@ -90,10 +91,11 @@ int accountEntries = 0;
 
 - (void)reload
 {
-    // Account entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
-    accountEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
+    // Total entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
+    balanceEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
+    accountEntries = [app.wallet getAccountsCount];
     
-    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + accountEntries) + SECTION_HEADER_HEIGHT);
+    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + balanceEntries) + SECTION_HEADER_HEIGHT);
     
     // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
     if (self.tableView.frame.size.height > self.view.frame.size.height - DEFAULT_HEADER_HEIGHT) {
@@ -234,7 +236,7 @@ int accountEntries = 0;
         return menuEntries;
     }
     
-    return accountEntries;
+    return balanceEntries;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -280,6 +282,7 @@ int accountEntries = 0;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
+        // Total balance
         if (indexPath.row == 0) {
             uint64_t totalBalance = app.latestResponse.final_balance;
             
@@ -287,13 +290,15 @@ int accountEntries = 0;
             cell.labelLabel.text = BC_STRING_TOTAL_BALANCE;
             cell.editButton.hidden = YES;
         }
-        else if (indexPath.row < accountEntries-1) {
+        // Account balances
+        else if (indexPath.row <= accountEntries) {
             uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1];
             
             cell.amountLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
             cell.labelLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
             cell.accountIdx = indexPath.row - 1;
         }
+        // Total legacy balance
         else {
             uint64_t legacyBalance = [app.wallet getTotalBalanceForActiveLegacyAddresses];
             

@@ -38,6 +38,9 @@
 - (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)showOwnAddresses;
 - (void)setHeader:(NSString *)headerText;
 
+@property(nonatomic, strong) NSMutableArray *addressBookAddresses;
+@property(nonatomic, strong) NSMutableArray *addressBookAddressLabels;
+
 @property(nonatomic, strong) NSMutableArray *legacyAddresses;
 @property(nonatomic, strong) NSMutableArray *legacyAddressLabels;
 

@@ -17,16 +17,23 @@
 
 @implementation AddressBookView
 
+@synthesize addressBookAddresses;
+@synthesize addressBookAddressLabels;
+
 @synthesize legacyAddresses;
 @synthesize legacyAddressLabels;
+
 @synthesize accounts;
 @synthesize accountLabels;
+
 @synthesize wallet;
 @synthesize delegate;
 
 bool showFromAddresses;
-int numAddressBookAddresses;
-int numMyAddresses;
+
+int addressBookSectionNumber;
+int accountsSectionNumber;
+int legacyAddressesSectionNumber;
 
 - (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)_showFromAddresses
 {
@@ -34,13 +41,18 @@ int numMyAddresses;
         [[NSBundle mainBundle] loadNibNamed:@"AddressBookView" owner:self options:nil];
         
         self.wallet = _wallet;
+        // The From Address View shows accounts and legacy addresses with their balance. Entries with 0 balance are not selectable.
+        // The To Address View shows address book entries, account and legacy addresses without a balance.
         showFromAddresses = _showFromAddresses;
         
-        legacyAddresses = [NSMutableArray array];
-        legacyAddressLabels = [NSMutableArray array];
+        addressBookAddresses = [NSMutableArray array];
+        addressBookAddressLabels = [NSMutableArray array];
         
         accounts = [NSMutableArray array];
         accountLabels = [NSMutableArray array];
+        
+        legacyAddresses = [NSMutableArray array];
+        legacyAddressLabels = [NSMutableArray array];
         
         // Select from address
         if (_showFromAddresses) {
@@ -76,18 +88,17 @@ int numMyAddresses;
                 }
             }
             
-            numMyAddresses = legacyAddresses.count;
-            numAddressBookAddresses = legacyAddresses.count;
+            addressBookSectionNumber = -1;
+            accountsSectionNumber = 0;
+            legacyAddressesSectionNumber = (legacyAddresses.count > 0) ? 1 : -1;
         }
         // Select to address
         else {
             // Show the address book
             for (NSString * addr in [_wallet.addressBook allKeys]) {
-                [legacyAddresses addObject:addr];
-                [legacyAddressLabels addObject:[app.sendViewController labelForLegacyAddress:addr]];
+                [addressBookAddresses addObject:addr];
+                [addressBookAddressLabels addObject:[app.sendViewController labelForLegacyAddress:addr]];
             }
-            
-            numAddressBookAddresses = legacyAddresses.count;
             
             // Then show the HD accounts
             for (int i = 0; i < app.wallet.getAccountsCount; i++) {
@@ -101,7 +112,9 @@ int numMyAddresses;
                 [legacyAddressLabels addObject:[_wallet labelForLegacyAddress:addr]];
             }
             
-            numMyAddresses = legacyAddresses.count - numAddressBookAddresses;
+            addressBookSectionNumber = (addressBookAddresses.count > 0) ? 0 : -1;
+            accountsSectionNumber = addressBookSectionNumber + 1;
+            legacyAddressesSectionNumber = (legacyAddresses.count > 0) ? accountsSectionNumber + 1 : -1;
         }
         
         [self addSubview:view];
@@ -109,20 +122,19 @@ int numMyAddresses;
         view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
         
         // Hacky way to make sure the table view doesn't show empty entries (with divider lines)
-        float tableHeight = ROW_HEIGHT * (self.legacyAddresses.count + self.accounts.count);
+        float tableHeight = ROW_HEIGHT * (addressBookAddresses.count + legacyAddresses.count) + ROW_HEIGHT_ACCOUNT * accounts.count;
         float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT - 49;
         
+        CGRect frame = tableView.frame;
+        frame.size.height = tableSpace;
+        tableView.frame = frame;
+        
+        // Disable scrolling if table content fits on screen
         if (tableHeight < tableSpace) {
-            CGRect frame = tableView.frame;
-            frame.size.height = tableHeight + 55 + 48 + (showFromAddresses ? 0 : 48);
-            tableView.frame = frame;
-            
             tableView.scrollEnabled = NO;
         }
         else {
-            CGRect frame = tableView.frame;
-            frame.size.height = tableSpace;
-            tableView.frame = frame;
+            tableView.scrollEnabled = YES;
         }
     }
     return self;
@@ -136,22 +148,22 @@ int numMyAddresses;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (showFromAddresses) {
-        if (indexPath.section == 0) {
+        if (indexPath.section == accountsSectionNumber) {
             [delegate didSelectFromAccount:indexPath.row];
         }
-        else {
+        else if (indexPath.section == legacyAddressesSectionNumber) {
             [delegate didSelectFromAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
         }
     }
     else {
-        if (indexPath.section == 0) {
-            [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
+        if (indexPath.section == addressBookSectionNumber) {
+            [delegate didSelectToAddress:[addressBookAddresses objectAtIndex:[indexPath row]]];
         }
-        else if (indexPath.section == 1) {
+        else if (indexPath.section == accountsSectionNumber) {
             [delegate didSelectToAccount:indexPath.row];
         }
-        else {
-            [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row] + numAddressBookAddresses]];
+        else if (indexPath.section == legacyAddressesSectionNumber) {
+            [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
         }
     }
     
@@ -161,53 +173,66 @@ int numMyAddresses;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (showFromAddresses) {
-        return  1 + (self.legacyAddresses.count > 0 ? 1 : 0);
+        return  1 + (legacyAddresses.count > 0 ? 1 : 0);
     }
-    return 2 + (self.legacyAddresses.count > 0 ? 1 : 0);
+    return (addressBookAddresses.count > 0 ? 1 : 0) + 1 + (legacyAddresses.count > 0 ? 1 : 0);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (showFromAddresses) {
-        if (section == 0) {
+        if (section == accountsSectionNumber) {
             return BC_STRING_MY_ACCOUNTS;
+        }
+        else if (section == legacyAddressesSectionNumber) {
+            return BC_STRING_IMPORTED_ADDRESSES;
         }
     }
     else {
-        if (section == 0) {
+        if (section == addressBookSectionNumber) {
             return BC_STRING_ADDRESS_BOOK;
         }
-        else if (section == 1) {
+        else if (section == accountsSectionNumber) {
             return BC_STRING_MY_ACCOUNTS;
+        }
+        else if (section == legacyAddressesSectionNumber) {
+            return BC_STRING_IMPORTED_ADDRESSES;
         }
     }
     
-    return BC_STRING_IMPORTED_ADDRESSES;
+    assert(false); // Should never get here
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (showFromAddresses) {
-        if (section == 0) {
-            return self.accounts.count;
+        if (section == accountsSectionNumber) {
+            return accounts.count;
+        }
+        else if (section == legacyAddressesSectionNumber) {
+            return legacyAddresses.count;
         }
     }
     else {
-        if (section == 0) {
-            return numAddressBookAddresses;
+        if (section == addressBookSectionNumber) {
+            return addressBookAddresses.count;
         }
-        else if (section == 1) {
-            return self.accounts.count;
+        else if (section == accountsSectionNumber) {
+            return accounts.count;
+        }
+        else if (section == legacyAddressesSectionNumber) {
+            return legacyAddresses.count;
         }
     }
     
-    return numMyAddresses;
+    assert(false); // Should never get here
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((showFromAddresses && indexPath.section == 0) ||
-        (!showFromAddresses && indexPath.section == 1)) {
+    if (indexPath.section == accountsSectionNumber) {
         return ROW_HEIGHT_ACCOUNT;
     }
     
@@ -216,12 +241,8 @@ int numMyAddresses;
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    int section = indexPath.section;
     int row = indexPath.row;
-    
-    if (!showFromAddresses && indexPath.section == 2) {
-        row = indexPath.row + numAddressBookAddresses;
-    }
-    NSString *addr = [legacyAddresses objectAtIndex:row];
     
     ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
@@ -236,14 +257,17 @@ int numMyAddresses;
     }
     
     NSString *label;
-    if ((showFromAddresses && indexPath.section == 0) ||
-        (!showFromAddresses && indexPath.section == 1)) {
-        label = accountLabels[indexPath.row];
-        cell.addressLabel.text = @"";
+    if (section == addressBookSectionNumber) {
+        label = [addressBookAddressLabels objectAtIndex:row];
+        cell.addressLabel.text = [addressBookAddresses objectAtIndex:row];
     }
-    else {
+    else if (section == accountsSectionNumber) {
+        label = accountLabels[indexPath.row];
+        cell.addressLabel.text = nil;
+    }
+    else if (section == legacyAddressesSectionNumber) {
         label = [legacyAddressLabels objectAtIndex:row];
-        cell.addressLabel.text = addr;
+        cell.addressLabel.text = [legacyAddresses objectAtIndex:row];
     }
     
     if (label)
@@ -252,12 +276,15 @@ int numMyAddresses;
         cell.labelLabel.text = BC_STRING_NO_LABEL;
     
     if (showFromAddresses) {
-        uint64_t balance;
-        if (indexPath.section == 0) {
+        uint64_t balance = 0;
+        if (section == addressBookSectionNumber) {
+            balance = [app.wallet getLegacyAddressBalance:[addressBookAddresses objectAtIndex:row]];
+        }
+        else if (section == accountsSectionNumber) {
             balance = [app.wallet getBalanceForAccount:indexPath.row];
         }
-        else {
-            balance = [app.wallet getLegacyAddressBalance:addr];
+        else if (section == legacyAddressesSectionNumber) {
+            balance = [app.wallet getLegacyAddressBalance:[legacyAddresses objectAtIndex:row]];
         }
         cell.balanceLabel.text = [app formatMoney:balance];
         

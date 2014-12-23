@@ -19,13 +19,13 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "AddressBookView.h"
+#import "BCAddressSelectionView.h"
 #import "BCAlertView.h"
 #import <AVFoundation/AVFoundation.h>
 
 @class Wallet;
 
-@interface SendViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, AddressBookDelegate> {
+@interface SendViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, AddressSelectionDelegate> {
     IBOutlet UIView *containerView;
     
     IBOutlet UITextField *toFieldContainerField;

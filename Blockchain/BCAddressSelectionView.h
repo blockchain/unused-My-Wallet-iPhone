@@ -22,14 +22,14 @@
 
 @class Wallet;
 
-@protocol AddressBookDelegate <NSObject>
+@protocol AddressSelectionDelegate <NSObject>
 - (void)didSelectFromAddress:(NSString*)address;
 - (void)didSelectToAddress:(NSString*)address;
 - (void)didSelectFromAccount:(int)account;
 - (void)didSelectToAccount:(int)account;
 @end
 
-@interface AddressBookView : UIView <UITableViewDelegate, UITableViewDataSource> {
+@interface BCAddressSelectionView : UIView <UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UILabel *headerLabel;
     IBOutlet UIView *view;
     IBOutlet UITableView *tableView;
@@ -48,6 +48,6 @@
 @property(nonatomic, strong) NSMutableArray *accountLabels;
 
 @property(nonatomic, strong) Wallet *wallet;
-@property(nonatomic, strong) id<AddressBookDelegate> delegate;
+@property(nonatomic, strong) id<AddressSelectionDelegate> delegate;
 
 @end

@@ -9,7 +9,7 @@
 #import "SendViewController.h"
 #import "Wallet.h"
 #import "AppDelegate.h"
-#import "AddressBookView.h"
+#import "BCAddressSelectionView.h"
 #import "TabViewController.h"
 #import "UncaughtExceptionHandler.h"
 #import "UITextField+Blocks.h"
@@ -479,10 +479,10 @@ BOOL didChangeDollarAmount = NO;
     [toField resignFirstResponder];
     [amountField resignFirstResponder];
     
-    AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet showOwnAddresses:YES];
-    [addressBookView setHeader:BC_STRING_SEND_FROM];
-    addressBookView.delegate = self;
-    [app showModalWithContent:addressBookView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
+    BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:YES];
+    [addressSelectionView setHeader:BC_STRING_SEND_FROM];
+    addressSelectionView.delegate = self;
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
 }
 
 - (IBAction)addressBookClicked:(id)sender
@@ -490,10 +490,10 @@ BOOL didChangeDollarAmount = NO;
     [toField resignFirstResponder];
     [amountField resignFirstResponder];
     
-    AddressBookView *addressBookView = [[AddressBookView alloc] initWithWallet:app.wallet showOwnAddresses:NO];
-    [addressBookView setHeader:BC_STRING_SEND_TO];
-    addressBookView.delegate = self;
-    [app showModalWithContent:addressBookView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
+    BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:NO];
+    [addressSelectionView setHeader:BC_STRING_SEND_TO];
+    addressSelectionView.delegate = self;
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
 }
 
 - (BOOL)startReadingQRCode

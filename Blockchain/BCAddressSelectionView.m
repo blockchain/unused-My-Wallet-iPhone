@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Qkos Services Ltd. All rights reserved.
 //
 
-#import "AddressBookView.h"
+#import "BCAddressSelectionView.h"
 #import "Wallet.h"
 #import "AppDelegate.h"
 #import "ReceiveTableCell.h"
@@ -15,7 +15,7 @@
 #define ROW_HEIGHT 68
 #define ROW_HEIGHT_ACCOUNT 44
 
-@implementation AddressBookView
+@implementation BCAddressSelectionView
 
 @synthesize addressBookAddresses;
 @synthesize addressBookAddressLabels;

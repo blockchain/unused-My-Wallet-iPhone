@@ -1,5 +1,5 @@
 //
-//  AddressBookView.m
+//  BCAddressSelectionView.m
 //  Blockchain
 //
 //  Created by Ben Reeves on 17/03/2012.
@@ -38,7 +38,7 @@ int legacyAddressesSectionNumber;
 - (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)_showFromAddresses
 {
     if ([super initWithFrame:CGRectZero]) {
-        [[NSBundle mainBundle] loadNibNamed:@"AddressBookView" owner:self options:nil];
+        [[NSBundle mainBundle] loadNibNamed:@"BCAddressSelectionView" owner:self options:nil];
         
         self.wallet = _wallet;
         // The From Address View shows accounts and legacy addresses with their balance. Entries with 0 balance are not selectable.

@@ -144,7 +144,6 @@
 		84FC02FD19815F1B00B97D5B /* crypto_scrypt-nosse.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FC02FB19815F1B00B97D5B /* crypto_scrypt-nosse.c */; };
 		84FC02FE19815F1B00B97D5B /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FC02FC19815F1B00B97D5B /* sha256.c */; };
 		84FC0301198162AE00B97D5B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC02FF198162AE00B97D5B /* libcrypto.a */; };
-		84FC0302198162AE00B97D5B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FC0300198162AE00B97D5B /* libssl.a */; };
 		84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */; };
 		9F0CBAAA151351F400CD945D /* Wallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0CBAA9151351F400CD945D /* Wallet.m */; };
 		9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */ = {isa = PBXBuildFile; fileRef = 9F0CBAAD15135DF200CD945D /* wallet-ios.html */; };
@@ -571,7 +570,6 @@
 		84FC02FB19815F1B00B97D5B /* crypto_scrypt-nosse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-nosse.c"; path = "Library/keys/src/crypto_scrypt-nosse.c"; sourceTree = "<group>"; };
 		84FC02FC19815F1B00B97D5B /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha256.c; path = Library/keys/src/sha256.c; sourceTree = "<group>"; };
 		84FC02FF198162AE00B97D5B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Library/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
-		84FC0300198162AE00B97D5B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Library/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
 		84FC031B1981DEBA00B97D5B /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		84FC031C1981DEBA00B97D5B /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		9F0CBAA8151351F400CD945D /* Wallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wallet.h; sourceTree = "<group>"; };
@@ -711,7 +709,6 @@
 				220348AA19A4D5FA00611AC3 /* Twitter.framework in Frameworks */,
 				84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */,
 				84FC0301198162AE00B97D5B /* libcrypto.a in Frameworks */,
-				84FC0302198162AE00B97D5B /* libssl.a in Frameworks */,
 				9F7DCCED15345245000CBFC8 /* MessageUI.framework in Frameworks */,
 				9F7DCCEB15345213000CBFC8 /* Security.framework in Frameworks */,
 				9F7480D51514041B00BC4292 /* AudioToolbox.framework in Frameworks */,
@@ -991,7 +988,6 @@
 				84AEEC651987C49A000E8DC8 /* CoreLocation.framework */,
 				9FB3637714B60128004BEA02 /* Foundation.framework */,
 				84FC02FF198162AE00B97D5B /* libcrypto.a */,
-				84FC0300198162AE00B97D5B /* libssl.a */,
 				9F7DCCEC15345245000CBFC8 /* MessageUI.framework */,
 				9F7DCCEA15345213000CBFC8 /* Security.framework */,
 				220348AB19A4D60000611AC3 /* Social.framework */,

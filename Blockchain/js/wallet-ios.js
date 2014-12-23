@@ -128,7 +128,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
         device.execute('did_decrypt')
     }
     var other_error = function() { }
-    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error)
+    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error)
 }
 
 MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {

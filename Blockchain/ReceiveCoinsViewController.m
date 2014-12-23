@@ -8,7 +8,6 @@
 
 #import "ReceiveCoinsViewController.h"
 #import "AppDelegate.h"
-#import "QREncoder.h"
 #import "ReceiveTableCell.h"
 #import "Address.h"
 #import "PrivateKeyReader.h"
@@ -172,9 +171,8 @@ int clickedAccount;
 - (UIImage *)qrImageFromAddress:(NSString *)address
 {
     NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@", address];
-    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
     
-    return [QREncoder renderDataMatrix:data imageDimension:250];
+    return [self createQRImageFromString:addressURL];
 }
 
 - (UIImage *)qrImageFromAddress:(NSString *)address amount:(double)amount
@@ -186,9 +184,48 @@ int clickedAccount;
     amountString = [amountString stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
     NSString *addressURL = [NSString stringWithFormat:@"bitcoin:%@?amount=%@", address, amountString];
-    DataMatrix *data = [QREncoder encodeWithECLevel:1 version:1 string:addressURL];
     
-    return [QREncoder renderDataMatrix:data imageDimension:250];
+    return [self createQRImageFromString:addressURL];
+}
+
+- (UIImage *)createQRImageFromString:(NSString *)string
+{
+    return [self createNonInterpolatedUIImageFromCIImage:[self createQRFromString:string] withScale:250];
+}
+
+- (CIImage *)createQRFromString:(NSString *)qrString
+{
+    // Need to convert the string to a UTF-8 encoded NSData object
+    NSData *stringData = [qrString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    // Create the filter
+    CIFilter *qrFilter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    // Set the message content and error-correction level
+    [qrFilter setValue:stringData forKey:@"inputMessage"];
+    [qrFilter setValue:@"M" forKey:@"inputCorrectionLevel"];
+    
+    return qrFilter.outputImage;
+}
+
+- (UIImage *)createNonInterpolatedUIImageFromCIImage:(CIImage *)image withScale:(CGFloat)scale
+{
+    // Render the CIImage into a CGImage
+    CGImageRef cgImage = [[CIContext contextWithOptions:nil] createCGImage:image fromRect:image.extent];
+    
+    // Now we'll rescale using CoreGraphics
+    UIGraphicsBeginImageContext(CGSizeMake(image.extent.size.width * scale, image.extent.size.width * scale));
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    // We don't want to interpolate (since we've got a pixel-correct image)
+    CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+    CGContextDrawImage(context, CGContextGetClipBoundingBox(context), cgImage);
+    
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // Tidy up
+    UIGraphicsEndImageContext();
+    CGImageRelease(cgImage);
+    
+    return scaledImage;
 }
 
 - (void)setQRPayment

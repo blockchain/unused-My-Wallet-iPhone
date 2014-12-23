@@ -115,8 +115,16 @@ function setScryptImportExport() {
     }
 }
 
+MyWalletPhone.createNewHDWallet = function() {
+    // Create the HD wallet
+    MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase());
+    // Then get the history (and balances) from the server
+    MyWallet.getHistoryAndParseMultiAddressJSON();
+}
+
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
     var success = function() {
+        MyWallet.getHistoryAndParseMultiAddressJSON();
         device.execute('did_decrypt')
     }
     var other_error = function() { }

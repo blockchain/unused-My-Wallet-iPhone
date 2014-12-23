@@ -292,7 +292,7 @@ int accountEntries = 0;
         }
         // Account balances
         else if (indexPath.row <= accountEntries) {
-            uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1];
+            uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1l];
             
             cell.amountLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
             cell.labelLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];

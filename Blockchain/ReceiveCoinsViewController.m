@@ -225,7 +225,12 @@ int clickedAccount;
     UIGraphicsEndImageContext();
     CGImageRelease(cgImage);
     
-    return scaledImage;
+    // Rotate the image
+    UIImage *qrImage = [UIImage imageWithCGImage:[scaledImage CGImage]
+                                           scale:[scaledImage scale]
+                                     orientation:UIImageOrientationDownMirrored];
+    
+    return qrImage;
 }
 
 - (void)setQRPayment

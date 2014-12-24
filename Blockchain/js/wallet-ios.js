@@ -42,23 +42,31 @@ MyWallet.addEventListener(function (event, obj) {
     // TODO this will change again
     if (event == 'msg') {
 
-    if (obj.platform == 'iOS' && obj.type == 'info') {
+    if (obj.type == 'info' && obj.platform == 'iOS') {
         device.execute('setLoadingText:', [obj.message])
     }
 
-    if (obj.type == 'error') {
+    else if (obj.type == 'error') {
         // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
         if (obj.message == 'No free outputs to spend')
             return
-                          
+
+        // Some messages are JSON objects and the error message is in the map
+        var messageJSON = JSON.parse(obj.message);
+        if (messageJSON && messageJSON.initial_error) {
+            device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+messageJSON.initial_error])
+            return
+        }
+
         device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
     }
-                          
+
     else if (obj.type == 'success') {
         device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
     }
 
     return
+
     }
 
     if (eventsWithObjCHandlers.indexOf(event) == -1)

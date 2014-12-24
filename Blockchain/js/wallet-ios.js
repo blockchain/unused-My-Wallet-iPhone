@@ -52,11 +52,13 @@ MyWallet.addEventListener(function (event, obj) {
             return
 
         // Some messages are JSON objects and the error message is in the map
-        var messageJSON = JSON.parse(obj.message);
-        if (messageJSON && messageJSON.initial_error) {
-            device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+messageJSON.initial_error])
-            return
-        }
+        try {
+            var messageJSON = JSON.parse(obj.message);
+            if (messageJSON && messageJSON.initial_error) {
+                device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+messageJSON.initial_error])
+                return
+            }
+        } catch (e) {}
 
         device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message])
     }

@@ -95,11 +95,16 @@ int accountEntries = 0;
     balanceEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     accountEntries = [app.wallet getAccountsCount];
     
+    // Resize table view
     self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + balanceEntries) + SECTION_HEADER_HEIGHT);
     
-    // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
+    // If the tableView is bigger than the screen, enable scrolling and resize table view to screen size
     if (self.tableView.frame.size.height > self.view.frame.size.height - DEFAULT_HEADER_HEIGHT) {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 86, 0);
+        self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, self.view.frame.size.height - DEFAULT_HEADER_HEIGHT);
+        
+        // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, SECTION_HEADER_HEIGHT, 0);
+        
         self.tableView.scrollEnabled = YES;
     }
     else {

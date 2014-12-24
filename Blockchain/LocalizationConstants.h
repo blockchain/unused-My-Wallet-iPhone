@@ -7,7 +7,6 @@
 //
 #import <Foundation/Foundation.h>
 
-#define BC_STRING_ANY_ADDRESS NSLocalizedString(@"Any Address", nil)
 #define BC_STRING_SEND_PAYMENT_FROM NSLocalizedString(@"Send Payment From:", nil)
 #define BC_STRING_SEND_PAYMENT_TO NSLocalizedString(@"Send Payment To:", nil)
 

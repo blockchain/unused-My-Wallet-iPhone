@@ -53,17 +53,19 @@ BOOL didChangeDollarAmount = NO;
     frame.origin.y = containerOffset;
     containerView.frame = frame;
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(keyboardWillHide:)
-     name:UIKeyboardWillHideNotification
-     object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [toFieldContainerField setShouldBegindEditingBlock:^BOOL(UITextField * field) {
         return FALSE;
     }];
     
     self.fromAddress = @"";
+    // Default setting: send from default account
+    self.sendFromAddress = false;
+    int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+    selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+    self.fromAccount = defaultAccountIndex;
+    self.sendToAddress = true;
     
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
@@ -82,6 +84,7 @@ BOOL didChangeDollarAmount = NO;
 {
     // Populate address field from URL handler if available.
     if (self.initialToAddressString && toField != nil) {
+        self.sendToAddress = true;
         self.toAddress = self.initialToAddressString;
         DLog(@"toAddress: %@", self.toAddress);
         
@@ -186,7 +189,12 @@ BOOL didChangeDollarAmount = NO;
         app.disableBusyView = FALSE;
         
         // Reset fields
-        selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+        self.sendFromAddress = false;
+        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+        selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+        self.fromAccount = defaultAccountIndex;
+        self.sendToAddress = true;
+        
         toField.text = @"";
         amountField.text = @"";
         self.fromAddress = @"";
@@ -412,6 +420,7 @@ BOOL didChangeDollarAmount = NO;
         
         return YES;
     } else if (textField == toField) {
+        self.sendToAddress = true;
         self.toAddress = [textField.text stringByReplacingCharactersInRange:range withString:string];
         DLog(@"toAddress: %@", self.toAddress);
     }
@@ -571,6 +580,7 @@ BOOL didChangeDollarAmount = NO;
                 
                 toField.text = [self labelForLegacyAddress:[dict objectForKey:@"address"]];
                 self.toAddress = [dict objectForKey:@"address"];
+                self.sendToAddress = true;
                 DLog(@"toAddress: %@", self.toAddress);
                 
                 NSString *amountString = [dict objectForKey:@"amount"];

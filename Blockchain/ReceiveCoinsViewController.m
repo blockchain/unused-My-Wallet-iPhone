@@ -557,10 +557,11 @@ int clickedAccount;
     didClickAccount = (indexPath.section == 0);
     
     if (indexPath.section == 0) {
-        self.clickedAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:indexPath.row];
-        clickedAccount = indexPath.row;
+        int row = (int) indexPath.row;
+        self.clickedAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:row];
+        clickedAccount = row;
         
-        optionsTitleLabel.text = [app.wallet getLabelForAccount:indexPath.row];
+        optionsTitleLabel.text = [app.wallet getLabelForAccount:row];
     }
     else {
         NSString *addr = [self getAddress:[_tableView indexPathForSelectedRow]];
@@ -667,7 +668,7 @@ int clickedAccount;
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        int accountIndex = indexPath.row;
+        int accountIndex = (int) indexPath.row;
         NSString *accountLabelString = [app.wallet getLabelForAccount:accountIndex];
         
         ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receiveAccount"];

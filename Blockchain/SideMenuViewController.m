@@ -297,11 +297,13 @@ int accountEntries = 0;
         }
         // Account balances
         else if (indexPath.row <= accountEntries) {
-            uint64_t accountBalance = [app.wallet getBalanceForAccount:indexPath.row-1l];
+            // Subtract 1 because Total balance is shown first
+            int accountIdx = (int) indexPath.row-1;
+            uint64_t accountBalance = [app.wallet getBalanceForAccount:accountIdx];
             
             cell.amountLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
-            cell.labelLabel.text = [app.wallet getLabelForAccount:indexPath.row-1];
-            cell.accountIdx = indexPath.row - 1;
+            cell.labelLabel.text = [app.wallet getLabelForAccount:accountIdx];
+            cell.accountIdx = accountIdx;
         }
         // Total legacy balance
         else {

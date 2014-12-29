@@ -149,7 +149,7 @@ int legacyAddressesSectionNumber;
 {
     if (showFromAddresses) {
         if (indexPath.section == accountsSectionNumber) {
-            [delegate didSelectFromAccount:indexPath.row];
+            [delegate didSelectFromAccount:(int)indexPath.row];
         }
         else if (indexPath.section == legacyAddressesSectionNumber) {
             [delegate didSelectFromAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
@@ -160,7 +160,7 @@ int legacyAddressesSectionNumber;
             [delegate didSelectToAddress:[addressBookAddresses objectAtIndex:[indexPath row]]];
         }
         else if (indexPath.section == accountsSectionNumber) {
-            [delegate didSelectToAccount:indexPath.row];
+            [delegate didSelectToAccount:(int)indexPath.row];
         }
         else if (indexPath.section == legacyAddressesSectionNumber) {
             [delegate didSelectToAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
@@ -241,8 +241,8 @@ int legacyAddressesSectionNumber;
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int section = indexPath.section;
-    int row = indexPath.row;
+    int section = (int) indexPath.section;
+    int row = (int) indexPath.row;
     
     ReceiveTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"receive"];
     
@@ -281,7 +281,7 @@ int legacyAddressesSectionNumber;
             balance = [app.wallet getLegacyAddressBalance:[addressBookAddresses objectAtIndex:row]];
         }
         else if (section == accountsSectionNumber) {
-            balance = [app.wallet getBalanceForAccount:indexPath.row];
+            balance = [app.wallet getBalanceForAccount:(int)indexPath.row];
         }
         else if (section == legacyAddressesSectionNumber) {
             balance = [app.wallet getLegacyAddressBalance:[legacyAddresses objectAtIndex:row]];

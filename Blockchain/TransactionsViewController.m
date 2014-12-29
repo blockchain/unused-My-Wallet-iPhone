@@ -148,10 +148,10 @@ int lastNumberTransactions = INT_MAX;
     [tableView reloadData];
     
     if (data.n_transactions > lastNumberTransactions) {
-        int numNewTransactions = data.n_transactions - lastNumberTransactions;
+        uint32_t numNewTransactions = data.n_transactions - lastNumberTransactions;
         // Max number displayed
         if (numNewTransactions > data.transactions.count) {
-            numNewTransactions = data.transactions.count;
+            numNewTransactions = (uint32_t) data.transactions.count;
         }
         // We only do this for the last five transactions at most
         if (numNewTransactions > 5) {

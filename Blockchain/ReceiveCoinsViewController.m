@@ -657,10 +657,9 @@ int clickedAccount;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    int n = 1;
+    int n = 2;
     
     if ([archivedKeys count]) ++n;
-    if ([activeKeys count]) ++n;
     
     return n;
 }

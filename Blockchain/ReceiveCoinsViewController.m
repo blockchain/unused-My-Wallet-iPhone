@@ -190,7 +190,7 @@ int clickedAccount;
 
 - (UIImage *)createQRImageFromString:(NSString *)string
 {
-    return [self createNonInterpolatedUIImageFromCIImage:[self createQRFromString:string] withScale:4*[[UIScreen mainScreen] scale]];
+    return [self createNonInterpolatedUIImageFromCIImage:[self createQRFromString:string] withScale:10*[[UIScreen mainScreen] scale]];
 }
 
 - (CIImage *)createQRFromString:(NSString *)qrString

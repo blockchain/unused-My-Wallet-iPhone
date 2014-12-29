@@ -1515,6 +1515,15 @@ SideMenuViewController *sideMenuViewController;
     } else if (latestResponse.symbol_btc) {
         NSDecimalNumber * number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:value] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:latestResponse.symbol_btc.conversion]];
         
+        // mBTC display -> Always 2 decimal places
+        if (latestResponse.symbol_btc.conversion == 100) {
+            [_btcFormatter setMinimumFractionDigits:2];
+        }
+        // otherwise -> no min decimal places
+        else {
+            [_btcFormatter setMinimumFractionDigits:0];
+        }
+        
         NSString * string = [self.btcFormatter stringFromNumber:number];
         
         return [string stringByAppendingFormat:@" %@", latestResponse.symbol_btc.symbol];

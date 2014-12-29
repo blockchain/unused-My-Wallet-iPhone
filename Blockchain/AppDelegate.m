@@ -1207,23 +1207,6 @@ SideMenuViewController *sideMenuViewController;
     mainPasswordTextField.text = nil;
 }
 
-- (IBAction)refreshClicked:(id)sender
-{
-    if (![self guid] || ![self sharedKey]) {
-        [app showWelcome];
-        return;
-    }
-    
-    // If displaying the merchant view controller refresh the map instead
-    if (_tabViewController.activeViewController == _merchantViewController) {
-        [_merchantViewController refresh];
-    }
-    // Otherwise just fetch the transaction history again
-    else {
-        [self.wallet getWalletAndHistory];
-    }
-}
-
 #pragma mark - Accessors
 
 - (NSString*)guid

@@ -159,7 +159,6 @@
 - (IBAction)scanAccountQRCodeclicked:(id)sender;
 - (IBAction)secondPasswordClicked:(id)sender;
 - (IBAction)mainPasswordClicked:(id)sender;
-- (IBAction)refreshClicked:(id)sender;
 - (IBAction)balanceTextClicked:(id)sender;
 
 - (IBAction)newsClicked:(id)sender;

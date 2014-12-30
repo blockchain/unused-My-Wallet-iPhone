@@ -133,6 +133,16 @@
                          completion:nil];
     }
     
+    if ([emailTextField.text length] == 0) {
+        [app standardNotify:BC_STRING_PLEASE_PROVIDE_AN_EMAIL_ADDRESS];
+        return;
+    }
+    
+    if ([emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
+        [app standardNotify:BC_STRING_INVALID_EMAIL_ADDRESS];
+        return;
+    }
+    
     self.tmpPassword = passwordTextField.text;
     
     if ([self.tmpPassword length] < 10 || [self.tmpPassword length] > 255) {
@@ -142,11 +152,6 @@
     
     if (![self.tmpPassword isEqualToString:[password2TextField text]]) {
         [app standardNotify:BC_STRING_PASSWORDS_DO_NOT_MATCH];
-        return;
-    }
-
-    if ([emailTextField.text rangeOfString:@"@"].location == NSNotFound) {
-        [app standardNotify:BC_STRING_INVALID_EMAIL_ADDRESS];
         return;
     }
     

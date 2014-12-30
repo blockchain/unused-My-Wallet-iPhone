@@ -7,15 +7,11 @@
 //
 #import <Foundation/Foundation.h>
 
-#define BC_STRING_SEND_PAYMENT_FROM NSLocalizedString(@"Send Payment From:", nil)
-#define BC_STRING_SEND_PAYMENT_TO NSLocalizedString(@"Send Payment To:", nil)
-
 #define BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS NSLocalizedString(@"You must enter a destination address", nil)
 
 #define BC_STRING_INVALID_TO_BITCOIN_ADDRESS NSLocalizedString(@"Invalid to bitcoin address", nil)
 #define BC_STRING_INVALID_SEND_VALUE NSLocalizedString(@"Invalid Send Value", nil)
 
-#define BC_STRING_NO_ACTIVE_BITCOIN_ADDRESSES_AVAILABLE NSLocalizedString(@"You have no active bitcoin addresses available for sending", nil)
 #define BC_STRING_ADD_TO_ADDRESS_BOOK NSLocalizedString(@"Add to Address book?", nil)
 #define BC_STRING_NO NSLocalizedString(@"No", nil)
 #define BC_STRING_YES NSLocalizedString(@"Yes", nil)
@@ -90,20 +86,11 @@
 #define BC_STRING_ASK_FOR_PRIVATE_KEY_DETAIL NSLocalizedString(@"Wallet address %@ has funds available to spend. However the private key needs to be scanned from a paper wallet or QR Code. Would you like to scan the private key now?", nil)
 #define BC_STRING_USER_DECLINED NSLocalizedString(@"User Declined", nil)
 #define BC_STRING_CHANGE_PIN NSLocalizedString(@"Change PIN", nil)
-#define BC_STRING_OPTIONS NSLocalizedString(@"Options", nil)
-#define BC_STRING_OPEN_ACCOUNT_SETTINGS NSLocalizedString(@"Open Account Settings, Logout or change your pin below.", nil)
 #define BC_STRING_SETTINGS NSLocalizedString(@"Settings", nil)
 #define BC_STRING_ADD_EMAIL NSLocalizedString(@"Please add an email address", nil)
 #define BC_STRING_NEWS_PRICE_CHARTS NSLocalizedString(@"News, Price & Charts", nil)
 #define BC_STRING_LOGOUT NSLocalizedString(@"Logout", nil)
 #define BC_STRING_REALLY_LOGOUT NSLocalizedString(@"Do you really want to log out?", nil)
-#define BC_STRING_WELCOME_BACK NSLocalizedString(@"Welcome Back", nil)
-#define BC_STRING_FORGET_DETAILS NSLocalizedString(@"Forget Details", nil)
-// #define BC_STRING_WELCOME_TO_BLOCKCHAIN_WALLET NSLocalizedString(@"Welcome to Blockchain Wallet", nil)
-#define BC_STRING_WELCOME_INSTRUCTIONS NSLocalizedString(@"If you already have a Blockchain Wallet, choose Pair Device; otherwise, choose Create Wallet.    It's Free! No email required.", nil)
-#define BC_STRING_CREATE_WALLET NSLocalizedString(@"Create Wallet", nil)
-
-#define BC_STRING_PAIR_DEVICE NSLocalizedString(@"Pair Device", nil)
 
 #define BC_STRING_WARNING NSLocalizedString(@"Warning!!!", nil)
 #define BC_STRING_FORGET_WALLET_DETAILS NSLocalizedString(@"This will erase all wallet data on this device. Please confirm you have your wallet information saved elsewhere otherwise any bitcoins in this wallet will be inaccessible!!", nil)

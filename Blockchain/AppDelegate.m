@@ -64,6 +64,8 @@ SideMenuViewController *sideMenuViewController;
         
         self.modalChain = [[NSMutableArray alloc] init];
         
+        self.showEmailWarning = NO;
+        
         app = self;
     }
     

@@ -273,6 +273,15 @@ int accountEntries = 0;
         cell.textLabel.text = titles[indexPath.row];
         cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
         
+        if (indexPath.row == 0 && app.showEmailWarning) {
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+            cell.detailTextLabel.textColor = [UIColor redColor];
+            cell.detailTextLabel.text = BC_STRING_ADD_EMAIL;
+        }
+        else {
+            cell.detailTextLabel.text = nil;
+        }
+        
         return cell;
     }
     else {

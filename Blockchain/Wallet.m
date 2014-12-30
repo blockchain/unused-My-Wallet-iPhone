@@ -173,6 +173,9 @@
 
 - (void)getWalletAndHistory
 {
+    // TODO disable the email warning until next start - not ideal, but there is no easy way to check if the email is set
+    app.showEmailWarning = NO;
+    
     if ([self isInitialized])
         [self.webView executeJS:@"MyWalletPhone.get_wallet_and_history()"];
 }
@@ -650,6 +653,13 @@
 {
     // This is kind of ugly. When the wallet fails to load, usually because of a connection problem, wallet.js throws two errors in the setGUID function and we only want to show one. This filters out the one we don't want to show.
     if ([message isEqualToString:@"Error changing wallet identifier"]) {
+        return;
+    }
+    
+    // Don't display an error message for this notice, instead show a note in the sideMenu
+    if ([message isEqualToString:@"For Improved security add an email address to your account."]) {
+        app.showEmailWarning = YES;
+        
         return;
     }
     

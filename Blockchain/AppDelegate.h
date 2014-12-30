@@ -78,6 +78,8 @@
 @property (strong, nonatomic) IBOutlet MerchantViewController *merchantViewController;
 @property (strong, nonatomic) IBOutlet BCWebViewController *bcWebViewController;
 
+@property (nonatomic) BOOL showEmailWarning;
+
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;

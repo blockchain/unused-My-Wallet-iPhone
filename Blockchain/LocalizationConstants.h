@@ -93,6 +93,7 @@
 #define BC_STRING_OPTIONS NSLocalizedString(@"Options", nil)
 #define BC_STRING_OPEN_ACCOUNT_SETTINGS NSLocalizedString(@"Open Account Settings, Logout or change your pin below.", nil)
 #define BC_STRING_SETTINGS NSLocalizedString(@"Settings", nil)
+#define BC_STRING_ADD_EMAIL NSLocalizedString(@"Please add an email address", nil)
 #define BC_STRING_NEWS_PRICE_CHARTS NSLocalizedString(@"News, Price & Charts", nil)
 #define BC_STRING_LOGOUT NSLocalizedString(@"Logout", nil)
 #define BC_STRING_REALLY_LOGOUT NSLocalizedString(@"Do you really want to log out?", nil)

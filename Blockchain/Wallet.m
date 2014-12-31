@@ -868,7 +868,7 @@
 - (void)createAccountWithLabel:(NSString *)label
 {
     if ([self isInitialized]) {
-        [self.webView executeJSSynchronous:@"MyWallet.createAccount(\"%@\", MyWalletPhone.getSecondPassword)", label];
+        [self.webView executeJSSynchronous:@"MyWalletPhone.createAccount(\"%@\")", label];
     }
 }
 

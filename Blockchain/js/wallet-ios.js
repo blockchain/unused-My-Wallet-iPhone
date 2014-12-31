@@ -123,6 +123,18 @@ MyWalletPhone.createNewHDWallet = function() {
     MyWallet.getHistoryAndParseMultiAddressJSON();
 }
 
+MyWalletPhone.createAccount = function(label) {
+    var success = function () {
+        console.log('Created new account')
+    }
+    
+    var error = function () {
+        console.log('Error creating new account')
+    }
+    
+    MyWallet.createAccount(label, MyWalletPhone.getSecondPassword, success, error)
+}
+
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
     var success = function() {
         MyWallet.getHistoryAndParseMultiAddressJSON();

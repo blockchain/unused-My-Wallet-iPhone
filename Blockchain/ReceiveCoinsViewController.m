@@ -82,9 +82,9 @@ int clickedAccount;
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
     
-    // Get an address: the first empty payment request address for the default HD account
+    // Get an address: the first empty receive address for the default HD account
     int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-    NSString *defaultAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:defaultAccountIndex];
+    NSString *defaultAddress = [app.wallet getReceiveAddressForAccount:defaultAccountIndex];
     
     // QR Code
     UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
@@ -236,12 +236,6 @@ int clickedAccount;
 - (void)setQRPayment
 {
     double amount = (double)[self getInputAmountInSatoshi] / SATOSHI;
-    
-    // Update payment request if it's an account and the amount entered is positive
-    if (didClickAccount && amount > 0) {
-        NSString *amountString = [[NSNumber numberWithLongLong:[self getInputAmountInSatoshi]] stringValue];
-        [app.wallet updatePaymentRequestForAccount:clickedAccount address:self.clickedAddress amount:amountString];
-    }
     
     UIImage *image = [self qrImageFromAddress:self.clickedAddress amount:amount];
     
@@ -558,7 +552,7 @@ int clickedAccount;
     
     if (indexPath.section == 0) {
         int row = (int) indexPath.row;
-        self.clickedAddress = [app.wallet getEmptyPaymentRequestAddressForAccount:row];
+        self.clickedAddress = [app.wallet getReceiveAddressForAccount:row];
         clickedAccount = row;
         
         optionsTitleLabel.text = [app.wallet getLabelForAccount:row];

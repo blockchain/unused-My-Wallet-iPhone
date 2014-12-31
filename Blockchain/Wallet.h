@@ -164,7 +164,7 @@
 
 - (void)createAccountWithLabel:(NSString *)label;
 
-- (NSString *)getEmptyPaymentRequestAddressForAccount:(int)account;
+- (NSString *)getReceiveAddressForAccount:(int)account;
 - (NSString *)updatePaymentRequestForAccount:(int)account address:(NSString *)address amount:(NSString *)amount;
 
 @end

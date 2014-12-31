@@ -50,6 +50,8 @@
 		67812A771A4A0DDA00B04EBF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67812A761A4A0DDA00B04EBF /* CoreGraphics.framework */; };
 		67812A791A4A0E1800B04EBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67812A781A4A0E1800B04EBF /* QuartzCore.framework */; };
 		67812A7D1A4A0E6800B04EBF /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67812A7C1A4A0E6800B04EBF /* CoreImage.framework */; };
+		67812A811A5377A800B04EBF /* import-export.js in Resources */ = {isa = PBXBuildFile; fileRef = 67812A801A5377A800B04EBF /* import-export.js */; };
+		67812A831A53982C00B04EBF /* xregexp-all.js in Resources */ = {isa = PBXBuildFile; fileRef = 67812A821A53982C00B04EBF /* xregexp-all.js */; };
 		678AD5E919D4610000E9A778 /* BCModalContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678AD5E819D4610000E9A778 /* BCModalContentView.m */; };
 		678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD60F19D56EEA00E9A778 /* home_icon.png */; };
 		678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD61019D56EEA00E9A778 /* home_icon@2x.png */; };
@@ -454,6 +456,8 @@
 		67812A761A4A0DDA00B04EBF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		67812A781A4A0E1800B04EBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		67812A7C1A4A0E6800B04EBF /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		67812A801A5377A800B04EBF /* import-export.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "import-export.js"; path = "Submodules/My-Wallet-HD/import-export.js"; sourceTree = SOURCE_ROOT; };
+		67812A821A53982C00B04EBF /* xregexp-all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "xregexp-all.js"; path = "Submodules/My-Wallet-HD/xregexp-all.js"; sourceTree = SOURCE_ROOT; };
 		678AD5E519D45FA300E9A778 /* BCModalContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCModalContentView.h; sourceTree = "<group>"; };
 		678AD5E819D4610000E9A778 /* BCModalContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCModalContentView.m; sourceTree = "<group>"; };
 		678AD60F19D56EEA00E9A778 /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
@@ -1135,6 +1139,7 @@
 				676250751A28E5B40052B63F /* crypto-util-legacy.js */,
 				673136481A0D3F6600E067D5 /* hdwallet.js */,
 				6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */,
+				67812A801A5377A800B04EBF /* import-export.js */,
 				67D7AC241A0C36A7007CD81D /* jquery.min.js */,
 				676250771A28EAE30052B63F /* mnemonic.js */,
 				676250721A28E4720052B63F /* pad-iso10126.js */,
@@ -1144,6 +1149,7 @@
 				67D7AC281A0C36BC007CD81D /* signer.js */,
 				676250791A28ECE70052B63F /* wallet-signup.js */,
 				67D7AC2A1A0C36C7007CD81D /* wallet.js */,
+				67812A821A53982C00B04EBF /* xregexp-all.js */,
 			);
 			name = "My-Wallet";
 			sourceTree = "<group>";
@@ -1307,6 +1313,7 @@
 				67D2B6EE1A2F2DEF0078782C /* wallet-ios.js in Resources */,
 				678AD61D19D56EEB00E9A778 /* home_icon@3x.png in Resources */,
 				678AD65119D5AA7500E9A778 /* contacts_icon@2x.png in Resources */,
+				67812A811A5377A800B04EBF /* import-export.js in Resources */,
 				678AD63919D5833A00E9A778 /* qrscanner_icon@2x.png in Resources */,
 				67E9676119DF46A900305358 /* news_icon.png in Resources */,
 				84AEEC971987E4E8000E8DC8 /* marker_cafe_off.png in Resources */,
@@ -1349,6 +1356,7 @@
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
 				6711352C19DCCC6800C2D24E /* menu_shadow.png in Resources */,
+				67812A831A53982C00B04EBF /* xregexp-all.js in Resources */,
 				674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
 				9F2D935314C07B2D0053F0FF /* payment_received.png in Resources */,

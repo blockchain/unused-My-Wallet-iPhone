@@ -114,20 +114,11 @@ MyWalletPhone.cancelTxSigning = function() {
     }
 }
 
-function setScryptImportExport() {
-    ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
-        device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
-            var bytes = CryptoJS.enc.hex.parse(buffer);
-            callback(bytes);
-        }, function(e) {
-            error(''+e);
-        });
-    }
-}
-
 MyWalletPhone.createNewHDWallet = function() {
     // Create the HD wallet
-    MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase());
+    MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase(), null, MyWalletPhone.getSecondPassword,
+                                function () { console.log('Created Account') },
+                                function (msg) { console.log('Failed to create Account: ' + msg) });
     // Then get the history (and balances) from the server
     MyWallet.getHistoryAndParseMultiAddressJSON();
 }
@@ -157,7 +148,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var fee = null;
     var note = null;
     
-    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
+    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
     
     return id;
 }
@@ -178,7 +169,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var fee = null;
     var note = null;
     
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
     
     return id;
 }
@@ -199,7 +190,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
     
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWallet.getSecondPassword);
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
     
     return id;
 }
@@ -447,7 +438,25 @@ MyWalletPhone.getMultiAddrResponse = function() {
     return obj;
 }
 
+// TODO needs refactoring
 MyWalletPhone.addPrivateKey = function(privateKeyString) {
+    
+    var success = function(address) {
+        console.log('Add private key success')
+        
+        device.execute('on_add_private_key:', [address])
+    }
+    var error = function(e) {
+        console.log('Add private key Error')
+        
+        device.execute('on_error_adding_private_key:', [''+e]);
+    }
+    
+    MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword, MyWalletPhone.getPrivateKeyPassword, success, error)
+    
+    return
+    
+    // TODO this part is depcrecated, just for reference while re-factoring
     (function(privateKeyString) {
         function error(e) {
             device.execute('on_error_adding_private_key:', [''+e]);
@@ -477,8 +486,6 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
                 var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
 
                 if (format == 'bip38') {
-                    setScryptImportExport();
-
                     MyWallet.getPassword($('#import-private-key-password'), function(_password) {
                         ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
                             //success
@@ -496,15 +503,6 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
         }, error);
     })(privateKeyString);
 }
-
-MyWalletPhone.getEmptyPaymentRequestAddressForAccount = function(accountIdx) {
-    var account = MyWallet.getAccount(accountIdx);
-    
-    var paymentRequest = MyWallet.generateOrReuseEmptyPaymentRequestForAccount(accountIdx);
-    
-    return account.getAddressForPaymentRequest(paymentRequest);
-}
-
 
 // Shared functions
 
@@ -569,16 +567,29 @@ function webSocketDisconnect() {
 
 // Overrides
 
-MyWallet.getPassword = function(modal, success, error) {
-    device.execute("getPassword:", [modal.selector], success, error);
+MyWalletPhone.getPrivateKeyPassword = function(callback) {
+    // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
+    device.execute("getPrivateKeyPassword:", ["discard"], function(pw) {
+        callback(pw);
+    }, function(msg) { console.log('Error' + msg) });
 }
 
-MyWalletPhone.getSecondPassword = function(success) {
-    // TODO clean up
-    console.log('getSecondPassword - success fn:' + success)
-    device.execute("getSecondPassword:", ["discard"], success, function(e) {
-                   error(''+e);
-                   });
+MyWalletPhone.getSecondPassword = function(callback) {
+    // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
+    device.execute("getSecondPassword:", ["discard"], function(pw) {
+        callback(pw,
+                function () { console.log('Second password correct') },
+                function () { console.log('Second password incorrect') })
+        }, function(msg) { console.log('Error' + msg) });
+}
+
+ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
+    device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
+        var bytes = CryptoJS.enc.Hex.parse(buffer);
+        callback(bytes);
+    }, function(e) {
+        error(''+e);
+    });
 }
 
 MyStore.get_old = MyStore.get;

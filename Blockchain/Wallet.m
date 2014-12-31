@@ -617,31 +617,18 @@
     [self getHistory];
 }
 
-- (void)getPassword:(NSString*)selector success:(void(^)(id))_success
+- (void)getPrivateKeyPassword:(NSString *)canDiscard success:(void(^)(id))_success error:(void(^)(id))_error
 {
-    [self getPassword:selector success:_success error:nil];
-}
-
-- (void)getPassword:(NSString*)selector success:(void(^)(id))_success error:(void(^)(id))_error
-{
-    if ([selector isEqualToString:@"#second-password-modal"]) {
-        [app getSecondPassword:^(NSString * _secondPassword) {
-            _success(_secondPassword);
-        } error:_error];
-    } else if ([selector isEqualToString:@"#import-private-key-password"]) {
-        [app getPrivateKeyPassword:^(NSString * _secondPassword) {
-            _success(_secondPassword);
-        } error:_error];
-    } else {
-        @throw [NSException exceptionWithName:@"Unknown Modal" reason:[NSString stringWithFormat:@"Unknown Modal Selector %@", selector] userInfo:nil];
-    }
+    [app getPrivateKeyPassword:^(NSString *privateKeyPassword) {
+        _success(privateKeyPassword);
+    } error:_error];
 }
 
 - (void)getSecondPassword:(NSString *)canDiscard success:(void(^)(id))_success error:(void(^)(id))_error
 {
     [app getSecondPassword:^(NSString *secondPassword) {
         _success(secondPassword);
-    } error:nil];
+    } error:_error];
 }
 
 - (void)setLoadingText:(NSString*)message
@@ -885,22 +872,13 @@
     }
 }
 
-- (NSString *)getEmptyPaymentRequestAddressForAccount:(int)account
+- (NSString *)getReceiveAddressForAccount:(int)account
 {
     if (![self isInitialized]) {
         return nil;
     }
     
-    return [self.webView executeJSSynchronous:@"MyWalletPhone.getEmptyPaymentRequestAddressForAccount(%d)", account];
-}
-
-- (NSString *)updatePaymentRequestForAccount:(int)account address:(NSString *)address amount:(NSString *)amount
-{
-    if (![self isInitialized]) {
-        return nil;
-    }
-    
-    return [self.webView executeJSSynchronous:@"MyWallet.updatePaymentRequestForAccount(%d, \"%@\", %@)", account, address, amount];
+    return [self.webView executeJSSynchronous:@"MyWallet.getReceivingAddressForAccount(%d)", account];
 }
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet

@@ -238,7 +238,10 @@
 		ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */; };
 		ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD244F619A8B444004B1F40 /* UIImage+Utils.m */; };
 		FA6323361A43373300EB3974 /* Merchant.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6323351A43373300EB3974 /* Merchant.m */; };
+		FA6323391A433B1C00EB3974 /* Foundation-Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6323381A433B1C00EB3974 /* Foundation-Utility.m */; };
+		FA63233C1A433BEA00EB3974 /* MerchantMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA63233B1A433BEA00EB3974 /* MerchantMapViewController.m */; };
 		FA63233E1A433DEB00EB3974 /* MerchantMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA63233D1A433DEB00EB3974 /* MerchantMapView.xib */; };
+		FA6323411A446B0C00EB3974 /* MerchantLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6323401A446B0C00EB3974 /* MerchantLocation.m */; };
 		FA6323431A44758700EB3974 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6323421A44758700EB3974 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -703,7 +706,13 @@
 		ECD244F619A8B444004B1F40 /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		FA6323341A43373300EB3974 /* Merchant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Merchant.h; sourceTree = "<group>"; };
 		FA6323351A43373300EB3974 /* Merchant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Merchant.m; sourceTree = "<group>"; };
+		FA6323371A433B1C00EB3974 /* Foundation-Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Foundation-Utility.h"; path = "Categories/Foundation-Utility.h"; sourceTree = "<group>"; };
+		FA6323381A433B1C00EB3974 /* Foundation-Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Foundation-Utility.m"; path = "Categories/Foundation-Utility.m"; sourceTree = "<group>"; };
+		FA63233A1A433BEA00EB3974 /* MerchantMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantMapViewController.h; sourceTree = "<group>"; };
+		FA63233B1A433BEA00EB3974 /* MerchantMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantMapViewController.m; sourceTree = "<group>"; };
 		FA63233D1A433DEB00EB3974 /* MerchantMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MerchantMapView.xib; sourceTree = "<group>"; };
+		FA63233F1A446B0C00EB3974 /* MerchantLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantLocation.h; sourceTree = "<group>"; };
+		FA6323401A446B0C00EB3974 /* MerchantLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantLocation.m; sourceTree = "<group>"; };
 		FA6323421A44758700EB3974 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -813,6 +822,8 @@
 		9F1831F315176F2200FB3D52 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				FA6323371A433B1C00EB3974 /* Foundation-Utility.h */,
+				FA6323381A433B1C00EB3974 /* Foundation-Utility.m */,
 				ECD244F519A8B444004B1F40 /* UIImage+Utils.h */,
 				ECD244F619A8B444004B1F40 /* UIImage+Utils.m */,
 				84FC031B1981DEBA00B97D5B /* UIAlertView+Blocks.h */,
@@ -1066,6 +1077,8 @@
 				67E9674D19DF285000305358 /* SideMenuViewController.m */,
 				6775569719E752A00054699B /* BCWebViewController.h */,
 				6775569819E752A00054699B /* BCWebViewController.m */,
+				FA63233A1A433BEA00EB3974 /* MerchantMapViewController.h */,
+				FA63233B1A433BEA00EB3974 /* MerchantMapViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1227,6 +1240,8 @@
 				9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */,
 				9F45F81C1514D81700018AED /* UIButtonPressAndHold.h */,
 				9F45F81D1514D81700018AED /* UIButtonPressAndHold.m */,
+				FA63233F1A446B0C00EB3974 /* MerchantLocation.h */,
+				FA6323401A446B0C00EB3974 /* MerchantLocation.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1506,6 +1521,7 @@
 				67EE1DCF19E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m in Sources */,
 				C9BE917B1945D8F600FD516D /* PENumpadView.m in Sources */,
 				84FC02FD19815F1B00B97D5B /* crypto_scrypt-nosse.c in Sources */,
+				FA6323411A446B0C00EB3974 /* MerchantLocation.m in Sources */,
 				FA63233C1A433BEA00EB3974 /* MerchantMapViewController.m in Sources */,
 				84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
@@ -1513,6 +1529,7 @@
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,
 				84B601C7197ACD6300DA1829 /* UITextField+Blocks.m in Sources */,
 				9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */,
+				FA6323391A433B1C00EB3974 /* Foundation-Utility.m in Sources */,
 				9F2D934A14C05DD00053F0FF /* Address.m in Sources */,
 				84AEEC5B1987A779000E8DC8 /* MerchantViewController.m in Sources */,
 				84B601CA197AD03800DA1829 /* BCModalView.m in Sources */,

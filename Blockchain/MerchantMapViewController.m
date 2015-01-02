@@ -8,6 +8,8 @@
 
 #import "MerchantMapViewController.h"
 
+#import "MerchantMapDetailViewController.h"
+
 #import "Merchant.h"
 
 #import "MerchantLocation.h"
@@ -340,6 +342,10 @@ static const CGFloat kMerchantMapMinimumVerticalDelta = 15000;
             annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
             annotationView.enabled = YES;
             annotationView.canShowCallout = YES;
+            UIButton* infoButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            [infoButton setFrame:CGRectMake(0, 0, CGRectGetWidth(infoButton.frame) + 10, CGRectGetHeight(infoButton.frame))];
+            [infoButton setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleTopMargin];
+            [annotationView setRightCalloutAccessoryView:infoButton];
         }
         
         MerchantLocation *merchantLocation = (MerchantLocation *)annotation;
@@ -373,7 +379,12 @@ static const CGFloat kMerchantMapMinimumVerticalDelta = 15000;
 
 - (void)mapView:(MKMapView *)map annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-    
+    if ([view.annotation isKindOfClass:[MerchantLocation class]]) {
+        MerchantMapDetailViewController *merchantDetail = [[MerchantMapDetailViewController alloc] initWithNibName:@"MerchantDetailView" bundle:[NSBundle mainBundle]];
+        MerchantLocation *merchantLocation = view.annotation;
+        merchantDetail.merchant = merchantLocation.merchant;
+        [self presentViewController:merchantDetail animated:YES completion:nil];
+    }
 }
 
 

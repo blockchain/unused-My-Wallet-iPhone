@@ -1,15 +1,158 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MerchantMapDetailViewController">
+            <connections>
+                <outlet property="addressLbl" destination="jSv-mT-4wP" id="Mca-lY-rsQ"/>
+                <outlet property="businessNameLbl" destination="4eT-Zk-MsB" id="Utz-Jg-vfH"/>
+                <outlet property="cityLbl" destination="fyC-eF-isP" id="XQN-zC-gOY"/>
+                <outlet property="descriptionLbl" destination="UNA-h2-cqv" id="JHY-t7-El2"/>
+                <outlet property="phoneNumber" destination="LBu-gH-5aF" id="qAW-fV-Tzk"/>
+                <outlet property="view" destination="iN0-l3-epB" id="LsT-jP-iNk"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERE-KY-CaS">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0lz-8o-804">
+                            <rect key="frame" x="20" y="119" width="63" height="20"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.35294117647058826" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="510" verticalHuggingPriority="251" horizontalCompressionResistancePriority="520" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ru-T7-Y2x">
+                            <rect key="frame" x="20" y="210" width="87" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="500" constant="87" id="Wuh-Jp-4nV"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.35294117647058826" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3U-12-oNo">
+                            <rect key="frame" x="20" y="277" width="108" height="19"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" red="0.0" green="0.35294117650000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="510" verticalHuggingPriority="251" horizontalCompressionResistancePriority="520" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSv-mT-4wP">
+                            <rect key="frame" x="20" y="145" width="59" height="19"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="500" constant="59" id="q2o-Tj-SlQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="510" verticalHuggingPriority="251" horizontalCompressionResistancePriority="520" text="City" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyC-eF-isP">
+                            <rect key="frame" x="20" y="167" width="26.5" height="17.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="500" constant="26" id="WlU-i6-hbK"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="620" verticalHuggingPriority="620" horizontalCompressionResistancePriority="610" verticalCompressionResistancePriority="610" text="Description" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNA-h2-cqv">
+                            <rect key="frame" x="20" y="236" width="280" height="19"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="600" constant="19" id="ag2-JO-Yvn"/>
+                                <constraint firstAttribute="width" constant="280" id="cGf-fM-def"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="510" verticalHuggingPriority="500" horizontalCompressionResistancePriority="520" verticalCompressionResistancePriority="500" text="Business Name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4eT-Zk-MsB">
+                            <rect key="frame" x="20" y="84" width="320" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="500" constant="126" id="70l-Jo-3lW"/>
+                                <constraint firstAttribute="width" priority="600" constant="320" id="sin-6O-zw8"/>
+                                <constraint firstAttribute="height" priority="480" constant="21" id="tMC-uB-25Z"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="70l-Jo-3lW"/>
+                                </mask>
+                            </variation>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="510" horizontalCompressionResistancePriority="520" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBu-gH-5aF">
+                            <rect key="frame" x="20" y="302" width="108" height="31"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="500" constant="108" id="kcQ-F7-Qe5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <state key="normal" title="Phone Number">
+                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="phoneNumberAction:" destination="-1" eventType="touchUpInside" id="lcI-Yv-Aq9"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="5ru-T7-Y2x" firstAttribute="top" secondItem="fyC-eF-isP" secondAttribute="bottom" constant="26" id="1jJ-Ls-3xI"/>
+                        <constraint firstItem="UNA-h2-cqv" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="2EG-xF-a3w"/>
+                        <constraint firstItem="LBu-gH-5aF" firstAttribute="top" secondItem="x3U-12-oNo" secondAttribute="bottom" constant="6" id="AA9-rK-eXU"/>
+                        <constraint firstItem="UNA-h2-cqv" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="EsS-D7-9cs"/>
+                        <constraint firstItem="jSv-mT-4wP" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="FMD-HV-iQ8"/>
+                        <constraint firstItem="jSv-mT-4wP" firstAttribute="top" secondItem="0lz-8o-804" secondAttribute="bottom" constant="6" id="KPo-0G-dfg"/>
+                        <constraint firstItem="fyC-eF-isP" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="MBd-iO-qRy"/>
+                        <constraint firstAttribute="trailing" secondItem="0lz-8o-804" secondAttribute="trailing" constant="292" id="MOI-La-xAn"/>
+                        <constraint firstItem="x3U-12-oNo" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="Rke-YN-qTx"/>
+                        <constraint firstItem="LBu-gH-5aF" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="TRE-wp-syK"/>
+                        <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" priority="590" constant="20" id="ULv-nT-KK9"/>
+                        <constraint firstAttribute="trailing" secondItem="UNA-h2-cqv" secondAttribute="trailing" constant="20" id="WAT-H8-2m5"/>
+                        <constraint firstItem="UNA-h2-cqv" firstAttribute="top" secondItem="5ru-T7-Y2x" secondAttribute="bottom" constant="6" id="ZrN-YY-Foj"/>
+                        <constraint firstItem="4eT-Zk-MsB" firstAttribute="top" secondItem="ERE-KY-CaS" secondAttribute="top" constant="84" id="blw-Rr-03J"/>
+                        <constraint firstItem="fyC-eF-isP" firstAttribute="top" secondItem="jSv-mT-4wP" secondAttribute="bottom" constant="3" id="hme-XC-0WK"/>
+                        <constraint firstItem="4eT-Zk-MsB" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="jLk-S6-hPC"/>
+                        <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" constant="20" id="l3K-Ww-xrj"/>
+                        <constraint firstAttribute="trailing" secondItem="UNA-h2-cqv" secondAttribute="trailing" constant="20" id="oUD-fz-PAy"/>
+                        <constraint firstItem="x3U-12-oNo" firstAttribute="top" secondItem="UNA-h2-cqv" secondAttribute="bottom" constant="22" id="pUO-uU-pb2"/>
+                        <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" constant="20" id="row-Kb-ule"/>
+                        <constraint firstAttribute="bottom" secondItem="LBu-gH-5aF" secondAttribute="bottom" constant="20" id="u6j-Xn-vY9"/>
+                        <constraint firstItem="5ru-T7-Y2x" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="xQQ-Xt-EIJ"/>
+                        <constraint firstItem="0lz-8o-804" firstAttribute="top" secondItem="4eT-Zk-MsB" secondAttribute="bottom" constant="14" id="xv4-Y2-cwg"/>
+                        <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" constant="229" id="y1X-IX-stF"/>
+                        <constraint firstItem="0lz-8o-804" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="yuf-gb-3pD"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="ULv-nT-KK9"/>
+                            <exclude reference="l3K-Ww-xrj"/>
+                            <exclude reference="row-Kb-ule"/>
+                            <exclude reference="y1X-IX-stF"/>
+                            <exclude reference="2EG-xF-a3w"/>
+                            <exclude reference="WAT-H8-2m5"/>
+                            <exclude reference="oUD-fz-PAy"/>
+                        </mask>
+                    </variation>
+                </scrollView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="ERE-KY-CaS" secondAttribute="trailing" id="4lB-3P-yct"/>
+                <constraint firstItem="ERE-KY-CaS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Csz-BR-XSl"/>
+                <constraint firstAttribute="bottom" secondItem="ERE-KY-CaS" secondAttribute="bottom" id="Lh4-Tj-ZeR"/>
+                <constraint firstItem="ERE-KY-CaS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nZy-Il-aEb"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="296.5" y="252.5"/>
         </view>
     </objects>
 </document>

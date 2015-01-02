@@ -237,6 +237,7 @@
 		ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244E919A8AC45004B1F40 /* PEKeyboard-4-next.png */; };
 		ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */ = {isa = PBXBuildFile; fileRef = ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */; };
 		ECD244F719A8B444004B1F40 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD244F619A8B444004B1F40 /* UIImage+Utils.m */; };
+		FA6323361A43373300EB3974 /* Merchant.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6323351A43373300EB3974 /* Merchant.m */; };
 		FA63233E1A433DEB00EB3974 /* MerchantMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA63233D1A433DEB00EB3974 /* MerchantMapView.xib */; };
 		FA6323431A44758700EB3974 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6323421A44758700EB3974 /* MapKit.framework */; };
 /* End PBXBuildFile section */
@@ -700,6 +701,8 @@
 		ECD244EA19A8AC45004B1F40 /* PEKeyboard-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEKeyboard-4.png"; sourceTree = "<group>"; };
 		ECD244F519A8B444004B1F40 /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		ECD244F619A8B444004B1F40 /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
+		FA6323341A43373300EB3974 /* Merchant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Merchant.h; sourceTree = "<group>"; };
+		FA6323351A43373300EB3974 /* Merchant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Merchant.m; sourceTree = "<group>"; };
 		FA63233D1A433DEB00EB3974 /* MerchantMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MerchantMapView.xib; sourceTree = "<group>"; };
 		FA6323421A44758700EB3974 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -964,6 +967,8 @@
 				9F765F3C14BC7C4F00048EFB /* Transaction.m */,
 				9F0CBAA8151351F400CD945D /* Wallet.h */,
 				9F0CBAA9151351F400CD945D /* Wallet.m */,
+				FA6323341A43373300EB3974 /* Merchant.h */,
+				FA6323351A43373300EB3974 /* Merchant.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1522,6 +1527,7 @@
 				6775569919E752A00054699B /* BCWebViewController.m in Sources */,
 				67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */,
 				9F61B89E151519EF0083C57A /* BCAddressSelectionView.m in Sources */,
+				FA6323361A43373300EB3974 /* Merchant.m in Sources */,
 				9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */,
 				67EE1DCA19E3325900DBBFC9 /* ECPercentDrivenInteractiveTransition.m in Sources */,
 				678CD7481A2777E600748AA5 /* BCCreateAccountView.m in Sources */,

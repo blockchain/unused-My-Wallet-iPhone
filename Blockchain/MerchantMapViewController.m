@@ -128,9 +128,6 @@ static NSString *const kBlockchainNearByMerchantsURL = @"http://merchant-directo
 - (void)updateDisplayedMerchantsAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
     NSString *urlString = [NSString stringWithFormat:@"%@?ULAT=%f&ULON=%f&D=5&K=1", kBlockchainNearByMerchantsURL, coordinate.latitude, coordinate.longitude];
-    
-    NSLog(@"%@", urlString);
-    
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest queue:self.merchantLocationNetworkQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {

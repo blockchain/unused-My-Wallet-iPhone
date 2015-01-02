@@ -8,9 +8,6 @@
 
 #import "MerchantMapViewController.h"
 
-#import <MapKit/MapKit.h>
-#import <CoreLocation/CoreLocation.h>
-
 #import "Merchant.h"
 
 #import "MerchantLocation.h"
@@ -18,6 +15,9 @@
 #import "AppDelegate.h"
 
 #import "NSString+JSONParser_NSString.h"
+
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #define METERS_PER_MILE 1609.344
 
@@ -55,6 +55,8 @@
     self.visibleMerchantTypes = [[NSMutableDictionary alloc] init];
     
     // Adding filter to indicate what business types to display, by default we show all of them
+    // We store "merchant categories" and mark the category as visible by setting the "value" to "1".  If we want to
+    // hide the category we set it to @0
     [self.visibleMerchantTypes setValue:@1 forKey:[NSString stringWithFormat:@"%lu", (unsigned long)BCMerchantLocationTypeBeverage]];
     [self.visibleMerchantTypes setValue:@1 forKey:[NSString stringWithFormat:@"%lu", BCMerchantLocationTypeBar]];
     [self.visibleMerchantTypes setValue:@1 forKey:[NSString stringWithFormat:@"%lu", BCMerchantLocationTypeFood]];
@@ -98,6 +100,7 @@
         [self.locationManager startUpdatingLocation];
     }
     
+    // Adding gesture recognizer so we know when to update the pin locations
     UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(userUpdatedMapBounds:)];
     [panGestureRecognizer setDelegate:self];
     [self.mapView addGestureRecognizer:panGestureRecognizer];

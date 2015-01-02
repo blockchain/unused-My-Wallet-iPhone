@@ -15,6 +15,7 @@
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *subtitle;
 
 @end
 
@@ -28,6 +29,7 @@
 
     self.coordinate = CLLocationCoordinate2DMake([merchant.latitude floatValue], [merchant.longitude floatValue]);
     self.title = merchant.name;
+    self.subtitle = merchant.merchantDescription;
 }
 
 @end

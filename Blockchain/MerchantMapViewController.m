@@ -39,7 +39,7 @@
 
 @property (strong, nonatomic) NSOperationQueue *merchantLocationNetworkQueue;
 
-@property (assign, nonatomic) MKMapRect lastUserRect;
+@property (strong, nonatomic) CLLocation *lastCenterLocation;
 
 @end
 
@@ -129,7 +129,6 @@ static NSString *const kBlockchainNearByMerchantsURL = @"http://merchant-directo
 {
     NSString *urlString = [NSString stringWithFormat:@"%@?ULAT=%f&ULON=%f&D=5&K=1", kBlockchainNearByMerchantsURL, coordinate.latitude, coordinate.longitude];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    
     [NSURLConnection sendAsynchronousRequest:urlRequest queue:self.merchantLocationNetworkQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (connectionError) {
             DLog(@"Error retrieving Merchants near location (Long)%f, (Lat)%f", coordinate.longitude, coordinate.latitude);
@@ -236,19 +235,33 @@ static NSString *const kBlockchainNearByMerchantsURL = @"http://merchant-directo
     return YES;
 }
 
-// These minimum delta values are in projected map values
-static const CGFloat kMerchantMapMinimumHorizontalDelta = 15000;
-static const CGFloat kMerchantMapMinimumVerticalDelta = 15000;
-
 - (void)userUpdatedMapBounds:(UIGestureRecognizer*)gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
-        MKMapRect currentMapRect = self.mapView.visibleMapRect;
         
-        if (abs(currentMapRect.origin.x - self.lastUserRect.origin.x) > kMerchantMapMinimumHorizontalDelta || abs(currentMapRect.origin.y - self.lastUserRect.origin.y) > kMerchantMapMinimumVerticalDelta) {
-            [self updateDisplayedMerchantsAtCoordinate:self.mapView.centerCoordinate];
+        // Only updating when the distance between the last center point and the current center point is greater than 20% of the total diagonal distance, when the user changes zoom levels and moves this should still work
+        CLLocationCoordinate2D centerCoordinate = [self.mapView centerCoordinate];
+        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude];
+        
+        CGFloat percentageChange = 0.0f;
+        if (!self.lastCenterLocation) {
+            // When we have no starting location we just assume we need to fetch new values
+            percentageChange = 1.0f;
+        } else {
+            CLLocationCoordinate2D topLeftCoordinate = [self.mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:self.mapView];
+            CLLocation *topLeftLocation = [[CLLocation alloc] initWithLatitude:topLeftCoordinate.latitude longitude:topLeftCoordinate.longitude];
             
-            self.lastUserRect = currentMapRect;
+            CLLocationCoordinate2D bottomRightCoordinate = [self.mapView convertPoint:CGPointMake(self.mapView.frame.size.width, self.mapView.frame.size.height) toCoordinateFromView:self.mapView];
+            CLLocation *bottomRightLocation = [[CLLocation alloc] initWithLatitude:bottomRightCoordinate.latitude longitude:bottomRightCoordinate.longitude];
+            
+            CLLocationDistance totalDiagonalDistance = [topLeftLocation distanceFromLocation:bottomRightLocation];
+            
+            percentageChange = [self.lastCenterLocation distanceFromLocation:centerLocation] / totalDiagonalDistance;
+        }
+        
+        if (percentageChange > 0.20) {
+            [self updateDisplayedMerchantsAtCoordinate:centerCoordinate];
+            self.lastCenterLocation = centerLocation;
         }
     }
 }

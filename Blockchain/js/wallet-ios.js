@@ -450,9 +450,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     return obj;
 }
 
-// TODO needs refactoring
 MyWalletPhone.addPrivateKey = function(privateKeyString) {
-    
     var success = function(address) {
         console.log('Add private key success')
         
@@ -465,55 +463,6 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
     }
     
     MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword, MyWalletPhone.getPrivateKeyPassword, success, error)
-    
-    return
-    
-    // TODO this part is depcrecated, just for reference while re-factoring
-    (function(privateKeyString) {
-        function error(e) {
-            device.execute('on_error_adding_private_key:', [''+e]);
-        }
-
-        function reallyInsertKey(key, compressed) {
-            try {
-                if (MyWallet.addPrivateKey(key, {compressed : compressed, app_name : APP_NAME, app_version : APP_VERSION})) {
-
-                    var addr = compressed ? key.getBitcoinAddressCompressed().toString() : key.getBitcoinAddress().toString();
-
-                    device.execute('on_add_private_key:', [addr]);
-     
-                    MyWallet.backupWallet('update', function() {
-                        MyWallet.get_history();
-                    });
-                } else {
-                    throw 'Unable to add private key for bitcoin address ' + addr;
-                }
-            } catch (e) {
-                error(e);
-            }
-        }
-
-        MyWallet.getSecondPassword(function() {
-            try {
-                var format = MyWallet.detectPrivateKeyFormat(privateKeyString);
-
-                if (format == 'bip38') {
-                    MyWallet.getPassword($('#import-private-key-password'), function(_password) {
-                        ImportExport.parseBIP38toECKey(privateKeyString, _password, function(key, isCompPoint) {
-                            //success
-                            reallyInsertKey(key, isCompPoint);
-                        }, error);
-                    }, error);
-                } else {
-                    var key = MyWallet.privateKeyStringToKey(privateKeyString, format);
-
-                    reallyInsertKey(key, format == 'compsipa');
-                }
-            } catch (e) {
-                error(e);
-            }
-        }, error);
-    })(privateKeyString);
 }
 
 // Shared functions

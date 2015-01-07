@@ -574,7 +574,7 @@
         
     response.final_balance = [[dict objectForKey:@"final_balance"] longLongValue];
     response.total_received = [[dict objectForKey:@"total_received"] longLongValue];
-    response.n_transactions = [[dict objectForKey:@"n_transactions"] longValue];
+    response.n_transactions = [[dict objectForKey:@"n_transactions"] unsignedIntValue];
     response.total_sent = [[dict objectForKey:@"total_sent"] longLongValue];
     response.addresses = [dict objectForKey:@"addresses"];
     
@@ -967,7 +967,7 @@
 - (NSData*)_internal_crypto_scrypt:(id)_password salt:(id)_salt n:(uint64_t)N r:(uint32_t)r p:(uint32_t)p dkLen:(uint32_t)derivedKeyLen
 {    
     uint8_t * _passwordBuff = NULL;
-    int _passwordBuffLen = 0;
+    size_t _passwordBuffLen = 0;
     if ([_password isKindOfClass:[NSArray class]]) {
         _passwordBuff = alloca([_password count]);
         _passwordBuffLen = [_password count];
@@ -988,7 +988,7 @@
     }
     
     uint8_t * _saltBuff = NULL;
-    int _saltBuffLen = 0;
+    size_t _saltBuffLen = 0;
 
     if ([_salt isKindOfClass:[NSArray class]]) {
         _saltBuff = alloca([_salt count]);
@@ -1002,8 +1002,8 @@
             }
         }
     } else if ([_salt isKindOfClass:[NSString class]]) {
-        _saltBuff = (uint8_t*)[_password UTF8String];
-        _saltBuffLen = [_password length];
+        _saltBuff = (uint8_t*)[_salt UTF8String];
+        _saltBuffLen = [_salt length];
     } else {
         DLog(@"Scrypt salt unsupported type");
         return nil;
@@ -1014,7 +1014,7 @@
     if (crypto_scrypt((uint8_t*)_passwordBuff, _passwordBuffLen, (uint8_t*)_saltBuff, _saltBuffLen, N, r, p, derivedBytes, derivedKeyLen) == -1) {
         return nil;
     }
-
+    
     return [NSData dataWithBytesNoCopy:derivedBytes length:derivedKeyLen];
 }
 

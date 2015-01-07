@@ -597,7 +597,8 @@ MyWalletPhone.getSecondPassword = function(callback) {
 
 ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
     device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
-        var bytes = CryptoJS.enc.Hex.parse(buffer);
+        var bytes = new Bitcoin.Buffer.Buffer(buffer, 'hex');
+                   
         callback(bytes);
     }, function(e) {
         error(''+e);

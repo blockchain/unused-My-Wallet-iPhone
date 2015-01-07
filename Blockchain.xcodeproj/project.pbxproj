@@ -40,6 +40,8 @@
 		6762507D1A2CC5800052B63F /* BCEditAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6762507C1A2CC5800052B63F /* BCEditAccountView.m */; };
 		6762507F1A2DC6FE0052B63F /* HDWalletAccount.js in Resources */ = {isa = PBXBuildFile; fileRef = 6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */; };
 		676250821A2DDF360052B63F /* AccountTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 676250811A2DDF360052B63F /* AccountTableCell.m */; };
+		676CD1A81A57654D000C76B5 /* mode-ecb.js in Resources */ = {isa = PBXBuildFile; fileRef = 676CD1A71A57654D000C76B5 /* mode-ecb.js */; };
+		676CD1AA1A57655E000C76B5 /* pad-nopadding.js in Resources */ = {isa = PBXBuildFile; fileRef = 676CD1A91A57655E000C76B5 /* pad-nopadding.js */; };
 		6775569419E749CC0054699B /* back_chevron_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569119E749CC0054699B /* back_chevron_icon@3x.png */; };
 		6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569219E749CC0054699B /* back_chevron_icon@2x.png */; };
 		6775569619E749CC0054699B /* back_chevron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569319E749CC0054699B /* back_chevron_icon.png */; };
@@ -442,6 +444,8 @@
 		6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = HDWalletAccount.js; path = "Submodules/My-Wallet-HD/HDWalletAccount.js"; sourceTree = SOURCE_ROOT; };
 		676250801A2DDF360052B63F /* AccountTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableCell.h; sourceTree = "<group>"; };
 		676250811A2DDF360052B63F /* AccountTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableCell.m; sourceTree = "<group>"; };
+		676CD1A71A57654D000C76B5 /* mode-ecb.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "mode-ecb.js"; path = "Submodules/My-Wallet-HD/bower_components/cryptojslib/components/mode-ecb.js"; sourceTree = SOURCE_ROOT; };
+		676CD1A91A57655E000C76B5 /* pad-nopadding.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "pad-nopadding.js"; path = "Submodules/My-Wallet-HD/bower_components/cryptojslib/components/pad-nopadding.js"; sourceTree = SOURCE_ROOT; };
 		6775569119E749CC0054699B /* back_chevron_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@3x.png"; sourceTree = "<group>"; };
 		6775569219E749CC0054699B /* back_chevron_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_chevron_icon@2x.png"; sourceTree = "<group>"; };
 		6775569319E749CC0054699B /* back_chevron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_chevron_icon.png; sourceTree = "<group>"; };
@@ -1142,7 +1146,9 @@
 				67812A801A5377A800B04EBF /* import-export.js */,
 				67D7AC241A0C36A7007CD81D /* jquery.min.js */,
 				676250771A28EAE30052B63F /* mnemonic.js */,
+				676CD1A71A57654D000C76B5 /* mode-ecb.js */,
 				676250721A28E4720052B63F /* pad-iso10126.js */,
+				676CD1A91A57655E000C76B5 /* pad-nopadding.js */,
 				6762506C1A28E4480052B63F /* pbkdf2.js */,
 				6762506D1A28E4480052B63F /* sha256.js */,
 				67D7AC261A0C36B1007CD81D /* shared.js */,
@@ -1349,6 +1355,7 @@
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				67E9676E19E31F9100305358 /* marker_cafe_off@2x.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
+				676CD1AA1A57655E000C76B5 /* pad-nopadding.js in Resources */,
 				6731364B1A0D473D00E067D5 /* bip39.js in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */,
@@ -1390,6 +1397,7 @@
 				9F7480DA151405B700BC4292 /* payment_received@2x.png in Resources */,
 				67E9676419DF46A900305358 /* settings_icon.png in Resources */,
 				9F7480DD151405D200BC4292 /* payment_sent@2x.png in Resources */,
+				676CD1A81A57654D000C76B5 /* mode-ecb.js in Resources */,
 				C9BE917F1945D8F600FD516D /* PEKeyboard-1-done.png in Resources */,
 				9FCA4D3E1514C64200ECDFBE /* 25-circle-west.png in Resources */,
 				9FCA4D3F1514C64200ECDFBE /* 25-circle-west@2x.png in Resources */,

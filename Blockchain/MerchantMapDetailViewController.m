@@ -48,11 +48,67 @@
     [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [topBarView addSubview:closeButton];
     
-    self.businessNameLbl.text = self.merchant.name;
-    self.addressLbl.text = self.merchant.address;
-    self.cityLbl.text = self.merchant.city;
-    self.descriptionLbl.text = self.merchant.merchantDescription;
-    [self.phoneNumber setTitle:self.merchant.telephone forState:UIControlStateNormal];
+    [self syncViewsWithMerchant];
+}
+
+- (void)syncViewsWithMerchant
+{
+    self.businessNameLbl.text = _merchant.name;
+    
+    NSString *infoNotAvailable = @"N/A";
+    UIColor *textColor = nil;
+    NSString *textValue = @"";
+    
+    if ([_merchant.address length] > 0) {
+        textValue = _merchant.address;
+        textColor = UIColorFromRGB(0x0f79fb);
+    } else {
+        textValue = infoNotAvailable;
+        textColor = [UIColor blackColor];
+    }
+    self.addressLbl.text = textValue;
+    self.addressLbl.textColor = textColor;
+    
+    if ([_merchant.city length] > 0) {
+        textValue = _merchant.city;
+        textColor = UIColorFromRGB(0x0f79fb);
+    } else {
+        textValue = infoNotAvailable;
+        textColor = [UIColor blackColor];
+    }
+    self.cityLbl.text = textValue;
+    self.cityLbl.textColor = textColor;
+    
+    self.addressControl.userInteractionEnabled = [_merchant.city length] > 0 || [_merchant.address length] > 0;
+    
+    textColor = [UIColor blackColor];
+    if ([_merchant.merchantDescription length] > 0) {
+        textValue = _merchant.merchantDescription;
+    } else {
+        textValue = infoNotAvailable;
+    }
+    self.descriptionLbl.text = textValue;
+    self.descriptionLbl.textColor = textColor;
+    
+    if ([_merchant.telephone length] > 0) {
+        [self.phoneNumber setTitle:_merchant.telephone forState:UIControlStateNormal];
+        [self.phoneNumber setTitleColor:UIColorFromRGB(0x0f79fb) forState:UIControlStateNormal];
+        self.phoneNumber.userInteractionEnabled = YES;
+    } else {
+        [self.phoneNumber setTitle:infoNotAvailable forState:UIControlStateNormal];
+        [self.phoneNumber setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        self.phoneNumber.userInteractionEnabled = NO;
+    }
+    
+    if ([_merchant.urlString length] > 0) {
+        [self.webURL setTitle:_merchant.urlString forState:UIControlStateNormal];
+        [self.webURL setTitleColor:UIColorFromRGB(0x0f79fb)forState:UIControlStateNormal];
+        self.webURL.userInteractionEnabled = YES;
+    } else {
+        [self.webURL setTitle:infoNotAvailable forState:UIControlStateNormal];
+        [self.webURL setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        self.webURL.userInteractionEnabled = NO;
+    }
 }
 
 @synthesize merchant = _merchant;
@@ -61,11 +117,7 @@
 {
     _merchant = merchant;
     
-    self.businessNameLbl.text = _merchant.name;
-    self.addressLbl.text = _merchant.address;
-    self.cityLbl.text = _merchant.city;
-    self.descriptionLbl.text = _merchant.merchantDescription;
-    [self.phoneNumber setTitle:_merchant.telephone forState:UIControlStateNormal];
+    [self syncViewsWithMerchant];
 }
 
 #pragma mark - Actions

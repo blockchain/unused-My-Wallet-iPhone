@@ -133,6 +133,25 @@
     }
 }
 
+- (IBAction)webURLAction:(id)sender
+{
+    if ([self.merchant.urlString length] > 0) {
+        NSString *merchantURL = self.merchant.urlString;
+        NSRange httpRange = [merchantURL rangeOfString:@"http://"];
+        if (httpRange.length == 0) {
+            merchantURL = [NSString stringWithFormat:@"%@%@", @"http://", merchantURL];
+        }
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:merchantURL]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:merchantURL]];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Operation Not Supported" message:@"This device does not support this operation."  delegate:self cancelButtonTitle:BC_STRING_OK otherButtonTitles: nil];
+            [alert show];
+        }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Address" message:@"We are having troubles opening this Merchant address."  delegate:self cancelButtonTitle:BC_STRING_OK otherButtonTitles: nil];
+        [alert show];
+    }
+}
     }
 }
 

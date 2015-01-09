@@ -25,7 +25,6 @@
 #import "UIAlertView+Blocks.h"
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
-#import "MerchantViewController.h"
 #import "MerchantMapViewController.h"
 #import "NSData+Hex.h"
 #import <AVFoundation/AVFoundation.h>

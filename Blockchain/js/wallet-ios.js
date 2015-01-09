@@ -317,12 +317,11 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
 }
 
 MyWalletPhone.newAccount = function(password, email) {
-    MyWalletSignup.generateNewWallet(password, email, function(guid, sharedKey, password) {
-                                     MyStore.clear();
-                                     device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
-                                     }, function (e) {
-                                     device.execute('on_error_creating_new_account:', [''+e]);
-                                     });
+    MyWallet.createNewWallet(email, password, null, null, function(guid, sharedKey, password) {
+                                 device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
+                             }, function (e) {
+                                 device.execute('on_error_creating_new_account:', [''+e]);
+                             });
 }
 
 MyWalletPhone.parsePairingCode = function (raw_code) {

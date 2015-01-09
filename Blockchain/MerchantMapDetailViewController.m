@@ -127,6 +127,12 @@
     NSString *phoneNumber = [NSString stringWithFormat:@"tel://%@", self.merchant.telephone];
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:phoneNumber]]) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Operation Not Supported" message:@"This device does not support making phone calls."  delegate:self cancelButtonTitle:BC_STRING_OK otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
     }
 }
 

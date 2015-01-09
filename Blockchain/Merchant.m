@@ -69,4 +69,40 @@ NSString *const kMerchantDistanceKey = @"distance";
     return merchant;
 }
 
+- (NSString *)latLongQueryString
+{
+    NSString *queryString = @"";
+    
+    if ([self.latitude length] > 0) {
+        queryString = [queryString stringByAppendingString:self.latitude];
+    }
+    
+    if ([self.longitude length] > 0) {
+        if ([queryString length] > 0) {
+            queryString = [queryString stringByAppendingString:@","];
+        }
+        queryString = [queryString stringByAppendingString:self.longitude];
+    }
+    
+    return queryString;
+}
+
+- (NSString *)addressQueryString
+{
+    NSString *addressString = @"";
+    
+    if ([self.address length] > 0) {
+        addressString = self.address;
+    }
+    
+    if ([self.city length] > 0) {
+        if ([addressString length] > 0) {
+            addressString = [addressString stringByAppendingString:@" "];
+        }
+        addressString = [addressString stringByAppendingString:self.city];
+    }
+    
+    return addressString;
+}
+
 @end

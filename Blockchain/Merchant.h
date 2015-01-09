@@ -47,5 +47,7 @@ typedef NS_ENUM(NSUInteger, BCMerchantLocationType) {
 
 + (Merchant *)merchantWithDict:(NSDictionary *)dict;
 
+- (NSString *)latLongQueryString;
+- (NSString *)addressQueryString;
 
 @end

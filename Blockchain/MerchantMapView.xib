@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MerchantMapViewController">
             <connections>
                 <outlet property="mapView" destination="jc5-Ub-gd4" id="bdc-gm-FT3"/>
+                <outlet property="toolbar" destination="J9f-Eb-KIy" id="z00-fM-t8B"/>
                 <outlet property="view" destination="iN0-l3-epB" id="18a-Qo-VU6"/>
             </connections>
         </placeholder>
@@ -252,12 +255,16 @@
                         </mask>
                     </variation>
                 </view>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jc5-Ub-gd4">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jc5-Ub-gd4">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="dmL-YX-4aT"/>
                     </connections>
                 </mapView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J9f-Eb-KIy">
+                    <rect key="frame" x="0.0" y="548" width="600" height="44"/>
+                    <items/>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -266,11 +273,14 @@
                     <variation key="widthClass=compact" constant="64"/>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="05r-Mn-Uh9" secondAttribute="trailing" id="Eho-Ao-bvT"/>
+                <constraint firstItem="J9f-Eb-KIy" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="Gs0-Li-wUb"/>
                 <constraint firstAttribute="trailing" secondItem="jc5-Ub-gd4" secondAttribute="trailing" id="Hol-WE-7Yc"/>
+                <constraint firstItem="J9f-Eb-KIy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="QCU-Um-zgR"/>
                 <constraint firstItem="jc5-Ub-gd4" firstAttribute="top" secondItem="05r-Mn-Uh9" secondAttribute="bottom" constant="33" id="eog-eZ-fAz">
                     <variation key="widthClass=compact" constant="0.0"/>
                 </constraint>
                 <constraint firstAttribute="bottom" secondItem="jc5-Ub-gd4" secondAttribute="bottom" id="h2y-tc-GJG"/>
+                <constraint firstAttribute="trailing" secondItem="J9f-Eb-KIy" secondAttribute="trailing" id="jJd-5t-nkZ"/>
                 <constraint firstItem="jc5-Ub-gd4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="msL-Cv-ZkP"/>
                 <constraint firstAttribute="trailing" secondItem="jc5-Ub-gd4" secondAttribute="trailing" id="q45-tw-l3E"/>
                 <constraint firstItem="05r-Mn-Uh9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ugt-bn-Wmx">

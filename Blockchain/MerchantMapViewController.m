@@ -27,6 +27,8 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+
 @property (assign, nonatomic) CLLocationCoordinate2D location;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *startLocation;
@@ -84,23 +86,10 @@
 
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
     
-    // Needed for iOS 8 to check permissions, if the user has already accepted then the request will
-    // be called back with the accepted state
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
-        if (authorizationStatus != kCLAuthorizationStatusAuthorizedAlways || authorizationStatus != kCLAuthorizationStatusAuthorizedWhenInUse || authorizationStatus != kCLAuthorizationStatusAuthorized) {
-            [self.locationManager requestWhenInUseAuthorization];
-        } else {
-            [self.locationManager startUpdatingLocation];
-        }
-    } else {
-        // Prior to iOS 8 we can just call updating location
-        self.mapView.showsUserLocation = YES;
-        
-        [self.locationManager startUpdatingLocation];
-    }
+    // Button to center user location on map
+    MKUserTrackingBarButtonItem *buttonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+    [self.toolbar setItems:[NSArray arrayWithObjects:buttonItem, nil]];
     
     // Adding gesture recognizer so we know when to update the pin locations
     UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(userUpdatedMapBounds:)];
@@ -108,12 +97,28 @@
     [self.mapView addGestureRecognizer:panGestureRecognizer];
 }
 
-- (void)dealloc
+- (void)viewWillAppear:(BOOL)animated
 {
-    [self.locationManager stopUpdatingLocation];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    // For iOS 8 we need to request authorization to get access to the user's location
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
+    [self.locationManager startUpdatingLocation];
+    
+    self.mapView.showsUserLocation = YES;
 }
 
-- (void)clearMechantAnnotations
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.locationManager stopUpdatingLocation];
+    
+    self.mapView.showsUserLocation = NO;
+}
+
+- (void)clearMerchantAnnotations
 {
     for (id <MKAnnotation> annotation in self.mapView.annotations) {
         if ([annotation isKindOfClass:[MerchantLocation class]]) {
@@ -123,11 +128,12 @@
     [self.merchantsLocationAnnotations removeAllObjects];
 }
 
-static NSString *const kBlockchainNearByMerchantsURL = @"http://merchant-directory.blockchain.info/api/list_near_merchants.php";
+static NSString *const kBlockchainNearByMerchantsURL = @"https://merchant-directory.blockchain.info/api/list_near_merchants.php";
 
 - (void)updateDisplayedMerchantsAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@?ULAT=%f&ULON=%f&D=5&K=1", kBlockchainNearByMerchantsURL, coordinate.latitude, coordinate.longitude];
+    // TODO for now we simply load all the merchant locations
+    NSString *urlString = [NSString stringWithFormat:@"%@?ULAT=%f&ULON=%f&D=40000&K=1", kBlockchainNearByMerchantsURL, coordinate.latitude, coordinate.longitude];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [NSURLConnection sendAsynchronousRequest:urlRequest queue:self.merchantLocationNetworkQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (connectionError) {
@@ -267,15 +273,6 @@ static NSString *const kBlockchainNearByMerchantsURL = @"http://merchant-directo
 }
 
 #pragma mark - CCLocationManagerDelegate
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
-{
-    if (status != kCLAuthorizationStatusDenied) {
-        self.mapView.showsUserLocation = YES;
-
-        [self.locationManager startUpdatingLocation];
-    }
-}
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {

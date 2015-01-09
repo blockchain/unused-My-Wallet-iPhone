@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MerchantMapDetailViewController">
@@ -92,7 +92,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="510" verticalHuggingPriority="500" horizontalCompressionResistancePriority="520" verticalCompressionResistancePriority="500" text="Business Name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4eT-Zk-MsB">
-                            <rect key="frame" x="20" y="84" width="320" height="26"/>
+                            <rect key="frame" x="20" y="84" width="335" height="26"/>
                             <constraints>
                                 <constraint firstAttribute="width" priority="500" constant="126" id="70l-Jo-3lW"/>
                                 <constraint firstAttribute="width" priority="600" constant="320" id="sin-6O-zw8"/>
@@ -174,6 +174,7 @@
                         <constraint firstItem="Ncu-se-iNk" firstAttribute="leading" secondItem="ERE-KY-CaS" secondAttribute="leading" constant="20" id="Tek-17-XtS"/>
                         <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" priority="590" constant="20" id="ULv-nT-KK9"/>
                         <constraint firstAttribute="trailing" secondItem="UNA-h2-cqv" secondAttribute="trailing" constant="20" id="WAT-H8-2m5"/>
+                        <constraint firstAttribute="trailing" secondItem="4eT-Zk-MsB" secondAttribute="trailing" constant="20" id="Ytw-vO-vkB"/>
                         <constraint firstItem="UNA-h2-cqv" firstAttribute="top" secondItem="5ru-T7-Y2x" secondAttribute="bottom" constant="6" id="ZrN-YY-Foj"/>
                         <constraint firstItem="4eT-Zk-MsB" firstAttribute="top" secondItem="ERE-KY-CaS" secondAttribute="top" constant="84" id="blw-Rr-03J"/>
                         <constraint firstItem="Ncu-se-iNk" firstAttribute="top" secondItem="LBu-gH-5aF" secondAttribute="bottom" constant="26" id="e2e-hI-gG0"/>

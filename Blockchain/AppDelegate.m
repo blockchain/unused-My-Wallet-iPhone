@@ -26,6 +26,7 @@
 #import "PairingCodeParser.h"
 #import "PrivateKeyReader.h"
 #import "MerchantViewController.h"
+#import "MerchantMapViewController.h"
 #import "NSData+Hex.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Reachability.h"
@@ -1177,7 +1178,7 @@ SideMenuViewController *sideMenuViewController;
 - (IBAction)merchantClicked:(UIButton *)sender
 {
     if (!_merchantViewController) {
-        _merchantViewController = [[MerchantViewController alloc] initWithNibName:@"MerchantMap" bundle:[NSBundle mainBundle]];
+        _merchantViewController = [[MerchantMapViewController alloc] initWithNibName:@"MerchantMapView" bundle:[NSBundle mainBundle]];
     }
     
     _merchantViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

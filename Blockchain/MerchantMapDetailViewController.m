@@ -12,13 +12,17 @@
 
 #import "Merchant.h"
 
+#import <MapKit/MapKit.h>
+
 @interface MerchantMapDetailViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *businessNameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *addressLbl;
 @property (weak, nonatomic) IBOutlet UILabel *cityLbl;
+@property (weak, nonatomic) IBOutlet UIControl *addressControl;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLbl;
 @property (weak, nonatomic) IBOutlet UIButton *phoneNumber;
+@property (weak, nonatomic) IBOutlet UIButton *webURL;
 
 @end
 

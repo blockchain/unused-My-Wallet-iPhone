@@ -531,7 +531,11 @@ function webSocketDisconnect() {
 MyWalletPhone.getPrivateKeyPassword = function(callback) {
     // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
     device.execute("getPrivateKeyPassword:", ["discard"], function(pw) {
-        callback(pw);
+        callback(pw,
+                 function () {
+                     console.log('BIP38 private key import: password incorrect');
+                     device.execute('makeNotice:id:message:', ['error', '', 'Incorrect Passphrase'])
+                 });
     }, function(msg) { console.log('Error' + msg) });
 }
 

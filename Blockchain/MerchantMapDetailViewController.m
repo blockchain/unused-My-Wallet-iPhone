@@ -152,6 +152,43 @@
         [alert show];
     }
 }
+
+static NSString *const kMerchantDetailAppleMapsURL = @"http://maps.apple.com";
+- (IBAction)openAddressAction:(id)sender
+{
+    NSString *urlString = @"";
+    NSString *queryString = [self.merchant latLongQueryString];
+    queryString = @"";
+    if ([queryString length] > 0) {
+        Class mapItemClass = [MKMapItem class];
+        if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)])
+        {
+            CLLocationCoordinate2D coordinate =
+            CLLocationCoordinate2DMake([self.merchant.latitude floatValue],[self.merchant.longitude floatValue]);
+            MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:coordinate
+                                                           addressDictionary:nil];
+            MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+            [mapItem setName:self.merchant.name];
+            // Get the "Current User Location" MKMapItem
+            MKMapItem *currentLocationMapItem = [MKMapItem mapItemForCurrentLocation];
+            // Pass the current location and destination map items to the Maps app
+            // Set the direction mode in the launchOptions dictionary
+            [MKMapItem openMapsWithItems:@[currentLocationMapItem, mapItem]
+                           launchOptions:nil];
+            urlString = @"";
+        } else {
+            urlString = [NSString stringWithFormat:@"%@/?ll=%@", kMerchantDetailAppleMapsURL, queryString];
+        }
+    } else {
+        queryString = [self.merchant addressQueryString];
+        if ([queryString length] > 0) {
+            urlString = [NSString stringWithFormat:@"%@/?q=%@", kMerchantDetailAppleMapsURL, queryString];
+        }
+    }
+    
+    if ([urlString length] > 0) {
+        urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
 }
 

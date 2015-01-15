@@ -29,9 +29,6 @@
     IBOutlet UIButton *copyAddressButton;
     IBOutlet UIButton *labelAddressButton;
     IBOutlet UIButton *archiveUnarchiveButton;
-    IBOutlet UIView *tableFooterView;
-    
-    IBOutlet UIView *noaddressesView;
     
     //Label Address
     IBOutlet UIView *labelAddressView;

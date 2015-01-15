@@ -60,11 +60,19 @@ BOOL didChangeDollarAmount = NO;
     }];
     
     self.fromAddress = @"";
-    // Default setting: send from default account
-    self.sendFromAddress = false;
-    int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-    selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
-    self.fromAccount = defaultAccountIndex;
+    if ([app.wallet didUpgradeToHd]) {
+        // Default setting: send from default account
+        self.sendFromAddress = false;
+        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+        selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+        self.fromAccount = defaultAccountIndex;
+    }
+    else {
+        // Default setting: send from any address
+        self.sendFromAddress = true;
+        selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+    }
+
     self.sendToAddress = true;
     
     amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
@@ -189,10 +197,19 @@ BOOL didChangeDollarAmount = NO;
         app.disableBusyView = FALSE;
         
         // Reset fields
-        self.sendFromAddress = false;
-        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-        selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
-        self.fromAccount = defaultAccountIndex;
+        self.fromAddress = @"";
+        if ([app.wallet didUpgradeToHd]) {
+            // Default setting: send from default account
+            self.sendFromAddress = false;
+            int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+            selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+            self.fromAccount = defaultAccountIndex;
+        }
+        else {
+            // Default setting: send from any address
+            self.sendFromAddress = true;
+            selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+        }
         self.sendToAddress = true;
         
         toField.text = @"";

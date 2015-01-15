@@ -24,15 +24,6 @@ int clickedAccount;
 
 #pragma mark - Lifecycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    if ([[app.wallet activeLegacyAddresses] count] == 0) {
-        [noaddressesView setHidden:FALSE];
-    } else {
-        [noaddressesView setHidden:TRUE];
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -61,13 +52,6 @@ int clickedAccount;
     self.activeKeys = [app.wallet activeLegacyAddresses];
     self.archivedKeys = [app.wallet archivedLegacyAddresses];
     
-    // Show no addresses view if we have no accounts and no active legacy addresses
-    if ([app.wallet getAccountsCount] == 0 && activeKeys.count == 0) {
-        [self.view addSubview:noaddressesView];
-    } else {
-        [noaddressesView removeFromSuperview];
-    }
-    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
         [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;
@@ -83,24 +67,52 @@ int clickedAccount;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
     
     // Get an address: the first empty receive address for the default HD account
-    int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-    NSString *defaultAddress = [app.wallet getReceiveAddressForAccount:defaultAccountIndex];
+    // Or the first active legacy address if there are no HD accounts
+    NSString *defaultAddress;
     
-    // QR Code
-    UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
-    qrCodeImageView.image = [self qrImageFromAddress:defaultAddress];
-    qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [headerView addSubview:qrCodeImageView];
+    if ([app.wallet getAccountsCount] > 0) {
+        int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+        defaultAddress = [app.wallet getReceiveAddressForAccount:defaultAccountIndex];
+    }
+    else if (activeKeys.count > 0) {
+        for (NSString *address in activeKeys) {
+            if (![app.wallet isWatchOnlyLegacyAddress:address]) {
+                defaultAddress = address;
+                break;
+            }
+        }
+    }
     
-    // Label of the default HD account
-    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
-    addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
-    addressLabel.font = [UIFont systemFontOfSize:14];
-    addressLabel.textAlignment = NSTextAlignmentCenter;
-    addressLabel.textColor = [UIColor blackColor];
-    [addressLabel setMinimumScaleFactor:.5f];
-    [addressLabel setAdjustsFontSizeToFitWidth:YES];
-    [headerView addSubview:addressLabel];
+    if ([app.wallet getAccountsCount] > 0 || activeKeys.count > 0) {
+        // QR Code
+        UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
+        qrCodeImageView.image = [self qrImageFromAddress:defaultAddress];
+        qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [headerView addSubview:qrCodeImageView];
+        
+        // Label of the default HD account
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
+        if ([app.wallet getAccountsCount] > 0) {
+            int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
+            addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+        }
+        // Label of the default legacy address
+        else {
+            NSString *label = [app.wallet labelForLegacyAddress:defaultAddress];
+            if (label.length > 0) {
+                addressLabel.text = label;
+            }
+            else {
+                addressLabel.text = defaultAddress;
+            }
+        }
+        addressLabel.font = [UIFont systemFontOfSize:14];
+        addressLabel.textAlignment = NSTextAlignmentCenter;
+        addressLabel.textColor = [UIColor blackColor];
+        [addressLabel setMinimumScaleFactor:.5f];
+        [addressLabel setAdjustsFontSizeToFitWidth:YES];
+        [headerView addSubview:addressLabel];
+    }
     
     tableView.tableHeaderView = headerView;
     
@@ -491,10 +503,12 @@ int clickedAccount;
     NSString * addr = self.clickedAddress;
     NSInteger tag =  [app.wallet tagForLegacyAddress:addr];
     
-    if (tag == 2)
+    if (tag == 2) {
         [app.wallet unArchiveLegacyAddress:addr];
-    else
+    }
+    else {
         [app.wallet archiveLegacyAddress:addr];
+    }
     
     [self reload];
     
@@ -568,6 +582,16 @@ int clickedAccount;
             [archiveUnarchiveButton setTitle:BC_STRING_UNARCHIVE forState:UIControlStateNormal];
         else
             [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
+        
+        // If there are no HD accounts, the last active address cannot be archived
+        if ([app.wallet getAccountsCount] == 0 && self.activeKeys.count <= 1) {
+            [archiveUnarchiveButton setTitleColor:COLOR_BUTTON_DARK_GRAY forState:UIControlStateNormal];
+            [archiveUnarchiveButton setEnabled:NO];
+        }
+        else {
+            [archiveUnarchiveButton setTitleColor:UIColorFromRGB(0x686868) forState:UIControlStateNormal];
+            [archiveUnarchiveButton setEnabled:YES];
+        }
         
         if (label.length > 0)
             optionsTitleLabel.text = label;

@@ -16,7 +16,6 @@
                 <outlet property="labelAddressLabel" destination="60" id="62"/>
                 <outlet property="labelAddressView" destination="47" id="64"/>
                 <outlet property="labelTextField" destination="59" id="63"/>
-                <outlet property="noaddressesView" destination="71" id="72"/>
                 <outlet property="optionsModalView" destination="78" id="87"/>
                 <outlet property="optionsTitleLabel" destination="90" id="95"/>
                 <outlet property="qrCodeMainImageView" destination="8Dy-Ax-rCZ" id="Ln1-wG-xVH"/>
@@ -42,28 +41,6 @@
                         <outlet property="delegate" destination="-1" id="14"/>
                     </connections>
                 </tableView>
-                <view hidden="YES" opaque="NO" contentMode="scaleToFill" id="71" userLabel="No Addresses View">
-                    <rect key="frame" x="47" y="123" width="226" height="202"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No Addresses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="68">
-                            <rect key="frame" x="29" y="9" width="168" height="26"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                            <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="69">
-                            <rect key="frame" x="0.0" y="34" width="226" height="85"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <string key="text">Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen.</string>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -274,7 +251,7 @@
                     <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                     <state key="normal" title="ARCHIVE ADDRESS">
-                        <color key="titleColor" red="0.40941321331521741" green="0.40941321331521741" blue="0.40941321331521741" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.40784313725490196" green="0.40784313725490196" blue="0.40784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted">

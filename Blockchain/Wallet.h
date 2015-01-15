@@ -152,6 +152,7 @@
 - (NSString *)decrypt:(NSString *)data password:(NSString *)password pbkdf2_iterations:(int)pbkdf2_iterations;
 
 // HD Wallet
+- (Boolean)didUpgradeToHd;
 - (int)getDefaultAccountIndex;
 - (int)getAccountsCount;
 - (BOOL)hasLegacyAddresses;

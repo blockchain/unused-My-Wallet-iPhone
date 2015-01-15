@@ -7,8 +7,9 @@
 //
 #import <Foundation/Foundation.h>
 
-#define BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS NSLocalizedString(@"You must enter a destination address", nil)
+#define BC_STRING_ANY_ADDRESS NSLocalizedString(@"Any address", nil)
 
+#define BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS NSLocalizedString(@"You must enter a destination address", nil)
 #define BC_STRING_INVALID_TO_BITCOIN_ADDRESS NSLocalizedString(@"Invalid to bitcoin address", nil)
 #define BC_STRING_INVALID_SEND_VALUE NSLocalizedString(@"Invalid Send Value", nil)
 
@@ -35,14 +36,12 @@
 #define BC_STRING_TRANSACTIONS_COUNT NSLocalizedString(@"%d Transactions", nil)
 #define BC_STRING_LOADING_EXTERNAL_PAGE NSLocalizedString(@"Loading External Page", nil)
 
-
 #define BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER NSLocalizedString(@"Password must 10 characters or longer", nil)
 #define BC_STRING_PASSWORDS_DO_NOT_MATCH NSLocalizedString(@"Passwords do not match", nil)
 #define BC_STRING_PLEASE_PROVIDE_AN_EMAIL_ADDRESS NSLocalizedString(@"Please provide an email address.", nil)
 #define BC_STRING_INVALID_EMAIL_ADDRESS NSLocalizedString(@"Invalid email address.", nil)
 #define BC_STRING_DID_CREATE_NEW_ACCOUNT_DETAIL NSLocalizedString(@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app.", nil)
 #define BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE NSLocalizedString(@"Your wallet was successfully created.", nil)
-
 
 #define BC_STRING_UNCONFIRMED NSLocalizedString(@"Unconfirmed", nil)
 #define BC_STRING_COUNT_CONFIRMATIONS NSLocalizedString(@"%d Confirmations", nil)
@@ -137,5 +136,7 @@
 #define BC_STRING_TOTAL_BALANCE NSLocalizedString(@"Total Balance", nil)
 #define BC_STRING_IMPORTED_ADDRESSES NSLocalizedString(@"Imported Addresses", nil)
 #define BC_STRING_IMPORTED_ADDRESSES_ARCHIVED NSLocalizedString(@"Imported Addresses (Archived)", nil)
+
+#define BC_STRING_UPGRADE_TO_HD NSLocalizedString(@"Upgrade to HD", nil)
 
 #define BC_STRING_ADDRESS_BOOK NSLocalizedString(@"Address book", nil)

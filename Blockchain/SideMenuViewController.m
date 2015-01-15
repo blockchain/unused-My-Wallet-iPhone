@@ -95,6 +95,8 @@ int accountEntries = 0;
     balanceEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     accountEntries = [app.wallet getAccountsCount];
     
+    menuEntries = [app.wallet getAccountsCount] > 0 ? 4 : 5;
+    
     // Resize table view
     self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + balanceEntries) + SECTION_HEADER_HEIGHT);
     
@@ -160,6 +162,7 @@ int accountEntries = 0;
     const int news = 1;
     const int changePin = 2;
     const int logout = 3;
+    const int upgradeToHD = 4;
     
     switch (row) {
         case settings:
@@ -176,6 +179,10 @@ int accountEntries = 0;
             
         case logout:
             [app logoutClicked:nil];
+            break;
+        
+        case upgradeToHD:
+            // TODO
             break;
             
         default:
@@ -201,7 +208,7 @@ int accountEntries = 0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 1 && accountEntries > 0) {
         return SECTION_HEADER_HEIGHT;
     }
     
@@ -210,7 +217,7 @@ int accountEntries = 0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 1 && accountEntries > 0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
@@ -265,10 +272,15 @@ int accountEntries = 0;
             cell.selectedBackgroundView = v;
         }
         
-        NSArray *titles;
-        NSArray *images;
-        titles = @[BC_STRING_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT];
-        images = @[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"];
+        NSMutableArray *titles;
+        NSMutableArray *images;
+        titles = [NSMutableArray arrayWithArray:@[BC_STRING_SETTINGS, BC_STRING_NEWS_PRICE_CHARTS, BC_STRING_CHANGE_PIN, BC_STRING_LOGOUT]];
+        images = [NSMutableArray arrayWithArray:@[@"settings_icon", @"news_icon.png", @"lock_icon", @"logout_icon"]];
+        
+        if ([app.wallet getAccountsCount] == 0 ) {
+            [titles addObject:BC_STRING_UPGRADE_TO_HD];
+            [images addObject:@"settings_icon"];
+        }
         
         cell.textLabel.text = titles[indexPath.row];
         cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];

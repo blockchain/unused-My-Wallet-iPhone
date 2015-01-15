@@ -804,6 +804,15 @@
 
 # pragma mark - Calls from Obj-C to JS for HD wallet
 
+- (Boolean)didUpgradeToHd
+{
+    if (![self isInitialized]) {
+        return NO;
+    }
+    
+    return [[self.webView executeJSSynchronous:@"MyWallet.didUpgradeToHd()"] boolValue];
+}
+
 - (int)getAccountsCount
 {
     if (![self isInitialized]) {
@@ -887,8 +896,8 @@
 {
     DLog(@"hd_wallets_does_not_exist");
     
-    DLog(@"Creating new HD Wallet");
-    [self.webView executeJS:@"MyWalletPhone.createNewHDWallet();"];
+    // DLog(@"Creating new HD Wallet");
+    // [self.webView executeJS:@"MyWalletPhone.createNewHDWallet();"];
 }
 
 - (void)hw_wallet_balance_updated

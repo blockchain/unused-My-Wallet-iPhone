@@ -219,6 +219,7 @@ int accountEntries = 0;
 {
     if (section == 1 && accountEntries > 0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
+        view.backgroundColor = [UIColor whiteColor];
         
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         headerLabel.text = BC_STRING_MY_ACCOUNTS;

@@ -182,7 +182,7 @@ int accountEntries = 0;
             break;
         
         case upgradeToHD:
-            // TODO
+            [app.wallet upgradeToHDWallet];
             break;
             
         default:

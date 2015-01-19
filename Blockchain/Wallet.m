@@ -804,6 +804,12 @@
 
 # pragma mark - Calls from Obj-C to JS for HD wallet
 
+- (void)upgradeToHDWallet
+{
+    DLog(@"Creating HD Wallet");
+    [self.webView executeJS:@"MyWalletPhone.upgradeToHDWallet();"];
+}
+
 - (Boolean)didUpgradeToHd
 {
     if (![self isInitialized]) {

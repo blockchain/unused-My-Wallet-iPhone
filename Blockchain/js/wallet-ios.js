@@ -114,11 +114,12 @@ MyWalletPhone.cancelTxSigning = function() {
     }
 }
 
-MyWalletPhone.createNewHDWallet = function() {
+MyWalletPhone.upgradeToHDWallet = function() {
     // Create the HD wallet
-    MyWallet.initializeHDWallet(MyWallet.generateHDWalletPassphrase(), null, MyWalletPhone.getSecondPassword,
+    MyWallet.initializeHDWallet(null, null, MyWalletPhone.getSecondPassword,
                                 function () { console.log('Created Account') },
                                 function (msg) { console.log('Failed to create Account: ' + msg) });
+    
     // Then get the history (and balances) from the server
     MyWallet.getHistoryAndParseMultiAddressJSON();
 }

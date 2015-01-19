@@ -178,6 +178,10 @@
 
 - (void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password
 {
+    emailTextField.text = nil;
+    passwordTextField.text = nil;
+    password2TextField.text = nil;
+    
     [app forgetWallet];
     
     [app clearPin];

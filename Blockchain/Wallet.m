@@ -895,9 +895,6 @@
 - (void)hd_wallets_does_not_exist
 {
     DLog(@"hd_wallets_does_not_exist");
-    
-    DLog(@"Creating new HD Wallet");
-    [self.webView executeJS:@"MyWalletPhone.createNewHDWallet();"];
 }
 
 - (void)hw_wallet_balance_updated
@@ -910,8 +907,6 @@
 - (void)logging_out
 {
     DLog(@"logging_out");
-    
-    // TODO implement this
 }
 
 #pragma mark - Callbacks from javascript localstorage

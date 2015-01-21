@@ -246,7 +246,7 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
     $.ajax({
         type: "POST",
         url: BlockchainAPI.getRootURL() + 'pin-store',
-        timeout: 30000,
+        timeout: 20000,
         dataType: 'json',
         data: {
            format: 'json',
@@ -255,11 +255,16 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
            key : key
        },
        success: function (responseObject) {
-           device.execute('on_pin_code_get_response:', [responseObject])
+           device.execute('on_pin_code_get_response:', [responseObject]);
        },
        error: function (res) {
-           if (!res || !res.responseText || res.responseText.length == 0) {
-                device.execute('on_error_pin_code_get_error:', ['Unknown Error']);
+          // Connection timed out
+           if (res && res.statusText == "timeout") {
+                device.execute('on_error_pin_code_get_timeout');
+           }
+           // Empty server response
+           else if (!res || !res.responseText || res.responseText.length == 0) {
+                device.execute('on_error_pin_code_get_empty_response');
            } else {
                 try {
                     var responseObject = $.parseJSON(res.responseText);
@@ -268,14 +273,15 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
                         throw 'Response Object nil';
                     }
            
-                    device.execute('on_pin_code_get_response:', [responseObject])
+                    device.execute('on_pin_code_get_response:', [responseObject]);
                 } catch (e) {
-                    device.execute('on_error_pin_code_get_error:', [res.responseText]);
+                    // Invalid server response
+                    device.execute('on_error_pin_code_get_invalid_response');
                 }
            }
        }
     });
-}
+};
 
 MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
     MyWallet.sendMonitorEvent({type: "loadingText", message: "Saving PIN Code", code: 0});

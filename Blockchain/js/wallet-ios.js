@@ -370,7 +370,9 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
                success: function (encryption_phrase) {
                try {
                
-               var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, MyWallet.getDefaultPbkdf2Iterations(), function (decrypted) {
+               // Pairing code PBKDF2 iterations is set to 10 in My Wallet
+               var pairing_code_pbkdf2_iterations = 10;
+               var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, pairing_code_pbkdf2_iterations, function (decrypted) {
                                                 return decrypted != null;
                                                 }, function () {
                                                 error('Decryption Error');

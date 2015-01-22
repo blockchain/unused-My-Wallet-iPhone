@@ -1,3 +1,9 @@
+APP_NAME = 'javascript_iphone_app';
+APP_VERSION = '3.0';
+API_CODE = '35e77459-723f-48b0-8c9e-6e9e8f54fbd3';
+// Don't use minified JS files when loading web worker scripts
+min = false;
+
 var MyWalletPhone = {};
 var pendingTransactions = {};
 
@@ -19,11 +25,8 @@ console.log = function(message) {
     device.execute("log:", [message]);
 };
 
-APP_NAME = 'javascript_iphone_app';
-APP_VERSION = '0.1 BETA';
-
 // Set the API code for the iOS Wallet for the server calls
-MyWallet.setAPICode('35e77459-723f-48b0-8c9e-6e9e8f54fbd3');
+MyWallet.setAPICode(API_CODE);
 
 $(document).ready(function() {
     MyWallet.logout = function() {}
@@ -114,12 +117,17 @@ MyWalletPhone.cancelTxSigning = function() {
 }
 
 MyWalletPhone.upgradeToHDWallet = function() {
-    MyWallet.upgradeToHDWallet(MyWalletPhone.getSecondPassword,
-                               function () { console.log('Created Account'); },
-                               function (msg) { console.log('Failed to create Account: ' + msg); });
+    var success = function () {
+        console.log('Upgraded legacy wallet to HD wallet');
 
-    // Then get the history (and balances) from the server
-    MyWallet.getHistoryAndParseMultiAddressJSON();
+        MyWallet.getHistoryAndParseMultiAddressJSON();
+    };
+
+    var error = function (e) {
+        console.log('Error upgrading legacy wallet to HD wallet: ' + e);
+    };
+
+    MyWallet.upgradeToHDWallet(MyWalletPhone.getSecondPassword, success, error);
 };
 
 MyWalletPhone.createAccount = function(label) {
@@ -132,6 +140,18 @@ MyWalletPhone.createAccount = function(label) {
     };
 
     MyWallet.createAccount(label, MyWalletPhone.getSecondPassword, success, error);
+};
+
+MyWalletPhone.setPbkdf2Iterations = function(iterations) {
+    var success = function () {
+        console.log('Updated PBKDF2 iterations');
+    };
+
+    var error = function () {
+        console.log('Error updating PBKDF2 iterations');
+    };
+
+    MyWallet.setPbkdf2Iterations(iterations, success, error, MyWalletPhone.getSecondPassword);
 };
 
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {

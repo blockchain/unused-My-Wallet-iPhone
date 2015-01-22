@@ -896,6 +896,13 @@
     return [self.webView executeJSSynchronous:@"MyWallet.getReceivingAddressForAccount(%d)", account];
 }
 
+- (void)setPbkdf2Iterations:(int)iterations
+{
+    DLog(@"Setting PBKDF2 Iterations");
+    
+    [self.webView executeJSSynchronous:@"MyWalletPhone.setPbkdf2Iterations(%d)", iterations];
+}
+
 #pragma mark - Callbacks from JS to Obj-C for HD wallet
 
 - (void)hd_wallets_does_not_exist

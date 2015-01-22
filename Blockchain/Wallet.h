@@ -168,4 +168,6 @@
 
 - (NSString *)getReceiveAddressForAccount:(int)account;
 
+- (void)setPbkdf2Iterations:(int)iterations;
+
 @end

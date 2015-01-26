@@ -79,6 +79,7 @@
 #define BC_STRING_ENTER_YOUR_CHARACTER_WALLET_IDENTIFIER NSLocalizedString(@"Please enter your 36 character wallet identifier correctly. It can be found in the welcome email on startup.", nil)
 #define BC_STRING_INVALID_IDENTIFIER NSLocalizedString(@"Invalid Identifier", nil)
 
+#define BC_STRING_DISABLE_TWO_FACTOR NSLocalizedString(@"You must have two-factor authentication disabled to pair manually.", nil)
 #define BC_STRING_WALLET_PAIRED_SUCCESSFULLY_DETAIL NSLocalizedString(@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app.", nil)
 #define BC_STRING_WALLET_PAIRED_SUCCESSFULLY_TITLE NSLocalizedString(@"Wallet Paired Successfully.", nil)
 #define BC_STRING_ASK_FOR_PRIVATE_KEY_TITLE NSLocalizedString(@"Scan Watch Only Address?", nil)

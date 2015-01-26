@@ -509,6 +509,13 @@
     DLog(@"ws_on_close");
 }
 
+- (void)on_fetch_needs_two_factor_code
+{
+    DLog(@"on_fetch_needs_two_factor_code");
+    
+    [app standardNotify:BC_STRING_DISABLE_TWO_FACTOR title:BC_STRING_ERROR delegate:nil];
+}
+
 - (void)on_block
 {
     DLog(@"on_block");

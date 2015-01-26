@@ -159,7 +159,16 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
         MyWallet.getHistoryAndParseMultiAddressJSON();
         device.execute('did_decrypt');
     };
-    var other_error = function() { };
+    
+    var other_error = function(e) {
+        console.log('fetchWalletJson: other error: ' + e);
+    };
+    
+    var needs_two_factor_code = function(type) {
+        console.log('fetchWalletJson: needs 2fa of type: ' + MyWallet.get2FATypeString());
+        device.execute('on_fetch_needs_two_factor_code');
+    };
+    
     MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error);
 };
 

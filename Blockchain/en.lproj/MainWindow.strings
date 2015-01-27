@@ -81,7 +81,7 @@
 "591.text" = "Password:";
 
 /* Class = "IBUILabel"; text = "You must have two-factor authentication disabled to pair manually!"; ObjectID = "602"; */
-"602.text" = "You must have two-factor authentication disabled to pair manually!";
+"602.text" = "You must have two-factor authentication disabled to pair manually.";
 
 /* Class = "IBUILabel"; text = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login."; ObjectID = "624"; */
 "624.text" = "You have logged out or there was an error decrypting your wallet file. Enter your password below to login.";
@@ -111,7 +111,7 @@
 "VcH-wh-BEs.text" = "Email:";
 
 /* Class = "IBUILabel"; text = "* required for wallet backups"; ObjectID = "jUZ-5W-4qw"; */
-"jUZ-5W-4qw.text" = "* required for wallet backups";
+"jUZ-5W-4qw.text" = "* Required";
 
 /* Class = "IBUILabel"; text = "0 Transactions"; ObjectID = "kK3-Xs-d3Q"; */
 "kK3-Xs-d3Q.text" = "0 Transactions";
@@ -120,4 +120,4 @@
 "qIf-DM-Gtq.text" = "Manual Pairing";
 
 /* Class = "IBUILabel"; text = "* minimum 10 characters"; ObjectID = "wvh-x7-hB8"; */
-"wvh-x7-hB8.text" = "* minimum 10 characters";
+"wvh-x7-hB8.text" = "* Minimum 10 characters";

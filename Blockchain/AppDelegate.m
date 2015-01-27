@@ -835,28 +835,24 @@ SideMenuViewController *sideMenuViewController;
 
 - (IBAction)scanAccountQRCodeclicked:(id)sender
 {
-    if ([self isQRCodeScanningSupported]) {
-        PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] initWithSuccess:^(NSDictionary*code) {
-            DLog(@"scanAndParse success");
-            
-            [app forgetWallet];
-            
-            [app clearPin];
-            
-            [app standardNotify:[NSString stringWithFormat:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_DETAIL] title:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_TITLE delegate:nil];
-            
-            [self.wallet loadWalletWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
-            
-            self.wallet.delegate = self;
-            
-        } error:^(NSString*error) {
-            [app standardNotify:error];
-        }];
+    PairingCodeParser * pairingCodeParser = [[PairingCodeParser alloc] initWithSuccess:^(NSDictionary*code) {
+        DLog(@"scanAndParse success");
         
-        [self.slidingViewController presentViewController:pairingCodeParser animated:YES completion:nil];
-    } else {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
-    }
+        [app forgetWallet];
+        
+        [app clearPin];
+        
+        [app standardNotify:[NSString stringWithFormat:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_DETAIL] title:BC_STRING_WALLET_PAIRED_SUCCESSFULLY_TITLE delegate:nil];
+        
+        [self.wallet loadWalletWithGuid:[code objectForKey:@"guid"] sharedKey:[code objectForKey:@"sharedKey"] password:[code objectForKey:@"password"]];
+        
+        self.wallet.delegate = self;
+        
+    } error:^(NSString*error) {
+        [app standardNotify:error];
+    }];
+    
+    [self.slidingViewController presentViewController:pairingCodeParser animated:YES completion:nil];
 }
 
 - (void)askForPrivateKey:(NSString*)address success:(void(^)(id))_success error:(void(^)(id))_error
@@ -1031,24 +1027,13 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showPairWallet:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:BC_STRING_HOW_WOULD_YOU_LIKE_TO_PAIR
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:BC_STRING_MANUALLY
-                                          otherButtonTitles:BC_STRING_AUTOMATICALLY, nil];
-    
-    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        // Manually
-        if (buttonIndex == 0) {
-            [app showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
-        }
-        // QR
-        else if (buttonIndex == 1) {
-            [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack];
-        }
-    };
-    
-    [alert show];
+    // If the device has a camera, show automatic pairing, otherwise show manual pairing
+    if ([self isQRCodeScanningSupported]) {
+        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack];
+    }
+    else {
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
+    }
 }
 
 

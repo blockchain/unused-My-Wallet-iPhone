@@ -232,6 +232,8 @@ BOOL didChangeDollarAmount = NO;
     };
     
     listener.on_error = ^(NSString* error) {
+        [app standardNotify:error];
+        
         [sendPaymentButton setEnabled:TRUE];
         
         app.disableBusyView = FALSE;

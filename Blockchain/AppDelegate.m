@@ -87,6 +87,9 @@ SideMenuViewController *sideMenuViewController;
     NSSetUncaughtExceptionHandler(&HandleException);
 #endif
     
+    // White status bar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:LOADING_TEXT_NOTIFICATION_KEY object:nil queue:nil usingBlock:^(NSNotification * notification) {
         self.loadingText = [notification object];
     }];
@@ -1018,13 +1021,7 @@ SideMenuViewController *sideMenuViewController;
     BCWelcomeView *welcomeView = [[BCWelcomeView alloc] init];
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
-    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO onDismiss:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
-    } onResume:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
-    }];
+    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO onDismiss:nil onResume:nil];
 }
 
 - (void)showCreateWallet:(id)sender

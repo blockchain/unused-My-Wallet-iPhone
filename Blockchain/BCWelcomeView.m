@@ -16,11 +16,14 @@
 
 UIImageView *imageView;
 float moveImageDown;
+Boolean shouldShowAnimation;
 
 -(id)init
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UIWindow *window = appDelegate.window;
+    
+    shouldShowAnimation = true;
     
     self = [super initWithFrame:CGRectMake(0, 0, window.frame.size.width, window.frame.size.height - 20)];
     
@@ -66,6 +69,12 @@ float moveImageDown;
 
 - (void)didMoveToSuperview
 {
+    // If the animation has started already, don't show it again until init is called again
+    if (!shouldShowAnimation) {
+        return;
+    }
+    shouldShowAnimation = false;
+    
     // Some nice animations
     [UIView animateWithDuration:2*ANIMATION_DURATION
                      animations:^{

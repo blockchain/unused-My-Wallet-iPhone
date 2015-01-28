@@ -109,17 +109,18 @@ BOOL isReadingQRCode;
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
             // do something useful with results
             dispatch_sync(dispatch_get_main_queue(), ^{
+                [self stopReadingQRCode];
+                
+                [videoPreviewLayer removeFromSuperlayer];
+                [self dismissViewControllerAnimated:YES completion:nil];
+                
                 [app.wallet loadBlankWallet];
                 
                 app.wallet.delegate = self;
                 
+                [app showBusyViewWithLoadingText:BC_STRING_PARSING_PAIRING_CODE];
+                
                 [app.wallet parsePairingCode:[metadataObj stringValue]];
-                
-                app.loadingText = BC_STRING_PARSING_PAIRING_CODE;
-                
-                [app networkActivityStart];
-                
-                [self stopReadingQRCode];
             });
         }
     }
@@ -127,26 +128,20 @@ BOOL isReadingQRCode;
 
 - (void)errorParsingPairingCode:(NSString *)message
 {
-    [app networkActivityStop];
+    [app hideBusyView];
 
     if (self.error) {
         self.error(message);
     }
-    
-    [videoPreviewLayer removeFromSuperlayer];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)didParsePairingCode:(NSDictionary *)dict
 {
-    [app networkActivityStop];
+    [app hideBusyView];
 
     if (self.success) {
         self.success(dict);
     }
-    
-    [videoPreviewLayer removeFromSuperlayer];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -161,16 +161,6 @@
     app.wallet.delegate = self;
 }
 
-- (void)networkActivityStart
-{
-    [app networkActivityStart];
-}
-
-- (void)networkActivityStop
-{
-    [app networkActivityStop];
-}
-
 - (IBAction)termsOfServiceClicked:(id)sender
 {
     [app pushWebViewController:[WebROOT stringByAppendingString:@"terms_of_service"]];

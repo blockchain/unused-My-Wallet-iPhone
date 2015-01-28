@@ -168,7 +168,7 @@
 - (void)getHistory
 {
     if ([self isInitialized])
-        [self.webView executeJS:@"MyWallet.get_history()"];
+        [self.webView executeJS:@"MyWalletPhone.get_history()"];
 }
 
 - (void)getWalletAndHistory
@@ -476,27 +476,60 @@
     }
 }
 
+#pragma mark - Callbacks from JS to Obj-C dealing with loading texts
+
+// TODO i18n
+
+- (void)loading_start_download_wallet
+{
+    [app showBusyViewWithLoadingText:@"Downloading Wallet"];
+}
+
+- (void)loading_start_decrypt_wallet
+{
+    [app updateBusyViewLoadingText:@"Decrypting Wallet"];
+}
+
+- (void)loading_start_multiaddr
+{
+    [app updateBusyViewLoadingText:@"Loading transactions"];
+}
+
+- (void)loading_start_get_history
+{
+    [app showBusyViewWithLoadingText:@"Loading transactions"];
+}
+
+- (void)loading_start_get_wallet_and_history
+{
+    [app showBusyViewWithLoadingText:@"Checking for Wallet updates"];
+}
+
+- (void)loading_start_upgrade_to_hd
+{
+    [app showBusyViewWithLoadingText:@"Creating HD Wallet"];
+}
+
+- (void)loading_start_create_account
+{
+    [app showBusyViewWithLoadingText:@"Creating Account"];
+}
+
+- (void)loading_start_new_account
+{
+    [app showBusyViewWithLoadingText:@"Creating new Wallet"];
+}
+
+- (void)loading_stop
+{
+    [app hideBusyView];
+}
+
 #pragma mark - Callbacks from JS to Obj-C
 
 - (void)log:(NSString*)message
 {
     DLog(@"console.log: %@", [message description]);
-}
-
-- (void)ajaxStart
-{
-    DLog(@"ajaxStart");
-    
-    if ([delegate respondsToSelector:@selector(networkActivityStart)])
-        [delegate networkActivityStart];
-}
-
-- (void)ajaxStop
-{
-    DLog(@"ajaxStop");
-    
-    if ([delegate respondsToSelector:@selector(networkActivityStop)])
-        [delegate networkActivityStop];
 }
 
 - (void)ws_on_open
@@ -724,14 +757,6 @@
         [delegate didPutPinSuccess:responseObject];
 }
 
-- (void)on_error_pin_code_get_error:(NSString*)message
-{
-    DLog(@"on_error_pin_code_get_error:");
-    
-    if ([delegate respondsToSelector:@selector(didFailGetPin:)])
-        [delegate didFailGetPin:message];
-}
-
 - (void)on_error_pin_code_get_timeout
 {
     DLog(@"on_error_pin_code_get_timeout");
@@ -762,22 +787,6 @@
     
     if ([delegate respondsToSelector:@selector(didGetPinSuccess:)])
         [delegate didGetPinSuccess:responseObject];
-}
-
-- (void)on_wallet_decrypt_start
-{
-    DLog(@"on_wallet_decrypt_start");
-    
-    if ([delegate respondsToSelector:@selector(didWalletDecryptStart)])
-        [delegate didWalletDecryptStart];
-}
-
-- (void)on_wallet_decrypt_finish
-{
-    DLog(@"on_wallet_decrypt_finish");
-    
-    if ([delegate respondsToSelector:@selector(didWalletDecryptFinish)])
-        [delegate didWalletDecryptFinish];
 }
 
 - (void)on_backup_wallet_start
@@ -912,11 +921,6 @@
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet
 
-- (void)hd_wallets_does_not_exist
-{
-    DLog(@"hd_wallets_does_not_exist");
-}
-
 - (void)hw_wallet_balance_updated
 {
     DLog(@"hw_wallet_balance_updated");
@@ -969,15 +973,13 @@
 
 - (void)crypto_scrypt:(id)_password salt:(id)salt n:(NSNumber*)N r:(NSNumber*)r p:(NSNumber*)p dkLen:(NSNumber*)derivedKeyLen success:(void(^)(id))_success error:(void(^)(id))_error
 {
-    [app setLoadingText:BC_STRING_DECRYPTING_PRIVATE_KEY];
-    
-    [app networkActivityStart];
+    [app showBusyViewWithLoadingText:BC_STRING_DECRYPTING_PRIVATE_KEY];
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData * data = [self _internal_crypto_scrypt:_password salt:salt n:[N unsignedLongLongValue] r:[r unsignedIntegerValue] p:[p unsignedIntegerValue] dkLen:[derivedKeyLen unsignedIntegerValue]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [app networkActivityStop];
+            [app hideBusyView];
             
             if (data) {
                 _success([data hexadecimalString]);

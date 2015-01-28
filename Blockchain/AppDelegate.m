@@ -207,43 +207,27 @@ SideMenuViewController *sideMenuViewController;
     [sideMenuViewController reload];
 }
 
-
-- (void)setDisableBusyView:(BOOL)__disableBusyView
+- (void)showBusyViewWithLoadingText:(NSString *)text
 {
-    _disableBusyView = __disableBusyView;
+    [busyLabel setText:text];
     
-    if (_disableBusyView) {
-        [busyView removeFromSuperview];
-    }
-    else {
-        [_window.rootViewController.view addSubview:busyView];
-    }
-}
-
-- (void)didWalletDecryptStart
-{
-    [self networkActivityStart];
-}
-
-- (void)didWalletDecryptFinish
-{
-    [self networkActivityStop];
-}
-
-- (void)networkActivityStart
-{
     [busyView fadeIn];
-    
-    if (self.loadingText) {
-        [busyLabel setText:self.loadingText];
+}
+
+- (void)updateBusyViewLoadingText:(NSString *)text
+{
+    if (busyView.alpha == 1.0) {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            [busyLabel setText:text];
+        }];
     }
 }
 
-- (void)networkActivityStop
+- (void)hideBusyView
 {
-    [busyView fadeOut];
-    
-    [activity stopAnimating];
+    if (busyView.alpha == 1.0) {
+        [busyView fadeOut];
+    }
 }
 
 #pragma mark - AlertView Helpers
@@ -351,6 +335,8 @@ SideMenuViewController *sideMenuViewController;
     _transactionsViewController.data = response;
     
     [self reload];
+    
+    [self hideBusyView];
 }
 
 - (void)didSetLatestBlock:(LatestBlock*)block
@@ -788,8 +774,6 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)didFailBackupWallet
 {
-    [self networkActivityStop];
-    
     // Cancel any tx signing just in case
     [self.wallet cancelTxSigning];
     
@@ -1275,12 +1259,6 @@ SideMenuViewController *sideMenuViewController;
     
     [alert show];
     
-}
-
-- (void)didFailGetPin:(NSString*)value {
-    [self.pinEntryViewController setActivityIndicatorAnimated:FALSE];
-    
-    [self askIfUserWantsToResetPIN];
 }
 
 - (void)didFailGetPinTimeout

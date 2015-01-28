@@ -4,6 +4,9 @@ API_CODE = '35e77459-723f-48b0-8c9e-6e9e8f54fbd3';
 // Don't use minified JS files when loading web worker scripts
 min = false;
 
+// Set the API code for the iOS Wallet for the server calls
+MyWallet.setAPICode(API_CODE);
+
 var MyWalletPhone = {};
 var pendingTransactions = {};
 
@@ -14,10 +17,8 @@ window.onerror = function(errorMsg, url, lineNumber) {
 $(document).ajaxStart(function() {
     // Disconnect WS when we send another request to the server - this was leading to crashes
     webSocketDisconnect();
-    device.execute('ajaxStart');
 }).ajaxStop(function() {
-    device.execute('ajaxStop');
-    // Re-connent WS again when the request is finished
+    // Re-connect WS again when the request is finished
     simpleWebSocketConnect();
 });
 
@@ -25,34 +26,25 @@ console.log = function(message) {
     device.execute("log:", [message]);
 };
 
-// Set the API code for the iOS Wallet for the server calls
-MyWallet.setAPICode(API_CODE);
-
 $(document).ready(function() {
     MyWallet.logout = function() {}
 });
-
-MyWallet.getWebWorkerLoadPrefix = function() {
-    return '';
-};
 
 
 // Register for JS event handlers and forward to Obj-C handlers
 
 MyWallet.addEventListener(function (event, obj) {
-    var eventsWithObjCHandlers = ["did_decrypt", "did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallets_does_not_exist", "hw_wallet_balance_updated", "logging_out", "on_add_private_key", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_error_adding_private_key", "on_error_creating_new_account", "on_error_pin_code_get_empty_response", "on_error_pin_code_get_error", "on_error_pin_code_get_invalid_response", "on_error_pin_code_get_timeout", "on_error_pin_code_put_error", "on_pin_code_get_response", "on_pin_code_put_response", "on_tx", "on_wallet_decrypt_finish", "on_wallet_decrypt_start", "ws_on_close ", "ws_on_open ", "on_backup_wallet_start"];
+    var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hw_wallet_balance_updated", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close ", "ws_on_open ", "loading_start_decrypt_wallet"];
 
-    // TODO this will change again
     if (event == 'msg') {
-
-        if (obj.type == 'info' && obj.platform == 'iOS') {
-            device.execute('setLoadingText:', [obj.message]);
-        }
-
-        else if (obj.type == 'error') {
+        if (obj.type == 'error') {
+            // Cancel busy view in case any error comes in
+            device.execute('loading_stop');
+            
             // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
-            if (obj.message == 'No free outputs to spend')
-                return
+            if (obj.message == 'No free outputs to spend') {
+                return;
+            }
 
             // Some messages are JSON objects and the error message is in the map
             try {
@@ -73,8 +65,9 @@ MyWallet.addEventListener(function (event, obj) {
         return;
     }
 
-    if (eventsWithObjCHandlers.indexOf(event) == -1)
+    if (eventsWithObjCHandlers.indexOf(event) == -1) {
         return;
+    }
 
     // Obj-C part of handling events (calls function of event name in Wallet.m)
     if (obj) {
@@ -82,29 +75,6 @@ MyWallet.addEventListener(function (event, obj) {
     }
 
     device.execute(event, [obj]);
-});
-
-MyWallet.monitor(function (obj) {
-    console.log('Monitor event. Type: ' + (obj.type ? obj.type : 'null') +
-                ' Code: ' + (obj.code ? obj.code : 'null') +
-                ' Message: ' + (obj.message ? obj.message : 'null'));
-
-    // TODO depcrecated - change in own calls
-    if (obj.type == 'loadingText') {
-        device.execute('setLoadingText:', [obj.message]);
-    }
-
-    else if (obj.type == 'error') {
-        // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
-        if (obj.message == 'No free outputs to spend')
-            return;
-
-        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message]);
-    }
-
-    else if (obj.type == 'success') {
-        device.execute('makeNotice:id:message:', [''+obj.type, ''+obj.code, ''+obj.message]);
-    }
 });
 
 
@@ -121,11 +91,15 @@ MyWalletPhone.upgradeToHDWallet = function() {
         console.log('Upgraded legacy wallet to HD wallet');
 
         MyWallet.getHistoryAndParseMultiAddressJSON();
+        device.execute('loading_stop');
     };
 
     var error = function (e) {
         console.log('Error upgrading legacy wallet to HD wallet: ' + e);
+        device.execute('loading_stop');
     };
+
+    device.execute('loading_start_upgrade_to_hd');
 
     MyWallet.upgradeToHDWallet(MyWalletPhone.getSecondPassword, success, error);
 };
@@ -133,11 +107,17 @@ MyWalletPhone.upgradeToHDWallet = function() {
 MyWalletPhone.createAccount = function(label) {
     var success = function () {
         console.log('Created new account');
+
+        device.execute('loading_stop');
     };
 
     var error = function () {
         console.log('Error creating new account');
+
+        device.execute('loading_stop');
     };
+
+    device.execute('loading_start_create_account');
 
     MyWallet.createAccount(label, MyWalletPhone.getSecondPassword, success, error);
 };
@@ -155,19 +135,25 @@ MyWalletPhone.setPbkdf2Iterations = function(iterations) {
 };
 
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
+    // TODO loading texts could be cleaned up by using callbacks
     var success = function() {
-        MyWallet.getHistoryAndParseMultiAddressJSON();
         device.execute('did_decrypt');
+        device.execute('loading_start_multiaddr');
+        MyWallet.getHistoryAndParseMultiAddressJSON();
     };
     
     var other_error = function(e) {
         console.log('fetchWalletJson: other error: ' + e);
+        device.execute('loading_stop');
     };
     
     var needs_two_factor_code = function(type) {
         console.log('fetchWalletJson: needs 2fa of type: ' + MyWallet.get2FATypeString());
+        device.execute('loading_stop');
         device.execute('on_fetch_needs_two_factor_code');
     };
+    
+    device.execute('loading_start_download_wallet');
     
     MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error);
 };
@@ -257,8 +243,6 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
 };
 
 MyWalletPhone.apiGetPINValue = function(key, pin) {
-    MyWallet.sendMonitorEvent({type: "loadingText", message: "Retrieving PIN Code", code: 0});
-
     $.ajax({
         type: "POST",
         url: BlockchainAPI.getRootURL() + 'pin-store',
@@ -300,8 +284,6 @@ MyWalletPhone.apiGetPINValue = function(key, pin) {
 };
 
 MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
-    MyWallet.sendMonitorEvent({type: "loadingText", message: "Saving PIN Code", code: 0});
-
     $.ajax({
         type: "POST",
         url: BlockchainAPI.getRootURL() + 'pin-store',
@@ -339,15 +321,24 @@ MyWalletPhone.pinServerPutKeyOnPinServerServer = function(key, value, pin) {
 };
 
 MyWalletPhone.newAccount = function(password, email) {
-    MyWallet.createNewWallet(email, password, null, null, function(guid, sharedKey, password) {
+    var success = function(guid, sharedKey, password) {
+        device.execute('loading_stop');
+
         device.execute('on_create_new_account:sharedKey:password:', [guid, sharedKey, password]);
-    }, function (e) {
+    };
+
+    var error = function(e) {
+        device.execute('loading_stop');
+
         device.execute('on_error_creating_new_account:', [''+e]);
-    });
+    };
+
+    device.execute('loading_start_new_account');
+
+    MyWallet.createNewWallet(email, password, null, null, success, error);
 };
 
 MyWalletPhone.parsePairingCode = function (raw_code) {
-
     var success = function (pairing_code) {
         device.execute("didParsePairingCode:", [pairing_code]);
     };
@@ -377,8 +368,6 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
         }
 
         var encrypted_data = components[2];
-
-        MyWallet.sendMonitorEvent({type: "loadingText", message: "Decrypting Pairing Code", code: 0});
 
         $.ajax({
             type: "POST",
@@ -451,7 +440,35 @@ MyWalletPhone.getWsReadyState = function() {
     return ws.readyState;
 };
 
+MyWalletPhone.get_history = function() {
+    var success = function () {
+        console.log('Got wallet history');
+        device.execute('loading_stop');
+    };
+    
+    var error = function () {
+        console.log('Error getting wallet history');
+        device.execute('loading_stop');
+    };
+    
+    device.execute('loading_start_get_history');
+    
+    MyWallet.get_history(success, error);
+};
+
 MyWalletPhone.get_wallet_and_history = function() {
+    var success = function () {
+        console.log('Got wallet and history');
+        device.execute('loading_stop');
+    };
+    
+    var error = function () {
+        console.log('Error getting wallet and history');
+        device.execute('loading_stop');
+    };
+    
+    device.execute('loading_start_get_wallet_and_history');
+    
     MyWallet.getWallet(function() {
         MyWallet.get_history();
     });
@@ -549,26 +566,33 @@ function webSocketDisconnect() {
 }
 
 
-// Overrides
+// Get passwords
 
 MyWalletPhone.getPrivateKeyPassword = function(callback) {
     // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
     device.execute("getPrivateKeyPassword:", ["discard"], function(pw) {
-        callback(pw,
-                 function () {
-                     console.log('BIP38 private key import: password incorrect');
-                     device.execute('makeNotice:id:message:', ['error', '', 'Incorrect Passphrase']);
-                 });
-    }, function(msg) { console.log('Error' + msg); });
+                   callback(pw,
+                            function () {
+                            console.log('BIP38 private key import: password incorrect');
+                            device.execute('makeNotice:id:message:', ['error', '', 'Incorrect Passphrase']);
+                            });
+                   }, function(msg) { console.log('Error' + msg); });
 };
 
 MyWalletPhone.getSecondPassword = function(callback) {
     // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
     device.execute("getSecondPassword:", ["discard"], function(pw) {
-        callback(pw,
-                 function () { console.log('Second password correct'); },
-                 function () { console.log('Second password incorrect'); });
-    }, function(msg) { console.log('Error' + msg); });
+                   callback(pw,
+                            function () { console.log('Second password correct'); },
+                            function () { console.log('Second password incorrect'); });
+                   }, function(msg) { console.log('Error' + msg); });
+};
+
+
+// Overrides
+
+MyWallet.getWebWorkerLoadPrefix = function() {
+    return '';
 };
 
 ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {

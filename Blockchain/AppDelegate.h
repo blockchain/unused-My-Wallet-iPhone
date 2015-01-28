@@ -49,7 +49,6 @@
     SystemSoundID beepSoundID;
     SystemSoundID dingSoundID;
     
-    IBOutlet UIActivityIndicatorView *activity;
     IBOutlet BCFadeView *busyView;
     IBOutlet UILabel *busyLabel;
     
@@ -86,8 +85,6 @@
 @property (strong, nonatomic) Wallet *wallet;
 @property (strong, nonatomic) MultiAddressResponse *latestResponse;
 @property (nonatomic, strong) NSString *loadingText;
-
-@property (nonatomic) BOOL disableBusyView;
 
 @property (strong, nonatomic) IBOutlet BCModalView *modalView;
 @property (strong, nonatomic) NSMutableArray *modalChain;
@@ -129,13 +126,16 @@
 - (void)didSetLatestBlock:(LatestBlock*)block;
 - (void)walletDidLoad;
 - (void)walletFailedToDecrypt;
-- (void)networkActivityStart;
-- (void)networkActivityStop;
 
 // Display a message
 - (void)standardNotify:(NSString*)message;
 - (void)standardNotify:(NSString*)message delegate:(id)fdelegate;
 - (void)standardNotify:(NSString*)message title:(NSString*)title delegate:(id)fdelegate;
+
+// Busy view with loading text
+- (void)showBusyViewWithLoadingText:(NSString *)text;
+- (void)updateBusyViewLoadingText:(NSString *)text;
+- (void)hideBusyView;
 
 // Request Second Password From User
 - (void)getSecondPassword:(void (^)(NSString *))success error:(void (^)(NSString *))error;

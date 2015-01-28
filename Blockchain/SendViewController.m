@@ -194,8 +194,6 @@ BOOL didChangeDollarAmount = NO;
         
         [sendPaymentButton setEnabled:TRUE];
         
-        app.disableBusyView = FALSE;
-        
         // Reset fields
         self.fromAddress = @"";
         if ([app.wallet didUpgradeToHd]) {
@@ -236,14 +234,10 @@ BOOL didChangeDollarAmount = NO;
         
         [sendPaymentButton setEnabled:TRUE];
         
-        app.disableBusyView = FALSE;
-        
         [app closeModalWithTransition:kCATransitionFade];
     };
     
     [sendPaymentButton setEnabled:FALSE];
-    
-    app.disableBusyView = TRUE;
     
     sendProgressModalText.text = BC_STRING_SENDING_TRANSACTION;
     

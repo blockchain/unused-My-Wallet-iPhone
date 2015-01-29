@@ -478,46 +478,44 @@
 
 #pragma mark - Callbacks from JS to Obj-C dealing with loading texts
 
-// TODO i18n
-
 - (void)loading_start_download_wallet
 {
-    [app showBusyViewWithLoadingText:@"Downloading Wallet"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_DOWNLOADING_WALLET];
 }
 
 - (void)loading_start_decrypt_wallet
 {
-    [app updateBusyViewLoadingText:@"Decrypting Wallet"];
+    [app updateBusyViewLoadingText:BC_STRING_LOADING_DECRYPTING_WALLET];
 }
 
 - (void)loading_start_multiaddr
 {
-    [app updateBusyViewLoadingText:@"Loading transactions"];
+    [app updateBusyViewLoadingText:BC_STRING_LOADING_LOADING_TRANSACTIONS];
 }
 
 - (void)loading_start_get_history
 {
-    [app showBusyViewWithLoadingText:@"Loading transactions"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_LOADING_TRANSACTIONS];
 }
 
 - (void)loading_start_get_wallet_and_history
 {
-    [app showBusyViewWithLoadingText:@"Checking for Wallet updates"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_CHECKING_WALLET_UPDATES];
 }
 
 - (void)loading_start_upgrade_to_hd
 {
-    [app showBusyViewWithLoadingText:@"Creating HD Wallet"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_CREATING_HD_WALLET];
 }
 
 - (void)loading_start_create_account
 {
-    [app showBusyViewWithLoadingText:@"Creating Account"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_CREATING_ACCOUNT];
 }
 
 - (void)loading_start_new_account
 {
-    [app showBusyViewWithLoadingText:@"Creating new Wallet"];
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_CREATING_WALLET];
 }
 
 - (void)loading_stop

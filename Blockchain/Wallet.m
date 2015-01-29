@@ -919,9 +919,9 @@
 
 #pragma mark - Callbacks from JS to Obj-C for HD wallet
 
-- (void)hw_wallet_balance_updated
+- (void)hd_wallet_balance_updated
 {
-    DLog(@"hw_wallet_balance_updated");
+    DLog(@"hd_wallet_balance_updated");
     
     [app reload];
 }

@@ -34,7 +34,7 @@ $(document).ready(function() {
 // Register for JS event handlers and forward to Obj-C handlers
 
 MyWallet.addEventListener(function (event, obj) {
-    var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallet_balance_updated", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close ", "ws_on_open ", "loading_start_decrypt_wallet"];
+    var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallet_balance_updated", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close ", "ws_on_open "];
 
     if (event == 'msg') {
         if (obj.type == 'error') {
@@ -135,12 +135,44 @@ MyWalletPhone.setPbkdf2Iterations = function(iterations) {
 };
 
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
-    // TODO loading texts could be cleaned up by using callbacks
-    var success = function() {
+    // Timing
+    var t0 = new Date().getTime(), t1;
+    
+    var logTime = function(name) {
+        t1 = new Date().getTime();
+        
+        console.log('----------');
+        console.log('Execution time ' + name + ': ' + (t1 - t0) + ' milliseconds.')
+        console.log('----------');
+        
+        t0 = t1;
+    };
+    
+    var fetch_success = function() {
+        device.execute('loading_start_decrypt_wallet');
+        
+        logTime('download');
+    };
+    
+    var decrypt_success = function() {
         device.execute('did_decrypt');
+        device.execute('loading_start_build_wallet');
+        
+        logTime('decrypt');
+    };
+    
+    var history_success = function() {
+        device.execute('loading_stop');
+        
+        logTime('get history');
+    };
+    
+    var success = function() {
         device.execute('loading_start_multiaddr');
         
-        MyWallet.getHistoryAndParseMultiAddressJSON();
+        logTime('build wallet');
+        
+        MyWallet.getHistoryAndParseMultiAddressJSON(history_success);
     };
     
     var other_error = function(e) {
@@ -156,7 +188,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     
     device.execute('loading_start_download_wallet');
     
-    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error);
+    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error, fetch_success, decrypt_success);
 };
 
 MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
@@ -509,15 +541,15 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
 // Shared functions
 
 function simpleWebSocketConnect() {
+    if (!MyWallet.getIsInitialized()) {
+        // The websocket should only operate when the wallet is initialized. We get calls before and after this is true because we stop and start the websocket for ajax calls
+        return;
+    }
+
     console.log('Connecting websocket...');
 
     if (!window.WebSocket) {
         console.log('No websocket support in JS runtime');
-        return;
-    }
-
-    if (!MyWallet.getIsInitialized()) {
-        console.log('Wallet is not initialized yet');
         return;
     }
 
@@ -536,15 +568,15 @@ function simpleWebSocketConnect() {
 }
 
 function webSocketDisconnect() {
+    if (!MyWallet.getIsInitialized()) {
+        // The websocket should only operate when the wallet is initialized. We get calls before and after this is true because we stop and start the websocket for ajax calls
+        return;
+    }
+
     console.log('Disconnecting websocket...');
 
     if (!window.WebSocket) {
         console.log('No websocket support in JS runtime');
-        return;
-    }
-
-    if (!MyWallet.getIsInitialized()) {
-        console.log('Wallet is not initialized yet');
         return;
     }
 

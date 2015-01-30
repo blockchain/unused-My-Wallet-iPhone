@@ -488,6 +488,12 @@
     [app updateBusyViewLoadingText:BC_STRING_LOADING_DECRYPTING_WALLET];
 }
 
+- (void)loading_start_build_wallet
+{
+    // TODO
+    [app updateBusyViewLoadingText:@"TEST"];
+}
+
 - (void)loading_start_multiaddr
 {
     [app updateBusyViewLoadingText:BC_STRING_LOADING_LOADING_TRANSACTIONS];

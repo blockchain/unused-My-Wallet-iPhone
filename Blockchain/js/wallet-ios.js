@@ -34,7 +34,7 @@ $(document).ready(function() {
 // Register for JS event handlers and forward to Obj-C handlers
 
 MyWallet.addEventListener(function (event, obj) {
-    var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallet_balance_updated", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close ", "ws_on_open "];
+    var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "hd_wallet_balance_updated", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close", "ws_on_open", "hd_wallet_set"];
 
     if (event == 'msg') {
         if (obj.type == 'error') {

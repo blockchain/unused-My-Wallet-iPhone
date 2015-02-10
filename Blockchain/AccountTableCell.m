@@ -20,21 +20,19 @@
     if (self) {
         ECSlidingViewController *sideMenu = app.slidingViewController;
         
-        _amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 30)];
-        _amountLabel.font = [UIFont boldSystemFontOfSize:20.0];
-        _amountLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
-        _amountLabel.textAlignment = NSTextAlignmentCenter;
+        _labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 10, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 18)];
+        _labelLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        _labelLabel.textColor = [UIColor whiteColor];
+        [self addSubview:_labelLabel];
+        
+        _amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 24, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 30)];
+        _amountLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        _amountLabel.textColor = [UIColor whiteColor];
         [self addSubview:_amountLabel];
         
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(toggleSymbol)];
         [_amountLabel addGestureRecognizer:tapGestureRecognizer];
         _amountLabel.userInteractionEnabled = YES;
-        
-        _labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 35, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 15)];
-        _labelLabel.font = [UIFont systemFontOfSize:12.0];
-        _labelLabel.textColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
-        _labelLabel.textAlignment = NSTextAlignmentCenter;
-        [self addSubview:_labelLabel];
         
         _editButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30 - 30, 0, 54, 54)];
         [_editButton setImage:[UIImage imageNamed:@"account-settings"] forState:UIControlStateNormal];
@@ -43,7 +41,6 @@
     }
     
     return self;
-
 }
 
 - (IBAction)editButtonclicked:(id)sender

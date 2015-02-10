@@ -15,6 +15,9 @@
 
 #define SECTION_HEADER_HEIGHT 44
 
+#define MENU_ENTRY_HEIGHT 54
+#define BALANCE_ENTRY_HEIGHT 58
+
 @interface SideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) UITableView *tableView;
@@ -32,18 +35,10 @@ int accountEntries = 0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIView *topBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, DEFAULT_HEADER_HEIGHT)];
-    topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
-    [self.view addSubview:topBarView];
-    
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
-    logo.frame = CGRectMake(88, 22, 143, 40);
-    [topBarView addSubview:logo];
-    
     sideMenu = app.slidingViewController;
     
     self.tableView = ({
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * menuEntries) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * menuEntries) style:UITableViewStylePlain];
         tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         tableView.delegate = self;
         tableView.dataSource = self;
@@ -53,10 +48,6 @@ int accountEntries = 0;
         tableView;
     });
     
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
     [self.view addSubview:self.tableView];
     
     sideMenu.delegate = self;
@@ -65,6 +56,9 @@ int accountEntries = 0;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
+    // Show status bar again
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+    
     [self resetSideMenuGestures];
 }
 
@@ -98,11 +92,11 @@ int accountEntries = 0;
     menuEntries = [app.wallet getAccountsCount] > 0 ? 4 : 5;
     
     // Resize table view
-    self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, 54 * (menuEntries + balanceEntries) + SECTION_HEADER_HEIGHT);
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * menuEntries + BALANCE_ENTRY_HEIGHT * balanceEntries + SECTION_HEADER_HEIGHT);
     
     // If the tableView is bigger than the screen, enable scrolling and resize table view to screen size
-    if (self.tableView.frame.size.height > self.view.frame.size.height - DEFAULT_HEADER_HEIGHT) {
-        self.tableView.frame = CGRectMake(0, DEFAULT_HEADER_HEIGHT, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, self.view.frame.size.height - DEFAULT_HEADER_HEIGHT);
+    if (self.tableView.frame.size.height > self.view.frame.size.height ) {
+        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, self.view.frame.size.height);
         
         // Add some extra space to bottom of tableview so things look nicer when scrolling all the way down
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, SECTION_HEADER_HEIGHT, 0);
@@ -122,6 +116,9 @@ int accountEntries = 0;
 {
     // SideMenu will slide in
     if (operation == ECSlidingViewControllerOperationAnchorRight) {
+        // No status bar
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+        
         // Enable Pan gesture to close sideMenu on tabViewController and disable all other interactions
         for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
             [view setUserInteractionEnabled:NO];
@@ -150,7 +147,7 @@ int accountEntries = 0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {
         return;
     }
     
@@ -198,7 +195,10 @@ int accountEntries = 0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54;
+    if (indexPath.section == 0) {
+        return BALANCE_ENTRY_HEIGHT;
+    }
+    return MENU_ENTRY_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -208,7 +208,7 @@ int accountEntries = 0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1 && accountEntries > 0) {
+    if (section == 0 && accountEntries > 0) {
         return SECTION_HEADER_HEIGHT;
     }
     
@@ -217,15 +217,18 @@ int accountEntries = 0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 1 && accountEntries > 0) {
+    if (section == 0 && accountEntries > 0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
-        view.backgroundColor = [UIColor whiteColor];
+        view.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
         
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
+        UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"account-settings.png"]];
+        icon.frame = CGRectMake(15, 11, 26, 23);
+        [view addSubview:icon];
+        
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 0, self.tableView.frame.size.width - 56, SECTION_HEADER_HEIGHT)];
         headerLabel.text = BC_STRING_MY_ACCOUNTS;
-        headerLabel.textColor = [UIColor lightGrayColor];
+        headerLabel.textColor = [UIColor whiteColor];
         headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
-        headerLabel.textAlignment = NSTextAlignmentCenter;
         [view addSubview:headerLabel];
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
@@ -245,7 +248,7 @@ int accountEntries = 0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    if (sectionIndex == 0) {
+    if (sectionIndex == 1) {
         return menuEntries;
     }
     
@@ -256,7 +259,7 @@ int accountEntries = 0;
 {
     static NSString *cellIdentifier;
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == 1) {
         cellIdentifier = @"CellMenu";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -304,7 +307,7 @@ int accountEntries = 0;
         
         if (cell == nil) {
             cell = [[AccountTableCell alloc] init];
-            cell.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -337,6 +340,21 @@ int accountEntries = 0;
         }
         
         return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Custom separator inset
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        float leftInset = (indexPath.section == 0) ? 56 : 15;
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, leftInset, 0, 0)];
+    }
+    
+    // No separator for last entry of each section
+    if ((indexPath.section == 0 && indexPath.row == balanceEntries - 1) ||
+        (indexPath.section == 1 && indexPath.row == menuEntries - 1)) {
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 15, 0, CGRectGetWidth(cell.bounds)-15)];
     }
 }
 

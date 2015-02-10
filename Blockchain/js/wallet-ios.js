@@ -517,7 +517,7 @@ MyWalletPhone.get_wallet_and_history = function() {
     device.execute('loading_start_get_wallet_and_history');
     
     MyWallet.getWallet(function() {
-        MyWallet.get_history();
+        MyWallet.get_history(success, error);
     });
 };
 

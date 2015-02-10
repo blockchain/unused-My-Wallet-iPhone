@@ -16,9 +16,6 @@
 		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
 		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
 		670DF94B1A43BCB200CEA1EA /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 670DF94A1A43BCB200CEA1EA /* Reachability.m */; };
-		6711352C19DCCC6800C2D24E /* menu_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6711352919DCCC6800C2D24E /* menu_shadow.png */; };
-		6711352D19DCCC6800C2D24E /* menu_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6711352A19DCCC6800C2D24E /* menu_shadow@2x.png */; };
-		6711352E19DCCC6800C2D24E /* menu_shadow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6711352B19DCCC6800C2D24E /* menu_shadow@3x.png */; };
 		673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */; };
 		673107F219F6D49F00BE6899 /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 673107F119F6D49F00BE6899 /* PrivateKeyReader.m */; };
 		673136491A0D3F6600E067D5 /* hdwallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 673136481A0D3F6600E067D5 /* hdwallet.js */; };
@@ -422,9 +419,6 @@
 		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
 		670DF9491A43BCB200CEA1EA /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		670DF94A1A43BCB200CEA1EA /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		6711352919DCCC6800C2D24E /* menu_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_shadow.png; sourceTree = "<group>"; };
-		6711352A19DCCC6800C2D24E /* menu_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_shadow@2x.png"; sourceTree = "<group>"; };
-		6711352B19DCCC6800C2D24E /* menu_shadow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_shadow@3x.png"; sourceTree = "<group>"; };
 		673107F019F6D49F00BE6899 /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		673107F119F6D49F00BE6899 /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		673136481A0D3F6600E067D5 /* hdwallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = hdwallet.js; path = "Submodules/My-Wallet-HD/hdwallet.js"; sourceTree = SOURCE_ROOT; };
@@ -923,9 +917,6 @@
 				678AD61219D56EEA00E9A778 /* menu_item_active.png */,
 				678AD61319D56EEA00E9A778 /* menu_item_active@2x.png */,
 				678AD61419D56EEA00E9A778 /* menu_item_active@3x.png */,
-				6711352919DCCC6800C2D24E /* menu_shadow.png */,
-				6711352A19DCCC6800C2D24E /* menu_shadow@2x.png */,
-				6711352B19DCCC6800C2D24E /* menu_shadow@3x.png */,
 				678AD62F19D5833A00E9A778 /* merchant_directory_icon.png */,
 				678AD63019D5833A00E9A778 /* merchant_directory_icon@2x.png */,
 				678AD63119D5833A00E9A778 /* merchant_directory_icon@3x.png */,
@@ -1370,7 +1361,6 @@
 				ECD244F119A8AC45004B1F40 /* PEKeyboard-4-dot.png in Resources */,
 				678AD63519D5833A00E9A778 /* merchant_directory_icon.png in Resources */,
 				67E9676D19E31F9100305358 /* marker_atm_off@2x.png in Resources */,
-				6711352D19DCCC6800C2D24E /* menu_shadow@2x.png in Resources */,
 				9F765EE014BBBEC400048EFB /* footer@2x.png in Resources */,
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				9F765EED14BBC00000048EFB /* 119-piggy-bank@2x.png in Resources */,
@@ -1388,7 +1378,6 @@
 				67D7AC291A0C36BC007CD81D /* signer.js in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
-				6711352C19DCCC6800C2D24E /* menu_shadow.png in Resources */,
 				67812A831A53982C00B04EBF /* xregexp-all.js in Resources */,
 				674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */,
 				9F2D935214C07B2D0053F0FF /* funds_moved.png in Resources */,
@@ -1477,7 +1466,6 @@
 				ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */,
 				84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */,
 				673136491A0D3F6600E067D5 /* hdwallet.js in Resources */,
-				6711352E19DCCC6800C2D24E /* menu_shadow@3x.png in Resources */,
 				678AD62319D56EEB00E9A778 /* receive_icon@3x.png in Resources */,
 				220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */,
 				678AD61F19D56EEB00E9A778 /* menu_item_active@2x.png in Resources */,

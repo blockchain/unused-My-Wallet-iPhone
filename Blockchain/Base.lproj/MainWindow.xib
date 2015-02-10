@@ -550,7 +550,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" id="290" userLabel="contentView">
-                        <rect key="frame" x="0.0" y="65" width="320" height="360"/>
+                        <rect key="frame" x="0.0" y="65" width="320" height="366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     </view>
@@ -609,11 +609,11 @@
                         </connections>
                     </button>
                     <view opaque="NO" contentMode="scaleToFill" id="284" userLabel="Tab Bar">
-                        <rect key="frame" x="0.0" y="426" width="320" height="54"/>
+                        <rect key="frame" x="0.0" y="431" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="172" userLabel="Button Transactions">
-                                <rect key="frame" x="0.0" y="9" width="106" height="42"/>
+                                <rect key="frame" x="0.0" y="2" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="send_icon.png">
@@ -628,7 +628,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="173" userLabel="Button Receive">
-                                <rect key="frame" x="106" y="9" width="106" height="42"/>
+                                <rect key="frame" x="106" y="2" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="home_icon.png">
@@ -643,7 +643,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="174" userLabel="Button Send">
-                                <rect key="frame" x="212" y="9" width="106" height="42"/>
+                                <rect key="frame" x="212" y="2" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="receive_icon.png">
@@ -661,10 +661,11 @@
                                 <rect key="frame" x="106" y="50" width="107" height="6"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_shadow.png" id="ROp-ET-320">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="6"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <view contentMode="scaleToFill" id="5Vm-Gr-tyR" userLabel="Separator">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -689,7 +690,6 @@
         <image name="home_icon.png" width="26" height="23"/>
         <image name="menu_icon.png" width="26" height="23"/>
         <image name="menu_item_active.png" width="142" height="6"/>
-        <image name="menu_shadow.png" width="1" height="6"/>
         <image name="merchant_directory_icon.png" width="26" height="23"/>
         <image name="qrscanner_icon.png" width="26" height="23"/>
         <image name="receive_icon.png" width="26" height="23"/>

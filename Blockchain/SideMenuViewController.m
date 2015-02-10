@@ -56,14 +56,14 @@ int accountEntries = 0;
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
 - (void)viewDidDisappear:(BOOL)animated
 {
-    // Show status bar again
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-    
     [self resetSideMenuGestures];
 }
 
 - (void)resetSideMenuGestures
 {
+    // Show status bar again
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+    
     // Reset Pan gestures
     for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
         [view setUserInteractionEnabled:YES];

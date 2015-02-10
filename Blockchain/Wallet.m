@@ -47,6 +47,8 @@
 @synthesize sharedKey;
 @synthesize guid;
 
+Boolean isHdWalletInitialized;
+
 - (id)init
 {
     self = [super init];
@@ -78,6 +80,8 @@
     // Shared Key can be empty
     self.sharedKey = _sharedKey;
     self.password = _password;
+    
+    isHdWalletInitialized = NO;
     
     // Load the JS. Proceed in the webViewDidFinishLoad callback
     [self loadJS];
@@ -131,10 +135,8 @@
 
 - (BOOL)isInitialized
 {
-    if ([self.webView isLoaded])
-        return [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
-    else
-        return FALSE;
+    // Initialized when the webView is loaded, the HD Wallet is set (async web worker) and the wallet is initialized (decrypted and in-memory wallet built)
+    return [self.webView isLoaded] && isHdWalletInitialized && [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
 }
 
 - (BOOL)hasEncryptedWalletData
@@ -490,8 +492,7 @@
 
 - (void)loading_start_build_wallet
 {
-    // TODO
-    [app updateBusyViewLoadingText:@"TEST"];
+    [app updateBusyViewLoadingText:BC_STRING_LOADING_LOADING_BUILD_HD_WALLET];
 }
 
 - (void)loading_start_multiaddr
@@ -928,6 +929,8 @@
 - (void)hd_wallet_set
 {
     DLog(@"hd_wallet_set");
+    
+    isHdWalletInitialized = YES;
 }
 
 - (void)hd_wallet_balance_updated

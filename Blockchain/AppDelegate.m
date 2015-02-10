@@ -335,8 +335,6 @@ SideMenuViewController *sideMenuViewController;
     _transactionsViewController.data = response;
     
     [self reload];
-    
-    [self hideBusyView];
 }
 
 - (void)didSetLatestBlock:(LatestBlock*)block

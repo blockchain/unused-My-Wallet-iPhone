@@ -40,11 +40,6 @@ MyWallet.addEventListener(function (event, obj) {
         if (obj.type == 'error') {
             // Cancel busy view in case any error comes in
             device.execute('loading_stop');
-            
-            // TODO The server currently returns 500s if there are no free outputs - ignore it until server handles this differently
-            if (obj.message == 'No free outputs to spend') {
-                return;
-            }
 
             // Some messages are JSON objects and the error message is in the map
             try {
@@ -138,40 +133,59 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     // Timing
     var t0 = new Date().getTime(), t1;
     
-    var logTime = function(name) {
+    var hasBuiltHD = false;
+    var hasLoadedTransactions = false;
+    
+    var logTime = function(name, isParallel) {
         t1 = new Date().getTime();
         
         console.log('----------');
         console.log('Execution time ' + name + ': ' + (t1 - t0) + ' milliseconds.')
         console.log('----------');
         
-        t0 = t1;
+        if(!isParallel) {
+            t0 = t1;
+        }
     };
     
     var fetch_success = function() {
         device.execute('loading_start_decrypt_wallet');
         
-        logTime('download');
+        logTime('download', false);
     };
     
     var decrypt_success = function() {
         device.execute('did_decrypt');
-        device.execute('loading_start_build_wallet');
+        device.execute('loading_start_multiaddr');
         
-        logTime('decrypt');
+        logTime('decrypt', false);
+    };
+    
+    var build_hd_success = function() {
+        hasBuiltHD = true;
+        if(hasBuiltHD && hasLoadedTransactions) {
+            device.execute('loading_stop');
+        }
+        else {
+            device.execute('loading_start_multiaddr');
+        }
+        
+        logTime('build HD wallet', true);
     };
     
     var history_success = function() {
-        device.execute('loading_stop');
+        hasLoadedTransactions = true;
+        if(hasBuiltHD && hasLoadedTransactions) {
+            device.execute('loading_stop');
+        }
+        else {
+            device.execute('loading_start_build_wallet');
+        }
         
-        logTime('get history');
+        logTime('get history', true);
     };
     
     var success = function() {
-        device.execute('loading_start_multiaddr');
-        
-        logTime('build wallet');
-        
         MyWallet.getHistoryAndParseMultiAddressJSON(history_success);
     };
     
@@ -188,7 +202,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     
     device.execute('loading_start_download_wallet');
     
-    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error, fetch_success, decrypt_success);
+    MyWallet.fetchWalletJson(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, null, other_error, fetch_success, decrypt_success, build_hd_success);
 };
 
 MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {

@@ -145,6 +145,7 @@
 #define BC_STRING_LOADING_DOWNLOADING_WALLET NSLocalizedString(@"Downloading Wallet", nil)
 #define BC_STRING_LOADING_DECRYPTING_WALLET NSLocalizedString(@"Decrypting Wallet", nil)
 #define BC_STRING_LOADING_LOADING_TRANSACTIONS NSLocalizedString(@"Loading transactions", nil)
+#define BC_STRING_LOADING_LOADING_BUILD_HD_WALLET NSLocalizedString(@"Initializing Wallet", nil)
 #define BC_STRING_LOADING_CHECKING_WALLET_UPDATES NSLocalizedString(@"Checking for Wallet updates", nil)
 #define BC_STRING_LOADING_CREATING_HD_WALLET NSLocalizedString(@"Creating HD Wallet", nil)
 #define BC_STRING_LOADING_CREATING_ACCOUNT NSLocalizedString(@"Creating Account", nil)

@@ -42,6 +42,15 @@ int clickedAccount;
         copyAddressButton.frame = CGRectMake(copyAddressButton.frame.origin.x, copyAddressButton.frame.origin.y - reduceImageSizeBy, copyAddressButton.frame.size.width, copyAddressButton.frame.size.height);
         labelAddressButton.frame = CGRectMake(requestPaymentButton.frame.origin.x, labelAddressButton.frame.origin.y - reduceImageSizeBy, labelAddressButton.frame.size.width, labelAddressButton.frame.size.height);
         archiveUnarchiveButton.frame = CGRectMake(archiveUnarchiveButton.frame.origin.x, archiveUnarchiveButton.frame.origin.y - reduceImageSizeBy, archiveUnarchiveButton.frame.size.width, archiveUnarchiveButton.frame.size.height);
+        
+        // Move everything up on label view
+        UIView *mainView = labelTextField.superview;
+        
+        for (UIView *view in mainView.subviews) {
+            CGRect frame = view.frame;
+            frame.origin.y -= 45;
+            view.frame = frame;
+        }
     }
     
     [self reload];
@@ -491,6 +500,20 @@ int clickedAccount;
         labelTextField.text = label;
     }
     
+    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    saveButton.frame = CGRectMake(0, 0, self.view.frame.size.width, 46);
+    saveButton.backgroundColor = COLOR_BUTTON_GRAY;
+    [saveButton setTitle:BC_STRING_SAVE forState:UIControlStateNormal];
+    [saveButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    saveButton.titleLabel.font = [UIFont systemFontOfSize:17.0];
+    
+    [saveButton addTarget:self action:@selector(labelSaveClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [labelTextField setReturnKeyType:UIReturnKeyDone];
+    labelTextField.delegate = self;
+    
+    labelTextField.inputAccessoryView = saveButton;
+    
     // TODO i18n
     [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose headerText:@"Label Address" onDismiss:^() {
         self.clickedAddress = nil;
@@ -539,6 +562,11 @@ int clickedAccount;
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
+    if (textField == labelTextField) {
+        [self labelSaveClicked:nil];
+        return YES;
+    }
+    
     [textField resignFirstResponder];
     return YES;
 }

@@ -211,6 +211,15 @@ int lastNumberTransactions = INT_MAX;
     [balanceBigButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
     [balanceSmallButton addTarget:app action:@selector(toggleSymbol) forControlEvents:UIControlEventTouchUpInside];
     
+    // Blue background for bounce area
+    CGRect frame = self.view.bounds;
+    frame.origin.y = -frame.size.height;
+    UIView* blueView = [[UIView alloc] initWithFrame:frame];
+    blueView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+    [self.tableView addSubview:blueView];
+    // Make sure the refresh contorl is in front of the blue area
+    blueView.layer.zPosition -= 1;
+    
     // Tricky way to get the refreshController to work on a UIViewController - @see http://stackoverflow.com/a/12502450/2076094
     UITableViewController *tableViewController = [[UITableViewController alloc] init];
     tableViewController.tableView = self.tableView;

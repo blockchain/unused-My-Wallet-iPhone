@@ -9,7 +9,6 @@
 #import "TransactionTableCell.h"
 #import "Transaction.h"
 #import "AppDelegate.h"
-#import "NSDate+Extensions.h"
 #import "TransactionsViewController.h"
 
 @implementation TransactionTableCell
@@ -28,7 +27,13 @@
     
     if (transaction.time > 0)  {
         [dateButton setHidden:FALSE];
-        [dateButton setTitle:[[NSDate dateWithTimeIntervalSince1970:transaction.time] shortHandDateWithTime] forState:UIControlStateNormal];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:transaction.time];
+        
+        [dateButton setTitle:[dateFormatter stringFromDate:date] forState:UIControlStateNormal];
     } else {
         [dateButton setHidden:TRUE];
     }

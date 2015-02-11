@@ -466,7 +466,8 @@ int clickedAccount;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
-    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
+    // TODO i18n
+    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:@"Request Payment" onDismiss:^() {
         self.clickedAddress = nil;
         requestAmountTextField.text = nil;
     } onResume:nil];
@@ -490,7 +491,8 @@ int clickedAccount;
         labelTextField.text = label;
     }
     
-    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose onDismiss:^() {
+    // TODO i18n
+    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose headerText:@"Label Address" onDismiss:^() {
         self.clickedAddress = nil;
         labelTextField.text = nil;
     } onResume:nil];
@@ -599,7 +601,7 @@ int clickedAccount;
             optionsTitleLabel.text = addr;
     }
     
-    [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose onDismiss:^() {
+    [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose headerText:optionsTitleLabel.text onDismiss:^() {
         // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
         [optionsModalView removeFromSuperview];
     } onResume:nil];

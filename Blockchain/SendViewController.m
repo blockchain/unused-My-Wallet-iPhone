@@ -241,7 +241,8 @@ BOOL didChangeDollarAmount = NO;
     
     sendProgressModalText.text = BC_STRING_SENDING_TRANSACTION;
     
-    [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone];
+    // TODO i18n
+    [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone headerText:@"Sending Payment"];
     
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
@@ -504,7 +505,9 @@ BOOL didChangeDollarAmount = NO;
     BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:YES];
     [addressSelectionView setHeader:BC_STRING_SEND_FROM];
     addressSelectionView.delegate = self;
-    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
+    
+    // TODO i18n
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:@"Send from..." onDismiss:nil onResume:nil];
 }
 
 - (IBAction)addressBookClicked:(id)sender
@@ -515,7 +518,8 @@ BOOL didChangeDollarAmount = NO;
     BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:NO];
     [addressSelectionView setHeader:BC_STRING_SEND_TO];
     addressSelectionView.delegate = self;
-    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES onDismiss:nil onResume:nil];
+    // TODO i18n
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:@"Send to..." onDismiss:nil onResume:nil];
 }
 
 - (BOOL)startReadingQRCode
@@ -552,7 +556,8 @@ BOOL didChangeDollarAmount = NO;
     UIView *view = [[UIView alloc] initWithFrame:frame];
     [view.layer addSublayer:videoPreviewLayer];
     
-    [app showModalWithContent:view closeType:ModalCloseTypeClose onDismiss:nil onResume:nil];
+    // TODO i18n
+    [app showModalWithContent:view closeType:ModalCloseTypeClose headerText:@"Scan QR Code" onDismiss:nil onResume:nil];
     
     [captureSession startRunning];
     

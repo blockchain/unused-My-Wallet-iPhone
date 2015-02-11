@@ -16,9 +16,7 @@ typedef enum {
     ModalCloseTypeNone = 300,
 }ModalCloseType;
 
-@interface BCModalView : UIView {
-    
-}
+@interface BCModalView : UIView
 
 @property(nonatomic, copy) void (^onDismiss)();
 @property(nonatomic, copy) void (^onResume)();
@@ -28,7 +26,7 @@ typedef enum {
 
 @property(nonatomic) ModalCloseType closeType;
 
-- (id)initWithCloseType:(ModalCloseType)closeType showHeader:(BOOL)showHeader;
+- (id)initWithCloseType:(ModalCloseType)closeType showHeader:(BOOL)showHeader headerText:(NSString *)headerText;
 - (IBAction)closeModalClicked:(id)sender;
 
 @end

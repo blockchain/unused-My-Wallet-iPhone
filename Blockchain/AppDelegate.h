@@ -115,9 +115,9 @@
 - (void)swipeRight;
 
 // BC Modal
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType;
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType headerText:(NSString *)headerText;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType headerText:(NSString *)headerText onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader headerText:(NSString *)headerText onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume;
 - (void)closeModalWithTransition:(NSString *)transition;
 
 - (NSDictionary*)parseURI:(NSString*)string;

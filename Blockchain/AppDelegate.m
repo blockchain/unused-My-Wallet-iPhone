@@ -345,7 +345,8 @@ SideMenuViewController *sideMenuViewController;
 {
     // In case we were on the manual pair screen, we want to go back there. The way to check for that is that the wallet has a guid, but it's not saved yet
     if (wallet.guid && ![[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
+        // TODO i18n
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:@"Manual Pairing"];
         
         return;
     }
@@ -355,7 +356,8 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showPasswordModal
 {
-    [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
+    // TODO i18n
+    [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:@"Password Required"];
 }
 
 - (void)beginBackgroundUpdateTask
@@ -464,7 +466,7 @@ SideMenuViewController *sideMenuViewController;
         [app showWelcome];
         
         if ([self guid] && [self sharedKey]) {
-            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone];
+            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:@"Password Required"];
         }
     }
 }
@@ -572,7 +574,8 @@ SideMenuViewController *sideMenuViewController;
     
     secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
     
-    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone onDismiss:^() {
+    // TODO i18n
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone headerText:@"Second Password Required" onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -605,7 +608,7 @@ SideMenuViewController *sideMenuViewController;
     
     validateSecondPassword = TRUE;
     
-    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeClose onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeClose headerText:@"Second Password Required" onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -701,17 +704,17 @@ SideMenuViewController *sideMenuViewController;
     }
 }
 
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType headerText:(NSString *)headerText
 {
-    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES onDismiss:nil onResume:nil];
+    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES headerText:headerText onDismiss:nil onResume:nil];
 }
 
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType headerText:(NSString *)headerText onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
 {
-    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES onDismiss:onDismiss onResume:onResume];
+    [self showModalWithContent:(BCModalContentView *)contentView closeType:closeType showHeader:YES headerText:headerText onDismiss:onDismiss onResume:onResume];
 }
 
-- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
+- (void)showModalWithContent:(UIView *)contentView closeType:(ModalCloseType)closeType showHeader:(BOOL)showHeader headerText:(NSString *)headerText onDismiss:(void (^)())onDismiss onResume:(void (^)())onResume
 {
     // Remove the modal if we have one
     if (modalView) {
@@ -730,7 +733,7 @@ SideMenuViewController *sideMenuViewController;
     }
     
     // Show modal
-    modalView = [[BCModalView alloc] initWithCloseType:closeType showHeader:showHeader];
+    modalView = [[BCModalView alloc] initWithCloseType:closeType showHeader:showHeader headerText:headerText];
     self.modalView.onDismiss = onDismiss;
     self.modalView.onResume = onResume;
     if (onResume) {
@@ -997,22 +1000,25 @@ SideMenuViewController *sideMenuViewController;
     BCWelcomeView *welcomeView = [[BCWelcomeView alloc] init];
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
-    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO onDismiss:nil onResume:nil];
+    [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO headerText:nil onDismiss:nil onResume:nil];
 }
 
 - (void)showCreateWallet:(id)sender
 {
-    [app showModalWithContent:newAccountView closeType:ModalCloseTypeBack];
+    // TODO i18n
+    [app showModalWithContent:newAccountView closeType:ModalCloseTypeBack headerText:@"Create a New Wallet"];
 }
 
 - (void)showPairWallet:(id)sender
 {
     // If the device has a camera, show automatic pairing, otherwise show manual pairing
     if ([self isQRCodeScanningSupported]) {
-        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack];
+        // TODO i18n
+        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack headerText:@"Automatic Pairing"];
     }
     else {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack];
+        // TODO i18n
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:@"Manual Pairing"];
     }
 }
 

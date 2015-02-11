@@ -364,7 +364,7 @@ int accountEntries = 0;
 {
     BCCreateAccountView *createAccountView = [[BCCreateAccountView alloc] init];
     
-    [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose];
+    [app showModalWithContent:createAccountView closeType:ModalCloseTypeClose headerText:BC_STRING_CREATE_ACCOUNT];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [createAccountView.labelTextField becomeFirstResponder];

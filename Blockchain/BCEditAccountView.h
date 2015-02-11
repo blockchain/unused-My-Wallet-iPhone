@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BCEditAccountView : UIView
+@interface BCEditAccountView : UIView <UITextFieldDelegate>
 
 @property int accountIdx;
 @property (nonatomic, strong) UITextField *labelTextField;

@@ -15,43 +15,37 @@
 {
     UIWindow *window = app.window;
     
-    self = [super initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, window.frame.size.width, window.frame.size.height - DEFAULT_FOOTER_HEIGHT - DEFAULT_FOOTER_HEIGHT)];
+    self = [super initWithFrame:CGRectMake(0, DEFAULT_HEADER_HEIGHT, window.frame.size.width, window.frame.size.height - DEFAULT_HEADER_HEIGHT)];
     
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, window.frame.size.width - 40, 30)];
-        headerLabel.text = BC_STRING_CREATE_ACCOUNT;
-        headerLabel.textAlignment = NSTextAlignmentCenter;
-        headerLabel.textColor = [UIColor darkGrayColor];
-        headerLabel.font = [UIFont systemFontOfSize:21.0];
-        [self addSubview:headerLabel];
-        
-        UILabel *labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 85, 60, 25)];
-        labelLabel.text = BC_STRING_LABEL;
-        labelLabel.textAlignment = NSTextAlignmentRight;
+        UILabel *labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 55, window.frame.size.width - 40, 25)];
+        labelLabel.text = BC_STRING_NAME_YOUR_ACCOUNT;
         labelLabel.textColor = [UIColor darkGrayColor];
         labelLabel.font = [UIFont systemFontOfSize:17.0];
         [self addSubview:labelLabel];
         
-        _labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(90, 82, window.frame.size.width - 20 - 90, 30)];
+        _labelTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, 95, window.frame.size.width - 40, 30)];
         _labelTextField.borderStyle = UITextBorderStyleRoundedRect;
         _labelTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         _labelTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _labelTextField.spellCheckingType = UITextSpellCheckingTypeNo;
-        // TODO Done keyboard return type
         [self addSubview:_labelTextField];
-
+        
+        [_labelTextField setReturnKeyType:UIReturnKeyDone];
+        _labelTextField.delegate = self;
+        
         UIButton *createAccountButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        createAccountButton.frame = CGRectMake(window.frame.size.width - 20 - 120, 130, 120, 40);
+        createAccountButton.frame = CGRectMake(0, 0, window.frame.size.width, 46);
         createAccountButton.backgroundColor = COLOR_BUTTON_GRAY;
-        [createAccountButton setTitle:BC_STRING_DONE forState:UIControlStateNormal];
+        [createAccountButton setTitle:BC_STRING_SAVE forState:UIControlStateNormal];
         [createAccountButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         createAccountButton.titleLabel.font = [UIFont systemFontOfSize:17.0];
-        createAccountButton.layer.cornerRadius = 5;
-        [self addSubview:createAccountButton];
         
         [createAccountButton addTarget:self action:@selector(createAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        _labelTextField.inputAccessoryView = createAccountButton;
     }
     
     return self;
@@ -84,6 +78,14 @@
         
         [app reload];
     });
+}
+
+#pragma mark - Textfield Delegates
+
+- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+{
+    [self createAccountClicked:nil];
+    return YES;
 }
 
 @end

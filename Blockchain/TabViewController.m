@@ -19,9 +19,9 @@
 #define TAB_RECEIVE 2
 
 CGPoint arrowPositions[3] = {
-    0.0f, 50.0f,
-    106.0f, 50.0f,
-    213.0f, 50.0f
+    0.0f, 45.0f,
+    106.0f, 45.0f,
+    213.0f, 45.0f
 };
 
 @implementation TabViewcontroller

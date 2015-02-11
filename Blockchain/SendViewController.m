@@ -503,11 +503,9 @@ BOOL didChangeDollarAmount = NO;
     [amountField resignFirstResponder];
     
     BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:YES];
-    [addressSelectionView setHeader:BC_STRING_SEND_FROM];
     addressSelectionView.delegate = self;
     
-    // TODO i18n
-    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:@"Send from..." onDismiss:nil onResume:nil];
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:BC_STRING_SEND_FROM onDismiss:nil onResume:nil];
 }
 
 - (IBAction)addressBookClicked:(id)sender
@@ -516,10 +514,9 @@ BOOL didChangeDollarAmount = NO;
     [amountField resignFirstResponder];
     
     BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:NO];
-    [addressSelectionView setHeader:BC_STRING_SEND_TO];
     addressSelectionView.delegate = self;
-    // TODO i18n
-    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:@"Send to..." onDismiss:nil onResume:nil];
+    
+    [app showModalWithContent:addressSelectionView closeType:ModalCloseTypeBack showHeader:YES headerText:BC_STRING_SEND_TO onDismiss:nil onResume:nil];
 }
 
 - (BOOL)startReadingQRCode

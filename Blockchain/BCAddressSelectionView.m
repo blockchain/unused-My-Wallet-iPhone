@@ -123,7 +123,7 @@ int legacyAddressesSectionNumber;
         
         // Hacky way to make sure the table view doesn't show empty entries (with divider lines)
         float tableHeight = ROW_HEIGHT * (addressBookAddresses.count + legacyAddresses.count) + ROW_HEIGHT_ACCOUNT * accounts.count;
-        float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT - 49;
+        float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT;
         
         CGRect frame = tableView.frame;
         frame.size.height = tableSpace;
@@ -138,11 +138,6 @@ int legacyAddressesSectionNumber;
         }
     }
     return self;
-}
-
-- (void)setHeader:(NSString *)headerText
-{
-    headerLabel.text = headerText;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

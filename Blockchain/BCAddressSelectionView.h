@@ -30,13 +30,11 @@
 @end
 
 @interface BCAddressSelectionView : UIView <UITableViewDelegate, UITableViewDataSource> {
-    IBOutlet UILabel *headerLabel;
     IBOutlet UIView *view;
     IBOutlet UITableView *tableView;
 }
 
 - (id)initWithWallet:(Wallet*)_wallet showOwnAddresses:(BOOL)showOwnAddresses;
-- (void)setHeader:(NSString *)headerText;
 
 @property(nonatomic, strong) NSMutableArray *addressBookAddresses;
 @property(nonatomic, strong) NSMutableArray *addressBookAddressLabels;

@@ -312,8 +312,6 @@ SideMenuViewController *sideMenuViewController;
     
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
     
-    [self reload];
-    
     [app closeAllModals];
     
     //Becuase we are not storing the password on the device. We record the first few letters of the hashed password.

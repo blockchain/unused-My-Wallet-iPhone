@@ -931,6 +931,8 @@ Boolean isHdWalletInitialized;
     DLog(@"hd_wallet_set");
     
     isHdWalletInitialized = YES;
+    
+    [app reload];
 }
 
 - (void)hd_wallet_balance_updated

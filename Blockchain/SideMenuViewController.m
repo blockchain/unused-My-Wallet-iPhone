@@ -50,6 +50,15 @@ int accountEntries = 0;
     
     [self.view addSubview:self.tableView];
     
+    // Blue background for bounce area
+    CGRect frame = self.view.bounds;
+    frame.origin.y = -frame.size.height;
+    UIView* blueView = [[UIView alloc] initWithFrame:frame];
+    blueView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+    [self.tableView addSubview:blueView];
+    // Make sure the refresh contorl is in front of the blue area
+    blueView.layer.zPosition -= 1;
+    
     sideMenu.delegate = self;
 }
 

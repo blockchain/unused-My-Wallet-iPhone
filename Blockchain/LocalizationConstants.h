@@ -152,3 +152,6 @@
 #define BC_STRING_LOADING_CREATING_HD_WALLET NSLocalizedString(@"Creating HD Wallet", nil)
 #define BC_STRING_LOADING_CREATING_ACCOUNT NSLocalizedString(@"Creating Account", nil)
 #define BC_STRING_LOADING_CREATING_WALLET NSLocalizedString(@"Creating new Wallet", nil)
+
+#define BC_STRING_MERCHANT_MAP NSLocalizedString(@"Merchant Map", nil)
+#define BC_STRING_MERCHANT NSLocalizedString(@"Merchant", nil)

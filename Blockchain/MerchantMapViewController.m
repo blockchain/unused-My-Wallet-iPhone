@@ -73,9 +73,13 @@
     topBarView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBarView];
     
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
-    logo.frame = CGRectMake(88, 22, 143, 40);
-    [topBarView addSubview:logo];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 17.5, self.view.frame.size.width - 160, 40)];
+    headerLabel.font = [UIFont systemFontOfSize:22.0];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.textAlignment = NSTextAlignmentCenter;
+    headerLabel.adjustsFontSizeToFitWidth = YES;
+    headerLabel.text = BC_STRING_MERCHANT_MAP;
+    [topBarView addSubview:headerLabel];
     
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];

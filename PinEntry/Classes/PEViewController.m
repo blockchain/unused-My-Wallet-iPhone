@@ -42,40 +42,30 @@
 {
 	[super viewDidLoad];
     
-    int moveUp;
-    
     // Move up pin entry views for bigger screens
     if ([[UIScreen mainScreen] bounds].size.height >= 568) {
-        moveUp = 48;
+        int moveUp = 60;
+        
+        CGRect frame = pin0.frame;
+        frame.origin.y -= moveUp;
+        pin0.frame = frame;
+        
+        frame = pin1.frame;
+        frame.origin.y -= moveUp;
+        pin1.frame = frame;
+        
+        frame = pin2.frame;
+        frame.origin.y -= moveUp;
+        pin2.frame = frame;
+        
+        frame = pin3.frame;
+        frame.origin.y -= moveUp;
+        pin3.frame = frame;
+        
+        frame = promptLabel.frame;
+        frame.origin.y -= 48;
+        promptLabel.frame = frame;
     }
-    // Center PIN entry in viewable area for iPhone 4/4S
-    else {
-        moveUp = 4;
-    }
-    
-    CGRect frame = pin0.frame;
-    frame.origin.y -= moveUp;
-    pin0.frame = frame;
-    
-    frame = pin1.frame;
-    frame.origin.y -= moveUp;
-    pin1.frame = frame;
-    
-    frame = pin2.frame;
-    frame.origin.y -= moveUp;
-    pin2.frame = frame;
-    
-    frame = pin3.frame;
-    frame.origin.y -= moveUp;
-    pin3.frame = frame;
-    
-    frame = promptLabel.frame;
-    frame.origin.y -= moveUp;
-    promptLabel.frame = frame;
-    
-    frame = _versionLabel.frame;
-    frame.origin.y -= moveUp;
-    _versionLabel.frame = frame;
     
     pins[0] = pin0;
 	pins[1] = pin1;

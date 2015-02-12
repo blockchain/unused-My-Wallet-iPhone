@@ -475,8 +475,7 @@ int clickedAccount;
     amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
     amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
     
-    // TODO i18n
-    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:@"Request Payment" onDismiss:^() {
+    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:BC_STRING_REQUEST_AMOUNT onDismiss:^() {
         self.clickedAddress = nil;
         requestAmountTextField.text = nil;
     } onResume:nil];
@@ -514,8 +513,7 @@ int clickedAccount;
     
     labelTextField.inputAccessoryView = saveButton;
     
-    // TODO i18n
-    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose headerText:@"Label Address" onDismiss:^() {
+    [app showModalWithContent:labelAddressView closeType:ModalCloseTypeClose headerText:BC_STRING_LABEL_ADDRESS onDismiss:^() {
         self.clickedAddress = nil;
         labelTextField.text = nil;
     } onResume:nil];

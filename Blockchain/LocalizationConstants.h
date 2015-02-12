@@ -158,5 +158,12 @@
 #define BC_STRING_MERCHANT NSLocalizedString(@"Merchant", nil)
 
 #define BC_STRING_TERMS_OF_SERVICE NSLocalizedString(@"Terms of Service", nil)
-
 #define BC_STRING_TRANSACTION NSLocalizedString(@"Transaction", nil)
+#define BC_STRING_AUTOMATIC_PAIRING NSLocalizedString(@"Automatic Pairing", nil)
+#define BC_STRING_MANUAL_PAIRING NSLocalizedString(@"Manual Pairing", nil)
+#define BC_STRING_PASSWORD_REQUIRED NSLocalizedString(@"Password Required", nil)
+#define BC_STRING_SECOND_PASSWORD_REQUIRED NSLocalizedString(@"Second Password Required", nil)
+#define BC_STRING_CREATE_NEW_WALLET NSLocalizedString(@"Create New Wallet", nil)
+#define BC_STRING_REQUEST_AMOUNT NSLocalizedString(@"Request Amount", nil)
+#define BC_STRING_LABEL_ADDRESS NSLocalizedString(@"Label Address", nil)
+#define BC_STRING_SCAN_QR_CODE NSLocalizedString(@"Scan QR Code", nil)

@@ -241,8 +241,7 @@ BOOL didChangeDollarAmount = NO;
     
     sendProgressModalText.text = BC_STRING_SENDING_TRANSACTION;
     
-    // TODO i18n
-    [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone headerText:@"Sending Payment"];
+    [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone headerText:BC_STRING_SENDING_TRANSACTION];
     
     uint64_t satoshiValue = [self getInputAmountInSatoshi];
     
@@ -553,8 +552,7 @@ BOOL didChangeDollarAmount = NO;
     UIView *view = [[UIView alloc] initWithFrame:frame];
     [view.layer addSublayer:videoPreviewLayer];
     
-    // TODO i18n
-    [app showModalWithContent:view closeType:ModalCloseTypeClose headerText:@"Scan QR Code" onDismiss:nil onResume:nil];
+    [app showModalWithContent:view closeType:ModalCloseTypeClose headerText:BC_STRING_SCAN_QR_CODE onDismiss:nil onResume:nil];
     
     [captureSession startRunning];
     

@@ -345,8 +345,7 @@ SideMenuViewController *sideMenuViewController;
 {
     // In case we were on the manual pair screen, we want to go back there. The way to check for that is that the wallet has a guid, but it's not saved yet
     if (wallet.guid && ![[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
-        // TODO i18n
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:@"Manual Pairing"];
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:BC_STRING_MANUAL_PAIRING];
         
         return;
     }
@@ -356,8 +355,7 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showPasswordModal
 {
-    // TODO i18n
-    [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:@"Password Required"];
+    [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:BC_STRING_PASSWORD_REQUIRED];
 }
 
 - (void)beginBackgroundUpdateTask
@@ -466,7 +464,7 @@ SideMenuViewController *sideMenuViewController;
         [app showWelcome];
         
         if ([self guid] && [self sharedKey]) {
-            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:@"Password Required"];
+            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:BC_STRING_PASSWORD_REQUIRED];
         }
     }
 }
@@ -574,8 +572,7 @@ SideMenuViewController *sideMenuViewController;
     
     secondPasswordDescriptionLabel.text = BC_STRING_PRIVATE_KEY_ENCRYPTED_DESCRIPTION;
     
-    // TODO i18n
-    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone headerText:@"Second Password Required" onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeNone headerText:BC_STRING_SECOND_PASSWORD_REQUIRED onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -608,7 +605,7 @@ SideMenuViewController *sideMenuViewController;
     
     validateSecondPassword = TRUE;
     
-    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeClose headerText:@"Second Password Required" onDismiss:^() {
+    [app showModalWithContent:secondPasswordView closeType:ModalCloseTypeClose headerText:BC_STRING_SECOND_PASSWORD_REQUIRED onDismiss:^() {
         NSString * password = secondPasswordTextField.text;
         
         if ([password length] == 0) {
@@ -1005,20 +1002,17 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showCreateWallet:(id)sender
 {
-    // TODO i18n
-    [app showModalWithContent:newAccountView closeType:ModalCloseTypeBack headerText:@"Create a New Wallet"];
+    [app showModalWithContent:newAccountView closeType:ModalCloseTypeBack headerText:BC_STRING_CREATE_NEW_WALLET];
 }
 
 - (void)showPairWallet:(id)sender
 {
     // If the device has a camera, show automatic pairing, otherwise show manual pairing
     if ([self isQRCodeScanningSupported]) {
-        // TODO i18n
-        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack headerText:@"Automatic Pairing"];
+        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack headerText:BC_STRING_AUTOMATIC_PAIRING];
     }
     else {
-        // TODO i18n
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:@"Manual Pairing"];
+        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:BC_STRING_MANUAL_PAIRING];
     }
 }
 

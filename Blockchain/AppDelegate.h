@@ -147,7 +147,7 @@
 - (void)reload;
 - (void)toggleSymbol;
   
-- (void)pushWebViewController:(NSString*)url;
+- (void)pushWebViewController:(NSString*)url title:(NSString *)title;
 
 - (void)showSendCoins;
 

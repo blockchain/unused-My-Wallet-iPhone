@@ -12,6 +12,8 @@
     UIWebView * webView;
 }
 
+- (id)initWithTitle:(NSString *)title;
+
 - (void)loadSettings;
 - (void)loadURL:(NSString*)url;
 

@@ -49,6 +49,7 @@
 #define BC_STRING_ERROR NSLocalizedString(@"Error", nil)
 
 #define BC_STRING_INFORMATION NSLocalizedString(@"Information", nil)
+#define BC_STRING_IMPORT_ADDRESS NSLocalizedString(@"Import Address", nil)
 #define BC_STRING_IMPORTED_PRIVATE_KEY NSLocalizedString(@"Imported Private Key %@", nil)
 #define BC_STRING_DECRYPTING_PRIVATE_KEY NSLocalizedString(@"Decrypting Private Key", nil)
 
@@ -155,3 +156,7 @@
 
 #define BC_STRING_MERCHANT_MAP NSLocalizedString(@"Merchant Map", nil)
 #define BC_STRING_MERCHANT NSLocalizedString(@"Merchant", nil)
+
+#define BC_STRING_TERMS_OF_SERVICE NSLocalizedString(@"Terms of Service", nil)
+
+#define BC_STRING_TRANSACTION NSLocalizedString(@"Transaction", nil)

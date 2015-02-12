@@ -18,11 +18,12 @@
 UIButton *backButton;
 bool isShowingSettings = NO;
 UIActivityIndicatorView *activityIndicatorView;
+NSString *titleString;
 
 // Web history
 NSMutableArray *visitedPages;
 
--(id)init {
+- (id)initWithTitle:(NSString *)title {
     self = [super init];
     if (self) {
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -32,6 +33,8 @@ NSMutableArray *visitedPages;
         webView = [[UIWebView alloc] init];
         
         webView.delegate = self;
+        
+        titleString = title;
     }
     return self;
 }
@@ -46,9 +49,13 @@ NSMutableArray *visitedPages;
     topBar.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.view addSubview:topBar];
     
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_menu_logo.png"]];
-    logo.frame = CGRectMake(88, 22, 143, 40);
-    [topBar addSubview:logo];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 17.5, self.view.frame.size.width - 160, 40)];
+    headerLabel.font = [UIFont systemFontOfSize:22.0];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.textAlignment = NSTextAlignmentCenter;
+    headerLabel.adjustsFontSizeToFitWidth = YES;
+    headerLabel.text = titleString;
+    [topBar addSubview:headerLabel];
     
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 70, 15, 80, 51)];
     [closeButton setTitle:BC_STRING_CLOSE forState:UIControlStateNormal];

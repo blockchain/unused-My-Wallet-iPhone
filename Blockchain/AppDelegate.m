@@ -493,9 +493,9 @@ SideMenuViewController *sideMenuViewController;
     AudioServicesPlaySystemSound(alertSoundID);
 }
 
-- (void)pushWebViewController:(NSString*)url
+- (void)pushWebViewController:(NSString*)url title:(NSString *)title
 {
-    _bcWebViewController = [[BCWebViewController alloc] init];
+    _bcWebViewController = [[BCWebViewController alloc] initWithTitle:title];
     [_bcWebViewController loadURL:url];
     [_tabViewController presentViewController:_bcWebViewController animated:YES completion:nil];
 }
@@ -904,7 +904,7 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showAccountSettings
 {
-    _bcWebViewController = [[BCWebViewController alloc] init];
+    _bcWebViewController = [[BCWebViewController alloc] initWithTitle:BC_STRING_SETTINGS];
     [_bcWebViewController loadSettings];
     
     [_tabViewController presentViewController:_bcWebViewController animated:YES completion:nil];
@@ -1043,7 +1043,7 @@ SideMenuViewController *sideMenuViewController;
         [[UIApplication sharedApplication] openURL:zeroBlockAppURL];
     }
     else {
-        [self pushWebViewController:@"https://zeroblock.com/"];
+        [self pushWebViewController:@"https://zeroblock.com/" title:@"ZeroBlock"];
     }
 }
 

@@ -557,14 +557,16 @@
                     <view contentMode="scaleToFill" id="bQ0-dG-xgE" userLabel="Top Bar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="blockchain_logo.png" id="226">
+                                <rect key="frame" x="44" y="33" width="118" height="13"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" red="0.10588235294117647" green="0.54117647058823526" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="top_menu_logo.png" id="226">
-                        <rect key="frame" x="88" y="22" width="143" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="581" userLabel="Menu Button">
-                        <rect key="frame" x="0.0" y="19" width="42" height="45"/>
+                        <rect key="frame" x="1" y="19" width="52" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" image="menu_icon.png">
@@ -578,8 +580,8 @@
                             <action selector="menuClicked:" destination="3" eventType="touchUpInside" id="Jw6-EJ-48e"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="693" userLabel="Merchant Directory Button">
-                        <rect key="frame" x="235" y="19" width="42" height="45"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="693" userLabel="Merchant Directory Button">
+                        <rect key="frame" x="224" y="18" width="48" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" image="merchant_directory_icon.png">
@@ -594,7 +596,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wjv-R8-p0e" userLabel="Merchant Directory Button">
-                        <rect key="frame" x="277" y="19" width="43" height="45"/>
+                        <rect key="frame" x="270" y="18" width="48" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" image="qrscanner_icon.png">
@@ -620,7 +622,7 @@
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="highlighted">
+                                <state key="highlighted" image="send_icon_hi.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -635,7 +637,7 @@
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="highlighted">
+                                <state key="highlighted" image="home_icon_hi.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -650,7 +652,7 @@
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="highlighted">
+                                <state key="highlighted" image="receive_icon_hi.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -686,15 +688,18 @@
         </viewController>
     </objects>
     <resources>
+        <image name="blockchain_logo.png" width="118" height="13"/>
         <image name="circle.png" width="28" height="28"/>
-        <image name="home_icon.png" width="26" height="23"/>
-        <image name="menu_icon.png" width="26" height="23"/>
+        <image name="home_icon.png" width="25" height="24"/>
+        <image name="home_icon_hi.png" width="25" height="24"/>
+        <image name="menu_icon.png" width="28" height="28"/>
         <image name="menu_item_active.png" width="142" height="6"/>
-        <image name="merchant_directory_icon.png" width="26" height="23"/>
-        <image name="qrscanner_icon.png" width="26" height="23"/>
-        <image name="receive_icon.png" width="26" height="23"/>
-        <image name="send_icon.png" width="26" height="23"/>
-        <image name="top_menu_logo.png" width="143" height="40"/>
+        <image name="merchant_directory_icon.png" width="21" height="20"/>
+        <image name="qrscanner_icon.png" width="23" height="18"/>
+        <image name="receive_icon.png" width="29" height="24"/>
+        <image name="receive_icon_hi.png" width="29" height="24"/>
+        <image name="send_icon.png" width="28" height="24"/>
+        <image name="send_icon_hi.png" width="28" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -118,6 +118,18 @@
 		67EE1DCD19E3325900DBBFC9 /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC519E3325900DBBFC9 /* ECSlidingSegue.m */; };
 		67EE1DCE19E3325900DBBFC9 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */; };
 		67EE1DCF19E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */; };
+		67EEE7571A8D045700288753 /* receive_icon_hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7541A8D045700288753 /* receive_icon_hi.png */; };
+		67EEE7581A8D045700288753 /* receive_icon_hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7551A8D045700288753 /* receive_icon_hi@2x.png */; };
+		67EEE7591A8D045700288753 /* receive_icon_hi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7561A8D045700288753 /* receive_icon_hi@3x.png */; };
+		67EEE75D1A8D05B700288753 /* send_icon_hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE75A1A8D05B700288753 /* send_icon_hi.png */; };
+		67EEE75E1A8D05B700288753 /* send_icon_hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE75B1A8D05B700288753 /* send_icon_hi@2x.png */; };
+		67EEE75F1A8D05B700288753 /* send_icon_hi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE75C1A8D05B700288753 /* send_icon_hi@3x.png */; };
+		67EEE7631A8D079E00288753 /* home_icon_hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7601A8D079E00288753 /* home_icon_hi.png */; };
+		67EEE7641A8D079E00288753 /* home_icon_hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7611A8D079E00288753 /* home_icon_hi@2x.png */; };
+		67EEE7651A8D079E00288753 /* home_icon_hi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7621A8D079E00288753 /* home_icon_hi@3x.png */; };
+		67EEE7691A8D0A3F00288753 /* blockchain_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7661A8D0A3F00288753 /* blockchain_logo.png */; };
+		67EEE76A1A8D0A3F00288753 /* blockchain_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */; };
+		67EEE76B1A8D0A3F00288753 /* blockchain_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
@@ -539,6 +551,18 @@
 		67EE1DC719E3325900DBBFC9 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECSlidingViewController.m; path = SideMenu/ECSlidingViewController.m; sourceTree = "<group>"; };
 		67EE1DC819E3325900DBBFC9 /* UIViewController+ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ECSlidingViewController.h"; path = "SideMenu/UIViewController+ECSlidingViewController.h"; sourceTree = "<group>"; };
 		67EE1DC919E3325900DBBFC9 /* UIViewController+ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ECSlidingViewController.m"; path = "SideMenu/UIViewController+ECSlidingViewController.m"; sourceTree = "<group>"; };
+		67EEE7541A8D045700288753 /* receive_icon_hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = receive_icon_hi.png; sourceTree = "<group>"; };
+		67EEE7551A8D045700288753 /* receive_icon_hi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_icon_hi@2x.png"; sourceTree = "<group>"; };
+		67EEE7561A8D045700288753 /* receive_icon_hi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_icon_hi@3x.png"; sourceTree = "<group>"; };
+		67EEE75A1A8D05B700288753 /* send_icon_hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_icon_hi.png; sourceTree = "<group>"; };
+		67EEE75B1A8D05B700288753 /* send_icon_hi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_icon_hi@2x.png"; sourceTree = "<group>"; };
+		67EEE75C1A8D05B700288753 /* send_icon_hi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_icon_hi@3x.png"; sourceTree = "<group>"; };
+		67EEE7601A8D079E00288753 /* home_icon_hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon_hi.png; sourceTree = "<group>"; };
+		67EEE7611A8D079E00288753 /* home_icon_hi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_icon_hi@2x.png"; sourceTree = "<group>"; };
+		67EEE7621A8D079E00288753 /* home_icon_hi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_icon_hi@3x.png"; sourceTree = "<group>"; };
+		67EEE7661A8D0A3F00288753 /* blockchain_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockchain_logo.png; sourceTree = "<group>"; };
+		67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_logo@2x.png"; sourceTree = "<group>"; };
+		67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_logo@3x.png"; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -859,6 +883,9 @@
 				6775569319E749CC0054699B /* back_chevron_icon.png */,
 				6775569219E749CC0054699B /* back_chevron_icon@2x.png */,
 				6775569119E749CC0054699B /* back_chevron_icon@3x.png */,
+				67EEE7661A8D0A3F00288753 /* blockchain_logo.png */,
+				67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */,
+				67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */,
 				67C6703F19CAF558004BD8FC /* bluedot.png */,
 				9F0CBACF1513BF9D00CD945D /* busy-background.png */,
 				9F0CBAD01513BF9D00CD945D /* busy-background@2x.png */,
@@ -878,6 +905,9 @@
 				678AD60F19D56EEA00E9A778 /* home_icon.png */,
 				678AD61019D56EEA00E9A778 /* home_icon@2x.png */,
 				678AD61119D56EEA00E9A778 /* home_icon@3x.png */,
+				67EEE7601A8D079E00288753 /* home_icon_hi.png */,
+				67EEE7611A8D079E00288753 /* home_icon_hi@2x.png */,
+				67EEE7621A8D079E00288753 /* home_icon_hi@3x.png */,
 				C92F761519803346007916F7 /* icon_512.png */,
 				C9B66D141941FCB30057E662 /* Identity */,
 				67E9674F19DF46A900305358 /* lock_icon.png */,
@@ -931,9 +961,15 @@
 				678AD61519D56EEA00E9A778 /* receive_icon.png */,
 				678AD61619D56EEA00E9A778 /* receive_icon@2x.png */,
 				678AD61719D56EEA00E9A778 /* receive_icon@3x.png */,
+				67EEE7541A8D045700288753 /* receive_icon_hi.png */,
+				67EEE7551A8D045700288753 /* receive_icon_hi@2x.png */,
+				67EEE7561A8D045700288753 /* receive_icon_hi@3x.png */,
 				678AD61819D56EEA00E9A778 /* send_icon.png */,
 				678AD61919D56EEA00E9A778 /* send_icon@2x.png */,
 				678AD62719D5705900E9A778 /* send_icon@3x.png */,
+				67EEE75A1A8D05B700288753 /* send_icon_hi.png */,
+				67EEE75B1A8D05B700288753 /* send_icon_hi@2x.png */,
+				67EEE75C1A8D05B700288753 /* send_icon_hi@3x.png */,
 				67E9675819DF46A900305358 /* settings_icon.png */,
 				67E9675919DF46A900305358 /* settings_icon@2x.png */,
 				67E9675A19DF46A900305358 /* settings_icon@3x.png */,
@@ -1350,6 +1386,7 @@
 				C9BE91861945D8F600FD516D /* PEKeyboard-2-edit.png in Resources */,
 				678AD64F19D5AA7500E9A778 /* camera_icon@3x.png in Resources */,
 				67C6704019CAF558004BD8FC /* bluedot.png in Resources */,
+				67EEE7691A8D0A3F00288753 /* blockchain_logo.png in Resources */,
 				67E9676319DF46A900305358 /* news_icon@3x.png in Resources */,
 				678AD62519D56EEB00E9A778 /* send_icon@2x.png in Resources */,
 				676250761A28E5B40052B63F /* crypto-util-legacy.js in Resources */,
@@ -1365,6 +1402,7 @@
 				C9BE91801945D8F600FD516D /* PEKeyboard-1-dot.png in Resources */,
 				9F765F2A14BC467900048EFB /* arrow_down.png in Resources */,
 				67E9676E19E31F9100305358 /* marker_cafe_off@2x.png in Resources */,
+				67EEE7641A8D079E00288753 /* home_icon_hi@2x.png in Resources */,
 				9F765F2B14BC467900048EFB /* arrow_down@2x.png in Resources */,
 				676CD1AA1A57655E000C76B5 /* pad-nopadding.js in Resources */,
 				6731364B1A0D473D00E067D5 /* bip39.js in Resources */,
@@ -1384,12 +1422,15 @@
 				C9BE918A1945D8F600FD516D /* PEPin-on.png in Resources */,
 				84AEEC8D1987D9C7000E8DC8 /* marker_cafe@2x.png in Resources */,
 				678AD63719D5833A00E9A778 /* merchant_directory_icon@3x.png in Resources */,
+				67EEE76B1A8D0A3F00288753 /* blockchain_logo@3x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */,
 				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				678AD64E19D5AA7500E9A778 /* camera_icon@2x.png in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
 				676250781A28EAE30052B63F /* mnemonic.js in Resources */,
+				67EEE75E1A8D05B700288753 /* send_icon_hi@2x.png in Resources */,
 				FA63233E1A433DEB00EB3974 /* MerchantMapView.xib in Resources */,
+				67EEE7631A8D079E00288753 /* home_icon_hi.png in Resources */,
 				9F0CBAB315138AE100CD945D /* payment_moved.png in Resources */,
 				674CCEF31A682713005D6482 /* sjcl.js in Resources */,
 				674709F619D2DA3800757D46 /* welcome_logo@1x.png in Resources */,
@@ -1430,6 +1471,7 @@
 				678AD65019D5AA7500E9A778 /* contacts_icon.png in Resources */,
 				67E9675B19DF46A900305358 /* lock_icon.png in Resources */,
 				67EE1DBC19E3309500DBBFC9 /* marker_drink_off@2x.png in Resources */,
+				67EEE7651A8D079E00288753 /* home_icon_hi@3x.png in Resources */,
 				67D7AC1D1A0C3575007CD81D /* bitcoinjs.js in Resources */,
 				84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */,
 				678AD63A19D5833A00E9A778 /* qrscanner_icon@3x.png in Resources */,
@@ -1442,6 +1484,7 @@
 				676250731A28E4720052B63F /* cipher-core.js in Resources */,
 				678AD62E19D57FAC00E9A778 /* menu_icon@3x.png in Resources */,
 				678AD62219D56EEB00E9A778 /* receive_icon@2x.png in Resources */,
+				67EEE75F1A8D05B700288753 /* send_icon_hi@3x.png in Resources */,
 				220E375719A3613600E06996 /* BCAddressSelectionView.xib in Resources */,
 				220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */,
 				84F4BE0F197FB5B800B7BF7B /* account-settings@2x.png in Resources */,
@@ -1456,6 +1499,7 @@
 				84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */,
 				678AD62D19D57FAC00E9A778 /* menu_icon@2x.png in Resources */,
 				67E9676019DF46A900305358 /* logout_icon@3x.png in Resources */,
+				67EEE7571A8D045700288753 /* receive_icon_hi.png in Resources */,
 				ECD244EE19A8AC45004B1F40 /* PEKeyboard-3-next.png in Resources */,
 				67E9675E19DF46A900305358 /* logout_icon.png in Resources */,
 				ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */,
@@ -1465,20 +1509,24 @@
 				220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */,
 				678AD61F19D56EEB00E9A778 /* menu_item_active@2x.png in Resources */,
 				678AD62819D5705900E9A778 /* send_icon@3x.png in Resources */,
+				67EEE75D1A8D05B700288753 /* send_icon_hi.png in Resources */,
 				678AD64519D59EBC00E9A778 /* top_menu_logo@2x.png in Resources */,
 				C9BE91891945D8F600FD516D /* PEPin-off.png in Resources */,
+				67EEE7591A8D045700288753 /* receive_icon_hi@3x.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
 				67D7AC271A0C36B1007CD81D /* shared.js in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
+				67EEE76A1A8D0A3F00288753 /* blockchain_logo@2x.png in Resources */,
 				676250741A28E4720052B63F /* pad-iso10126.js in Resources */,
 				678AD62019D56EEB00E9A778 /* menu_item_active@3x.png in Resources */,
 				678AD64419D59EBC00E9A778 /* top_menu_logo.png in Resources */,
 				678AD64D19D5AA7500E9A778 /* camera_icon.png in Resources */,
 				67E9675F19DF46A900305358 /* logout_icon@2x.png in Resources */,
 				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
+				67EEE7581A8D045700288753 /* receive_icon_hi@2x.png in Resources */,
 				678AD61E19D56EEB00E9A778 /* menu_item_active.png in Resources */,
 				9F48B3671534C78F00305059 /* 78-stopwatch.png in Resources */,
 				9F48B3681534C78F00305059 /* 78-stopwatch@2x.png in Resources */,

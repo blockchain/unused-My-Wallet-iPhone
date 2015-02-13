@@ -73,11 +73,7 @@
     
     [app closeModalWithTransition:kCATransitionFade];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION/4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [app.wallet createAccountWithLabel:label];
-        
-        [app reload];
-    });
+    [app.wallet createAccountWithLabel:label];
 }
 
 #pragma mark - Textfield Delegates

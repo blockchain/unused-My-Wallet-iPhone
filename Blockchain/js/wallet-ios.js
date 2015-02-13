@@ -112,8 +112,6 @@ MyWalletPhone.createAccount = function(label) {
         device.execute('loading_stop');
     };
 
-    device.execute('loading_start_create_account');
-
     MyWallet.createAccount(label, MyWalletPhone.getSecondPassword, success, error);
 };
 

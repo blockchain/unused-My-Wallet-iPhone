@@ -211,6 +211,8 @@ SideMenuViewController *sideMenuViewController;
 {
     [busyLabel setText:text];
     
+    [_window.rootViewController.view bringSubviewToFront:busyView];
+    
     [busyView fadeIn];
 }
 
@@ -746,7 +748,6 @@ SideMenuViewController *sideMenuViewController;
     contentView.frame = CGRectMake(0, 0, modalView.myHolderView.frame.size.width, modalView.myHolderView.frame.size.height);
     
     [_window.rootViewController.view addSubview:modalView];
-    [_window.rootViewController.view bringSubviewToFront:busyView];
     [_window.rootViewController.view endEditing:TRUE];
     
     @try {

@@ -240,7 +240,7 @@ int accountEntries = 0;
         headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
         [view addSubview:headerLabel];
         
-        UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - sideMenu.anchorLeftPeekAmount, 2, 40, 40)];
+        UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - sideMenu.anchorLeftPeekAmount + 2, 2, 40, 40)];
         [addButton setImage:[UIImage imageNamed:@"new"] forState:UIControlStateNormal];
         [addButton addTarget:self action:@selector(addAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:addButton];

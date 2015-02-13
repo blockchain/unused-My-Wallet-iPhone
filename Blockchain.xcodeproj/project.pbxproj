@@ -130,6 +130,10 @@
 		67EEE7691A8D0A3F00288753 /* blockchain_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7661A8D0A3F00288753 /* blockchain_logo.png */; };
 		67EEE76A1A8D0A3F00288753 /* blockchain_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */; };
 		67EEE76B1A8D0A3F00288753 /* blockchain_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */; };
+		67EEE76E1A8E547200288753 /* PEPin-off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE76C1A8E547200288753 /* PEPin-off@2x.png */; };
+		67EEE76F1A8E547200288753 /* PEPin-off@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE76D1A8E547200288753 /* PEPin-off@3x.png */; };
+		67EEE7721A8E547900288753 /* PEPin-on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7701A8E547900288753 /* PEPin-on@2x.png */; };
+		67EEE7731A8E547900288753 /* PEPin-on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 67EEE7711A8E547900288753 /* PEPin-on@3x.png */; };
 		844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 844BC7AD1949BB620024160B /* JSBridgeWebView.m */; };
 		844BC7B01949BD830024160B /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 844BC7AF1949BD710024160B /* bridge.js */; };
 		84AEEC661987C49A000E8DC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AEEC651987C49A000E8DC8 /* CoreLocation.framework */; };
@@ -563,6 +567,10 @@
 		67EEE7661A8D0A3F00288753 /* blockchain_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockchain_logo.png; sourceTree = "<group>"; };
 		67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_logo@2x.png"; sourceTree = "<group>"; };
 		67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_logo@3x.png"; sourceTree = "<group>"; };
+		67EEE76C1A8E547200288753 /* PEPin-off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-off@2x.png"; sourceTree = "<group>"; };
+		67EEE76D1A8E547200288753 /* PEPin-off@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-off@3x.png"; sourceTree = "<group>"; };
+		67EEE7701A8E547900288753 /* PEPin-on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-on@2x.png"; sourceTree = "<group>"; };
+		67EEE7711A8E547900288753 /* PEPin-on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PEPin-on@3x.png"; sourceTree = "<group>"; };
 		844BC7AC1949BB620024160B /* JSBridgeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridgeWebView.h; sourceTree = "<group>"; };
 		844BC7AD1949BB620024160B /* JSBridgeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridgeWebView.m; sourceTree = "<group>"; };
 		844BC7AF1949BD710024160B /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
@@ -1172,7 +1180,11 @@
 				C9BE91771945D8F600FD516D /* PEKeyboard-2-next.png */,
 				C9BE91781945D8F600FD516D /* PEKeyboard-2.png */,
 				C9BE91791945D8F600FD516D /* PEPin-off.png */,
+				67EEE76C1A8E547200288753 /* PEPin-off@2x.png */,
+				67EEE76D1A8E547200288753 /* PEPin-off@3x.png */,
 				C9BE917A1945D8F600FD516D /* PEPin-on.png */,
+				67EEE7701A8E547900288753 /* PEPin-on@2x.png */,
+				67EEE7711A8E547900288753 /* PEPin-on@3x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1366,6 +1378,7 @@
 				67E9677619E320D100305358 /* marker_atm_off.png in Resources */,
 				678AD63819D5833A00E9A778 /* qrscanner_icon.png in Resources */,
 				67D2B6EE1A2F2DEF0078782C /* wallet-ios.js in Resources */,
+				67EEE76F1A8E547200288753 /* PEPin-off@3x.png in Resources */,
 				678AD61D19D56EEB00E9A778 /* home_icon@3x.png in Resources */,
 				678AD65119D5AA7500E9A778 /* contacts_icon@2x.png in Resources */,
 				67812A811A5377A800B04EBF /* import-export.js in Resources */,
@@ -1441,6 +1454,7 @@
 				67E9676619DF46A900305358 /* settings_icon@3x.png in Resources */,
 				9F0CBAD21513BF9D00CD945D /* busy-background@2x.png in Resources */,
 				C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */,
+				67EEE7731A8E547900288753 /* PEPin-on@3x.png in Resources */,
 				C9BE91821945D8F600FD516D /* PEKeyboard-1-next.png in Resources */,
 				6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */,
 				ECD244ED19A8AC45004B1F40 /* PEKeyboard-3-edit.png in Resources */,
@@ -1504,6 +1518,7 @@
 				67E9675E19DF46A900305358 /* logout_icon.png in Resources */,
 				ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */,
 				84AEEC7D1987D5EC000E8DC8 /* marker_cafe.png in Resources */,
+				67EEE76E1A8E547200288753 /* PEPin-off@2x.png in Resources */,
 				673136491A0D3F6600E067D5 /* hdwallet.js in Resources */,
 				678AD62319D56EEB00E9A778 /* receive_icon@3x.png in Resources */,
 				220ADA6A19A3796200EB7599 /* Localizable.strings in Resources */,
@@ -1517,6 +1532,7 @@
 				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
 				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
 				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
+				67EEE7721A8E547900288753 /* PEPin-on@2x.png in Resources */,
 				67D7AC271A0C36B1007CD81D /* shared.js in Resources */,
 				9F7DCCF6153452A8000CBFC8 /* myspaceButton.png in Resources */,
 				67EEE76A1A8D0A3F00288753 /* blockchain_logo@2x.png in Resources */,

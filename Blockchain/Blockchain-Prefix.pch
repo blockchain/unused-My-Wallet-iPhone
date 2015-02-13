@@ -34,7 +34,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define COLOR_FOREGROUND_GRAY UIColorFromRGB(0x6d6d72)
 
 #define DEFAULT_HEADER_HEIGHT 65
-#define DEFAULT_FOOTER_HEIGHT 49
+#define DEFAULT_FOOTER_HEIGHT 47
 
 #ifdef DEBUG
     #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

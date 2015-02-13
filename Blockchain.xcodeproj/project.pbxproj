@@ -210,7 +210,6 @@
 		9F91B60315161E1F00ACB32D /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F91B60115161E1F00ACB32D /* circle.png */; };
 		9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F91B60215161E1F00ACB32D /* circle@2x.png */; };
 		9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F91B606151666EB00ACB32D /* BCCreateWalletView.m */; };
-		9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */; };
 		9FB3637614B60128004BEA02 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637514B60128004BEA02 /* UIKit.framework */; };
 		9FB3637814B60128004BEA02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637714B60128004BEA02 /* Foundation.framework */; };
 		9FB3638214B60128004BEA02 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3638114B60128004BEA02 /* main.m */; };
@@ -677,8 +676,6 @@
 		9F91B60215161E1F00ACB32D /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
 		9F91B605151666EB00ACB32D /* BCCreateWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCCreateWalletView.h; sourceTree = "<group>"; };
 		9F91B606151666EB00ACB32D /* BCCreateWalletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateWalletView.m; sourceTree = "<group>"; };
-		9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FirstResponder.h"; sourceTree = "<group>"; };
-		9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FirstResponder.m"; sourceTree = "<group>"; };
 		9FB3637114B60128004BEA02 /* Blockchain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockchain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FB3637514B60128004BEA02 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9FB3637714B60128004BEA02 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -866,8 +863,6 @@
 				9F4A5091152F585E00F9ED9D /* UIDevice+Hardware.m */,
 				84B601C5197ACD6300DA1829 /* UITextField+Blocks.h */,
 				84B601C6197ACD6300DA1829 /* UITextField+Blocks.m */,
-				9FAF53BB1529C2E800FB0D04 /* UIView+FirstResponder.h */,
-				9FAF53BC1529C2E800FB0D04 /* UIView+FirstResponder.m */,
 				84FC02F81981452D00B97D5B /* NSString+JSONParser_NSString.h */,
 				84FC02F91981452D00B97D5B /* NSString+JSONParser_NSString.m */,
 			);
@@ -1611,7 +1606,6 @@
 				9F1831EE151744EB00FB3D52 /* ReceiveTableCell.m in Sources */,
 				67EE1DCB19E3325900DBBFC9 /* ECSlidingAnimationController.m in Sources */,
 				67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */,
-				9FAF53BD1529C2E800FB0D04 /* UIView+FirstResponder.m in Sources */,
 				C9BE917C1945D8F600FD516D /* PEPinEntryController.m in Sources */,
 				9F4A5092152F585E00F9ED9D /* UIDevice+Hardware.m in Sources */,
 				6780DB921A40BDA70048EED2 /* AddressInOut.m in Sources */,

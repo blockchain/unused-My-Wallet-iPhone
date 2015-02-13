@@ -551,7 +551,6 @@ int clickedAccount;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [app.tabViewController responderMayHaveChanged];
     self.tapGesture = [[UITapGestureRecognizer alloc]
                        initWithTarget:self
                        action:@selector(dismissKeyboard)];

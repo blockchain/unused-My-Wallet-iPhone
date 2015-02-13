@@ -550,7 +550,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" id="290" userLabel="contentView">
-                        <rect key="frame" x="0.0" y="65" width="320" height="366"/>
+                        <rect key="frame" x="0.0" y="65" width="320" height="368"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     </view>
@@ -611,11 +611,11 @@
                         </connections>
                     </button>
                     <view opaque="NO" contentMode="scaleToFill" id="284" userLabel="Tab Bar">
-                        <rect key="frame" x="0.0" y="431" width="320" height="49"/>
+                        <rect key="frame" x="0.0" y="433" width="320" height="47"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="172" userLabel="Button Transactions">
-                                <rect key="frame" x="0.0" y="2" width="106" height="46"/>
+                                <rect key="frame" x="0.0" y="1" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="send_icon.png">
@@ -630,7 +630,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="173" userLabel="Button Receive">
-                                <rect key="frame" x="106" y="2" width="106" height="46"/>
+                                <rect key="frame" x="106" y="1" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="home_icon.png">
@@ -645,7 +645,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="174" userLabel="Button Send">
-                                <rect key="frame" x="212" y="2" width="106" height="46"/>
+                                <rect key="frame" x="212" y="1" width="106" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                 <state key="normal" image="receive_icon.png">
@@ -659,10 +659,6 @@
                                     <action selector="receiveCoinClicked:" destination="3" eventType="touchUpInside" id="Qg5-Ol-Fo8"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_item_active.png" id="C9g-uS-VyV" userLabel="Active Item Slider">
-                                <rect key="frame" x="106" y="45" width="107" height="6"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <view contentMode="scaleToFill" id="5Vm-Gr-tyR" userLabel="Separator">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -677,9 +673,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <size key="freeformSize" width="320" height="480"/>
             <connections>
-                <outlet property="arrow" destination="C9g-uS-VyV" id="29u-0o-T7P"/>
                 <outlet property="contentView" destination="290" id="291"/>
-                <outlet property="header" destination="226" id="275"/>
                 <outlet property="homeButton" destination="173" id="SKk-KS-6WH"/>
                 <outlet property="receiveButton" destination="174" id="ykJ-CJ-2W1"/>
                 <outlet property="sendButton" destination="172" id="1WE-Bw-2cJ"/>
@@ -693,13 +687,12 @@
         <image name="home_icon.png" width="25" height="24"/>
         <image name="home_icon_hi.png" width="25" height="24"/>
         <image name="menu_icon.png" width="28" height="28"/>
-        <image name="menu_item_active.png" width="142" height="6"/>
         <image name="merchant_directory_icon.png" width="21" height="20"/>
         <image name="qrscanner_icon.png" width="23" height="18"/>
         <image name="receive_icon.png" width="29" height="24"/>
         <image name="receive_icon_hi.png" width="29" height="24"/>
-        <image name="send_icon.png" width="28" height="24"/>
-        <image name="send_icon_hi.png" width="28" height="24"/>
+        <image name="send_icon.png" width="28" height="23"/>
+        <image name="send_icon_hi.png" width="28" height="23"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

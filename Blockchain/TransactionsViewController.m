@@ -59,11 +59,6 @@ int lastNumberTransactions = INT_MAX;
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-	[app.tabViewController responderMayHaveChanged];
-}
-
 - (void)drawRect:(CGRect)rect
 {
 	//Setup

@@ -91,15 +91,16 @@ int lastNumberTransactions = INT_MAX;
         [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
         [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
     }
-    // Data loaded, but no Balance yet
-    else if (!latestBlock) {
+    // Data loaded, but no transactions yet
+    else if (self.data.transactions.count == 0) {
         [self.view addSubview:noTransactionsView];
         
         [headerLabel setHidden:NO];
         [headerSeparator setHidden:NO];
         
-        [balanceBigButton setTitle:@"" forState:UIControlStateNormal];
-        [balanceSmallButton setTitle:@"" forState:UIControlStateNormal];
+        // Balance
+        [balanceBigButton setTitle:[app formatMoney:data.final_balance localCurrency:app->symbolLocal] forState:UIControlStateNormal];
+        [balanceSmallButton setTitle:[app formatMoney:data.final_balance localCurrency:!app->symbolLocal] forState:UIControlStateNormal];
     }
     // Data loaded and we have a balance - display the balance and transactions
     else {

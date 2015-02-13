@@ -34,8 +34,8 @@
         [_amountLabel addGestureRecognizer:tapGestureRecognizer];
         _amountLabel.userInteractionEnabled = YES;
         
-        _editButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30 - 30, 0, 54, 54)];
-        [_editButton setImage:[UIImage imageNamed:@"account-settings"] forState:UIControlStateNormal];
+        _editButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30 - 12, 0, 40, 40)];
+        [_editButton setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
         [_editButton addTarget:self action:@selector(editButtonclicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_editButton];
     }

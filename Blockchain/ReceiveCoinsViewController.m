@@ -31,17 +31,26 @@ int clickedAccount;
     self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
                                  app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
+    float imageWidth = 210;
+    
+    qrCodeMainImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth) / 2, 15, imageWidth, imageWidth)];
+    qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {
         int reduceImageSizeBy = 70;
+
         // Smaller QR Code Image
-        qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy/2, qrCodeMainImageView.frame.origin.y, qrCodeMainImageView.frame.size.width - reduceImageSizeBy, qrCodeMainImageView.frame.size.height - reduceImageSizeBy);
+        qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy / 2,
+                                               qrCodeMainImageView.frame.origin.y - 10,
+                                               qrCodeMainImageView.frame.size.width - reduceImageSizeBy,
+                                               qrCodeMainImageView.frame.size.height - reduceImageSizeBy);
         
-        // Move buttons up
-        requestPaymentButton.frame = CGRectMake(requestPaymentButton.frame.origin.x, requestPaymentButton.frame.origin.y - reduceImageSizeBy, requestPaymentButton.frame.size.width, requestPaymentButton.frame.size.height);
-        copyAddressButton.frame = CGRectMake(copyAddressButton.frame.origin.x, copyAddressButton.frame.origin.y - reduceImageSizeBy, copyAddressButton.frame.size.width, copyAddressButton.frame.size.height);
-        labelAddressButton.frame = CGRectMake(requestPaymentButton.frame.origin.x, labelAddressButton.frame.origin.y - reduceImageSizeBy, labelAddressButton.frame.size.width, labelAddressButton.frame.size.height);
-        archiveUnarchiveButton.frame = CGRectMake(archiveUnarchiveButton.frame.origin.x, archiveUnarchiveButton.frame.origin.y - reduceImageSizeBy, archiveUnarchiveButton.frame.size.width, archiveUnarchiveButton.frame.size.height);
+        moreActionsButton.frame = CGRectMake(moreActionsButton.frame.origin.x,
+                                             qrCodeMainImageView.frame.origin.y,
+                                             moreActionsButton.frame.size.width,
+                                             moreActionsButton.frame.size.height);
+        
         
         // Move everything up on label view
         UIView *mainView = labelTextField.superview;
@@ -52,6 +61,16 @@ int clickedAccount;
             view.frame = frame;
         }
     }
+    
+    qrCodePaymentImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x,
+                                              qrCodeMainImageView.frame.origin.y,
+                                              qrCodeMainImageView.frame.size.width,
+                                              qrCodeMainImageView.frame.size.height);
+    
+    optionsTitleLabel.frame = CGRectMake(optionsTitleLabel.frame.origin.x,
+                                         qrCodeMainImageView.frame.origin.y + qrCodeMainImageView.frame.size.height,
+                                         optionsTitleLabel.frame.size.width,
+                                         optionsTitleLabel.frame.size.height);
     
     [self reload];
 }
@@ -72,7 +91,7 @@ int clickedAccount;
     // Show table header with the QR code of an address from the default account
     // Image width is adjusted to screen size
     float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
-    
+
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
     
     // Get an address: the first empty receive address for the default HD account
@@ -93,11 +112,10 @@ int clickedAccount;
     }
     
     if ([app.wallet getAccountsCount] > 0 || activeKeys.count > 0) {
-        // QR Code
-        UIImageView *qrCodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth)/2, 15, imageWidth, imageWidth)];
-        qrCodeImageView.image = [self qrImageFromAddress:defaultAddress];
-        qrCodeImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [headerView addSubview:qrCodeImageView];
+
+        qrCodeMainImageView.image = [self qrImageFromAddress:defaultAddress];
+
+        [headerView addSubview:qrCodeMainImageView];
         
         // Label of the default HD account
         UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
@@ -157,6 +175,7 @@ int clickedAccount;
 
 - (uint64_t)getInputAmountInSatoshi
 {
+#warning this broken in locales that use , for .?
     NSString *requestedAmountString = [requestAmountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
     if (displayingLocalSymbol) {
@@ -171,9 +190,12 @@ int clickedAccount;
     uint64_t amount = [self getInputAmountInSatoshi];
     
     if (displayingLocalSymbol) {
-        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:TRUE], [app formatMoney:amount localCurrency:FALSE]];
+        
+        [btcCodeButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
+        [amountLabel setText:[app formatMoney:amount localCurrency:TRUE]];
     } else {
-        currencyConversionLabel.text = [NSString stringWithFormat:@"%@ = %@", [app formatMoney:amount localCurrency:FALSE], [app formatMoney:amount localCurrency:TRUE]];
+        [btcCodeButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
+        [amountLabel setText:[app formatMoney:amount localCurrency:FALSE]];
     }
 }
 
@@ -360,33 +382,33 @@ int clickedAccount;
 - (IBAction)copyAddressClicked:(id)sender
 {
     NSString *addr = self.clickedAddress;
-    
-    UIView *lastButtonView = archiveUnarchiveButton;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-    [[lastButtonView superview] addSubview:label];
-    
-    label.textAlignment = NSTextAlignmentCenter;
-    [label setFont:[UIFont systemFontOfSize:12.0f]];
-    label.textColor = [UIColor darkGrayColor];
-    label.numberOfLines = 2;
-    label.minimumScaleFactor = .3f;
-    label.adjustsFontSizeToFitWidth = YES;
-    label.center = CGPointMake(lastButtonView.center.x, lastButtonView.center.y + 40);
-    label.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
-    
-    label.alpha = 0;
-    [UIView animateWithDuration:.1f animations:^{
-        label.alpha = 1;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:5.0f animations:^{
-            label.alpha = 0;
-        } completion:^(BOOL finished) {
-            [label removeFromSuperview];
-        }];
-    }];
-    
     [UIPasteboard generalPasteboard].string = addr;
+    
+//    UIView *lastButtonView = archiveUnarchiveButton;
+//    
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+//    [[lastButtonView superview] addSubview:label];
+//    
+//    label.textAlignment = NSTextAlignmentCenter;
+//    [label setFont:[UIFont systemFontOfSize:12.0f]];
+//    label.textColor = [UIColor darkGrayColor];
+//    label.numberOfLines = 2;
+//    label.minimumScaleFactor = .3f;
+//    label.adjustsFontSizeToFitWidth = YES;
+//    label.center = CGPointMake(lastButtonView.center.x, lastButtonView.center.y + 40);
+//    label.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
+//    
+//    label.alpha = 0;
+//    [UIView animateWithDuration:.1f animations:^{
+//        label.alpha = 1;
+//    } completion:^(BOOL finished) {
+//        [UIView animateWithDuration:5.0f animations:^{
+//            label.alpha = 0;
+//        } completion:^(BOOL finished) {
+//            [label removeFromSuperview];
+//        }];
+//    }];
+    
 }
 
 - (IBAction)shareByTwitter:(id)sender
@@ -467,27 +489,6 @@ int clickedAccount;
     }
 }
 
-- (IBAction)requestPaymentClicked:(id)sender
-{
-    [self setQRPayment];
-    
-    requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
-    amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
-    amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
-    
-    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:BC_STRING_REQUEST_AMOUNT onDismiss:^() {
-        self.clickedAddress = nil;
-        requestAmountTextField.text = nil;
-    } onResume:nil];
-    
-    [requestAmountTextField becomeFirstResponder];
-}
-
-- (IBAction)closeKeyboardClicked:(id)sender
-{
-    [requestAmountTextField resignFirstResponder];
-}
-
 - (IBAction)labelAddressClicked:(id)sender
 {
     NSString *addr = self.clickedAddress;
@@ -539,21 +540,22 @@ int clickedAccount;
 }
 
 
-- (void)dismissKeyboard
+- (void)toggleKeyboard
 {
-    //[requestAmountTextField resignFirstResponder];
-    [requestAmountTextField endEditing:YES];
-    [app.modalView removeGestureRecognizer:self.tapGesture];
-    self.tapGesture = nil;
+    if ([[UIScreen mainScreen] bounds].size.height < 568) {
+        if ([requestAmountTextField isFirstResponder]) {
+            [requestAmountTextField resignFirstResponder];
+        } else {
+            [requestAmountTextField becomeFirstResponder];
+        }
+    }
 }
 
 # pragma mark - UITextField delegates
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    self.tapGesture = [[UITapGestureRecognizer alloc]
-                       initWithTarget:self
-                       action:@selector(dismissKeyboard)];
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleKeyboard)];
     [app.modalView addGestureRecognizer:self.tapGesture];
 }
 
@@ -586,9 +588,6 @@ int clickedAccount;
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [archiveUnarchiveButton setHidden:(indexPath.section == 0)];
-    [labelAddressButton setHidden:(indexPath.section == 0)];
-    
     didClickAccount = (indexPath.section == 0);
     
     if (indexPath.section == 0) {
@@ -600,25 +599,9 @@ int clickedAccount;
     }
     else {
         NSString *addr = [self getAddress:[_tableView indexPathForSelectedRow]];
-        NSInteger tag = [app.wallet tagForLegacyAddress:addr];
         NSString *label = [app.wallet labelForLegacyAddress:addr];
         
         self.clickedAddress = addr;
-        
-        if (tag == 2)
-            [archiveUnarchiveButton setTitle:BC_STRING_UNARCHIVE forState:UIControlStateNormal];
-        else
-            [archiveUnarchiveButton setTitle:BC_STRING_ARCHIVE forState:UIControlStateNormal];
-        
-        // If there are no HD accounts, the last active address cannot be archived
-        if ([app.wallet getAccountsCount] == 0 && self.activeKeys.count <= 1) {
-            [archiveUnarchiveButton setTitleColor:COLOR_BUTTON_DARK_GRAY forState:UIControlStateNormal];
-            [archiveUnarchiveButton setEnabled:NO];
-        }
-        else {
-            [archiveUnarchiveButton setTitleColor:UIColorFromRGB(0x686868) forState:UIControlStateNormal];
-            [archiveUnarchiveButton setEnabled:YES];
-        }
         
         if (label.length > 0)
             optionsTitleLabel.text = label;
@@ -626,10 +609,22 @@ int clickedAccount;
             optionsTitleLabel.text = addr;
     }
     
-    [app showModalWithContent:optionsModalView closeType:ModalCloseTypeClose headerText:optionsTitleLabel.text onDismiss:^() {
+    [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:BC_STRING_REQUEST_AMOUNT onDismiss:^() {
         // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
-        [optionsModalView removeFromSuperview];
-    } onResume:nil];
+        [requestCoinsView removeFromSuperview];
+    } onResume:^() {
+    }];
+    
+    [self setQRPayment];
+
+    requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
+    amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
+    amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
+
+    requestAmountTextField.hidden = YES;
+    [requestAmountTextField becomeFirstResponder];
+
+    
     
     // Put QR code in ImageView
     UIImage *image = [self qrImageFromAddress:self.clickedAddress];

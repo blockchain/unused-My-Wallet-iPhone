@@ -25,10 +25,7 @@
     IBOutlet UITableView *tableView;
     IBOutlet UIImageView *qrCodeMainImageView;
     IBOutlet UIImageView *qrCodePaymentImageView;
-    IBOutlet UIButton *requestPaymentButton;
-    IBOutlet UIButton *copyAddressButton;
-    IBOutlet UIButton *labelAddressButton;
-    IBOutlet UIButton *archiveUnarchiveButton;
+    IBOutlet UIButton *moreActionsButton;
     
     //Label Address
     IBOutlet UIView *labelAddressView;
@@ -38,6 +35,7 @@
     
     IBOutlet UIView *optionsModalView;
     IBOutlet UILabel *optionsTitleLabel;
+    IBOutlet UILabel *amountLabel;
     
     //amount
     IBOutlet UITextField *requestAmountTextField;
@@ -45,7 +43,6 @@
     
     //accessory
     IBOutlet UIView *amountKeyoboardAccessoryView;
-    IBOutlet UILabel *currencyConversionLabel;
     
     BOOL displayingLocalSymbol;
 }
@@ -66,8 +63,6 @@
 - (IBAction)shareByFacebook:(id)sender;
 - (IBAction)shareByEmailClicked:(id)sender;
 - (IBAction)shareByMessageClicked:(id)sender;
-- (IBAction)requestPaymentClicked:(id)sender;
-- (IBAction)closeKeyboardClicked:(id)sender;
 - (IBAction)btcCodeClicked:(id)sender;
 
 @end

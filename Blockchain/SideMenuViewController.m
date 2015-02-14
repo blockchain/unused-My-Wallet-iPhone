@@ -230,8 +230,8 @@ int accountEntries = 0;
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         view.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
         
-        UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"account-settings.png"]];
-        icon.frame = CGRectMake(15, 11, 26, 23);
+        UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet.png"]];
+        icon.frame = CGRectMake(18, 13, 20, 18);
         [view addSubview:icon];
         
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 0, self.tableView.frame.size.width - 56, SECTION_HEADER_HEIGHT)];
@@ -240,12 +240,8 @@ int accountEntries = 0;
         headerLabel.font = [UIFont boldSystemFontOfSize:17.0];
         [view addSubview:headerLabel];
         
-        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        addButton.tintColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
-        CGRect buttonFrame = addButton.frame;
-        buttonFrame.origin.x = headerLabel.frame.origin.x + headerLabel.frame.size.width - buttonFrame.size.width - 20;
-        buttonFrame.origin.y += 11;
-        addButton.frame = buttonFrame;
+        UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - sideMenu.anchorLeftPeekAmount + 2, 2, 40, 40)];
+        [addButton setImage:[UIImage imageNamed:@"new"] forState:UIControlStateNormal];
         [addButton addTarget:self action:@selector(addAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:addButton];
         

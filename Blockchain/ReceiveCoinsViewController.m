@@ -31,14 +31,16 @@ int clickedAccount;
     self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
                                  app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
-    float imageWidth = 210;
+    tableView.backgroundColor = [UIColor whiteColor];
     
-    qrCodeMainImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth) / 2, 15, imageWidth, imageWidth)];
+    float imageWidth = 190;
+    
+    qrCodeMainImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth) / 2, 25, imageWidth, imageWidth)];
     qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {
-        int reduceImageSizeBy = 70;
+        int reduceImageSizeBy = 43;
 
         // Smaller QR Code Image
         qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy / 2,
@@ -89,10 +91,9 @@ int clickedAccount;
     }
     
     // Show table header with the QR code of an address from the default account
-    // Image width is adjusted to screen size
-    float imageWidth = ([[UIScreen mainScreen] bounds].size.height < 568) ? 140 : 210;
+    float imageWidth = qrCodeMainImageView.frame.size.width;
 
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 42)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, imageWidth + 50)];
     
     // Get an address: the first empty receive address for the default HD account
     // Or the first active legacy address if there are no HD accounts
@@ -118,7 +119,7 @@ int clickedAccount;
         [headerView addSubview:qrCodeMainImageView];
         
         // Label of the default HD account
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 24, self.view.frame.size.width - 40, 18)];
+        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 30, self.view.frame.size.width - 40, 18)];
         if ([app.wallet getAccountsCount] > 0) {
             int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
             addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
@@ -646,13 +647,13 @@ int clickedAccount;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 40.0f;
+    return 45.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    view.backgroundColor = COLOR_BACKGROUND_GRAY;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45)];
+    view.backgroundColor = [UIColor whiteColor];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, self.view.frame.size.width, 14)];
     label.textColor = COLOR_FOREGROUND_GRAY;
@@ -667,12 +668,8 @@ int clickedAccount;
     else if (section == 1) {
         labelString = BC_STRING_IMPORTED_ADDRESSES;
         
-        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        addButton.tintColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
-        CGRect buttonFrame = addButton.frame;
-        buttonFrame.origin.x = self.view.frame.size.width - buttonFrame.size.width - 20;
-        buttonFrame.origin.y = 15;
-        addButton.frame = buttonFrame;
+        UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 20 - 20, 14, 25, 25)];
+        [addButton setImage:[UIImage imageNamed:@"new-grey"] forState:UIControlStateNormal];
         [addButton addTarget:self action:@selector(scanKeyClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:addButton];
     }
@@ -715,6 +712,7 @@ int clickedAccount;
         
         if (cell == nil) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+            cell.backgroundColor = COLOR_BACKGROUND_GRAY;
         
             // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
             cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);
@@ -751,6 +749,7 @@ int clickedAccount;
     
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        cell.backgroundColor = COLOR_BACKGROUND_GRAY;
         
         if (isWatchOnlyLegacyAddress) {
             // Show the watch only tag and resize the label and balance labels so there is enough space

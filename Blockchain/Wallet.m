@@ -720,6 +720,14 @@ Boolean isHdWalletInitialized;
         [delegate walletDidDecrypt];
 }
 
+- (void)did_load_wallet
+{
+    DLog(@"did_load_wallet");
+    
+    if ([delegate respondsToSelector:@selector(walletDidFinishLoad)])
+        [delegate walletDidFinishLoad];
+}
+
 - (void)on_create_new_account:(NSString*)_guid sharedKey:(NSString*)_sharedKey password:(NSString*)_password
 {
     DLog(@"on_create_new_account:");

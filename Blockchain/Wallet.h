@@ -46,6 +46,7 @@
 - (void)walletFailedToDecrypt;
 - (void)walletDidLoad;
 - (void)walletFailedToLoad;
+- (void)walletDidFinishLoad;
 - (void)didBackupWallet;
 - (void)didFailBackupWallet;
 - (void)walletJSReady;

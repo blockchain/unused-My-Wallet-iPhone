@@ -314,14 +314,19 @@ SideMenuViewController *sideMenuViewController;
     
     [self setAccountData:wallet.guid sharedKey:wallet.sharedKey];
     
-    [app closeAllModals];
-    
     //Becuase we are not storing the password on the device. We record the first few letters of the hashed password.
     //With the hash prefix we can then figure out if the password changed
     NSString * passwordPartHash = [[NSUserDefaults standardUserDefaults] objectForKey:@"passwordPartHash"];
     if (![[[app.wallet.password SHA256] substringToIndex:MIN([app.wallet.password length], 5)] isEqualToString:passwordPartHash]) {
         [self clearPin];
     }
+}
+
+- (void)walletDidFinishLoad
+{
+    DLog(@"walletDidFinishLoad");
+    
+    [app closeAllModals];
     
     if (![app isPINSet]) {
         [app showPinModalAsView:NO];
@@ -799,8 +804,6 @@ SideMenuViewController *sideMenuViewController;
     [[NSUserDefaults standardUserDefaults] setObject:sharedKey forKey:@"sharedKey"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [app closeModalWithTransition:kCATransitionFade];
 }
 
 - (BOOL)isQRCodeScanningSupported

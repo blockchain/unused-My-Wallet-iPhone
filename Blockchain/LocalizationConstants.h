@@ -126,7 +126,6 @@
 #define BC_STRING_PAYMENT_REQUEST_HTML NSLocalizedString(@"Please send payment to bitcoin address (<a href=\"https://blockchain.info/wallet/bitcoin-faq\">help?</a>): %@", nil)
 #define BC_STRING_CLOSE NSLocalizedString(@"Close", nil)
 #define BC_STRING_BACK NSLocalizedString(@"Back", nil)
-#define BC_STRING_NEW_WALLET NSLocalizedString(@"New Wallet", nil)
 
 #define BC_STRING_CREATE_ACCOUNT NSLocalizedString(@"Create Account", nil)
 #define BC_STRING_NAME_YOUR_ACCOUNT NSLocalizedString(@"Name your account", nil)
@@ -167,3 +166,5 @@
 #define BC_STRING_REQUEST_AMOUNT NSLocalizedString(@"Request Amount", nil)
 #define BC_STRING_LABEL_ADDRESS NSLocalizedString(@"Label Address", nil)
 #define BC_STRING_SCAN_QR_CODE NSLocalizedString(@"Scan QR Code", nil)
+
+#define BC_STRING_LOG_IN_TO_WALLET NSLocalizedString(@"Log in to my wallet", nil)

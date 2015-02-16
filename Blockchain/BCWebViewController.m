@@ -65,12 +65,11 @@ NSMutableArray *visitedPages;
     [topBar addSubview:closeButton];
     
     backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, 15, 85, 51);
+    backButton.frame = CGRectMake(0, 12, 85, 51);
     backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     backButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
     [backButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [backButton setImage:[UIImage imageNamed:@"back_chevron_icon"] forState:UIControlStateNormal];
-    [backButton setTitle:BC_STRING_BACK forState:UIControlStateNormal];
     [backButton setTitleColor:[UIColor colorWithWhite:0.56 alpha:1.0] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setHidden:YES];

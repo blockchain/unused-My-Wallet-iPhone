@@ -21,7 +21,7 @@
 #import <MessageUI/MessageUI.h>
 #import "Wallet.h"
 
-@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate> {
+@interface ReceiveCoinsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UIImageView *qrCodeMainImageView;
     IBOutlet UIImageView *qrCodePaymentImageView;
@@ -55,6 +55,7 @@
 
 @property(nonatomic, strong) NSString *clickedAddress;
 
+- (IBAction)moreActionsClicked:(id)sender;
 - (IBAction)labelAddressClicked:(id)sender;
 - (IBAction)archiveAddressClicked:(id)sender;
 - (IBAction)copyAddressClicked:(id)sender;

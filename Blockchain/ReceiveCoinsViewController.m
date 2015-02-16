@@ -22,6 +22,10 @@
 Boolean didClickAccount = NO;
 int clickedAccount;
 
+UIActionSheet *popupAccount;
+UIActionSheet *popupAddressUnArchive;
+UIActionSheet *popupAddressArchive;
+
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad
@@ -73,6 +77,34 @@ int clickedAccount;
                                          qrCodeMainImageView.frame.origin.y + qrCodeMainImageView.frame.size.height,
                                          optionsTitleLabel.frame.size.width,
                                          optionsTitleLabel.frame.size.height);
+    
+    popupAccount = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:BC_STRING_CANCEL destructiveButtonTitle:nil otherButtonTitles:
+                    BC_STRING_SHARE_ON_TWITTER,
+                    BC_STRING_SHARE_ON_FACEBOOK,
+                    BC_STRING_SHARE_VIA_EMAIL,
+                    BC_STRING_SHARE_VIA_SMS,
+                    BC_STRING_COPY_ADDRESS,
+                    nil];
+    
+    popupAddressArchive = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:BC_STRING_CANCEL destructiveButtonTitle:nil otherButtonTitles:
+                           BC_STRING_SHARE_ON_TWITTER,
+                           BC_STRING_SHARE_ON_FACEBOOK,
+                           BC_STRING_SHARE_VIA_EMAIL,
+                           BC_STRING_SHARE_VIA_SMS,
+                           BC_STRING_COPY_ADDRESS,
+                           BC_STRING_LABEL_ADDRESS,
+                           BC_STRING_ARCHIVE_ADDRESS,
+                           nil];
+    
+    popupAddressUnArchive = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:BC_STRING_CANCEL destructiveButtonTitle:nil otherButtonTitles:
+                             BC_STRING_SHARE_ON_TWITTER,
+                             BC_STRING_SHARE_ON_FACEBOOK,
+                             BC_STRING_SHARE_VIA_EMAIL,
+                             BC_STRING_SHARE_VIA_SMS,
+                             BC_STRING_COPY_ADDRESS,
+                             BC_STRING_LABEL_ADDRESS,
+                             BC_STRING_UNARCHIVE_ADDRESS,
+                             nil];
     
     [self reload];
 }
@@ -344,6 +376,21 @@ int clickedAccount;
 
 #pragma mark - Actions
 
+- (IBAction)moreActionsClicked:(id)sender
+{
+    if (didClickAccount) {
+        [popupAccount showInView:[UIApplication sharedApplication].keyWindow];
+    }
+    else {
+        if ([archivedKeys containsObject:self.clickedAddress]) {
+            [popupAddressUnArchive showInView:[UIApplication sharedApplication].keyWindow];
+        }
+        else {
+            [popupAddressArchive showInView:[UIApplication sharedApplication].keyWindow];
+        }
+    }
+}
+
 - (IBAction)btcCodeClicked:(id)sender
 {
     [app toggleSymbol];
@@ -419,15 +466,11 @@ int clickedAccount;
     [composeController setInitialText:[self formatPaymentRequest:@""]];
     [composeController addURL: [NSURL URLWithString:[self uriURL]]];
     
-    [self presentViewController:composeController
-                       animated:YES completion:nil];
+    [self presentViewController:composeController animated:YES completion:nil];
     
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-        if (result == SLComposeViewControllerResultCancelled) {
-        } else {
-        }
+    composeController.completionHandler = ^(SLComposeViewControllerResult result) {
+        [self toggleKeyboard];
     };
-    composeController.completionHandler = myBlock;
 }
 
 - (IBAction)shareByFacebook:(id)sender
@@ -439,13 +482,9 @@ int clickedAccount;
     
     [self presentViewController:composeController animated:YES completion:nil];
     
-    
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-        if (result == SLComposeViewControllerResultCancelled) {
-        } else {
-        }
+    composeController.completionHandler = ^(SLComposeViewControllerResult result) {
+        [self toggleKeyboard];
     };
-    composeController.completionHandler = myBlock;
 }
 
 - (NSString*)formatPaymentRequest:(NSString*)url
@@ -543,12 +582,45 @@ int clickedAccount;
 
 - (void)toggleKeyboard
 {
-    if ([[UIScreen mainScreen] bounds].size.height < 568) {
-        if ([requestAmountTextField isFirstResponder]) {
-            [requestAmountTextField resignFirstResponder];
-        } else {
-            [requestAmountTextField becomeFirstResponder];
-        }
+    if ([requestAmountTextField isFirstResponder]) {
+        [requestAmountTextField resignFirstResponder];
+    } else {
+        [requestAmountTextField becomeFirstResponder];
+    }
+}
+
+# pragma mark - UIActionSheet delegate
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (popup == popupAccount && buttonIndex > 4) {
+        return;
+    }
+    
+    switch (buttonIndex) {
+        case 0:
+            [self shareByTwitter:nil];
+            break;
+        case 1:
+            [self shareByFacebook:nil];
+            break;
+        case 2:
+            [self shareByEmailClicked:nil];
+            break;
+        case 3:
+            [self shareByMessageClicked:nil];
+            break;
+        case 4:
+            [self copyAddressClicked:nil];
+            break;
+        case 5:
+            [self labelAddressClicked:nil];
+            break;
+        case 6:
+            [self archiveAddressClicked:nil];
+            break;
+        default:
+            break;
     }
 }
 
@@ -556,8 +628,10 @@ int clickedAccount;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleKeyboard)];
-    [app.modalView addGestureRecognizer:self.tapGesture];
+    if ([[UIScreen mainScreen] bounds].size.height < 568) {
+        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleKeyboard)];
+        [app.modalView addGestureRecognizer:self.tapGesture];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField

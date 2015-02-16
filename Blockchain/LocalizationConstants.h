@@ -168,3 +168,11 @@
 #define BC_STRING_SCAN_QR_CODE NSLocalizedString(@"Scan QR Code", nil)
 
 #define BC_STRING_LOG_IN_TO_WALLET NSLocalizedString(@"Log in to my wallet", nil)
+
+#define BC_STRING_SHARE_ON_TWITTER NSLocalizedString(@"Share on Twitter", nil)
+#define BC_STRING_SHARE_ON_FACEBOOK NSLocalizedString(@"Share on Facebook", nil)
+#define BC_STRING_SHARE_VIA_EMAIL NSLocalizedString(@"Share via E-mail", nil)
+#define BC_STRING_SHARE_VIA_SMS NSLocalizedString(@"Share via SMS", nil)
+#define BC_STRING_COPY_ADDRESS NSLocalizedString(@"Copy Address", nil)
+#define BC_STRING_ARCHIVE_ADDRESS NSLocalizedString(@"Archive Address", nil)
+#define BC_STRING_UNARCHIVE_ADDRESS NSLocalizedString(@"Unarchive Address", nil)

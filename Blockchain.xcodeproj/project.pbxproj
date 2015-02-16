@@ -193,8 +193,6 @@
 		9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCEF153452A8000CBFC8 /* fbButton.png */; };
 		9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCF0153452A8000CBFC8 /* googleButton.png */; };
 		9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCF2153452A8000CBFC8 /* twitterButton.png */; };
-		9F91B60315161E1F00ACB32D /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F91B60115161E1F00ACB32D /* circle.png */; };
-		9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F91B60215161E1F00ACB32D /* circle@2x.png */; };
 		9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F91B606151666EB00ACB32D /* BCCreateWalletView.m */; };
 		9FB3637614B60128004BEA02 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637514B60128004BEA02 /* UIKit.framework */; };
 		9FB3637814B60128004BEA02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637714B60128004BEA02 /* Foundation.framework */; };
@@ -642,8 +640,6 @@
 		9F7DCCEF153452A8000CBFC8 /* fbButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fbButton.png; sourceTree = "<group>"; };
 		9F7DCCF0153452A8000CBFC8 /* googleButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleButton.png; sourceTree = "<group>"; };
 		9F7DCCF2153452A8000CBFC8 /* twitterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitterButton.png; sourceTree = "<group>"; };
-		9F91B60115161E1F00ACB32D /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
-		9F91B60215161E1F00ACB32D /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
 		9F91B605151666EB00ACB32D /* BCCreateWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCCreateWalletView.h; sourceTree = "<group>"; };
 		9F91B606151666EB00ACB32D /* BCCreateWalletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateWalletView.m; sourceTree = "<group>"; };
 		9FB3637114B60128004BEA02 /* Blockchain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockchain.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -845,8 +841,6 @@
 				67EEE7661A8D0A3F00288753 /* blockchain_logo.png */,
 				67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */,
 				67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */,
-				9F91B60115161E1F00ACB32D /* circle.png */,
-				9F91B60215161E1F00ACB32D /* circle@2x.png */,
 				678AD64A19D5AA7500E9A778 /* contacts_icon.png */,
 				678AD64B19D5AA7500E9A778 /* contacts_icon@2x.png */,
 				678AD64C19D5AA7500E9A778 /* contacts_icon@3x.png */,
@@ -1437,9 +1431,7 @@
 				6710DA1F1A8E9EC10089DDED /* new@2x.png in Resources */,
 				6775569619E749CC0054699B /* back_chevron_icon.png in Resources */,
 				678AD64619D59EBC00E9A778 /* top_menu_logo@3x.png in Resources */,
-				9F91B60315161E1F00ACB32D /* circle.png in Resources */,
 				67E9675D19DF46A900305358 /* lock_icon@3x.png in Resources */,
-				9F91B60415161E1F00ACB32D /* circle@2x.png in Resources */,
 				67E9675C19DF46A900305358 /* lock_icon@2x.png in Resources */,
 				9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */,
 				678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */,

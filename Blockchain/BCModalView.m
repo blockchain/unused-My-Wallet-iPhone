@@ -42,7 +42,6 @@
                 self.backButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
                 [self.backButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
                 [self.backButton setImage:[UIImage imageNamed:@"back_chevron_icon"] forState:UIControlStateNormal];
-                [self.backButton setTitle:BC_STRING_BACK forState:UIControlStateNormal];
                 [self.backButton setTitleColor:[UIColor colorWithWhite:0.56 alpha:1.0] forState:UIControlStateHighlighted];
                 [self.backButton addTarget:self action:@selector(closeModalClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [topBarView addSubview:self.backButton];

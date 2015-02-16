@@ -23,16 +23,13 @@
 #import "Wallet.h"
 
 @interface BCCreateWalletView : BCModalContentView <UITextFieldDelegate, WalletDelegate> {
-    IBOutlet UITextField * emailTextField;
-    IBOutlet UITextField * passwordTextField;
-    IBOutlet UITextField * password2TextField;
-    IBOutlet UIActivityIndicatorView * activity;
-    IBOutlet UIButton * createButton;
+    IBOutlet UITextField *emailTextField;
+    IBOutlet UITextField *passwordTextField;
+    IBOutlet UITextField *password2TextField;
 }
 
--(IBAction)termsOfServiceClicked:(id)sender;
--(IBAction)createAccountClicked:(id)sender;
+- (IBAction)termsOfServiceClicked:(id)sender;
 
-@property(nonatomic, strong) NSString * tmpPassword;
+@property(nonatomic, strong) NSString *tmpPassword;
 
 @end

@@ -11,11 +11,8 @@
 
 @implementation BCManualPairView
 
-- (void)prepareForModalPresentation
+- (void)awakeFromNib
 {
-    walletIdentifierTextField.delegate = self;
-    passwordTextField.delegate = self;
-    
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveButton.frame = CGRectMake(0, 0, self.window.frame.size.width, 46);
     saveButton.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
@@ -27,6 +24,12 @@
     
     walletIdentifierTextField.inputAccessoryView = saveButton;
     passwordTextField.inputAccessoryView = saveButton;
+}
+
+- (void)prepareForModalPresentation
+{
+    walletIdentifierTextField.delegate = self;
+    passwordTextField.delegate = self;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [walletIdentifierTextField becomeFirstResponder];
@@ -40,9 +43,6 @@
 {
     walletIdentifierTextField.delegate = nil;
     passwordTextField.delegate = nil;
-    
-    walletIdentifierTextField.inputAccessoryView = nil;
-    passwordTextField.inputAccessoryView = nil;
 }
 
 - (void)modalWasDismissed

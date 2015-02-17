@@ -136,6 +136,8 @@ int legacyAddressesSectionNumber;
         else {
             tableView.scrollEnabled = YES;
         }
+        
+        tableView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -243,6 +245,7 @@ int legacyAddressesSectionNumber;
     
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReceiveCell" owner:nil options:nil] objectAtIndex:0];
+        cell.backgroundColor = COLOR_BACKGROUND_GRAY;
         
         // Don't show the watch only tag and resize the label and balance labels to use up the freed up space
         cell.labelLabel.frame = CGRectMake(20, 11, 185, 21);

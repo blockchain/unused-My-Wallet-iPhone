@@ -113,6 +113,10 @@
         return;
     }
     
+    [emailTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+    [password2TextField resignFirstResponder];
+    
     [app.wallet loadBlankWallet];
     
     // Get callback when wallet is done loading

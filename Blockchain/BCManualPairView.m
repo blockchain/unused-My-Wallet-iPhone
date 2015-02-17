@@ -75,6 +75,9 @@
         return;
     }
     
+    [walletIdentifierTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+    
     passwordTextField.text = @"";
     
     [app.wallet loadWalletWithGuid:guid sharedKey:nil password:password];

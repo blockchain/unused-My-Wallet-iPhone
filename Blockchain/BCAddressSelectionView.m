@@ -121,8 +121,8 @@ int legacyAddressesSectionNumber;
         
         view.frame = CGRectMake(0, 0, app.window.frame.size.width, app.window.frame.size.height);
         
-        // Hacky way to make sure the table view doesn't show empty entries (with divider lines)
-        float tableHeight = ROW_HEIGHT * (addressBookAddresses.count + legacyAddresses.count) + ROW_HEIGHT_ACCOUNT * accounts.count;
+        [tableView layoutIfNeeded];
+        float tableHeight = [tableView contentSize].height;
         float tableSpace = view.frame.size.height - DEFAULT_HEADER_HEIGHT;
         
         CGRect frame = tableView.frame;

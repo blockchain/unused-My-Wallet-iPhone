@@ -45,7 +45,7 @@ UIActionSheet *popupAddressArchive;
     // The more actions button will be added to the top menu bar
     [moreActionsButton removeFromSuperview];
     moreActionsButton.alpha = 0.0f;
-    moreActionsButton.frame = CGRectMake(20, 20, moreActionsButton.frame.size.width, moreActionsButton.frame.size.height);
+    moreActionsButton.frame = CGRectMake(0, 14, moreActionsButton.frame.size.width, moreActionsButton.frame.size.height);
     
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {

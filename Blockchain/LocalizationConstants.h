@@ -54,6 +54,7 @@
 #define BC_STRING_DECRYPTING_PRIVATE_KEY NSLocalizedString(@"Decrypting Private Key", nil)
 
 #define BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT NSLocalizedString(@"Unsupported Private Key Format", nil)
+#define BC_STRING_SCAN_PAIRING_CODE NSLocalizedString(@"Scan Pairing Code", nil)
 #define BC_STRING_PARSING_PAIRING_CODE NSLocalizedString(@"Parsing Pairing Code", nil)
 
 #define BC_STRING_OK NSLocalizedString(@"OK", nil)

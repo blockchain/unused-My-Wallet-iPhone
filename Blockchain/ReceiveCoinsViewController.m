@@ -372,6 +372,8 @@ UIActionSheet *popupAddressArchive;
     }
     
     [controller dismissViewControllerAnimated:YES completion:nil];
+    
+    [self toggleKeyboard];
 }
 
 # pragma mark - MFMessageComposeViewControllerDelegate delegates
@@ -397,6 +399,8 @@ UIActionSheet *popupAddressArchive;
     }
     
     [controller dismissViewControllerAnimated:YES completion:nil];
+    
+    [self toggleKeyboard];
 }
 
 #pragma mark - Actions
@@ -535,6 +539,8 @@ UIActionSheet *popupAddressArchive;
         [messageController setMessageComposeDelegate:self];
         [messageController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
         [messageController setBody:[self formatPaymentRequest:[self uriURL]]];
+        
+        [self toggleKeyboard];
         [app.tabViewController presentViewController:messageController animated:YES completion:nil];
     }
     else {
@@ -552,6 +558,8 @@ UIActionSheet *popupAddressArchive;
         [mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
         [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
         [mailController setMessageBody:[self formatPaymentRequestHTML:[self uriURL]] isHTML:YES];
+        
+        [self toggleKeyboard];
         [app.tabViewController presentViewController:mailController animated:YES completion:nil];
     }
     else {

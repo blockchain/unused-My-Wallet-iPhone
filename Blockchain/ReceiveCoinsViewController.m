@@ -228,11 +228,23 @@ UIActionSheet *popupAddressArchive;
     [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
     
     if (displayingLocalSymbol) {
-        [btcButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
-        [fiatButton setBackgroundColor:[UIColor orangeColor]];
-    } else {
-        [btcButton setBackgroundColor:[UIColor orangeColor]];
+        [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [btcButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
+        btcButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        
+        // Highlight
         [fiatButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
+        [fiatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        fiatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    } else {
+        // Highlight
+        [btcButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
+        [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btcButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        
+        [fiatButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [fiatButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
+        fiatButton.titleLabel.font = [UIFont systemFontOfSize:16];
     }
 }
 

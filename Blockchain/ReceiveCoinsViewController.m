@@ -114,11 +114,14 @@ UIActionSheet *popupAddressArchive;
     self.activeKeys = [app.wallet activeLegacyAddresses];
     self.archivedKeys = [app.wallet archivedLegacyAddresses];
     
+    // Reset the requested amount when showing the request screen
+    requestAmountTextField.text = nil;
+    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
-        [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
+        [btcButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;
     } else if (app.latestResponse.symbol_btc) {
-        [btcCodeButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
+        [btcButton setTitle:app.latestResponse.symbol_btc.symbol forState:UIControlStateNormal];
         displayingLocalSymbol = FALSE;
     }
     
@@ -222,13 +225,15 @@ UIActionSheet *popupAddressArchive;
 {
     uint64_t amount = [self getInputAmountInSatoshi];
     
+    [btcButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
+    [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
+    
     if (displayingLocalSymbol) {
-        
-        [btcCodeButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
-        [amountLabel setText:[app formatMoney:amount localCurrency:TRUE]];
+        [btcButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
+        [fiatButton setBackgroundColor:[UIColor orangeColor]];
     } else {
-        [btcCodeButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
-        [amountLabel setText:[app formatMoney:amount localCurrency:FALSE]];
+        [btcButton setBackgroundColor:[UIColor orangeColor]];
+        [fiatButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
     }
 }
 
@@ -688,6 +693,8 @@ UIActionSheet *popupAddressArchive;
         // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
         [requestCoinsView removeFromSuperview];
     } onResume:^() {
+        // Reset the requested amount when showing the request screen
+        requestAmountTextField.text = nil;
     }];
     
     [self setQRPayment];

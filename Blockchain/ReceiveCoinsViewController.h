@@ -35,11 +35,11 @@
     
     IBOutlet UIView *optionsModalView;
     IBOutlet UILabel *optionsTitleLabel;
-    IBOutlet UILabel *amountLabel;
     
     //amount
     IBOutlet UITextField *requestAmountTextField;
-    IBOutlet UIButton *btcCodeButton;
+    IBOutlet UIButton *btcButton;
+    IBOutlet UIButton *fiatButton;
     
     //accessory
     IBOutlet UIView *amountKeyoboardAccessoryView;

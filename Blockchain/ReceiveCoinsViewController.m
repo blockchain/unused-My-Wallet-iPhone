@@ -242,12 +242,12 @@ UIActionSheet *popupAddressArchive;
         btcButton.titleLabel.font = [UIFont systemFontOfSize:16];
         
         // Highlight
-        [fiatButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [fiatButton setBackgroundColor:UIColorFromRGB(0xfcfcfc)];
         [fiatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         fiatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     } else {
         // Highlight
-        [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [btcButton setBackgroundColor:UIColorFromRGB(0xfcfcfc)];
         [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btcButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         

@@ -42,21 +42,20 @@ UIActionSheet *popupAddressArchive;
     qrCodeMainImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth) / 2, 25, imageWidth, imageWidth)];
     qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
     
+    // The more actions button will be added to the top menu bar
+    [moreActionsButton removeFromSuperview];
+    moreActionsButton.alpha = 0.0f;
+    moreActionsButton.frame = CGRectMake(20, 20, moreActionsButton.frame.size.width, moreActionsButton.frame.size.height);
+    
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {
         int reduceImageSizeBy = 43;
-
+        
         // Smaller QR Code Image
         qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy / 2,
                                                qrCodeMainImageView.frame.origin.y - 10,
                                                qrCodeMainImageView.frame.size.width - reduceImageSizeBy,
                                                qrCodeMainImageView.frame.size.height - reduceImageSizeBy);
-        
-        moreActionsButton.frame = CGRectMake(moreActionsButton.frame.origin.x,
-                                             qrCodeMainImageView.frame.origin.y,
-                                             moreActionsButton.frame.size.width,
-                                             moreActionsButton.frame.size.height);
-        
         
         // Move everything up on label view
         UIView *mainView = labelTextField.superview;
@@ -696,11 +695,18 @@ UIActionSheet *popupAddressArchive;
     }
     
     [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:BC_STRING_REQUEST_AMOUNT onDismiss:^() {
-        // Slightly hacky - this assures that the view is removed and we this modal doesn't stick around and we can't show another one at the same time. Ideally we want to switch UIViewControllers or change showModalWithContent: to distinguish between hasCloseButton and hasBackButton
-        [requestCoinsView removeFromSuperview];
+        // Remove the extra menu item (more actions)
+        [moreActionsButton removeFromSuperview];
+        moreActionsButton.alpha = 0.0f;
     } onResume:^() {
         // Reset the requested amount when showing the request screen
         requestAmountTextField.text = nil;
+        
+        // Show an extra menu item (more actions)
+        [[[UIApplication sharedApplication] keyWindow] addSubview:moreActionsButton];
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            moreActionsButton.alpha = 1.0f;
+        }];
     }];
     
     [self setQRPayment];

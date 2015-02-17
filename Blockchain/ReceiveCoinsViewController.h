@@ -27,22 +27,21 @@
     IBOutlet UIImageView *qrCodePaymentImageView;
     IBOutlet UIButton *moreActionsButton;
     
-    //Label Address
+    // Label Address
     IBOutlet UIView *labelAddressView;
     IBOutlet UITextField *labelTextField;
     IBOutlet UILabel *labelAddressLabel;
     IBOutlet UIView *requestCoinsView;
     
-    IBOutlet UIView *optionsModalView;
     IBOutlet UILabel *optionsTitleLabel;
     
-    //amount
+    // Amount buttons and field
     IBOutlet UITextField *requestAmountTextField;
     IBOutlet UIButton *btcButton;
     IBOutlet UIButton *fiatButton;
     
-    //accessory
-    IBOutlet UIView *amountKeyoboardAccessoryView;
+    // Keyboard accessory view
+    IBOutlet UIView *amountKeyboardAccessoryView;
     
     BOOL displayingLocalSymbol;
 }
@@ -50,8 +49,6 @@
 @property(nonatomic, strong) NSArray *activeKeys;
 @property(nonatomic, strong) NSArray *archivedKeys;
 @property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
-
-- (void)reload;
 
 @property(nonatomic, strong) NSString *clickedAddress;
 
@@ -65,5 +62,7 @@
 - (IBAction)shareByEmailClicked:(id)sender;
 - (IBAction)shareByMessageClicked:(id)sender;
 - (IBAction)btcCodeClicked:(id)sender;
+
+- (void)reload;
 
 @end

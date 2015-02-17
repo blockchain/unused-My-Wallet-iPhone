@@ -711,9 +711,9 @@ UIActionSheet *popupAddressArchive;
     
     [self setQRPayment];
 
-    requestAmountTextField.inputAccessoryView = amountKeyoboardAccessoryView;
-    amountKeyoboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
-    amountKeyoboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
+    requestAmountTextField.inputAccessoryView = amountKeyboardAccessoryView;
+    amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
+    amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
 
     requestAmountTextField.hidden = YES;
     [requestAmountTextField becomeFirstResponder];

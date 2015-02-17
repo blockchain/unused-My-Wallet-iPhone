@@ -114,7 +114,7 @@ UIActionSheet *popupAddressArchive;
     self.activeKeys = [app.wallet activeLegacyAddresses];
     self.archivedKeys = [app.wallet archivedLegacyAddresses];
     
-    // Reset the requested amount when showing the request screen
+    // Reset the requested amount when switching currencies
     requestAmountTextField.text = nil;
     
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
@@ -398,6 +398,12 @@ UIActionSheet *popupAddressArchive;
 
 - (IBAction)btcCodeClicked:(id)sender
 {
+    // Ignore click when already selected
+    if ((sender == fiatButton && displayingLocalSymbol) ||
+        (sender == btcButton && !displayingLocalSymbol)) {
+        return;
+    }
+    
     [app toggleSymbol];
     [self setQRPayment];
 }

@@ -49,7 +49,7 @@ UIActionSheet *popupAddressArchive;
     
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {
-        int reduceImageSizeBy = 43;
+        int reduceImageSizeBy = 60;
         
         // Smaller QR Code Image
         qrCodeMainImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x + reduceImageSizeBy / 2,
@@ -72,8 +72,17 @@ UIActionSheet *popupAddressArchive;
                                               qrCodeMainImageView.frame.size.width,
                                               qrCodeMainImageView.frame.size.height);
     
+    // iPhone4/4S
+    if ([[UIScreen mainScreen] bounds].size.height < 568) {
+        // Smaller QR Code Image
+        qrCodePaymentImageView.frame = CGRectMake(qrCodeMainImageView.frame.origin.x,
+                                               qrCodeMainImageView.frame.origin.y - 10,
+                                               qrCodeMainImageView.frame.size.width,
+                                               qrCodeMainImageView.frame.size.height);
+    }
+    
     optionsTitleLabel.frame = CGRectMake(optionsTitleLabel.frame.origin.x,
-                                         qrCodeMainImageView.frame.origin.y + qrCodeMainImageView.frame.size.height,
+                                         qrCodePaymentImageView.frame.origin.y + qrCodePaymentImageView.frame.size.height + 3,
                                          optionsTitleLabel.frame.size.width,
                                          optionsTitleLabel.frame.size.height);
     
@@ -168,7 +177,7 @@ UIActionSheet *popupAddressArchive;
                 addressLabel.text = defaultAddress;
             }
         }
-        addressLabel.font = [UIFont systemFontOfSize:14];
+        addressLabel.font = [UIFont systemFontOfSize:15];
         addressLabel.textAlignment = NSTextAlignmentCenter;
         addressLabel.textColor = [UIColor blackColor];
         [addressLabel setMinimumScaleFactor:.5f];
@@ -228,21 +237,21 @@ UIActionSheet *popupAddressArchive;
     [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
     
     if (displayingLocalSymbol) {
-        [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [btcButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
         [btcButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
         btcButton.titleLabel.font = [UIFont systemFontOfSize:16];
         
         // Highlight
-        [fiatButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
+        [fiatButton setBackgroundColor:COLOR_BUTTON_GRAY];
         [fiatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         fiatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     } else {
         // Highlight
-        [btcButton setBackgroundColor:COLOR_BACKGROUND_GRAY];
+        [btcButton setBackgroundColor:COLOR_BUTTON_GRAY];
         [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btcButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         
-        [fiatButton setBackgroundColor:COLOR_BUTTON_GRAY];
+        [fiatButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
         [fiatButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
         fiatButton.titleLabel.font = [UIFont systemFontOfSize:16];
     }
@@ -724,12 +733,9 @@ UIActionSheet *popupAddressArchive;
     [self setQRPayment];
 
     requestAmountTextField.inputAccessoryView = amountKeyboardAccessoryView;
-    amountKeyboardAccessoryView.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
-    amountKeyboardAccessoryView.layer.borderColor = [[UIColor colorWithRed:181.0f/255.0f green:185.0f/255.0f blue:189.0f/255.0f alpha:1.0f] CGColor];
-
+    
     requestAmountTextField.hidden = YES;
     [requestAmountTextField becomeFirstResponder];
-
     
     
     // Put QR code in ImageView

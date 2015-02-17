@@ -20,12 +20,14 @@
     if (self) {
         ECSlidingViewController *sideMenu = app.slidingViewController;
         
-        _labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 10, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 18)];
+        _labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 10, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 100, 18)];
+        _labelLabel.minimumScaleFactor = 0.75f;
+        [_labelLabel setAdjustsFontSizeToFitWidth:YES];
         _labelLabel.font = [UIFont boldSystemFontOfSize:16.0];
         _labelLabel.textColor = [UIColor whiteColor];
         [self addSubview:_labelLabel];
         
-        _amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 24, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 30, 30)];
+        _amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 24, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 100, 30)];
         _amountLabel.font = [UIFont boldSystemFontOfSize:16.0];
         _amountLabel.textColor = [UIColor whiteColor];
         [self addSubview:_amountLabel];

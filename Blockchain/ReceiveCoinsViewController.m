@@ -242,21 +242,17 @@ UIActionSheet *popupAddressArchive;
     if (displayingLocalSymbol) {
         [btcButton setBackgroundImage:nil forState:UIControlStateNormal];
         [btcButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
-        btcButton.titleLabel.font = [UIFont systemFontOfSize:16];
         
         // Highlight
         [fiatButton setBackgroundImage:[UIImage imageNamed: @"tab_left"] forState:UIControlStateNormal];
-        [fiatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        fiatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [fiatButton setTitleColor:COLOR_BLOCKCHAIN_BLUE forState:UIControlStateNormal];
     } else {
         // Highlight
         [btcButton setBackgroundImage:[UIImage imageNamed:@"tab_right"] forState:UIControlStateNormal];
-        [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        btcButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [btcButton setTitleColor:COLOR_BLOCKCHAIN_BLUE forState:UIControlStateNormal];
         
         [fiatButton setBackgroundImage:nil forState:UIControlStateNormal];
         [fiatButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
-        fiatButton.titleLabel.font = [UIFont systemFontOfSize:16];
     }
 }
 

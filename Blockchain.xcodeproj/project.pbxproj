@@ -14,7 +14,6 @@
 		220E375719A3613600E06996 /* BCAddressSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* BCAddressSelectionView.xib */; };
 		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
 		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
-		22D41D9919A7604300C9E1F4 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 22D41D9819A7604300C9E1F4 /* sms.png */; };
 		670DF94B1A43BCB200CEA1EA /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 670DF94A1A43BCB200CEA1EA /* Reachability.m */; };
 		6710DA0E1A8E82D80089DDED /* BCLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 6710DA0D1A8E82D80089DDED /* BCLine.m */; };
 		6710DA121A8E9AEB0089DDED /* wallet.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA0F1A8E9AEB0089DDED /* wallet.png */; };
@@ -198,10 +197,6 @@
 		9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */; };
 		9F7DCCEB15345213000CBFC8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCCEA15345213000CBFC8 /* Security.framework */; };
 		9F7DCCED15345245000CBFC8 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7DCCEC15345245000CBFC8 /* MessageUI.framework */; };
-		9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCEE153452A8000CBFC8 /* emailButton.png */; };
-		9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCEF153452A8000CBFC8 /* fbButton.png */; };
-		9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCF0153452A8000CBFC8 /* googleButton.png */; };
-		9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F7DCCF2153452A8000CBFC8 /* twitterButton.png */; };
 		9F91B607151666EC00ACB32D /* BCCreateWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F91B606151666EB00ACB32D /* BCCreateWalletView.m */; };
 		9FB3637614B60128004BEA02 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637514B60128004BEA02 /* UIKit.framework */; };
 		9FB3637814B60128004BEA02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB3637714B60128004BEA02 /* Foundation.framework */; };
@@ -420,7 +415,6 @@
 		220E375819A3613600E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BCAddressSelectionView.xib; sourceTree = "<group>"; };
 		220E375E19A3614900E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SendCoins.xib; sourceTree = "<group>"; };
 		220E376119A3614F00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		22D41D9819A7604300C9E1F4 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms.png; sourceTree = "<group>"; };
 		670DF9491A43BCB200CEA1EA /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		670DF94A1A43BCB200CEA1EA /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		6710DA0C1A8E82D80089DDED /* BCLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCLine.h; sourceTree = "<group>"; };
@@ -654,10 +648,6 @@
 		9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiAddressResponse.m; sourceTree = "<group>"; };
 		9F7DCCEA15345213000CBFC8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		9F7DCCEC15345245000CBFC8 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		9F7DCCEE153452A8000CBFC8 /* emailButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emailButton.png; sourceTree = "<group>"; };
-		9F7DCCEF153452A8000CBFC8 /* fbButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fbButton.png; sourceTree = "<group>"; };
-		9F7DCCF0153452A8000CBFC8 /* googleButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleButton.png; sourceTree = "<group>"; };
-		9F7DCCF2153452A8000CBFC8 /* twitterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitterButton.png; sourceTree = "<group>"; };
 		9F91B605151666EB00ACB32D /* BCCreateWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCCreateWalletView.h; sourceTree = "<group>"; };
 		9F91B606151666EB00ACB32D /* BCCreateWalletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateWalletView.m; sourceTree = "<group>"; };
 		9FB3637114B60128004BEA02 /* Blockchain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockchain.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -865,9 +855,6 @@
 				6710DA151A8E9BDB0089DDED /* edit.png */,
 				6710DA161A8E9BDB0089DDED /* edit@2x.png */,
 				6710DA171A8E9BDB0089DDED /* edit@3x.png */,
-				9F7DCCEE153452A8000CBFC8 /* emailButton.png */,
-				9F7DCCEF153452A8000CBFC8 /* fbButton.png */,
-				9F7DCCF0153452A8000CBFC8 /* googleButton.png */,
 				678AD60F19D56EEA00E9A778 /* home_icon.png */,
 				678AD61019D56EEA00E9A778 /* home_icon@2x.png */,
 				678AD61119D56EEA00E9A778 /* home_icon@3x.png */,
@@ -937,7 +924,6 @@
 				67E9675819DF46A900305358 /* settings_icon.png */,
 				67E9675919DF46A900305358 /* settings_icon@2x.png */,
 				67E9675A19DF46A900305358 /* settings_icon@3x.png */,
-				22D41D9819A7604300C9E1F4 /* sms.png */,
 				6710DA311A94F1F70089DDED /* tab_left.png */,
 				6710DA321A94F1F70089DDED /* tab_left@2x.png */,
 				6710DA331A94F1F70089DDED /* tab_left@3x.png */,
@@ -947,7 +933,6 @@
 				678AD64119D59EBC00E9A778 /* top_menu_logo.png */,
 				678AD64219D59EBC00E9A778 /* top_menu_logo@2x.png */,
 				678AD64319D59EBC00E9A778 /* top_menu_logo@3x.png */,
-				9F7DCCF2153452A8000CBFC8 /* twitterButton.png */,
 				6710DA0F1A8E9AEB0089DDED /* wallet.png */,
 				6710DA101A8E9AEB0089DDED /* wallet@2x.png */,
 				6710DA111A8E9AEB0089DDED /* wallet@3x.png */,
@@ -1492,19 +1477,14 @@
 				67EEE7591A8D045700288753 /* receive_icon_hi@3x.png in Resources */,
 				6710DA371A94F1F70089DDED /* tab_left.png in Resources */,
 				9F1831FD1517912900FB3D52 /* beep.wav in Resources */,
-				9F7DCCF3153452A8000CBFC8 /* emailButton.png in Resources */,
-				9F7DCCF4153452A8000CBFC8 /* fbButton.png in Resources */,
-				9F7DCCF5153452A8000CBFC8 /* googleButton.png in Resources */,
 				67EEE7721A8E547900288753 /* PEPin-on@2x.png in Resources */,
 				67D7AC271A0C36B1007CD81D /* shared.js in Resources */,
 				67EEE76A1A8D0A3F00288753 /* blockchain_logo@2x.png in Resources */,
 				676250741A28E4720052B63F /* pad-iso10126.js in Resources */,
 				678AD64419D59EBC00E9A778 /* top_menu_logo.png in Resources */,
 				67E9675F19DF46A900305358 /* logout_icon@2x.png in Resources */,
-				9F7DCCF7153452A8000CBFC8 /* twitterButton.png in Resources */,
 				67EEE7581A8D045700288753 /* receive_icon_hi@2x.png in Resources */,
 				6762507A1A28ECE70052B63F /* wallet-signup.js in Resources */,
-				22D41D9919A7604300C9E1F4 /* sms.png in Resources */,
 				FACF694F1A570AEF00590E04 /* MerchantDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

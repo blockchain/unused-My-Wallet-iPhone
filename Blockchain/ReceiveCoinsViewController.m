@@ -236,22 +236,25 @@ UIActionSheet *popupAddressArchive;
     [btcButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
     [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
     
+    [btcButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
+    [fiatButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
+    
     if (displayingLocalSymbol) {
-        [btcButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
+        [btcButton setBackgroundImage:nil forState:UIControlStateNormal];
         [btcButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
         btcButton.titleLabel.font = [UIFont systemFontOfSize:16];
         
         // Highlight
-        [fiatButton setBackgroundColor:UIColorFromRGB(0xfcfcfc)];
+        [fiatButton setBackgroundImage:[UIImage imageNamed: @"tab_left"] forState:UIControlStateNormal];
         [fiatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         fiatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     } else {
         // Highlight
-        [btcButton setBackgroundColor:UIColorFromRGB(0xfcfcfc)];
+        [btcButton setBackgroundImage:[UIImage imageNamed:@"tab_right"] forState:UIControlStateNormal];
         [btcButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btcButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         
-        [fiatButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
+        [fiatButton setBackgroundImage:nil forState:UIControlStateNormal];
         [fiatButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
         fiatButton.titleLabel.font = [UIFont systemFontOfSize:16];
     }

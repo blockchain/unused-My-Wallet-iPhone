@@ -624,8 +624,10 @@ SideMenuViewController *sideMenuViewController;
         
         if ([password length] == 0) {
             if (error) error(BC_STRING_NO_PASSWORD_ENTERED);
+            [self hideBusyView];
         } else if(![wallet validateSecondPassword:password]) {
             if (error) error(BC_STRING_SECOND_PASSWORD_INCORRECT);
+            [self hideBusyView];
         } else {
             if (success) success(password);
         }

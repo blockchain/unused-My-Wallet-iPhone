@@ -177,3 +177,6 @@
 #define BC_STRING_COPY_ADDRESS NSLocalizedString(@"Copy Address", nil)
 #define BC_STRING_ARCHIVE_ADDRESS NSLocalizedString(@"Archive Address", nil)
 #define BC_STRING_UNARCHIVE_ADDRESS NSLocalizedString(@"Unarchive Address", nil)
+
+#define BC_STRING_UPGRADE_NOW NSLocalizedString(@"Upgrade Now", nil)
+#define BC_STRING_DONT_UPGRADE NSLocalizedString(@"or Continue", nil)

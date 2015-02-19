@@ -403,11 +403,11 @@ http://blockchain.info/wallet</string>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <view opaque="NO" contentMode="scaleToFill" id="385" userLabel="No Data View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="360"/>
+                        <rect key="frame" x="0.0" y="160" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="387">
-                                <rect key="frame" x="20" y="160" width="280" height="120"/>
+                                <rect key="frame" x="20" y="0.0" width="280" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Welcome to Blockchain Wallet. This screen shows your transactions. If you have already made transactions with this wallet, there may have been an error contacting our server. Please make sure your account is correctly setup and you have an active internet connection.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>

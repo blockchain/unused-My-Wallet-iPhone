@@ -174,7 +174,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     
     var history_success = function() {
         hasLoadedTransactions = true;
-        if(hasBuiltHD && hasLoadedTransactions) {
+        if((!MyWallet.didUpgradeToHd() || hasBuiltHD) && hasLoadedTransactions) {
             device.execute('loading_stop');
             device.execute('did_load_wallet');
         }

@@ -136,7 +136,9 @@ Boolean isHdWalletInitialized;
 - (BOOL)isInitialized
 {
     // Initialized when the webView is loaded, the HD Wallet is set (async web worker) and the wallet is initialized (decrypted and in-memory wallet built)
-    return [self.webView isLoaded] && isHdWalletInitialized && [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue];
+    return ([self.webView isLoaded] &&
+            (![[self.webView executeJSSynchronous:@"MyWallet.didUpgradeToHd()"] boolValue] || isHdWalletInitialized) &&
+            [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue]);
 }
 
 - (BOOL)hasEncryptedWalletData

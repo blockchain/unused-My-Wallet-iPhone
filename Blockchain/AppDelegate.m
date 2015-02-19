@@ -31,6 +31,7 @@
 #import "Reachability.h"
 #import "SideMenuViewController.h"
 #import "BCWelcomeView.h"
+#import "BCHdUpgradeView.h"
 #import "BCWebViewController.h"
 
 #define CURTAIN_IMAGE_TAG 123
@@ -326,6 +327,13 @@ SideMenuViewController *sideMenuViewController;
     
     if (![app isPINSet]) {
         [app showPinModalAsView:NO];
+    }
+    
+    if (![app.wallet didUpgradeToHd] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"hasSeenUpgradeToHdScreen"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"hasSeenUpgradeToHdScreen"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self showHdUpgrade];
     }
 }
 
@@ -998,6 +1006,22 @@ SideMenuViewController *sideMenuViewController;
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
     [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO headerText:nil onDismiss:nil onResume:nil];
+}
+
+- (void)showHdUpgrade
+{
+    BCHdUpgradeView *hdUpgradeView = [[BCHdUpgradeView alloc] init];
+    [hdUpgradeView.upgradeButton addTarget:self action:@selector(continueUpgrade) forControlEvents:UIControlEventTouchUpInside];
+    [hdUpgradeView.cancelButton addTarget:self action:@selector(closeAllModals) forControlEvents:UIControlEventTouchUpInside];
+    [app showModalWithContent:hdUpgradeView closeType:ModalCloseTypeNone showHeader:NO headerText:nil onDismiss:nil onResume:nil];
+}
+
+- (void)continueUpgrade
+{
+    [self closeAllModals];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION/2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [wallet upgradeToHDWallet];
+    });
 }
 
 - (void)showCreateWallet:(id)sender

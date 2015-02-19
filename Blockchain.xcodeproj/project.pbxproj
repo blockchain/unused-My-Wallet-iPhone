@@ -37,6 +37,10 @@
 		6710DA3A1A94F1F70089DDED /* tab_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA341A94F1F70089DDED /* tab_right.png */; };
 		6710DA3B1A94F1F70089DDED /* tab_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA351A94F1F70089DDED /* tab_right@2x.png */; };
 		6710DA3C1A94F1F70089DDED /* tab_right@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA361A94F1F70089DDED /* tab_right@3x.png */; };
+		6710DA411A963F2B0089DDED /* BCHdUpgradeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6710DA401A963F2B0089DDED /* BCHdUpgradeView.m */; };
+		6710DA451A9645E20089DDED /* blockchain_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA421A9645E20089DDED /* blockchain_b.png */; };
+		6710DA461A9645E20089DDED /* blockchain_b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA431A9645E20089DDED /* blockchain_b@2x.png */; };
+		6710DA471A9645E20089DDED /* blockchain_b@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA441A9645E20089DDED /* blockchain_b@3x.png */; };
 		673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */; };
 		673107F219F6D49F00BE6899 /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 673107F119F6D49F00BE6899 /* PrivateKeyReader.m */; };
 		673136491A0D3F6600E067D5 /* hdwallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 673136481A0D3F6600E067D5 /* hdwallet.js */; };
@@ -440,6 +444,11 @@
 		6710DA341A94F1F70089DDED /* tab_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_right.png; sourceTree = "<group>"; };
 		6710DA351A94F1F70089DDED /* tab_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_right@2x.png"; sourceTree = "<group>"; };
 		6710DA361A94F1F70089DDED /* tab_right@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_right@3x.png"; sourceTree = "<group>"; };
+		6710DA3F1A963F2B0089DDED /* BCHdUpgradeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCHdUpgradeView.h; sourceTree = "<group>"; };
+		6710DA401A963F2B0089DDED /* BCHdUpgradeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCHdUpgradeView.m; sourceTree = "<group>"; };
+		6710DA421A9645E20089DDED /* blockchain_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockchain_b.png; sourceTree = "<group>"; };
+		6710DA431A9645E20089DDED /* blockchain_b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_b@2x.png"; sourceTree = "<group>"; };
+		6710DA441A9645E20089DDED /* blockchain_b@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_b@3x.png"; sourceTree = "<group>"; };
 		673107F019F6D49F00BE6899 /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		673107F119F6D49F00BE6899 /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		673136481A0D3F6600E067D5 /* hdwallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = hdwallet.js; path = "Submodules/My-Wallet-HD/hdwallet.js"; sourceTree = SOURCE_ROOT; };
@@ -763,6 +772,8 @@
 				678CD7471A2777E600748AA5 /* BCCreateAccountView.m */,
 				6762507B1A2CC5800052B63F /* BCEditAccountView.h */,
 				6762507C1A2CC5800052B63F /* BCEditAccountView.m */,
+				6710DA3F1A963F2B0089DDED /* BCHdUpgradeView.h */,
+				6710DA401A963F2B0089DDED /* BCHdUpgradeView.m */,
 			);
 			name = "Modal Content Views";
 			sourceTree = "<group>";
@@ -846,6 +857,9 @@
 				6775569319E749CC0054699B /* back_chevron_icon.png */,
 				6775569219E749CC0054699B /* back_chevron_icon@2x.png */,
 				6775569119E749CC0054699B /* back_chevron_icon@3x.png */,
+				6710DA421A9645E20089DDED /* blockchain_b.png */,
+				6710DA431A9645E20089DDED /* blockchain_b@2x.png */,
+				6710DA441A9645E20089DDED /* blockchain_b@3x.png */,
 				67EEE7661A8D0A3F00288753 /* blockchain_logo.png */,
 				67EEE7671A8D0A3F00288753 /* blockchain_logo@2x.png */,
 				67EEE7681A8D0A3F00288753 /* blockchain_logo@3x.png */,
@@ -1345,6 +1359,7 @@
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				67E9676219DF46A900305358 /* news_icon@2x.png in Resources */,
 				ECD244F219A8AC45004B1F40 /* PEKeyboard-4-edit.png in Resources */,
+				6710DA451A9645E20089DDED /* blockchain_b.png in Resources */,
 				67E9677819E320D100305358 /* marker_spend_off.png in Resources */,
 				6710DA1A1A8E9BDB0089DDED /* edit@3x.png in Resources */,
 				84AEEC8E1987D9C7000E8DC8 /* marker_drink@2x.png in Resources */,
@@ -1374,6 +1389,7 @@
 				84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */,
 				67D7AC291A0C36BC007CD81D /* signer.js in Resources */,
 				6710DA381A94F1F70089DDED /* tab_left@2x.png in Resources */,
+				6710DA471A9645E20089DDED /* blockchain_b@3x.png in Resources */,
 				6710DA391A94F1F70089DDED /* tab_left@3x.png in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
@@ -1430,6 +1446,7 @@
 				67E9675B19DF46A900305358 /* lock_icon.png in Resources */,
 				67EE1DBC19E3309500DBBFC9 /* marker_drink_off@2x.png in Resources */,
 				67EEE7651A8D079E00288753 /* home_icon_hi@3x.png in Resources */,
+				6710DA461A9645E20089DDED /* blockchain_b@2x.png in Resources */,
 				67D7AC1D1A0C3575007CD81D /* bitcoinjs.js in Resources */,
 				84AEEC8C1987D9C7000E8DC8 /* marker_atm@2x.png in Resources */,
 				678AD63A19D5833A00E9A778 /* qrscanner_icon@3x.png in Resources */,
@@ -1515,6 +1532,7 @@
 				FA6323411A446B0C00EB3974 /* MerchantLocation.m in Sources */,
 				FA63233C1A433BEA00EB3974 /* MerchantMapViewController.m in Sources */,
 				84FC031D1981DEBA00B97D5B /* UIAlertView+Blocks.m in Sources */,
+				6710DA411A963F2B0089DDED /* BCHdUpgradeView.m in Sources */,
 				9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */,
 				84FC02FA1981452D00B97D5B /* NSString+JSONParser_NSString.m in Sources */,
 				9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */,

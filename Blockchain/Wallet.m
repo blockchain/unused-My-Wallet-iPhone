@@ -918,7 +918,7 @@ Boolean isHdWalletInitialized;
         [self loading_start_create_account];
         
         // Wait a little bit to make sure the loading text is showing - then execute the blocking and kind of long create account, then refresh to display the newly created account. After account creation backup and refresh will be called again
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.webView executeJSSynchronous:@"MyWalletPhone.createAccount(\"%@\")", label];
             
             [app reload];

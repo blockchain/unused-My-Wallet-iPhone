@@ -881,6 +881,9 @@
 				67EEE7601A8D079E00288753 /* home_icon_hi.png */,
 				67EEE7611A8D079E00288753 /* home_icon_hi@2x.png */,
 				67EEE7621A8D079E00288753 /* home_icon_hi@3x.png */,
+				6710DA481A966F760089DDED /* importedaddress.png */,
+				6710DA491A966F760089DDED /* importedaddress@2x.png */,
+				6710DA4A1A966F760089DDED /* importedaddress@3x.png */,
 				C9B66D141941FCB30057E662 /* Identity */,
 				67E9674F19DF46A900305358 /* lock_icon.png */,
 				67E9675019DF46A900305358 /* lock_icon@2x.png */,
@@ -1098,9 +1101,6 @@
 		C9B66D141941FCB30057E662 /* Identity */ = {
 			isa = PBXGroup;
 			children = (
-				6710DA481A966F760089DDED /* importedaddress.png */,
-				6710DA491A966F760089DDED /* importedaddress@2x.png */,
-				6710DA4A1A966F760089DDED /* importedaddress@3x.png */,
 				C9BE918B1945F5FC00FD516D /* Images.xcassets */,
 			);
 			name = Identity;

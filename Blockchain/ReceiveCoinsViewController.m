@@ -731,7 +731,7 @@ UIActionSheet *popupAddressArchive;
         requestAmountTextField.text = nil;
         
         // Show an extra menu item (more actions)
-        [[[UIApplication sharedApplication] keyWindow] addSubview:moreActionsButton];
+        [app.modalView addSubview:moreActionsButton];
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             moreActionsButton.alpha = 1.0f;
         }];

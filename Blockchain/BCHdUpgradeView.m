@@ -45,7 +45,7 @@ Boolean shouldShowAnimation;
         textLabel.numberOfLines = 2;
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.font = [UIFont boldSystemFontOfSize:14];
-        textLabel.text = @"We've designed a whole new\nwallet experience for you";
+        textLabel.text = BC_STRING_UPGRADE_TEXT;
         [self addSubview:textLabel];
         
         // Buttons

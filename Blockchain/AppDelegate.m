@@ -367,6 +367,9 @@ SideMenuViewController *sideMenuViewController;
 - (void)showPasswordModal
 {
     [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:BC_STRING_PASSWORD_REQUIRED];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:mainPasswordTextField action:@selector(resignFirstResponder)];
+    [mainPasswordView addGestureRecognizer:tapGesture];
 }
 
 - (void)beginBackgroundUpdateTask
@@ -475,7 +478,7 @@ SideMenuViewController *sideMenuViewController;
         [app showWelcome];
         
         if ([self guid] && [self sharedKey]) {
-            [self showModalWithContent:mainPasswordView closeType:ModalCloseTypeNone headerText:BC_STRING_PASSWORD_REQUIRED];
+            [self showPasswordModal];
         }
     }
 }

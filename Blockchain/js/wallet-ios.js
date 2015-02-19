@@ -96,7 +96,7 @@ MyWalletPhone.upgradeToHDWallet = function() {
 
     device.execute('loading_start_upgrade_to_hd');
 
-    MyWallet.upgradeToHDWallet(MyWalletPhone.getSecondPassword, success, error);
+    MyWallet.upgradeToHDWallet(MyWalletPhone.getSecondPassword(success, error), success, error);
 };
 
 MyWalletPhone.createAccount = function(label) {
@@ -112,7 +112,7 @@ MyWalletPhone.createAccount = function(label) {
         device.execute('loading_stop');
     };
 
-    MyWallet.createAccount(label, MyWalletPhone.getSecondPassword, success, error);
+    MyWallet.createAccount(label, MyWalletPhone.getSecondPassword(success, error), success, error);
 };
 
 MyWalletPhone.setPbkdf2Iterations = function(iterations) {
@@ -124,7 +124,7 @@ MyWalletPhone.setPbkdf2Iterations = function(iterations) {
         console.log('Error updating PBKDF2 iterations');
     };
 
-    MyWallet.setPbkdf2Iterations(iterations, success, error, MyWalletPhone.getSecondPassword);
+    MyWallet.setPbkdf2Iterations(iterations, success, error, MyWalletPhone.getSecondPassword(success, error));
 };
 
 MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inputedPassword, twoFACode, success, needs_two_factor_code, wrong_two_factor_code, other_error) {
@@ -221,7 +221,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
+    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -242,7 +242,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -263,7 +263,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -284,7 +284,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword);
+    MyWallet.sendToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -549,7 +549,7 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
         device.execute('on_error_adding_private_key:', [''+e]);
     };
 
-    MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword, MyWalletPhone.getPrivateKeyPassword, success, error);
+    MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword(success, error), MyWalletPhone.getPrivateKeyPassword, success, error);
 };
 
 // Shared functions
@@ -626,13 +626,24 @@ MyWalletPhone.getPrivateKeyPassword = function(callback) {
                    }, function(msg) { console.log('Error' + msg); });
 };
 
-MyWalletPhone.getSecondPassword = function(callback) {
-    // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
-    device.execute("getSecondPassword:", ["discard"], function(pw) {
-                   callback(pw,
-                            function () { console.log('Second password correct'); },
-                            function () { console.log('Second password incorrect'); });
-                   }, function(msg) { console.log('Error' + msg); });
+MyWalletPhone.getSecondPassword = function(success, error) {
+    var fun = function(callback) {
+        // Due to the way the JSBridge handles calls with success/error callbacks, we need a first argument that can be ignored
+        device.execute("getSecondPassword:", ["discard"], function(pw) {
+                       callback(pw,
+                                function () {
+                                    console.log('Second password correct');
+                                },
+                                function () {
+                                    console.log('Second password incorrect');
+                                });
+                       }, function(msg) {
+                           console.log('Error: ' + msg);
+                           error && error('');
+                       });
+    };
+    
+    return fun;
 };
 
 

@@ -230,7 +230,9 @@ BOOL didChangeDollarAmount = NO;
     };
     
     listener.on_error = ^(NSString* error) {
-        [app standardNotify:error];
+        if (error && error.length != 0) {
+            [app standardNotify:error];
+        }
         
         [sendPaymentButton setEnabled:TRUE];
         

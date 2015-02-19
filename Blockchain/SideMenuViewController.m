@@ -12,6 +12,7 @@
 #import "BCCreateAccountView.h"
 #import "BCEditAccountView.h"
 #import "AccountTableCell.h"
+#import "BCLine.h"
 
 #define SECTION_HEADER_HEIGHT 44
 
@@ -95,13 +96,13 @@ int accountEntries = 0;
 - (void)reload
 {
     // Total entries: 1 entry for the total balance, 1 for each HD account, 1 for the total legacy addresses balance (if needed)
-    balanceEntries = 1 + [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
+    balanceEntries = [app.wallet getAccountsCount] + ([app.wallet hasLegacyAddresses] ? 1 : 0);
     accountEntries = [app.wallet getAccountsCount];
     
     menuEntries = [app.wallet getAccountsCount] > 0 ? 4 : 5;
     
     // Resize table view
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * menuEntries + BALANCE_ENTRY_HEIGHT * balanceEntries + SECTION_HEADER_HEIGHT);
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * menuEntries + BALANCE_ENTRY_HEIGHT * (balanceEntries + 1) + SECTION_HEADER_HEIGHT);
     
     // If the tableView is bigger than the screen, enable scrolling and resize table view to screen size
     if (self.tableView.frame.size.height > self.view.frame.size.height ) {
@@ -156,7 +157,7 @@ int accountEntries = 0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.section != 2) {
         return;
     }
     
@@ -204,7 +205,7 @@ int accountEntries = 0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.section != 2) {
         return BALANCE_ENTRY_HEIGHT;
     }
     return MENU_ENTRY_HEIGHT;
@@ -212,12 +213,12 @@ int accountEntries = 0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && accountEntries > 0) {
+    if (section == 1 && accountEntries > 0) {
         return SECTION_HEADER_HEIGHT;
     }
     
@@ -226,9 +227,14 @@ int accountEntries = 0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && accountEntries > 0) {
+    // My Accounts
+    if (section == 1 && accountEntries > 0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, SECTION_HEADER_HEIGHT)];
         view.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
+        
+        BCLine *topSeparator = [[BCLine alloc] initWithFrame:CGRectMake(56, 0, self.tableView.frame.size.width, 1.0/[UIScreen mainScreen].scale)];
+        topSeparator.backgroundColor = [UIColor whiteColor];
+        [view addSubview:topSeparator];
         
         UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet.png"]];
         icon.frame = CGRectMake(18, 13, 20, 18);
@@ -245,6 +251,10 @@ int accountEntries = 0;
         [addButton addTarget:self action:@selector(addAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:addButton];
         
+        BCLine *bottomSeparator = [[BCLine alloc] initWithFrame:CGRectMake(56, SECTION_HEADER_HEIGHT, self.tableView.frame.size.width, 1.0/[UIScreen mainScreen].scale)];
+        bottomSeparator.backgroundColor = [self.tableView separatorColor];
+        [view addSubview:bottomSeparator];
+        
         return view;
     }
     
@@ -253,6 +263,9 @@ int accountEntries = 0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
+    if (sectionIndex == 0) {
+        return 1;
+    }
     if (sectionIndex == 1) {
         return menuEntries;
     }
@@ -264,7 +277,7 @@ int accountEntries = 0;
 {
     static NSString *cellIdentifier;
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         cellIdentifier = @"CellMenu";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -318,7 +331,7 @@ int accountEntries = 0;
         }
         
         // Total balance
-        if (indexPath.row == 0) {
+        if (indexPath.section == 0 && indexPath.row == 0) {
             uint64_t totalBalance = app.latestResponse.final_balance;
             
             cell.amountLabel.text = [app formatMoney:totalBalance localCurrency:app->symbolLocal];
@@ -326,9 +339,8 @@ int accountEntries = 0;
             cell.editButton.hidden = YES;
         }
         // Account balances
-        else if (indexPath.row <= accountEntries) {
-            // Subtract 1 because Total balance is shown first
-            int accountIdx = (int) indexPath.row-1;
+        else if (indexPath.row < accountEntries) {
+            int accountIdx = (int) indexPath.row;
             uint64_t accountBalance = [app.wallet getBalanceForAccount:accountIdx];
             
             cell.amountLabel.text = [app formatMoney:accountBalance localCurrency:app->symbolLocal];
@@ -339,6 +351,7 @@ int accountEntries = 0;
         else {
             uint64_t legacyBalance = [app.wallet getTotalBalanceForActiveLegacyAddresses];
             
+            [cell.iconImage setImage:[UIImage imageNamed:@"importedaddress"]];
             cell.amountLabel.text = [app formatMoney:legacyBalance localCurrency:app->symbolLocal];
             cell.labelLabel.text = BC_STRING_IMPORTED_ADDRESSES;
             cell.editButton.hidden = YES;
@@ -352,13 +365,13 @@ int accountEntries = 0;
 {
     // Custom separator inset
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-        float leftInset = (indexPath.section == 0) ? 56 : 15;
+        float leftInset = (indexPath.section != 2) ? 56 : 15;
         [cell setSeparatorInset:UIEdgeInsetsMake(0, leftInset, 0, 0)];
     }
     
     // No separator for last entry of each section
-    if ((indexPath.section == 0 && indexPath.row == balanceEntries - 1) ||
-        (indexPath.section == 1 && indexPath.row == menuEntries - 1)) {
+    if ((indexPath.section == 1 && indexPath.row == balanceEntries - 1) ||
+        (indexPath.section == 2 && indexPath.row == menuEntries - 1)) {
         [cell setSeparatorInset:UIEdgeInsetsMake(0, 15, 0, CGRectGetWidth(cell.bounds)-15)];
     }
 }

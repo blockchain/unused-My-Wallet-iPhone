@@ -20,6 +20,9 @@
     if (self) {
         ECSlidingViewController *sideMenu = app.slidingViewController;
         
+        _iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(18, 10, 22, 22)];
+        [self addSubview:_iconImage];
+        
         _labelLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 10, self.frame.size.width - sideMenu.anchorLeftPeekAmount - 100, 18)];
         _labelLabel.minimumScaleFactor = 0.75f;
         [_labelLabel setAdjustsFontSizeToFitWidth:YES];

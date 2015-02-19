@@ -12,6 +12,7 @@
 
 @property int accountIdx;
 
+@property (strong, atomic) UIImageView *iconImage;
 @property (strong, atomic) UIButton *editButton;
 @property (strong, atomic) UILabel *amountLabel;
 @property (strong, atomic) UILabel *labelLabel;

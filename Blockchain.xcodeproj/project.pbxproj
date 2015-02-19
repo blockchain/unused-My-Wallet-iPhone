@@ -41,6 +41,9 @@
 		6710DA451A9645E20089DDED /* blockchain_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA421A9645E20089DDED /* blockchain_b.png */; };
 		6710DA461A9645E20089DDED /* blockchain_b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA431A9645E20089DDED /* blockchain_b@2x.png */; };
 		6710DA471A9645E20089DDED /* blockchain_b@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA441A9645E20089DDED /* blockchain_b@3x.png */; };
+		6710DA4B1A966F760089DDED /* importedaddress.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA481A966F760089DDED /* importedaddress.png */; };
+		6710DA4C1A966F760089DDED /* importedaddress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA491A966F760089DDED /* importedaddress@2x.png */; };
+		6710DA4D1A966F760089DDED /* importedaddress@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA4A1A966F760089DDED /* importedaddress@3x.png */; };
 		673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */; };
 		673107F219F6D49F00BE6899 /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 673107F119F6D49F00BE6899 /* PrivateKeyReader.m */; };
 		673136491A0D3F6600E067D5 /* hdwallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 673136481A0D3F6600E067D5 /* hdwallet.js */; };
@@ -449,6 +452,9 @@
 		6710DA421A9645E20089DDED /* blockchain_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockchain_b.png; sourceTree = "<group>"; };
 		6710DA431A9645E20089DDED /* blockchain_b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_b@2x.png"; sourceTree = "<group>"; };
 		6710DA441A9645E20089DDED /* blockchain_b@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockchain_b@3x.png"; sourceTree = "<group>"; };
+		6710DA481A966F760089DDED /* importedaddress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = importedaddress.png; sourceTree = "<group>"; };
+		6710DA491A966F760089DDED /* importedaddress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "importedaddress@2x.png"; sourceTree = "<group>"; };
+		6710DA4A1A966F760089DDED /* importedaddress@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "importedaddress@3x.png"; sourceTree = "<group>"; };
 		673107F019F6D49F00BE6899 /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		673107F119F6D49F00BE6899 /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		673136481A0D3F6600E067D5 /* hdwallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = hdwallet.js; path = "Submodules/My-Wallet-HD/hdwallet.js"; sourceTree = SOURCE_ROOT; };
@@ -1092,6 +1098,9 @@
 		C9B66D141941FCB30057E662 /* Identity */ = {
 			isa = PBXGroup;
 			children = (
+				6710DA481A966F760089DDED /* importedaddress.png */,
+				6710DA491A966F760089DDED /* importedaddress@2x.png */,
+				6710DA4A1A966F760089DDED /* importedaddress@3x.png */,
 				C9BE918B1945F5FC00FD516D /* Images.xcassets */,
 			);
 			name = Identity;
@@ -1402,6 +1411,7 @@
 				84AEEC8D1987D9C7000E8DC8 /* marker_cafe@2x.png in Resources */,
 				678AD63719D5833A00E9A778 /* merchant_directory_icon@3x.png in Resources */,
 				67EEE76B1A8D0A3F00288753 /* blockchain_logo@3x.png in Resources */,
+				6710DA4C1A966F760089DDED /* importedaddress@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */,
 				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
@@ -1471,9 +1481,11 @@
 				67E9675C19DF46A900305358 /* lock_icon@2x.png in Resources */,
 				9F1831F0151744FC00FB3D52 /* ReceiveCell.xib in Resources */,
 				6710DA2C1A93CF1D0089DDED /* menu_more.png in Resources */,
+				6710DA4B1A966F760089DDED /* importedaddress.png in Resources */,
 				678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */,
 				6710DA191A8E9BDB0089DDED /* edit@2x.png in Resources */,
 				84AEEC831987D5EC000E8DC8 /* marker_eat.png in Resources */,
+				6710DA4D1A966F760089DDED /* importedaddress@3x.png in Resources */,
 				678AD62D19D57FAC00E9A778 /* menu_icon@2x.png in Resources */,
 				67E9676019DF46A900305358 /* logout_icon@3x.png in Resources */,
 				67EEE7571A8D045700288753 /* receive_icon_hi.png in Resources */,

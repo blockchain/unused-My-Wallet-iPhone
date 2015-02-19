@@ -177,10 +177,6 @@ SideMenuViewController *sideMenuViewController;
     }
 }
 
-- (IBAction)balanceTextClicked:(id)sender {
-    [self toggleSymbol];
-}
-
 #pragma mark - UI State
 
 - (void)reload
@@ -352,7 +348,7 @@ SideMenuViewController *sideMenuViewController;
 {
     // In case we were on the manual pair screen, we want to go back there. The way to check for that is that the wallet has a guid, but it's not saved yet
     if (wallet.guid && ![[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:BC_STRING_MANUAL_PAIRING];
+        [self manualPairClicked:nil];
         
         return;
     }
@@ -1011,15 +1007,13 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)showPairWallet:(id)sender
 {
-    // If the device has a camera, show automatic pairing, otherwise show manual pairing
-    if ([self isQRCodeScanningSupported]) {
-        [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack headerText:BC_STRING_AUTOMATIC_PAIRING];
-    }
-    else {
-        [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:BC_STRING_MANUAL_PAIRING];
-    }
+    [app showModalWithContent:pairingInstructionsView closeType:ModalCloseTypeBack headerText:BC_STRING_AUTOMATIC_PAIRING];
 }
 
+- (IBAction)manualPairClicked:(id)sender
+{
+    [self showModalWithContent:manualPairView closeType:ModalCloseTypeBack headerText:BC_STRING_MANUAL_PAIRING];
+}
 
 #pragma mark - Actions
 

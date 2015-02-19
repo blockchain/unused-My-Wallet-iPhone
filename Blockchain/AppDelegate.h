@@ -161,7 +161,7 @@
 - (IBAction)scanAccountQRCodeclicked:(id)sender;
 - (IBAction)secondPasswordClicked:(id)sender;
 - (IBAction)mainPasswordClicked:(id)sender;
-- (IBAction)balanceTextClicked:(id)sender;
+- (IBAction)manualPairClicked:(id)sender;
 
 - (IBAction)newsClicked:(id)sender;
 - (IBAction)accountSettingsClicked:(id)sender;

@@ -216,7 +216,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error]);
     };
 
-    var value = Bitcoin.BigInteger.valueOf(valueString);
+    var value = BigInteger.valueOf(valueString);
 
     var fee = null;
     var note = null;
@@ -237,7 +237,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
         device.execute('tx_on_error:error:', [id, ''+error]);
     };
 
-    var value = Bitcoin.BigInteger.valueOf(valueString);
+    var value = BigInteger.valueOf(valueString);
 
     var fee = null;
     var note = null;
@@ -663,7 +663,7 @@ ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
     }
 
     device.execute('crypto_scrypt:salt:n:r:p:dkLen:', [passwd, salt, N, r, p, dkLen], function(buffer) {
-        var bytes = new Bitcoin.Buffer.Buffer(buffer, 'hex');
+        var bytes = new Buffer(buffer, 'hex');
 
         callback(bytes);
     }, function(e) {

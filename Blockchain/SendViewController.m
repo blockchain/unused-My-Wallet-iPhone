@@ -115,6 +115,21 @@ BOOL didChangeDollarAmount = NO;
         self.initialToAmountDouble = 0;
     }
     
+    // Update labels in case they updated
+    if (self.sendFromAddress) {
+        selectAddressTextField.text = [self labelForLegacyAddress:self.fromAddress];
+    }
+    else {
+        selectAddressTextField.text = [app.wallet getLabelForAccount:self.fromAccount];
+    }
+    
+    if (self.sendToAddress) {
+        toField.text = [self labelForLegacyAddress:self.toAddress];
+    }
+    else {
+        toField.text = [app.wallet getLabelForAccount:self.toAccount];
+    }
+    
     if (app->symbolLocal && app.latestResponse.symbol_local && app.latestResponse.symbol_local.conversion > 0) {
         [btcCodeButton setTitle:app.latestResponse.symbol_local.code forState:UIControlStateNormal];
         displayingLocalSymbol = TRUE;

@@ -525,15 +525,28 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
     var success = function(address) {
         console.log('Add private key success');
 
+        device.execute('loading_stop');
+
         device.execute('on_add_private_key:', [address]);
     };
     var error = function(e) {
         console.log('Add private key Error');
 
+        device.execute('loading_stop');
+
         device.execute('on_error_adding_private_key:', [''+e]);
     };
+    var alreadyImportedCallback = function(e) {
+        console.log('Add private key Error: already imported');
 
-    MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword(success, error), MyWalletPhone.getPrivateKeyPassword, success, error);
+        device.execute('loading_stop');
+
+        device.execute('on_error_adding_private_key:', ['Key already imported']);
+    };
+    
+    device.execute('loading_start_import_private_key');
+
+    MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword(success, error), MyWalletPhone.getPrivateKeyPassword, success, alreadyImportedCallback, error);
 };
 
 // Shared functions

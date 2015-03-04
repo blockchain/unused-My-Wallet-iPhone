@@ -527,6 +527,11 @@ Boolean isHdWalletInitialized;
     [app showBusyViewWithLoadingText:BC_STRING_LOADING_CREATING_WALLET];
 }
 
+- (void)loading_start_import_private_key
+{
+    [app showBusyViewWithLoadingText:BC_STRING_LOADING_IMPORT_KEY];
+}
+
 - (void)loading_stop
 {
     [app hideBusyView];

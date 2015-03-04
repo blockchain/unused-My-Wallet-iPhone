@@ -426,8 +426,41 @@ BOOL didChangeDollarAmount = NO;
         NSArray  *points = [newString componentsSeparatedByString:@"."];
         NSArray  *commas = [newString componentsSeparatedByString:@","];
         
+        // Only one comma or point in input field allowed
         if ([points count] > 2 || [commas count] > 2)
             return NO;
+        
+        // When entering amount in BTC, max 8 decimal places
+        if (!displayingLocalSymbol) {
+            if (points.count == 2) {
+                NSString *decimalString = points[1];
+                if (decimalString.length > 8) {
+                    return NO;
+                }
+            }
+            else if (commas.count == 2) {
+                NSString *decimalString = commas[1];
+                if (decimalString.length > 8) {
+                    return NO;
+                }
+            }
+        }
+        
+        // Fiat currencies have a max of 3 decimal places, most of them actually only 2
+        else {
+            if (points.count == 2) {
+                NSString *decimalString = points[1];
+                if (decimalString.length > 3) {
+                    return NO;
+                }
+            }
+            else if (commas.count == 2) {
+                NSString *decimalString = commas[1];
+                if (decimalString.length > 3) {
+                    return NO;
+                }
+            }
+        }
         
         [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
         

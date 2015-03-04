@@ -627,7 +627,12 @@ SideMenuViewController *sideMenuViewController;
         } else if(![wallet validateSecondPassword:password]) {
             if (error) error(BC_STRING_SECOND_PASSWORD_INCORRECT);
         } else {
-            if (success) success(password);
+            if (success) {
+                // It takes ANIMATION_DURATION to dismiss the second password view, then a little extra to make sure any wait spinners start spinning before we execute the success function.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5*ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    success(password);
+                });
+            }
         }
         
         secondPasswordTextField.text = nil;

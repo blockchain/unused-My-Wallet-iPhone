@@ -134,29 +134,27 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     var hasBuiltHD = false;
     var hasLoadedTransactions = false;
     
-    var logTime = function(name, isParallel) {
+    var logTime = function(name) {
         t1 = new Date().getTime();
         
         console.log('----------');
         console.log('Execution time ' + name + ': ' + (t1 - t0) + ' milliseconds.')
         console.log('----------');
         
-        if(!isParallel) {
-            t0 = t1;
-        }
+        t0 = t1;
     };
     
     var fetch_success = function() {
         device.execute('loading_start_decrypt_wallet');
         
-        logTime('download', false);
+        logTime('download');
     };
     
     var decrypt_success = function() {
         device.execute('did_decrypt');
         device.execute('loading_start_multiaddr');
         
-        logTime('decrypt', false);
+        logTime('decrypt');
     };
     
     var build_hd_success = function() {
@@ -169,7 +167,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
             device.execute('loading_start_multiaddr');
         }
         
-        logTime('build HD wallet', true);
+        logTime('build HD wallet');
     };
     
     var history_success = function() {
@@ -182,7 +180,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
             device.execute('loading_start_build_wallet');
         }
         
-        logTime('get history', true);
+        logTime('get history');
     };
     
     var success = function() {

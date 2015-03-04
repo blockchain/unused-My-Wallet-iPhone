@@ -131,9 +131,6 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     // Timing
     var t0 = new Date().getTime(), t1;
     
-    var hasBuiltHD = false;
-    var hasLoadedTransactions = false;
-    
     var logTime = function(name) {
         t1 = new Date().getTime();
         
@@ -145,42 +142,31 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     };
     
     var fetch_success = function() {
-        device.execute('loading_start_decrypt_wallet');
-        
         logTime('download');
+        
+        device.execute('loading_start_decrypt_wallet');
     };
     
     var decrypt_success = function() {
-        device.execute('did_decrypt');
-        device.execute('loading_start_multiaddr');
-        
         logTime('decrypt');
+        
+        device.execute('did_decrypt');
+        
+        device.execute('loading_start_build_wallet');
     };
     
     var build_hd_success = function() {
-        hasBuiltHD = true;
-        if(hasBuiltHD && hasLoadedTransactions) {
-            device.execute('loading_stop');
-            device.execute('did_load_wallet');
-        }
-        else {
-            device.execute('loading_start_multiaddr');
-        }
-        
         logTime('build HD wallet');
+        
+        device.execute('loading_start_multiaddr');
     };
     
     var history_success = function() {
-        hasLoadedTransactions = true;
-        if((!MyWallet.didUpgradeToHd() || hasBuiltHD) && hasLoadedTransactions) {
-            device.execute('loading_stop');
-            device.execute('did_load_wallet');
-        }
-        else {
-            device.execute('loading_start_build_wallet');
-        }
-        
         logTime('get history');
+        
+        device.execute('loading_stop');
+        
+        device.execute('did_load_wallet');
     };
     
     var success = function() {

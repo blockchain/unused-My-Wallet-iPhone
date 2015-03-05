@@ -9,10 +9,8 @@ _ssh pub key has to be registered with Github for this to work_
 
     git submodule update --init
     cd Submodules/My-Wallet-HD
-    git checkout master
     npm install
     cd ../OpenSSL-for-iPhone  
-    git checkout master
     ./build-libssl.sh
 
 ## Open the project in Xcode

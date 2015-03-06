@@ -28,6 +28,8 @@ float containerOffset;
 uint64_t originalBtcAmount = 0.0;
 BOOL didChangeDollarAmount = NO;
 
+uint64_t availableAmount = 0.0;
+
 #pragma mark - Lifecycle
 
 - (void)viewDidAppear:(BOOL)animated
@@ -66,11 +68,17 @@ BOOL didChangeDollarAmount = NO;
         int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
         selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
         self.fromAccount = defaultAccountIndex;
+        
+        availableAmount = [app.wallet getBalanceForAccount:defaultAccountIndex];
     }
     else {
         // Default setting: send from any address
         self.sendFromAddress = true;
         selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+        
+        availableAmount = [app.wallet getTotalBalanceForActiveLegacyAddresses];
+        
+        // TODO fix send from any addr (needs to select inputs from all active legacy addrs)
     }
 
     self.sendToAddress = true;
@@ -121,6 +129,7 @@ BOOL didChangeDollarAmount = NO;
     }
     else {
         selectAddressTextField.text = [app.wallet getLabelForAccount:self.fromAccount];
+        availableAmount = [app.wallet getBalanceForAccount:self.fromAccount];;
     }
     
     if (self.sendToAddress) {
@@ -339,6 +348,14 @@ BOOL didChangeDollarAmount = NO;
         amount = 0;
     }
     
+    // If the amount entered exceeds amount available + fee, change the color of the amount text
+    if (amount + [self getRecommendedFeeForAmount:amount] > availableAmount) {
+        amountField.textColor = [UIColor redColor];
+    }
+    else {
+        amountField.textColor = COLOR_BLOCKCHAIN_BLUE;
+    }
+    
     if (displayingLocalSymbol) {
         if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
             amount = originalBtcAmount;
@@ -349,6 +366,19 @@ BOOL didChangeDollarAmount = NO;
         convertedAmountLabel.text = [app formatMoney:amount localCurrency:TRUE];
         originalBtcAmount = amount;
     }
+}
+
+- (uint64_t)getRecommendedFeeForAmount:(uint64_t)amount
+{
+    int64_t fee;
+    if (self.sendFromAddress) {
+        fee = [app.wallet recommendedTransactionFeeForAddress:self.fromAddress amount:amount];
+    }
+    else {
+        fee = [app.wallet recommendedTransactionFeeForAccount:self.fromAccount amount:amount];
+    }
+    
+    return fee;
 }
 
 - (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)addressString
@@ -511,10 +541,14 @@ BOOL didChangeDollarAmount = NO;
     else {
         addressOrLabel = address;
     }
-        
+    
+    availableAmount = [app.wallet getLegacyAddressBalance:address];
+    
     selectAddressTextField.text = addressOrLabel;
     self.fromAddress = address;
     DLog(@"fromAddress: %@", address);
+    
+    [self doCurrencyConversion];
 }
 
 - (void)didSelectToAddress:(NSString *)address
@@ -530,9 +564,13 @@ BOOL didChangeDollarAmount = NO;
 {
     self.sendFromAddress = false;
     
+    availableAmount = [app.wallet getBalanceForAccount:account];
+    
     selectAddressTextField.text = [app.wallet getLabelForAccount:account];
     self.fromAccount = account;
     DLog(@"fromAccount: %@", [app.wallet getLabelForAccount:account]);
+    
+    [self doCurrencyConversion];
 }
 
 - (void)didSelectToAccount:(int)account
@@ -702,6 +740,31 @@ BOOL didChangeDollarAmount = NO;
     [self confirmPayment];
 }
 
+- (IBAction)useAllClicked:(id)sender
+{
+    uint64_t availableWithoutFee = availableAmount - [self getRecommendedFeeForAmount:availableAmount];
+    
+    if (displayingLocalSymbol) {
+        double amountInSymbolLocal = (availableWithoutFee / (double)app.latestResponse.symbol_local.conversion);
+        
+        app.localCurrencyFormatter.usesGroupingSeparator = NO;
+        amountField.text = [app.localCurrencyFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolLocal]];
+        app.localCurrencyFormatter.usesGroupingSeparator = YES;
+    } else {
+        double amountInSymbolBTC = (availableWithoutFee / (double)app.latestResponse.symbol_btc.conversion);
+        
+        app.btcFormatter.usesGroupingSeparator = NO;
+        amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
+        app.btcFormatter.usesGroupingSeparator = YES;
+        
+        originalBtcAmount = amountInSymbolBTC;
+        didChangeDollarAmount = NO;
+    }
+    
+    // TODO this doesn't work exactly right - need to clean up the whole currency conversion mess
+    [self reloadWithCurrencyChange:false];
+}
+
 - (IBAction)btcCodeClicked:(id)sender
 {
     [app toggleSymbol];
@@ -710,7 +773,6 @@ BOOL didChangeDollarAmount = NO;
 - (IBAction)sendPaymentClicked:(id)sender
 {
     // If user pasted an address into the toField, assign it to toAddress
-    // TOOD not possible anymore?
     if ([self.toAddress length] == 0) {
         self.toAddress = toField.text;
         DLog(@"toAddress: %@", self.toAddress);
@@ -761,6 +823,5 @@ BOOL didChangeDollarAmount = NO;
 //        [self confirmPayment];
 //    }
 }
-
 
 @end

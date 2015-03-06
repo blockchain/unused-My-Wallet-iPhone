@@ -73,6 +73,7 @@
 
 - (IBAction)sendPaymentClicked:(id)sender;
 - (IBAction)labelAddressClicked:(id)sender;
+- (IBAction)useAllClicked:(id)sender;
 
 - (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)string;
 

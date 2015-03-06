@@ -166,4 +166,7 @@
 
 - (void)setPbkdf2Iterations:(int)iterations;
 
+- (uint64_t)recommendedTransactionFeeForAddress:(NSString*)address amount:(uint64_t)amount;
+- (uint64_t)recommendedTransactionFeeForAccount:(int)account amount:(uint64_t)amount;
+
 @end

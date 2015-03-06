@@ -117,7 +117,7 @@
     // Move down the btc button and the confirmations label according to the number of inouts from above
     [btcButton setFrame:CGRectMake(btcButton.frame.origin.x, 57, btcButton.frame.size.width, btcButton.frame.size.height)];
     
-    [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, 57, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];
+    [confirmationsLabel setFrame:CGRectMake(confirmationsLabel.frame.origin.x, 46, confirmationsLabel.frame.size.width, confirmationsLabel.frame.size.height)];
 }
 
 - (void)seLatestBlock:(LatestBlock*)block

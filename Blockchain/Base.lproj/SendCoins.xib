@@ -124,7 +124,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="d7n-Ue-QXL">
-                                    <rect key="frame" x="239" y="32" width="61" height="30"/>
+                                    <rect key="frame" x="239" y="32" width="61" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <state key="normal" title="Use all">
@@ -182,7 +182,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view opaque="NO" contentMode="scaleToFill" id="56" userLabel="BTCn = $n">
+        <view opaque="NO" contentMode="scaleToFill" id="56" userLabel="Keyboard accessory">
             <rect key="frame" x="0.0" y="0.0" width="320" height="29"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>

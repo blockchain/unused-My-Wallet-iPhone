@@ -21,12 +21,10 @@
 
 AVCaptureSession *captureSession;
 AVCaptureVideoPreviewLayer *videoPreviewLayer;
-BOOL isReadingQRCode;
 
 float containerOffset;
 
-uint64_t originalBtcAmount = 0.0;
-BOOL didChangeDollarAmount = NO;
+uint64_t amountInSatoshi = 0.0;
 
 uint64_t availableAmount = 0.0;
 
@@ -77,8 +75,6 @@ uint64_t availableAmount = 0.0;
         selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
         
         availableAmount = [app.wallet getTotalBalanceForActiveLegacyAddresses];
-        
-        // TODO fix send from any addr (needs to select inputs from all active legacy addrs)
     }
 
     self.sendToAddress = true;
@@ -93,11 +89,15 @@ uint64_t availableAmount = 0.0;
     self.view.frame = CGRectMake(0, 0, app.window.frame.size.width,
                                  app.window.frame.size.height - DEFAULT_HEADER_HEIGHT - DEFAULT_FOOTER_HEIGHT);
     
-    [self reloadWithCurrencyChange:NO];
+    [self reload];
 }
 
-- (void)reloadWithCurrencyChange:(BOOL)currencyChange
+- (void)reload
 {
+    if (![app.wallet isInitialized]) {
+        return;
+    }
+    
     // Populate address field from URL handler if available.
     if (self.initialToAddressString && toField != nil) {
         self.sendToAddress = true;
@@ -108,22 +108,7 @@ uint64_t availableAmount = 0.0;
         self.initialToAddressString = nil;
     }
     
-    // Populate amount field from URL handler if available
-    if (self.initialToAmountDouble > 0 && amountField != nil && app.latestResponse.symbol_btc) {
-        
-        double amountInSymbolBTC = (self.initialToAmountDouble / (double)app.latestResponse.symbol_btc.conversion);
-        
-        app.btcFormatter.usesGroupingSeparator = NO;
-        amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
-        app.btcFormatter.usesGroupingSeparator = YES;
-        
-        originalBtcAmount = amountInSymbolBTC;
-        didChangeDollarAmount = NO;
-        
-        self.initialToAmountDouble = 0;
-    }
-    
-    // Update labels in case they updated
+    // Update account/address labels in case they changed
     if (self.sendFromAddress) {
         selectAddressTextField.text = [self labelForLegacyAddress:self.fromAddress];
     }
@@ -147,57 +132,7 @@ uint64_t availableAmount = 0.0;
         displayingLocalSymbol = FALSE;
     }
     
-    // Convert the amount field when the local currency changes
-    uint64_t amount = SATOSHI;
-    if ([amountField.text length] > 0) {
-        NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
-        
-        // If we are switching currency display, get the amount with the other currency
-        if (currencyChange) {
-            if (!displayingLocalSymbol) {
-                // Restore original BTC amount instead of using conversion from fiat if there is an original amount
-                if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
-                    amount = originalBtcAmount;
-                }
-                else {
-                    amount = app.latestResponse.symbol_local.conversion * [amountString doubleValue];
-                }
-            } else {
-                amount = [app.wallet parseBitcoinValue:amountString];
-            }
-        }
-        else {
-            if (displayingLocalSymbol) {
-                amount =  app.latestResponse.symbol_local.conversion * [amountString doubleValue];
-            } else {
-                amount = [app.wallet parseBitcoinValue:amountString];
-            }
-        }
-        
-        if (displayingLocalSymbol) {
-            @try {
-                NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amount] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)app.latestResponse.symbol_local.conversion]];
-                
-                app.localCurrencyFormatter.usesGroupingSeparator = NO;
-                amountField.text = [app.localCurrencyFormatter stringFromNumber:number];
-                app.localCurrencyFormatter.usesGroupingSeparator = YES;
-            } @catch (NSException * e) {
-                DLog(@"Exception: %@", e);
-            }
-        } else {
-            @try {
-                NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amount] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:app.latestResponse.symbol_btc.conversion]];
-                
-                app.btcFormatter.usesGroupingSeparator = NO;
-                amountField.text = [app.btcFormatter stringFromNumber:number];
-                app.btcFormatter.usesGroupingSeparator = YES;
-            } @catch (NSException * e) {
-                DLog(@"Exception: %@", e);
-            }
-        }
-    }
-    
-    [self doCurrencyConversion];
+    [self updateAmountField];
 }
 
 - (void)reset
@@ -226,20 +161,23 @@ uint64_t availableAmount = 0.0;
             int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
             selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
             self.fromAccount = defaultAccountIndex;
+            
+            availableAmount = [app.wallet getBalanceForAccount:defaultAccountIndex];
         }
         else {
             // Default setting: send from any address
             self.sendFromAddress = true;
             selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+            
+            availableAmount = [app.wallet getTotalBalanceForActiveLegacyAddresses];
         }
+        
         self.sendToAddress = true;
         
-        toField.text = @"";
-        amountField.text = @"";
-        self.fromAddress = @"";
+        toField.text = nil;
+        amountField.text = nil;
         self.toAddress = @"";
-        originalBtcAmount = 0.0;
-        didChangeDollarAmount = NO;
+        amountInSatoshi = 0.0;
         [self doCurrencyConversion];
         
         // Close transaction modal, go to transactions view, scroll to top and animate new transaction
@@ -269,34 +207,34 @@ uint64_t availableAmount = 0.0;
     
     [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone headerText:BC_STRING_SENDING_TRANSACTION];
     
-    uint64_t satoshiValue = [self getInputAmountInSatoshi];
+    NSString *amountString = [[NSNumber numberWithLongLong:amountInSatoshi] stringValue];
     
-    DLog(@"Sending uint64_t %llu Satoshi (String value: %@)", satoshiValue, [[NSNumber numberWithLongLong:satoshiValue] stringValue]);
+    DLog(@"Sending uint64_t %llu Satoshi (String value: %@)", amountInSatoshi, amountString);
     
     // Different ways of sending (from/to address or account
     if (self.sendFromAddress && self.sendToAddress) {
         DLog(@"From: %@", self.fromAddress);
         DLog(@"To: %@", self.toAddress);
         
-        [app.wallet sendPaymentFromAddress:self.fromAddress toAddress:self.toAddress satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+        [app.wallet sendPaymentFromAddress:self.fromAddress toAddress:self.toAddress satoshiValue:amountString listener:listener];
     }
     else if (self.sendFromAddress && !self.sendToAddress) {
         DLog(@"From: %@", self.fromAddress);
         DLog(@"To account: %d", self.toAccount);
         
-        [app.wallet sendPaymentFromAddress:self.fromAddress toAccount:self.toAccount satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+        [app.wallet sendPaymentFromAddress:self.fromAddress toAccount:self.toAccount satoshiValue:amountString listener:listener];
     }
     else if (!self.sendFromAddress && self.sendToAddress) {
         DLog(@"From account: %d", self.fromAccount);
         DLog(@"To: %@", self.toAddress);
         
-        [app.wallet sendPaymentFromAccount:self.fromAccount toAddress:self.toAddress satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+        [app.wallet sendPaymentFromAccount:self.fromAccount toAddress:self.toAddress satoshiValue:amountString listener:listener];
     }
     else if (!self.sendFromAddress && !self.sendToAddress) {
         DLog(@"From account: %d", self.fromAccount);
         DLog(@"To account: %d", self.toAccount);
         
-        [app.wallet sendPaymentFromAccount:self.fromAccount toAccount:self.toAccount satoshiValue:[[NSNumber numberWithLongLong:satoshiValue] stringValue] listener:listener];
+        [app.wallet sendPaymentFromAccount:self.fromAccount toAccount:self.toAccount satoshiValue:amountString listener:listener];
     }
 }
 
@@ -305,9 +243,6 @@ uint64_t availableAmount = 0.0;
     NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
     if (displayingLocalSymbol) {
-        if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
-            return originalBtcAmount;
-        }
         return app.latestResponse.symbol_local.conversion * [amountString doubleValue];
     } else {
         return [app.wallet parseBitcoinValue:amountString];
@@ -316,8 +251,8 @@ uint64_t availableAmount = 0.0;
 
 - (void)confirmPayment
 {
-    NSString * amountBTCString   = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:FALSE];
-    NSString * amountLocalString = [app formatMoney:[self getInputAmountInSatoshi] localCurrency:TRUE];
+    NSString *amountBTCString   = [app formatMoney:amountInSatoshi localCurrency:FALSE];
+    NSString *amountLocalString = [app formatMoney:amountInSatoshi localCurrency:TRUE];
     
     NSMutableString *messageString = [NSMutableString stringWithFormat:BC_STRING_CONFIRM_PAYMENT_OF, amountBTCString, amountLocalString, self.toAddress];
     
@@ -338,18 +273,40 @@ uint64_t availableAmount = 0.0;
 
 #pragma mark - UI Helpers
 
-- (void)doCurrencyConversion
+- (void)updateAmountField
 {
-    uint64_t amount = SATOSHI;
-    
-    if ([amountField.text length] > 0) {
-        amount = [self getInputAmountInSatoshi];
+    if (amountInSatoshi == 0) {
+        amountField.text = nil;
+    }
+    else if (displayingLocalSymbol) {
+        @try {
+            NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amountInSatoshi] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithDouble:(double)app.latestResponse.symbol_local.conversion]];
+            
+            app.localCurrencyFormatter.usesGroupingSeparator = NO;
+            amountField.text = [app.localCurrencyFormatter stringFromNumber:number];
+            app.localCurrencyFormatter.usesGroupingSeparator = YES;
+        } @catch (NSException * e) {
+            DLog(@"Exception: %@", e);
+        }
     } else {
-        amount = 0;
+        @try {
+            NSDecimalNumber *number = [(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:amountInSatoshi] decimalNumberByDividingBy:(NSDecimalNumber*)[NSDecimalNumber numberWithLongLong:app.latestResponse.symbol_btc.conversion]];
+            
+            app.btcFormatter.usesGroupingSeparator = NO;
+            amountField.text = [app.btcFormatter stringFromNumber:number];
+            app.btcFormatter.usesGroupingSeparator = YES;
+        } @catch (NSException * e) {
+            DLog(@"Exception: %@", e);
+        }
     }
     
+    [self doCurrencyConversion];
+}
+
+- (void)doCurrencyConversion
+{
     // If the amount entered exceeds amount available + fee, change the color of the amount text
-    if (amount + [self getRecommendedFeeForAmount:amount] > availableAmount) {
+    if (amountInSatoshi + [self getRecommendedFeeForAmount:amountInSatoshi] > availableAmount) {
         amountField.textColor = [UIColor redColor];
     }
     else {
@@ -357,14 +314,9 @@ uint64_t availableAmount = 0.0;
     }
     
     if (displayingLocalSymbol) {
-        if (!didChangeDollarAmount && originalBtcAmount != 0.0) {
-            amount = originalBtcAmount;
-        }
-        
-        convertedAmountLabel.text = [app formatMoney:amount localCurrency:FALSE];
+        convertedAmountLabel.text = [app formatMoney:amountInSatoshi localCurrency:FALSE];
     } else {
-        convertedAmountLabel.text = [app formatMoney:amount localCurrency:TRUE];
-        originalBtcAmount = amount;
+        convertedAmountLabel.text = [app formatMoney:amountInSatoshi localCurrency:TRUE];
     }
 }
 
@@ -383,18 +335,9 @@ uint64_t availableAmount = 0.0;
 
 - (void)setAmountFromUrlHandler:(NSString*)amountString withToAddress:(NSString*)addressString
 {
-    // Set toAddress
-    //    self.toAddress = addressString;
-    //    DLog(@"toAddress: %@", self.toAddress);
     self.initialToAddressString = addressString;
     
-    // If we're in local currency, toggle to bitcoin since amount from URL is in BTC
-    if (app->symbolLocal) {
-        DLog(@"Toggling to BTC");
-        [app toggleSymbol];
-    }
-    
-    self.initialToAmountDouble = [amountString doubleValue] * SATOSHI;
+    amountInSatoshi = [amountString doubleValue] * SATOSHI;
 }
 
 - (NSString *)labelForLegacyAddress:(NSString *)address
@@ -435,18 +378,13 @@ uint64_t availableAmount = 0.0;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == amountField) {
-        [self doCurrencyConversion];
-    }
-    
     if (self.tapGesture == nil) {
-        self.tapGesture = [[UITapGestureRecognizer alloc]
-                           initWithTarget:self
-                           action:@selector(dismissKeyboard)];
+        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
         
         [self.view addGestureRecognizer:self.tapGesture];
     }
     
+    // Move view content up when showing keyboard
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         CGRect frame = containerView.frame;
         frame.origin.y = 0;
@@ -454,13 +392,14 @@ uint64_t availableAmount = 0.0;
     }];
 }
 
-- (void) keyboardWillHide:(NSNotification *)note
+- (void)keyboardWillHide:(NSNotification *)note
 {
-        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            CGRect frame = containerView.frame;
-            frame.origin.y = containerOffset;
-            containerView.frame = frame;
-        }];
+    // Move view content back down when hiding keyboard
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        CGRect frame = containerView.frame;
+        frame.origin.y = containerOffset;
+        containerView.frame = frame;
+    }];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -507,9 +446,16 @@ uint64_t availableAmount = 0.0;
             }
         }
         
-        [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
+        // Convert input amount to internal value
+        NSString *amountString = [newString stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        if (displayingLocalSymbol) {
+            amountInSatoshi = app.latestResponse.symbol_local.conversion * [amountString doubleValue];
+        }
+        else {
+            amountInSatoshi = [app.wallet parseBitcoinValue:amountString];
+        }
         
-        didChangeDollarAmount = displayingLocalSymbol;
+        [self performSelector:@selector(doCurrencyConversion) withObject:nil afterDelay:0.1f];
         
         return YES;
     } else if (textField == toField) {
@@ -521,9 +467,10 @@ uint64_t availableAmount = 0.0;
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)aTextField
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    [aTextField resignFirstResponder];
+    [textField resignFirstResponder];
+    
     return YES;
 }
 
@@ -660,23 +607,16 @@ uint64_t availableAmount = 0.0;
     [app showSendCoins];
 }
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
     if (metadataObjects != nil && [metadataObjects count] > 0) {
-        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects firstObject];
+        
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
             [self performSelectorOnMainThread:@selector(stopReadingQRCode) withObject:nil waitUntilDone:NO];
-            isReadingQRCode = NO;
             
             // do something useful with results
             dispatch_sync(dispatch_get_main_queue(), ^{
-                // Make sure we are displaying the BTC symbol
-                // As amounts from uri's are in BTC
-                BOOL toggledSymbolForURL = NO;
-                if (app->symbolLocal) {
-                    toggledSymbolForURL = YES;
-                    [app toggleSymbol];
-                }
-                
                 NSDictionary *dict = [app parseURI:[metadataObj stringValue]];
                 
                 toField.text = [self labelForLegacyAddress:[dict objectForKey:@"address"]];
@@ -685,35 +625,20 @@ uint64_t availableAmount = 0.0;
                 DLog(@"toAddress: %@", self.toAddress);
                 
                 NSString *amountString = [dict objectForKey:@"amount"];
-                
                 if (app.latestResponse.symbol_btc) {
-                    double amountDouble = ([amountString doubleValue] * SATOSHI) / (double)app.latestResponse.symbol_btc.conversion;
-                    
-                    app.btcFormatter.usesGroupingSeparator = NO;
-                    amountString = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountDouble]];
-                    app.btcFormatter.usesGroupingSeparator = YES;
+                    amountInSatoshi = ([amountString doubleValue] * SATOSHI);
+                }
+                else {
+                    amountInSatoshi = 0.0;
                 }
                 
                 // If the amount is empty, open the amount field
-                if ([amountString isEqualToString:@"0"]) {
+                if (amountInSatoshi == 0) {
                     amountField.text = nil;
-                    originalBtcAmount = 0.0;
-                    didChangeDollarAmount = NO;
                     [amountField becomeFirstResponder];
                 }
-                // otherwise set the amountField to the amount from the URI
-                else {
-                    amountField.text = amountString;
-                    originalBtcAmount = [app.wallet parseBitcoinValue:amountString];
-                    didChangeDollarAmount = NO;
-                }
                 
-                if (toggledSymbolForURL) {
-                    [app toggleSymbol];
-                }
-                else {
-                    [self doCurrencyConversion];
-                }
+                [self updateAmountField];
             });
         }
     }
@@ -743,26 +668,9 @@ uint64_t availableAmount = 0.0;
 - (IBAction)useAllClicked:(id)sender
 {
     uint64_t availableWithoutFee = availableAmount - [self getRecommendedFeeForAmount:availableAmount];
+    amountInSatoshi = availableWithoutFee;
     
-    if (displayingLocalSymbol) {
-        double amountInSymbolLocal = (availableWithoutFee / (double)app.latestResponse.symbol_local.conversion);
-        
-        app.localCurrencyFormatter.usesGroupingSeparator = NO;
-        amountField.text = [app.localCurrencyFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolLocal]];
-        app.localCurrencyFormatter.usesGroupingSeparator = YES;
-    } else {
-        double amountInSymbolBTC = (availableWithoutFee / (double)app.latestResponse.symbol_btc.conversion);
-        
-        app.btcFormatter.usesGroupingSeparator = NO;
-        amountField.text = [app.btcFormatter stringFromNumber:[NSNumber numberWithDouble:amountInSymbolBTC]];
-        app.btcFormatter.usesGroupingSeparator = YES;
-        
-        originalBtcAmount = amountInSymbolBTC;
-        didChangeDollarAmount = NO;
-    }
-    
-    // TODO this doesn't work exactly right - need to clean up the whole currency conversion mess
-    [self reloadWithCurrencyChange:false];
+    [self updateAmountField];
 }
 
 - (IBAction)btcCodeClicked:(id)sender

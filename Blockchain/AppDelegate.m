@@ -156,8 +156,6 @@ SideMenuViewController *sideMenuViewController;
         [self transactionsClicked:nil];
     else if (newIndex == 2)
         [self receiveCoinClicked:nil];
-    else
-        DLog(@"Unknown tab index: %d", newIndex);
 }
 
 - (void)swipeLeft
@@ -182,7 +180,7 @@ SideMenuViewController *sideMenuViewController;
 
 - (void)reload
 {
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [_sendViewController reload];
     [_transactionsViewController reload];
     [_receiveViewController reload];
     
@@ -197,11 +195,7 @@ SideMenuViewController *sideMenuViewController;
     [[NSUserDefaults standardUserDefaults] setBool:symbolLocal forKey:@"symbolLocal"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [_transactionsViewController reload];
-    [_sendViewController reloadWithCurrencyChange:YES];
-    [_receiveViewController reload];
-    
-    [sideMenuViewController reload];
+    [self reload];
 }
 
 - (void)showBusyViewWithLoadingText:(NSString *)text
@@ -563,7 +557,7 @@ SideMenuViewController *sideMenuViewController;
     NSString * amount = [dict objectForKey:@"amount"];
     
     [_sendViewController setAmountFromUrlHandler:amount withToAddress:addr];
-    [_sendViewController reloadWithCurrencyChange:NO];
+    [_sendViewController reload];
     
     return YES;
 }

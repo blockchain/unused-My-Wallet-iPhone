@@ -50,7 +50,6 @@
 }
 
 @property(nonatomic, strong) NSString *initialToAddressString;
-@property(nonatomic) double initialToAmountDouble; // satoshi
 
 @property(nonatomic, strong) NSString *fromAddress;
 @property(nonatomic, strong) NSString *toAddress;
@@ -79,7 +78,7 @@
 
 - (NSString *)labelForLegacyAddress:(NSString *)address;
 
-- (void)reloadWithCurrencyChange:(BOOL)currencyChange;
+- (void)reload;
 
 - (void)dismissKeyboard;
 

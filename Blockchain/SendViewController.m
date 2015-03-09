@@ -59,7 +59,7 @@ uint64_t availableAmount = 0.0;
         return FALSE;
     }];
     
-    self.fromAddress = nil;
+    self.fromAddress = @"";
     if ([app.wallet didUpgradeToHd]) {
         // Default setting: send from default account
         self.sendFromAddress = false;
@@ -106,7 +106,7 @@ uint64_t availableAmount = 0.0;
     // Update account/address labels in case they changed
     // Update available amount
     if (self.sendFromAddress) {
-        if (!self.fromAddress) {
+        if (self.fromAddress.length == 0) {
             selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
             availableAmount = [app.wallet getTotalBalanceForActiveLegacyAddresses];
         }
@@ -157,7 +157,7 @@ uint64_t availableAmount = 0.0;
         [sendPaymentButton setEnabled:TRUE];
         
         // Reset fields
-        self.fromAddress = nil;
+        self.fromAddress = @"";
         if ([app.wallet didUpgradeToHd]) {
             // Default setting: send from default account
             self.sendFromAddress = false;

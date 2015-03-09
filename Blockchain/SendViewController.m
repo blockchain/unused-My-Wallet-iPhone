@@ -59,18 +59,17 @@ uint64_t availableAmount = 0.0;
         return FALSE;
     }];
     
-    self.fromAddress = @"";
+    self.fromAddress = nil;
     if ([app.wallet didUpgradeToHd]) {
         // Default setting: send from default account
         self.sendFromAddress = false;
+        
         int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-        selectAddressTextField.text = [app.wallet getLabelForAccount:defaultAccountIndex];
         self.fromAccount = defaultAccountIndex;
     }
     else {
         // Default setting: send from any address
         self.sendFromAddress = true;
-        selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
     }
 
     self.sendToAddress = true;
@@ -107,12 +106,18 @@ uint64_t availableAmount = 0.0;
     // Update account/address labels in case they changed
     // Update available amount
     if (self.sendFromAddress) {
-        selectAddressTextField.text = [self labelForLegacyAddress:self.fromAddress];
-        availableAmount = [app.wallet getLegacyAddressBalance:self.fromAddress];
+        if (!self.fromAddress) {
+            selectAddressTextField.text = BC_STRING_ANY_ADDRESS;
+            availableAmount = [app.wallet getTotalBalanceForActiveLegacyAddresses];
+        }
+        else {
+            selectAddressTextField.text = [self labelForLegacyAddress:self.fromAddress];
+            availableAmount = [app.wallet getLegacyAddressBalance:self.fromAddress];
+        }
     }
     else {
         selectAddressTextField.text = [app.wallet getLabelForAccount:self.fromAccount];
-        availableAmount = [app.wallet getBalanceForAccount:self.fromAccount];;
+        availableAmount = [app.wallet getBalanceForAccount:self.fromAccount];
     }
     
     if (self.sendToAddress) {
@@ -152,7 +157,7 @@ uint64_t availableAmount = 0.0;
         [sendPaymentButton setEnabled:TRUE];
         
         // Reset fields
-        self.fromAddress = @"";
+        self.fromAddress = nil;
         if ([app.wallet didUpgradeToHd]) {
             // Default setting: send from default account
             self.sendFromAddress = false;

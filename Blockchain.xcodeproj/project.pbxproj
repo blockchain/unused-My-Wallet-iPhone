@@ -47,13 +47,16 @@
 		673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */; };
 		673107F219F6D49F00BE6899 /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 673107F119F6D49F00BE6899 /* PrivateKeyReader.m */; };
 		673136491A0D3F6600E067D5 /* hdwallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 673136481A0D3F6600E067D5 /* hdwallet.js */; };
-		6731364B1A0D473D00E067D5 /* bip39.js in Resources */ = {isa = PBXBuildFile; fileRef = 6731364A1A0D473D00E067D5 /* bip39.js */; };
+		673477591AAE0A5F0090C514 /* bip39.js in Resources */ = {isa = PBXBuildFile; fileRef = 673477581AAE0A5F0090C514 /* bip39.js */; };
+		6734775B1AAE0A6A0090C514 /* browserify.js in Resources */ = {isa = PBXBuildFile; fileRef = 6734775A1AAE0A6A0090C514 /* browserify.js */; };
+		6734775D1AAE0A740090C514 /* sjcl.js in Resources */ = {isa = PBXBuildFile; fileRef = 6734775C1AAE0A740090C514 /* sjcl.js */; };
+		6734775F1AAE0A7B0090C514 /* xregexp-all.js in Resources */ = {isa = PBXBuildFile; fileRef = 6734775E1AAE0A7B0090C514 /* xregexp-all.js */; };
+		673477611AAE0A9E0090C514 /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 673477601AAE0A9E0090C514 /* jquery.min.js */; };
 		674709EC19D1D14300757D46 /* BCWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 674709EB19D1D14300757D46 /* BCWelcomeView.m */; };
 		674709F619D2DA3800757D46 /* welcome_logo@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F319D2DA3800757D46 /* welcome_logo@1x.png */; };
 		674709F719D2DA3800757D46 /* welcome_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F419D2DA3800757D46 /* welcome_logo@2x.png */; };
 		674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F519D2DA3800757D46 /* welcome_logo@3x.png */; };
 		67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67470A0719D43AFE00757D46 /* BCManualPairView.m */; };
-		674CCEF31A682713005D6482 /* sjcl.js in Resources */ = {isa = PBXBuildFile; fileRef = 674CCEF21A682713005D6482 /* sjcl.js */; };
 		6762506E1A28E4480052B63F /* aes.js in Resources */ = {isa = PBXBuildFile; fileRef = 6762506B1A28E4480052B63F /* aes.js */; };
 		6762506F1A28E4480052B63F /* pbkdf2.js in Resources */ = {isa = PBXBuildFile; fileRef = 6762506C1A28E4480052B63F /* pbkdf2.js */; };
 		676250701A28E4480052B63F /* sha256.js in Resources */ = {isa = PBXBuildFile; fileRef = 6762506D1A28E4480052B63F /* sha256.js */; };
@@ -71,7 +74,6 @@
 		6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569219E749CC0054699B /* back_chevron_icon@2x.png */; };
 		6775569619E749CC0054699B /* back_chevron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6775569319E749CC0054699B /* back_chevron_icon.png */; };
 		6775569919E752A00054699B /* BCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6775569819E752A00054699B /* BCWebViewController.m */; };
-		677DBB421AA64C5C004F2375 /* browserify.js in Resources */ = {isa = PBXBuildFile; fileRef = 677DBB411AA64C5C004F2375 /* browserify.js */; };
 		6780DB921A40BDA70048EED2 /* AddressInOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB911A40BDA70048EED2 /* AddressInOut.m */; };
 		6780DB951A40BDCF0048EED2 /* InOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB941A40BDCF0048EED2 /* InOut.m */; };
 		6780DB981A40BDF40048EED2 /* AccountInOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780DB971A40BDF40048EED2 /* AccountInOut.m */; };
@@ -79,7 +81,6 @@
 		67812A791A4A0E1800B04EBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67812A781A4A0E1800B04EBF /* QuartzCore.framework */; };
 		67812A7D1A4A0E6800B04EBF /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67812A7C1A4A0E6800B04EBF /* CoreImage.framework */; };
 		67812A811A5377A800B04EBF /* import-export.js in Resources */ = {isa = PBXBuildFile; fileRef = 67812A801A5377A800B04EBF /* import-export.js */; };
-		67812A831A53982C00B04EBF /* xregexp-all.js in Resources */ = {isa = PBXBuildFile; fileRef = 67812A821A53982C00B04EBF /* xregexp-all.js */; };
 		678AD5E919D4610000E9A778 /* BCModalContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678AD5E819D4610000E9A778 /* BCModalContentView.m */; };
 		678AD61B19D56EEB00E9A778 /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD60F19D56EEA00E9A778 /* home_icon.png */; };
 		678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678AD61019D56EEA00E9A778 /* home_icon@2x.png */; };
@@ -108,7 +109,6 @@
 		678CD7481A2777E600748AA5 /* BCCreateAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678CD7471A2777E600748AA5 /* BCCreateAccountView.m */; };
 		67D2B6EE1A2F2DEF0078782C /* wallet-ios.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D2B6ED1A2F2DEF0078782C /* wallet-ios.js */; };
 		67D7AC1F1A0C3585007CD81D /* blockchainapi.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC1E1A0C3585007CD81D /* blockchainapi.js */; };
-		67D7AC251A0C36A7007CD81D /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC241A0C36A7007CD81D /* jquery.min.js */; };
 		67D7AC271A0C36B1007CD81D /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC261A0C36B1007CD81D /* shared.js */; };
 		67D7AC291A0C36BC007CD81D /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC281A0C36BC007CD81D /* signer.js */; };
 		67D7AC2B1A0C36C7007CD81D /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 67D7AC2A1A0C36C7007CD81D /* wallet.js */; };
@@ -458,7 +458,11 @@
 		673107F019F6D49F00BE6899 /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		673107F119F6D49F00BE6899 /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		673136481A0D3F6600E067D5 /* hdwallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = hdwallet.js; path = "Submodules/My-Wallet-HD/hdwallet.js"; sourceTree = SOURCE_ROOT; };
-		6731364A1A0D473D00E067D5 /* bip39.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bip39.js; path = "Submodules/My-Wallet-HD/bip39.js"; sourceTree = SOURCE_ROOT; };
+		673477581AAE0A5F0090C514 /* bip39.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bip39.js; path = "Submodules/My-Wallet-HD/build/bip39.js"; sourceTree = SOURCE_ROOT; };
+		6734775A1AAE0A6A0090C514 /* browserify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = browserify.js; path = "Submodules/My-Wallet-HD/build/browserify.js"; sourceTree = SOURCE_ROOT; };
+		6734775C1AAE0A740090C514 /* sjcl.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sjcl.js; path = "Submodules/My-Wallet-HD/build/sjcl.js"; sourceTree = SOURCE_ROOT; };
+		6734775E1AAE0A7B0090C514 /* xregexp-all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "xregexp-all.js"; path = "Submodules/My-Wallet-HD/build/xregexp-all.js"; sourceTree = SOURCE_ROOT; };
+		673477601AAE0A9E0090C514 /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jquery.min.js; path = "Submodules/My-Wallet-HD/bower_components/jquery/dist/jquery.min.js"; sourceTree = SOURCE_ROOT; };
 		674709EA19D1D14300757D46 /* BCWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCWelcomeView.h; sourceTree = "<group>"; };
 		674709EB19D1D14300757D46 /* BCWelcomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCWelcomeView.m; sourceTree = "<group>"; };
 		674709F319D2DA3800757D46 /* welcome_logo@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_logo@1x.png"; sourceTree = "<group>"; };
@@ -467,7 +471,6 @@
 		67470A0519D438E000757D46 /* LocalizationConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationConstants.h; sourceTree = "<group>"; };
 		67470A0619D43AFE00757D46 /* BCManualPairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCManualPairView.h; sourceTree = "<group>"; };
 		67470A0719D43AFE00757D46 /* BCManualPairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCManualPairView.m; sourceTree = "<group>"; };
-		674CCEF21A682713005D6482 /* sjcl.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sjcl.js; path = "Submodules/My-Wallet-HD/sjcl.js"; sourceTree = SOURCE_ROOT; };
 		6762506B1A28E4480052B63F /* aes.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = aes.js; path = "Submodules/My-Wallet-HD/bower_components/cryptojslib/rollups/aes.js"; sourceTree = SOURCE_ROOT; };
 		6762506C1A28E4480052B63F /* pbkdf2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = pbkdf2.js; path = "Submodules/My-Wallet-HD/bower_components/cryptojslib/rollups/pbkdf2.js"; sourceTree = SOURCE_ROOT; };
 		6762506D1A28E4480052B63F /* sha256.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sha256.js; path = "Submodules/My-Wallet-HD/bower_components/cryptojslib/rollups/sha256.js"; sourceTree = SOURCE_ROOT; };
@@ -488,7 +491,6 @@
 		6775569319E749CC0054699B /* back_chevron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_chevron_icon.png; sourceTree = "<group>"; };
 		6775569719E752A00054699B /* BCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCWebViewController.h; sourceTree = "<group>"; };
 		6775569819E752A00054699B /* BCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCWebViewController.m; sourceTree = "<group>"; };
-		677DBB411AA64C5C004F2375 /* browserify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = browserify.js; path = "Submodules/My-Wallet-HD/browserify.js"; sourceTree = SOURCE_ROOT; };
 		6780DB901A40BDA70048EED2 /* AddressInOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressInOut.h; sourceTree = "<group>"; };
 		6780DB911A40BDA70048EED2 /* AddressInOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressInOut.m; sourceTree = "<group>"; };
 		6780DB931A40BDCF0048EED2 /* InOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InOut.h; sourceTree = "<group>"; };
@@ -499,7 +501,6 @@
 		67812A781A4A0E1800B04EBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		67812A7C1A4A0E6800B04EBF /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		67812A801A5377A800B04EBF /* import-export.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "import-export.js"; path = "Submodules/My-Wallet-HD/import-export.js"; sourceTree = SOURCE_ROOT; };
-		67812A821A53982C00B04EBF /* xregexp-all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "xregexp-all.js"; path = "Submodules/My-Wallet-HD/xregexp-all.js"; sourceTree = SOURCE_ROOT; };
 		678AD5E519D45FA300E9A778 /* BCModalContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCModalContentView.h; sourceTree = "<group>"; };
 		678AD5E819D4610000E9A778 /* BCModalContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCModalContentView.m; sourceTree = "<group>"; };
 		678AD60F19D56EEA00E9A778 /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
@@ -530,7 +531,6 @@
 		678CD7471A2777E600748AA5 /* BCCreateAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCCreateAccountView.m; sourceTree = "<group>"; };
 		67D2B6ED1A2F2DEF0078782C /* wallet-ios.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "wallet-ios.js"; sourceTree = "<group>"; };
 		67D7AC1E1A0C3585007CD81D /* blockchainapi.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = blockchainapi.js; path = "Submodules/My-Wallet-HD/blockchainapi.js"; sourceTree = SOURCE_ROOT; };
-		67D7AC241A0C36A7007CD81D /* jquery.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jquery.min.js; path = "Submodules/My-Wallet-HD/jquery.min.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC261A0C36B1007CD81D /* shared.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = shared.js; path = "Submodules/My-Wallet-HD/shared.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC281A0C36BC007CD81D /* signer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = signer.js; path = "Submodules/My-Wallet-HD/signer.js"; sourceTree = SOURCE_ROOT; };
 		67D7AC2A1A0C36C7007CD81D /* wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = wallet.js; path = "Submodules/My-Wallet-HD/wallet.js"; sourceTree = SOURCE_ROOT; };
@@ -1166,15 +1166,15 @@
 			isa = PBXGroup;
 			children = (
 				6762506B1A28E4480052B63F /* aes.js */,
-				6731364A1A0D473D00E067D5 /* bip39.js */,
+				673477581AAE0A5F0090C514 /* bip39.js */,
 				67D7AC1E1A0C3585007CD81D /* blockchainapi.js */,
-				677DBB411AA64C5C004F2375 /* browserify.js */,
+				6734775A1AAE0A6A0090C514 /* browserify.js */,
 				676250711A28E4720052B63F /* cipher-core.js */,
 				676250751A28E5B40052B63F /* crypto-util-legacy.js */,
 				673136481A0D3F6600E067D5 /* hdwallet.js */,
 				6762507E1A2DC6FE0052B63F /* HDWalletAccount.js */,
 				67812A801A5377A800B04EBF /* import-export.js */,
-				67D7AC241A0C36A7007CD81D /* jquery.min.js */,
+				673477601AAE0A9E0090C514 /* jquery.min.js */,
 				676250771A28EAE30052B63F /* mnemonic.js */,
 				676CD1A71A57654D000C76B5 /* mode-ecb.js */,
 				676250721A28E4720052B63F /* pad-iso10126.js */,
@@ -1183,10 +1183,10 @@
 				6762506D1A28E4480052B63F /* sha256.js */,
 				67D7AC261A0C36B1007CD81D /* shared.js */,
 				67D7AC281A0C36BC007CD81D /* signer.js */,
-				674CCEF21A682713005D6482 /* sjcl.js */,
+				6734775C1AAE0A740090C514 /* sjcl.js */,
 				676250791A28ECE70052B63F /* wallet-signup.js */,
 				67D7AC2A1A0C36C7007CD81D /* wallet.js */,
-				67812A821A53982C00B04EBF /* xregexp-all.js */,
+				6734775E1AAE0A7B0090C514 /* xregexp-all.js */,
 			);
 			name = "My-Wallet";
 			sourceTree = "<group>";
@@ -1368,7 +1368,9 @@
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
 				67E9676219DF46A900305358 /* news_icon@2x.png in Resources */,
 				ECD244F219A8AC45004B1F40 /* PEKeyboard-4-edit.png in Resources */,
+				673477591AAE0A5F0090C514 /* bip39.js in Resources */,
 				6710DA451A9645E20089DDED /* blockchain_b.png in Resources */,
+				6734775B1AAE0A6A0090C514 /* browserify.js in Resources */,
 				67E9677819E320D100305358 /* marker_spend_off.png in Resources */,
 				6710DA1A1A8E9BDB0089DDED /* edit@3x.png in Resources */,
 				84AEEC8E1987D9C7000E8DC8 /* marker_drink@2x.png in Resources */,
@@ -1384,6 +1386,7 @@
 				C9BE917E1945D8F600FD516D /* PEViewController.xib in Resources */,
 				678AD62C19D57FAC00E9A778 /* menu_icon.png in Resources */,
 				6710DA181A8E9BDB0089DDED /* edit.png in Resources */,
+				6734775F1AAE0A7B0090C514 /* xregexp-all.js in Resources */,
 				C9BE91831945D8F600FD516D /* PEKeyboard-1.png in Resources */,
 				84AEEC7A1987D5EC000E8DC8 /* marker_atm.png in Resources */,
 				6710DA3B1A94F1F70089DDED /* tab_right@2x.png in Resources */,
@@ -1392,7 +1395,6 @@
 				6710DA131A8E9AEB0089DDED /* wallet@2x.png in Resources */,
 				67EEE7641A8D079E00288753 /* home_icon_hi@2x.png in Resources */,
 				676CD1AA1A57655E000C76B5 /* pad-nopadding.js in Resources */,
-				6731364B1A0D473D00E067D5 /* bip39.js in Resources */,
 				9F2D934E14C0792D0053F0FF /* TransactionCell.xib in Resources */,
 				6710DA2D1A93CF1D0089DDED /* menu_more@2x.png in Resources */,
 				84AEEC801987D5EC000E8DC8 /* marker_drink.png in Resources */,
@@ -1402,7 +1404,6 @@
 				6710DA391A94F1F70089DDED /* tab_left@3x.png in Resources */,
 				C9BE918C1945F5FC00FD516D /* Images.xcassets in Resources */,
 				ECD244EC19A8AC45004B1F40 /* PEKeyboard-3-dot.png in Resources */,
-				67812A831A53982C00B04EBF /* xregexp-all.js in Resources */,
 				674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */,
 				C9BE91811945D8F600FD516D /* PEKeyboard-1-edit.png in Resources */,
 				ECD244EF19A8AC45004B1F40 /* PEKeyboard-3.png in Resources */,
@@ -1413,13 +1414,13 @@
 				67EEE76B1A8D0A3F00288753 /* blockchain_logo@3x.png in Resources */,
 				6710DA4C1A966F760089DDED /* importedaddress@2x.png in Resources */,
 				9F0CBAB015135DF200CD945D /* wallet-ios.html in Resources */,
+				6734775D1AAE0A740090C514 /* sjcl.js in Resources */,
 				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
 				676250781A28EAE30052B63F /* mnemonic.js in Resources */,
 				67EEE75E1A8D05B700288753 /* send_icon_hi@2x.png in Resources */,
 				FA63233E1A433DEB00EB3974 /* MerchantMapView.xib in Resources */,
 				67EEE7631A8D079E00288753 /* home_icon_hi.png in Resources */,
-				674CCEF31A682713005D6482 /* sjcl.js in Resources */,
 				674709F619D2DA3800757D46 /* welcome_logo@1x.png in Resources */,
 				674709F719D2DA3800757D46 /* welcome_logo@2x.png in Resources */,
 				84AEEC861987D5EC000E8DC8 /* marker_spend.png in Resources */,
@@ -1428,7 +1429,6 @@
 				C9BE91881945D8F600FD516D /* PEKeyboard-2.png in Resources */,
 				67EEE7731A8E547900288753 /* PEPin-on@3x.png in Resources */,
 				C9BE91821945D8F600FD516D /* PEKeyboard-1-next.png in Resources */,
-				677DBB421AA64C5C004F2375 /* browserify.js in Resources */,
 				6775569519E749CC0054699B /* back_chevron_icon@2x.png in Resources */,
 				ECD244ED19A8AC45004B1F40 /* PEKeyboard-3-edit.png in Resources */,
 				6710DA3A1A94F1F70089DDED /* tab_right.png in Resources */,
@@ -1464,7 +1464,6 @@
 				ECD244F019A8AC45004B1F40 /* PEKeyboard-4-done.png in Resources */,
 				6710DA1E1A8E9EC10089DDED /* new.png in Resources */,
 				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
-				67D7AC251A0C36A7007CD81D /* jquery.min.js in Resources */,
 				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
 				676250731A28E4720052B63F /* cipher-core.js in Resources */,
 				6710DA141A8E9AEB0089DDED /* wallet@3x.png in Resources */,
@@ -1476,6 +1475,7 @@
 				220E374F19A3604500E06996 /* ReceiveCoins.xib in Resources */,
 				6710DA1F1A8E9EC10089DDED /* new@2x.png in Resources */,
 				6775569619E749CC0054699B /* back_chevron_icon.png in Resources */,
+				673477611AAE0A9E0090C514 /* jquery.min.js in Resources */,
 				678AD64619D59EBC00E9A778 /* top_menu_logo@3x.png in Resources */,
 				67E9675D19DF46A900305358 /* lock_icon@3x.png in Resources */,
 				67E9675C19DF46A900305358 /* lock_icon@2x.png in Resources */,

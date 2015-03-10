@@ -146,7 +146,7 @@ int legacyAddressesSectionNumber;
 {
     if (showFromAddresses) {
         if (indexPath.section == accountsSectionNumber) {
-            [delegate didSelectFromAccount:(int)indexPath.row];
+            [delegate didSelectFromAccount:[[accounts objectAtIndex:indexPath.row] intValue]];
         }
         else if (indexPath.section == legacyAddressesSectionNumber) {
             [delegate didSelectFromAddress:[legacyAddresses objectAtIndex:[indexPath row]]];
@@ -279,7 +279,7 @@ int legacyAddressesSectionNumber;
             balance = [app.wallet getLegacyAddressBalance:[addressBookAddresses objectAtIndex:row]];
         }
         else if (section == accountsSectionNumber) {
-            balance = [app.wallet getBalanceForAccount:(int)indexPath.row];
+            balance = [app.wallet getBalanceForAccount:[[accounts objectAtIndex:indexPath.row] intValue]];
         }
         else if (section == legacyAddressesSectionNumber) {
             balance = [app.wallet getLegacyAddressBalance:[legacyAddresses objectAtIndex:row]];

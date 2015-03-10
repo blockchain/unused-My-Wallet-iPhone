@@ -1313,6 +1313,8 @@ SideMenuViewController *sideMenuViewController;
         
         [self clearPin];
         
+        [self logout];
+        
         [self showPasswordModal];
         
         [self closePINModal:YES];

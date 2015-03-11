@@ -33,6 +33,7 @@
 #import "BCWelcomeView.h"
 #import "BCHdUpgradeView.h"
 #import "BCWebViewController.h"
+#import "KeychainItemWrapper.h"
 
 #define CURTAIN_IMAGE_TAG 123
 
@@ -143,6 +144,21 @@ SideMenuViewController *sideMenuViewController;
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"password"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pin"];
+    }
+    
+    // Migrate guid and sharedkey from NSUserDefaults to KeyChain
+    NSString *guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
+    if (guid) {
+        [self setGuid:guid];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
+    }
+    
+    NSString *sharedkey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    if (sharedkey) {
+        [self setSharedkey:sharedkey];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
     }
     
     return TRUE;
@@ -349,7 +365,7 @@ SideMenuViewController *sideMenuViewController;
 - (void)walletFailedToDecrypt
 {
     // In case we were on the manual pair screen, we want to go back there. The way to check for that is that the wallet has a guid, but it's not saved yet
-    if (wallet.guid && ![[NSUserDefaults standardUserDefaults] objectForKey:@"guid"]) {
+    if (wallet.guid && ![self guid]) {
         [self manualPairClicked:nil];
         
         return;
@@ -806,10 +822,8 @@ SideMenuViewController *sideMenuViewController;
         return;
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:guid forKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] setObject:sharedKey forKey:@"sharedKey"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self setGuid:guid];
+    [self setSharedkey:sharedKey];
 }
 
 - (BOOL)isQRCodeScanningSupported
@@ -888,9 +902,8 @@ SideMenuViewController *sideMenuViewController;
         [cookieStorage deleteCookie:each];
     }
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sharedKey"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self removeGuid];
+    [self removeSharedkey];
     
     [self.wallet cancelTxSigning];
     
@@ -1183,8 +1196,8 @@ SideMenuViewController *sideMenuViewController;
     [mainPasswordTextField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
     
     NSString *password = [mainPasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *guid = [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
-    NSString *sharedKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
+    NSString *guid = [self guid];
+    NSString *sharedKey = [self sharedKey];
     
     if (guid && sharedKey && password) {
         [self.wallet loadWalletWithGuid:guid sharedKey:sharedKey password:password];
@@ -1193,18 +1206,6 @@ SideMenuViewController *sideMenuViewController;
     }
     
     mainPasswordTextField.text = nil;
-}
-
-#pragma mark - Accessors
-
-- (NSString*)guid
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"guid"];
-}
-
-- (NSString*)sharedKey
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];
 }
 
 #pragma mark - Pin Entry Delegates
@@ -1472,6 +1473,58 @@ SideMenuViewController *sideMenuViewController;
 {
     DLog(@"Pin change cancelled!");
     [self closePINModal:YES];
+}
+
+#pragma mark - Keychain
+
+- (NSString *)guid
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"guid" accessGroup:nil];
+    NSData *guidData = [keychain objectForKey:(__bridge id)kSecValueData];
+    NSString *guid = [[NSString alloc] initWithData:guidData encoding:NSUTF8StringEncoding];
+    
+    return guid.length == 0 ? nil : guid;
+}
+
+- (void)setGuid:(NSString *)guid
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"guid" accessGroup:nil];
+    [keychain setObject:(__bridge id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKey:(__bridge id)kSecAttrAccessible];
+    
+    [keychain setObject:@"guid" forKey:(__bridge id)kSecAttrAccount];
+    [keychain setObject:[guid dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
+}
+
+- (void)removeGuid
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"guid" accessGroup:nil];
+    
+    [keychain resetKeychainItem];
+}
+
+- (NSString *)sharedKey
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"sharedkey" accessGroup:nil];
+    NSData *sharedkeyData = [keychain objectForKey:(__bridge id)kSecValueData];
+    NSString *sharedkey = [[NSString alloc] initWithData:sharedkeyData encoding:NSUTF8StringEncoding];
+    
+    return sharedkey.length == 0 ? nil : sharedkey;
+}
+
+- (void)setSharedkey:(NSString *)sharedkey
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"sharedkey" accessGroup:nil];
+    [keychain setObject:(__bridge id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKey:(__bridge id)kSecAttrAccessible];
+    
+    [keychain setObject:@"sharedkey" forKey:(__bridge id)kSecAttrAccount];
+    [keychain setObject:[sharedkey dataUsingEncoding:NSUTF8StringEncoding] forKey:(__bridge id)kSecValueData];
+}
+
+- (void)removeSharedkey
+{
+    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"sharedkey" accessGroup:nil];
+    
+    [keychain resetKeychainItem];
 }
 
 #pragma mark - Format helpers

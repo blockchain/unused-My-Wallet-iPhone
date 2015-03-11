@@ -14,6 +14,7 @@
 		220E375719A3613600E06996 /* BCAddressSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375919A3613600E06996 /* BCAddressSelectionView.xib */; };
 		220E375D19A3614900E06996 /* SendCoins.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E375F19A3614900E06996 /* SendCoins.xib */; };
 		220E376019A3614F00E06996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220E376219A3614F00E06996 /* MainWindow.xib */; };
+		670595A41AB0F59D00D2D6D9 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 670595A31AB0F59D00D2D6D9 /* KeychainItemWrapper.m */; };
 		670DF94B1A43BCB200CEA1EA /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 670DF94A1A43BCB200CEA1EA /* Reachability.m */; };
 		6710DA0E1A8E82D80089DDED /* BCLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 6710DA0D1A8E82D80089DDED /* BCLine.m */; };
 		6710DA121A8E9AEB0089DDED /* wallet.png in Resources */ = {isa = PBXBuildFile; fileRef = 6710DA0F1A8E9AEB0089DDED /* wallet.png */; };
@@ -422,6 +423,8 @@
 		220E375819A3613600E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BCAddressSelectionView.xib; sourceTree = "<group>"; };
 		220E375E19A3614900E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SendCoins.xib; sourceTree = "<group>"; };
 		220E376119A3614F00E06996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		670595A21AB0F59D00D2D6D9 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		670595A31AB0F59D00D2D6D9 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		670DF9491A43BCB200CEA1EA /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		670DF94A1A43BCB200CEA1EA /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		6710DA0C1A8E82D80089DDED /* BCLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCLine.h; sourceTree = "<group>"; };
@@ -752,6 +755,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		670595A11AB0F59D00D2D6D9 /* KeychainItemWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				670595A21AB0F59D00D2D6D9 /* KeychainItemWrapper.h */,
+				670595A31AB0F59D00D2D6D9 /* KeychainItemWrapper.m */,
+			);
+			path = KeychainItemWrapper;
+			sourceTree = "<group>";
+		};
 		670DF9481A43BCB200CEA1EA /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -1194,6 +1206,7 @@
 		C9D4B2AE193E020D00EDA9EA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				670595A11AB0F59D00D2D6D9 /* KeychainItemWrapper */,
 				670DF9481A43BCB200CEA1EA /* Reachability */,
 				67E9673419DF1DD300305358 /* SideMenu */,
 				84C25678198109AF00F901D1 /* Keys */,
@@ -1531,6 +1544,7 @@
 				9F45F82C1514E53C00018AED /* UIButtonPressAndHold.m in Sources */,
 				9F7480E315140EF200BC4292 /* TabViewController.m in Sources */,
 				844BC7AE1949BB620024160B /* JSBridgeWebView.m in Sources */,
+				670595A41AB0F59D00D2D6D9 /* KeychainItemWrapper.m in Sources */,
 				9FB3638214B60128004BEA02 /* main.m in Sources */,
 				9FB3638614B60128004BEA02 /* AppDelegate.m in Sources */,
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,

@@ -670,6 +670,10 @@ uint64_t availableAmount = 0.0;
 
 - (IBAction)useAllClicked:(id)sender
 {
+    if (availableAmount == 0 || availableAmount < [self getRecommendedFeeForAmount:availableAmount]) {
+        return;
+    }
+    
     uint64_t availableWithoutFee = availableAmount - [self getRecommendedFeeForAmount:availableAmount];
     amountInSatoshi = availableWithoutFee;
     
@@ -699,8 +703,9 @@ uint64_t availableAmount = 0.0;
         return;
     }
     
-    uint64_t value = [self getInputAmountInSatoshi];
-    if (value <= 0) {
+    uint64_t value = amountInSatoshi;
+    NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+    if (value <= 0 || [amountString doubleValue] <= 0) {
         [app standardNotify:BC_STRING_INVALID_SEND_VALUE];
         return;
     }

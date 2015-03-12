@@ -80,6 +80,10 @@ SideMenuViewController *sideMenuViewController;
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     [cookieStorage setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
     
+    // Disable UIWebView caching
+    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:nil];
+    [NSURLCache setSharedURLCache:sharedCache];
+    
     // Allocate the global wallet
     self.wallet = [[Wallet alloc] init];
     self.wallet.delegate = self;
@@ -133,7 +137,7 @@ SideMenuViewController *sideMenuViewController;
         [self showPasswordModal];
     }
     
-    /* Migrate Password and PIN from NSUserDefaults (for users updating from old version) */
+    // Migrate Password and PIN from NSUserDefaults (for users updating from old version)
     NSString * password = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
     NSString * pin = [[NSUserDefaults standardUserDefaults] objectForKey:@"pin"];
     
@@ -152,6 +156,9 @@ SideMenuViewController *sideMenuViewController;
         [self setGuid:guid];
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guid"];
+        
+        // Remove all UIWebView cached data for users upgrading from older versions
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
     }
     
     NSString *sharedkey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sharedKey"];

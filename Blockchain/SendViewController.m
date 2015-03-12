@@ -703,6 +703,16 @@ uint64_t availableAmount = 0.0;
         return;
     }
     
+    if (!self.sendFromAddress && !self.sendToAddress && self.fromAccount == self.toAccount) {
+        [app standardNotify:BC_STRING_FROM_TO_ACCOUNT_DIFFERENT];
+        return;
+    }
+    
+    if (self.sendFromAddress && self.sendToAddress && [self.fromAddress isEqualToString:self.toAddress]) {
+        [app standardNotify:BC_STRING_FROM_TO_ADDRESS_DIFFERENT];
+        return;
+    }
+    
     uint64_t value = amountInSatoshi;
     NSString *amountString = [amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     if (value <= 0 || [amountString doubleValue] <= 0) {

@@ -11,6 +11,8 @@
 
 #define BC_STRING_YOU_MUST_ENTER_DESTINATION_ADDRESS NSLocalizedString(@"You must enter a destination address", nil)
 #define BC_STRING_INVALID_TO_BITCOIN_ADDRESS NSLocalizedString(@"Invalid to bitcoin address", nil)
+#define BC_STRING_FROM_TO_ACCOUNT_DIFFERENT NSLocalizedString(@"From and destination account have to be different", nil)
+#define BC_STRING_FROM_TO_ADDRESS_DIFFERENT NSLocalizedString(@"From and destination address have to be different", nil)
 #define BC_STRING_INVALID_SEND_VALUE NSLocalizedString(@"Invalid Send Value", nil)
 
 #define BC_STRING_ADD_TO_ADDRESS_BOOK NSLocalizedString(@"Add to Address book?", nil)

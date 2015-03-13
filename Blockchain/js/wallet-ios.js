@@ -193,6 +193,29 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
 MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
+    var listener = {
+        on_success : function(e) {
+            device.execute('tx_on_success:', [id]);
+            delete pendingTransactions[id];
+        },
+        on_start : function() {
+            device.execute('tx_on_start:', [id]);
+        },
+        on_error : function(e) {
+            device.execute('tx_on_error:error:', [id, ''+e]);
+            delete pendingTransactions[id];
+        },
+        on_begin_signing : function() {
+            device.execute('tx_on_begin_signing:', [id]);
+        },
+        on_sign_progress : function(i) {
+            device.execute('tx_on_sign_progress:input:', [id, i]);
+        },
+        on_finish_signing : function() {
+            device.execute('tx_on_finish_signing:', [id]);
+        }
+    };
+
     var success = function() {
         device.execute('tx_on_success:', [id]);
     };
@@ -206,7 +229,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -214,6 +237,29 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
 MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
+    var listener = {
+        on_success : function(e) {
+            device.execute('tx_on_success:', [id]);
+            delete pendingTransactions[id];
+        },
+        on_start : function() {
+            device.execute('tx_on_start:', [id]);
+        },
+        on_error : function(e) {
+            device.execute('tx_on_error:error:', [id, ''+e]);
+            delete pendingTransactions[id];
+        },
+        on_begin_signing : function() {
+            device.execute('tx_on_begin_signing:', [id]);
+        },
+        on_sign_progress : function(i) {
+            device.execute('tx_on_sign_progress:input:', [id, i]);
+        },
+        on_finish_signing : function() {
+            device.execute('tx_on_finish_signing:', [id]);
+        }
+    };
+
     var success = function() {
         device.execute('tx_on_success:', [id]);
     };
@@ -227,7 +273,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -235,6 +281,29 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
 MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
+    var listener = {
+        on_success : function(e) {
+            device.execute('tx_on_success:', [id]);
+            delete pendingTransactions[id];
+        },
+        on_start : function() {
+            device.execute('tx_on_start:', [id]);
+        },
+        on_error : function(e) {
+            device.execute('tx_on_error:error:', [id, ''+e]);
+            delete pendingTransactions[id];
+        },
+        on_begin_signing : function() {
+            device.execute('tx_on_begin_signing:', [id]);
+        },
+        on_sign_progress : function(i) {
+            device.execute('tx_on_sign_progress:input:', [id, i]);
+        },
+        on_finish_signing : function() {
+            device.execute('tx_on_finish_signing:', [id]);
+        }
+    };
+
     var success = function() {
         device.execute('tx_on_success:', [id]);
     };
@@ -248,7 +317,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -256,6 +325,29 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
 MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
+    var listener = {
+        on_success : function(e) {
+            device.execute('tx_on_success:', [id]);
+            delete pendingTransactions[id];
+        },
+        on_start : function() {
+            device.execute('tx_on_start:', [id]);
+        },
+        on_error : function(e) {
+            device.execute('tx_on_error:error:', [id, ''+e]);
+            delete pendingTransactions[id];
+        },
+        on_begin_signing : function() {
+            device.execute('tx_on_begin_signing:', [id]);
+        },
+        on_sign_progress : function(i) {
+            device.execute('tx_on_sign_progress:input:', [id, i]);
+        },
+        on_finish_signing : function() {
+            device.execute('tx_on_finish_signing:', [id]);
+        }
+    };
+
     var success = function() {
         device.execute('tx_on_success:', [id]);
     };
@@ -269,7 +361,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendToAccount(from, to, value, fee, note, success, error, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendToAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };

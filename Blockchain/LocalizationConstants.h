@@ -15,6 +15,10 @@
 #define BC_STRING_FROM_TO_ADDRESS_DIFFERENT NSLocalizedString(@"From and destination address have to be different", nil)
 #define BC_STRING_INVALID_SEND_VALUE NSLocalizedString(@"Invalid Send Value", nil)
 
+#define BC_STRING_SIGNING_INPUTS NSLocalizedString(@"Signing Inputs", nil)
+#define BC_STRING_SIGNING_INPUT NSLocalizedString(@"Signing Input %d", nil)
+#define BC_STRING_FINISHED_SIGNING_INPUTS NSLocalizedString(@"Finished Signing Inputs", nil)
+
 #define BC_STRING_ADD_TO_ADDRESS_BOOK NSLocalizedString(@"Add to Address book?", nil)
 #define BC_STRING_NO NSLocalizedString(@"No", nil)
 #define BC_STRING_YES NSLocalizedString(@"Yes", nil)

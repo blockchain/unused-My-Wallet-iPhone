@@ -147,7 +147,28 @@ uint64_t availableAmount = 0.0;
 
 - (void)reallyDoPayment
 {
-    transactionProgressListeners * listener = [[transactionProgressListeners alloc] init];
+    transactionProgressListeners *listener = [[transactionProgressListeners alloc] init];
+    
+    listener.on_start = ^() {
+//        app.disableBusyView = TRUE;
+//        
+//        sendProgressModalText.text = BC_STRING_PLEASE_WAIT;
+//        
+//        [app showModalWithContent:sendProgressModal closeType:ModalCloseTypeNone];
+    };
+    
+    listener.on_begin_signing = ^() {
+        sendProgressModalText.text = BC_STRING_SIGNING_INPUTS;
+    };
+    
+    listener.on_sign_progress = ^(int input) {
+        DLog(@"Signing input: %d", input);
+        sendProgressModalText.text = [NSString stringWithFormat:BC_STRING_SIGNING_INPUT, input];
+    };
+    
+    listener.on_finish_signing = ^() {
+        sendProgressModalText.text = BC_STRING_FINISHED_SIGNING_INPUTS;
+    };
     
     listener.on_success = ^() {
         [app playBeepSound];

@@ -171,6 +171,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
     
     var success = function() {
         MyWallet.getHistoryAndParseMultiAddressJSON(history_success);
+        BlockchainAPI.get_balances(MyWallet.getLegacyArchivedAddresses(), function(result) {}, function(error) {});
     };
     
     var other_error = function(e) {

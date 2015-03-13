@@ -258,7 +258,7 @@ UIActionSheet *popupAddressArchive;
 
 - (NSString *)getKey:(NSIndexPath*)indexPath
 {
-    NSString * key =  NULL;
+    NSString *key;
     
     if ([indexPath section] == 0)
         key = [activeKeys objectAtIndex:[indexPath row]];

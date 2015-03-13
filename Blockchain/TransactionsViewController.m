@@ -120,6 +120,7 @@ int lastNumberTransactions = INT_MAX;
     latestBlock = _latestBlock;
     
     if (latestBlock) {
+        // TODO This only works if the unconfirmed transaction is included in the latest block, otherwise we would have to fetch history again to get the actual value
         // Update block index for new transactions
         for (int i = 0; i < self.data.transactions.count; i++) {
             if (((Transaction *) self.data.transactions[i]).block_height == 0) {

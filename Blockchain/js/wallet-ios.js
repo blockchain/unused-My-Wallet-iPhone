@@ -167,11 +167,12 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
         device.execute('loading_stop');
         
         device.execute('did_load_wallet');
+        
+        BlockchainAPI.get_balances(MyWallet.getLegacyArchivedAddresses(), function(result) {}, function(error) {});
     };
     
     var success = function() {
         MyWallet.getHistoryAndParseMultiAddressJSON(history_success);
-        BlockchainAPI.get_balances(MyWallet.getLegacyArchivedAddresses(), function(result) {}, function(error) {});
     };
     
     var other_error = function(e) {
@@ -194,16 +195,8 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
     var listener = {
-        on_success : function(e) {
-            device.execute('tx_on_success:', [id]);
-            delete pendingTransactions[id];
-        },
         on_start : function() {
             device.execute('tx_on_start:', [id]);
-        },
-        on_error : function(e) {
-            device.execute('tx_on_error:error:', [id, ''+e]);
-            delete pendingTransactions[id];
         },
         on_begin_signing : function() {
             device.execute('tx_on_begin_signing:', [id]);
@@ -218,10 +211,12 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
 
     var success = function() {
         device.execute('tx_on_success:', [id]);
+        delete pendingTransactions[id];
     };
 
     var error = function(error) {
         device.execute('tx_on_error:error:', [id, ''+error]);
+        delete pendingTransactions[id];
     };
 
     var value = BigInteger.valueOf(valueString);
@@ -229,7 +224,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -238,16 +233,8 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
     var listener = {
-        on_success : function(e) {
-            device.execute('tx_on_success:', [id]);
-            delete pendingTransactions[id];
-        },
         on_start : function() {
             device.execute('tx_on_start:', [id]);
-        },
-        on_error : function(e) {
-            device.execute('tx_on_error:error:', [id, ''+e]);
-            delete pendingTransactions[id];
         },
         on_begin_signing : function() {
             device.execute('tx_on_begin_signing:', [id]);
@@ -262,10 +249,12 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
 
     var success = function() {
         device.execute('tx_on_success:', [id]);
+        delete pendingTransactions[id];
     };
 
     var error = function(error) {
         device.execute('tx_on_error:error:', [id, ''+error]);
+        delete pendingTransactions[id];
     };
 
     var value = BigInteger.valueOf(valueString);
@@ -273,7 +262,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
     var fee = null;
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -282,16 +271,8 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
     var listener = {
-        on_success : function(e) {
-            device.execute('tx_on_success:', [id]);
-            delete pendingTransactions[id];
-        },
         on_start : function() {
             device.execute('tx_on_start:', [id]);
-        },
-        on_error : function(e) {
-            device.execute('tx_on_error:error:', [id, ''+e]);
-            delete pendingTransactions[id];
         },
         on_begin_signing : function() {
             device.execute('tx_on_begin_signing:', [id]);
@@ -306,10 +287,12 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
 
     var success = function() {
         device.execute('tx_on_success:', [id]);
+        delete pendingTransactions[id];
     };
 
     var error = function(error) {
         device.execute('tx_on_error:error:', [id, ''+error]);
+        delete pendingTransactions[id];
     };
 
     var value = parseInt(valueString);
@@ -317,7 +300,7 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };
@@ -326,16 +309,8 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var id = ''+Math.round(Math.random()*100000);
 
     var listener = {
-        on_success : function(e) {
-            device.execute('tx_on_success:', [id]);
-            delete pendingTransactions[id];
-        },
         on_start : function() {
             device.execute('tx_on_start:', [id]);
-        },
-        on_error : function(e) {
-            device.execute('tx_on_error:error:', [id, ''+e]);
-            delete pendingTransactions[id];
         },
         on_begin_signing : function() {
             device.execute('tx_on_begin_signing:', [id]);
@@ -350,10 +325,12 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
 
     var success = function() {
         device.execute('tx_on_success:', [id]);
+        delete pendingTransactions[id];
     };
 
     var error = function(error) {
         device.execute('tx_on_error:error:', [id, ''+error]);
+        delete pendingTransactions[id];
     };
 
     var value = parseInt(valueString);
@@ -361,7 +338,7 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendToAccount(from, to, value, fee, note, listener, MyWalletPhone.getSecondPassword(success, error));
+    MyWallet.sendToAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
 
     return id;
 };

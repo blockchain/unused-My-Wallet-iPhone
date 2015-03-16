@@ -39,11 +39,15 @@
     IBOutlet UITextField *selectAddressTextField;
     IBOutlet UIButton *addressBookButton;
     IBOutlet UIButton *sendPaymentButton;
+    
     IBOutlet UIView *labelAddressView;
     IBOutlet UILabel *labelAddressLabel;
     IBOutlet UITextField *labelAddressTextField;
+    
     IBOutlet UIView *sendProgressModal;
     IBOutlet UILabel *sendProgressModalText;
+    IBOutlet UIActivityIndicatorView *sendProgressActivityIndicator;
+    
     IBOutlet UIButton *btcCodeButton;
 
     BOOL displayingLocalSymbol;

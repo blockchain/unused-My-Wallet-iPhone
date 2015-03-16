@@ -175,6 +175,8 @@ uint64_t availableAmount = 0.0;
         
         [app standardNotify:BC_STRING_PAYMENT_SENT title:BC_STRING_SUCCESS delegate:nil];
         
+        [sendProgressActivityIndicator stopAnimating];
+        
         [sendPaymentButton setEnabled:TRUE];
         
         // Reset fields
@@ -220,12 +222,16 @@ uint64_t availableAmount = 0.0;
             [app standardNotify:error];
         }
         
+        [sendProgressActivityIndicator stopAnimating];
+        
         [sendPaymentButton setEnabled:TRUE];
         
         [app closeModalWithTransition:kCATransitionFade];
     };
     
     [sendPaymentButton setEnabled:FALSE];
+    
+    [sendProgressActivityIndicator startAnimating];
     
     sendProgressModalText.text = BC_STRING_SENDING_TRANSACTION;
     

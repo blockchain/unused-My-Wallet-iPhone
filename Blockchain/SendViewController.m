@@ -89,7 +89,7 @@ uint64_t availableAmount = 0.0;
 
 - (void)reload
 {
-    if (![app.wallet isInitialized]) {
+    if (![app.wallet isInitialized] || !app.latestResponse) {
         return;
     }
     

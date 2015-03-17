@@ -106,6 +106,8 @@ MyWalletPhone.createAccount = function(label) {
         console.log('Created new account');
 
         device.execute('loading_stop');
+
+        device.execute('reload');
     };
 
     var error = function () {

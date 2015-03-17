@@ -173,4 +173,6 @@
 - (uint64_t)recommendedTransactionFeeForAddress:(NSString*)address amount:(uint64_t)amount;
 - (uint64_t)recommendedTransactionFeeForAccount:(int)account amount:(uint64_t)amount;
 
+- (void)loading_start_get_history;
+
 @end

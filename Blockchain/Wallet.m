@@ -655,6 +655,8 @@ Boolean isHdWalletInitialized;
             [response.transactions addObject:tx];
         }
         
+        [self loading_stop];
+        
         [delegate didGetMultiAddressResponse:response];
     } command:@"JSON.stringify(MyWalletPhone.getMultiAddrResponse())"];
 }

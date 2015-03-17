@@ -174,5 +174,7 @@
 - (uint64_t)recommendedTransactionFeeForAccount:(int)account amount:(uint64_t)amount;
 
 - (void)loading_start_get_history;
+- (void)loading_start_import_private_key;
+- (void)loading_stop;
 
 @end

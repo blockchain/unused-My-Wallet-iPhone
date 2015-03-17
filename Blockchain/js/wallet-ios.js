@@ -38,8 +38,10 @@ MyWallet.addEventListener(function (event, obj) {
 
     if (event == 'msg') {
         if (obj.type == 'error') {
-            // Cancel busy view in case any error comes in
-            device.execute('loading_stop');
+            if (obj.message != "For Improved security add an email address to your account.") {
+                // Cancel busy view in case any error comes in - except for add email, that's handled differently in makeNotice
+                device.execute('loading_stop');
+            }
 
             // Some messages are JSON objects and the error message is in the map
             try {
@@ -595,26 +597,18 @@ MyWalletPhone.addPrivateKey = function(privateKeyString) {
     var success = function(address) {
         console.log('Add private key success');
 
-        device.execute('loading_stop');
-
         device.execute('on_add_private_key:', [address]);
     };
     var error = function(e) {
         console.log('Add private key Error');
-
-        device.execute('loading_stop');
 
         device.execute('on_error_adding_private_key:', [''+e]);
     };
     var alreadyImportedCallback = function(e) {
         console.log('Add private key Error: already imported');
 
-        device.execute('loading_stop');
-
         device.execute('on_error_adding_private_key:', ['Key already imported']);
     };
-    
-    device.execute('loading_start_import_private_key');
 
     MyWallet.importPrivateKey(privateKeyString, MyWalletPhone.getSecondPassword(success, error), MyWalletPhone.getPrivateKeyPassword, success, alreadyImportedCallback, error);
 };
@@ -687,8 +681,11 @@ MyWalletPhone.getPrivateKeyPassword = function(callback) {
     device.execute("getPrivateKeyPassword:", ["discard"], function(pw) {
                    callback(pw,
                             function () {
-                            console.log('BIP38 private key import: password incorrect');
-                            device.execute('makeNotice:id:message:', ['error', '', 'Incorrect Passphrase']);
+                                console.log('BIP38 private key import: correct password');
+                            },
+                            function () {
+                                console.log('BIP38 private key import: password incorrect');
+                                device.execute('makeNotice:id:message:', ['error', '', 'Incorrect Passphrase']);
                             });
                    }, function(msg) { console.log('Error' + msg); });
 };

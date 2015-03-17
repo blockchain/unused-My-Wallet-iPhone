@@ -116,21 +116,27 @@ BOOL isReadingQRCode;
     if (metadataObjects != nil && [metadataObjects count] > 0) {
         AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
-            // do something useful with results
+            // Close the QR code reader
             dispatch_sync(dispatch_get_main_queue(), ^{
-                NSString * privateKeyString = [metadataObj stringValue];
+                [self stopReadingQRCode];
                 
-                NSString * format = [app.wallet detectPrivateKeyFormat:privateKeyString];
+                [app.wallet loading_start_import_private_key];
+            });
+            
+            // Check the format of the privateKey and if it's valid, pass it back via the success callback
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSString *privateKeyString = [metadataObj stringValue];
+                
+                NSString *format = [app.wallet detectPrivateKeyFormat:privateKeyString];
                 
                 if (!app.wallet || [format length] > 0) {
                     if (self.success) {
                         self.success(privateKeyString);
                     }
                 } else {
+                    [app.wallet loading_stop];
                     [app standardNotify:BC_STRING_UNSUPPORTED_PRIVATE_KEY_FORMAT];
                 }
-                
-                [self stopReadingQRCode];
             });
         }
     }

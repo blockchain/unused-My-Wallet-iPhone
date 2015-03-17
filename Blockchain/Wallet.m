@@ -578,6 +578,7 @@ Boolean isHdWalletInitialized;
 
 - (void)loading_stop
 {
+    DLog(@"Stop loading");
     [app hideBusyView];
 }
 

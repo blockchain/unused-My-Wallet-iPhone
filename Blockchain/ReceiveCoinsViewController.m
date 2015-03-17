@@ -435,6 +435,8 @@ UIActionSheet *popupAddressArchive;
 {
     PrivateKeyReader *reader = [[PrivateKeyReader alloc] initWithSuccess:^(NSString* privateKeyString) {
         [app.wallet addKey:privateKeyString];
+        
+        [app.wallet loading_stop];
     } error:nil];
     
     [app.slidingViewController presentViewController:reader animated:YES completion:nil];

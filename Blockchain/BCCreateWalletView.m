@@ -7,7 +7,9 @@
 //
 
 #import "BCCreateWalletView.h"
+
 #import "AppDelegate.h"
+#import "BCEntropyChecker.h"
 
 #define IS_568_SCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
 
@@ -61,6 +63,8 @@
 - (void)modalWasDismissed {
     passwordTextField.text = nil;
     password2TextField.text = nil;
+    
+    passwordStrengthView.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -78,7 +82,8 @@
     return YES;
 }
 
-# pragma mark - Wallet Delegate method
+#pragma mark - Wallet Delegate method
+
 - (void)walletJSReady
 {
     [app.wallet newAccount:self.tmpPassword email:emailTextField.text];
@@ -151,6 +156,26 @@
 - (void)errorCreatingNewAccount:(NSString*)message
 {
     [app standardNotify:message];
+}
+
+#pragma mark - Textfield Delegates
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField != passwordTextField) {
+        return YES;
+    }
+    
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    CGFloat passwordStrength = [[BCEntropyChecker sharedInstance] entropyStrengthForWord:newString];
+    
+    CGFloat greenValue = passwordStrength/100.0;
+    CGFloat redValue = 1.0 - greenValue;
+    
+    passwordStrengthView.backgroundColor = [UIColor colorWithRed:redValue green:greenValue blue:0 alpha:1];
+    
+    return YES;
 }
 
 @end

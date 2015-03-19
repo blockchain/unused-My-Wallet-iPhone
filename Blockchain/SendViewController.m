@@ -446,33 +446,43 @@ uint64_t availableAmount = 0.0;
         if ([points count] > 2 || [commas count] > 2)
             return NO;
         
+        // Only 1 leading zero
+        if (points.count == 1) {
+            if (range.location == 1 && ![string isEqualToString:@"."] && [textField.text isEqualToString:@"0"]) {
+                return NO;
+            }
+        }
+        
         // When entering amount in BTC, max 8 decimal places
         if (!displayingLocalSymbol) {
+            // Max number of decimal places depends on bitcoin unit
+            NSUInteger maxlength = [@(SATOSHI) stringValue].length - [@(SATOSHI / app.latestResponse.symbol_btc.conversion) stringValue].length;
+            
             if (points.count == 2) {
                 NSString *decimalString = points[1];
-                if (decimalString.length > 8) {
+                if (decimalString.length > maxlength) {
                     return NO;
                 }
             }
             else if (commas.count == 2) {
                 NSString *decimalString = commas[1];
-                if (decimalString.length > 8) {
+                if (decimalString.length > maxlength) {
                     return NO;
                 }
             }
         }
         
-        // Fiat currencies have a max of 3 decimal places, most of them actually only 2
+        // Fiat currencies have a max of 3 decimal places, most of them actually only 2. For now we will use 2.
         else {
             if (points.count == 2) {
                 NSString *decimalString = points[1];
-                if (decimalString.length > 3) {
+                if (decimalString.length > 2) {
                     return NO;
                 }
             }
             else if (commas.count == 2) {
                 NSString *decimalString = commas[1];
-                if (decimalString.length > 3) {
+                if (decimalString.length > 2) {
                     return NO;
                 }
             }

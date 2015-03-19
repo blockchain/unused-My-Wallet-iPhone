@@ -233,26 +233,29 @@ UIActionSheet *popupAddressArchive;
 {
     uint64_t amount = [self getInputAmountInSatoshi];
     
-    [btcButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
-    [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
-    
     [btcButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
     [fiatButton setBackgroundColor:COLOR_TEXT_FIELD_GRAY];
     
     if (displayingLocalSymbol) {
         [btcButton setBackgroundImage:nil forState:UIControlStateNormal];
         [btcButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
+        [btcButton setTitle:[app formatMoney:amount localCurrency:FALSE] forState:UIControlStateNormal];
         
         // Highlight
         [fiatButton setBackgroundImage:[UIImage imageNamed: @"tab_left"] forState:UIControlStateNormal];
         [fiatButton setTitleColor:COLOR_BLOCKCHAIN_BLUE forState:UIControlStateNormal];
+        NSString *amountFormatted = [app.latestResponse.symbol_local.symbol stringByAppendingString:requestAmountTextField.text];
+        [fiatButton setTitle:amountFormatted forState:UIControlStateNormal];
     } else {
         // Highlight
         [btcButton setBackgroundImage:[UIImage imageNamed:@"tab_right"] forState:UIControlStateNormal];
         [btcButton setTitleColor:COLOR_BLOCKCHAIN_BLUE forState:UIControlStateNormal];
+        NSString *amountFormatted = [requestAmountTextField.text stringByAppendingFormat:@" %@", app.latestResponse.symbol_btc.symbol];
+        [btcButton setTitle:amountFormatted forState:UIControlStateNormal];
         
         [fiatButton setBackgroundImage:nil forState:UIControlStateNormal];
         [fiatButton setTitleColor:COLOR_FOREGROUND_GRAY forState:UIControlStateNormal];
+        [fiatButton setTitle:[app formatMoney:amount localCurrency:TRUE] forState:UIControlStateNormal];
     }
 }
 
@@ -695,33 +698,43 @@ UIActionSheet *popupAddressArchive;
     if ([points count] > 2 || [commas count] > 2)
         return NO;
     
+    // Only 1 leading zero
+    if (points.count == 1) {
+        if (range.location == 1 && ![string isEqualToString:@"."] && [textField.text isEqualToString:@"0"]) {
+            return NO;
+        }
+    }
+    
     // When entering amount in BTC, max 8 decimal places
     if (!displayingLocalSymbol) {
+        // Max number of decimal places depends on bitcoin unit
+        NSUInteger maxlength = [@(SATOSHI) stringValue].length - [@(SATOSHI / app.latestResponse.symbol_btc.conversion) stringValue].length;
+        
         if (points.count == 2) {
             NSString *decimalString = points[1];
-            if (decimalString.length > 8) {
+            if (decimalString.length > maxlength) {
                 return NO;
             }
         }
         else if (commas.count == 2) {
             NSString *decimalString = commas[1];
-            if (decimalString.length > 8) {
+            if (decimalString.length > maxlength) {
                 return NO;
             }
         }
     }
     
-    // Fiat currencies have a max of 3 decimal places, most of them actually only 2
+    // Fiat currencies have a max of 3 decimal places, most of them actually only 2. For now we will use 2.
     else {
         if (points.count == 2) {
             NSString *decimalString = points[1];
-            if (decimalString.length > 3) {
+            if (decimalString.length > 2) {
                 return NO;
             }
         }
         else if (commas.count == 2) {
             NSString *decimalString = commas[1];
-            if (decimalString.length > 3) {
+            if (decimalString.length > 2) {
                 return NO;
             }
         }

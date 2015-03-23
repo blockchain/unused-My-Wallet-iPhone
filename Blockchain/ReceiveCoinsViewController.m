@@ -804,8 +804,7 @@ UIActionSheet *popupAddressArchive;
         
         if (label.length > 0)
             detailLabel = label;
-        
-        else;
+        else
             detailLabel = addr;
     }
     optionsTitleLabel.text = detailLabel;

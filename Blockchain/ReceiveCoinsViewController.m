@@ -643,13 +643,22 @@ UIActionSheet *popupAddressArchive;
 
 - (IBAction)archiveAddressClicked:(id)sender
 {
-    NSString * addr = self.clickedAddress;
-    NSInteger tag =  [app.wallet tagForLegacyAddress:addr];
+    NSString *addr = self.clickedAddress;
+    NSInteger tag = [app.wallet tagForLegacyAddress:addr];
     
     if (tag == 2) {
         [app.wallet unArchiveLegacyAddress:addr];
     }
     else {
+        // Need at least one active address
+        if (activeKeys.count == 1 && ![app.wallet didUpgradeToHd]) {
+            [app closeModalWithTransition:kCATransitionFade];
+            
+            [app standardNotify:BC_STRING_AT_LEAST_ONE_ACTIVE_ADDRESS];
+            
+            return;
+        }
+        
         [app.wallet archiveLegacyAddress:addr];
     }
     

@@ -31,6 +31,14 @@
     emailTextField.inputAccessoryView = createButton;
     passwordTextField.inputAccessoryView = createButton;
     password2TextField.inputAccessoryView = createButton;
+    
+    passwordTextField.textColor = [UIColor grayColor];
+    password2TextField.textColor = [UIColor grayColor];
+    
+    // iOS 7+ only changes color of border when width is set
+    passwordTextField.layer.cornerRadius = 5.0;
+    passwordTextField.layer.borderWidth = 1.0/[UIScreen mainScreen].scale;
+    passwordTextField.layer.borderColor = COLOR_TEXT_FIELD_BORDER_GRAY.CGColor;
 }
 
 - (void)prepareForModalPresentation
@@ -64,7 +72,9 @@
     passwordTextField.text = nil;
     password2TextField.text = nil;
     
-    passwordStrengthView.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+    passwordTextField.layer.borderColor = COLOR_TEXT_FIELD_BORDER_GRAY.CGColor;
+    passwordFeedbackLabel.text = BC_STRING_PASSWORD_MINIMUM_10_CHARACTERS;
+    passwordFeedbackLabel.textColor = [UIColor darkGrayColor];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -160,20 +170,52 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (textField != passwordTextField) {
-        return YES;
+    if (textField == passwordTextField) {
+        [self performSelector:@selector(checkPasswordStrength) withObject:nil afterDelay:0.01];
     }
     
-    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    CGFloat passwordStrength = [[BCEntropyChecker sharedInstance] entropyStrengthForWord:newString];
-    
-    CGFloat greenValue = passwordStrength/100.0;
-    CGFloat redValue = 1.0 - greenValue;
-    
-    passwordStrengthView.backgroundColor = [UIColor colorWithRed:redValue green:greenValue blue:0 alpha:1];
-    
     return YES;
+}
+
+- (void)checkPasswordStrength
+{
+    NSString *password = passwordTextField.text;
+    
+    if (password.length == 0) {
+        passwordTextField.layer.borderColor = COLOR_TEXT_FIELD_BORDER_GRAY.CGColor;
+        passwordFeedbackLabel.text = BC_STRING_PASSWORD_MINIMUM_10_CHARACTERS;
+        passwordFeedbackLabel.textColor = [UIColor darkGrayColor];
+        return;
+    }
+    
+    UIColor *color;
+    NSString *description;
+    
+    CGFloat passwordStrength = [[BCEntropyChecker sharedInstance] entropyStrengthForWord:password];
+    
+    if (passwordStrength < 25) {
+        color = COLOR_PASSWORD_STRENGTH_WEAK;
+        description = BC_STRING_PASSWORD_STRENGTH_WEAK;
+    }
+    else if (passwordStrength < 50) {
+        color = COLOR_PASSWORD_STRENGTH_REGULAR;
+        description = BC_STRING_PASSWORD_STRENGTH_REGULAR;
+    }
+    else if (passwordStrength < 75) {
+        color = COLOR_PASSWORD_STRENGTH_NORMAL;
+        description = BC_STRING_PASSWORD_STRENGTH_NORMAL;
+    }
+    else {
+        color = COLOR_PASSWORD_STRENGTH_STRONG;
+        description = BC_STRING_PASSWORD_STRENGTH_STRONG;
+    }
+    
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        passwordFeedbackLabel.text = description;
+        passwordFeedbackLabel.textColor = color;
+        
+        passwordTextField.layer.borderColor = color.CGColor;
+    }];
 }
 
 @end

@@ -43,11 +43,16 @@
 #define BC_STRING_LOADING_EXTERNAL_PAGE NSLocalizedString(@"Loading External Page", nil)
 
 #define BC_STRING_PASSWORD_MUST_10_CHARACTERS_OR_LONGER NSLocalizedString(@"Password must 10 characters or longer", nil)
+#define BC_STRING_PASSWORD_MINIMUM_10_CHARACTERS NSLocalizedString(@"* Minimum 10 characters", nil)
 #define BC_STRING_PASSWORDS_DO_NOT_MATCH NSLocalizedString(@"Passwords do not match", nil)
 #define BC_STRING_PLEASE_PROVIDE_AN_EMAIL_ADDRESS NSLocalizedString(@"Please provide an email address.", nil)
 #define BC_STRING_INVALID_EMAIL_ADDRESS NSLocalizedString(@"Invalid email address.", nil)
 #define BC_STRING_DID_CREATE_NEW_ACCOUNT_DETAIL NSLocalizedString(@"Before accessing your wallet, please choose a pin number to use to unlock your wallet. It's important you remember this pin as it cannot be reset or changed without first unlocking the app.", nil)
 #define BC_STRING_DID_CREATE_NEW_ACCOUNT_TITLE NSLocalizedString(@"Your wallet was successfully created.", nil)
+#define BC_STRING_PASSWORD_STRENGTH_WEAK NSLocalizedString(@"Weak", nil)
+#define BC_STRING_PASSWORD_STRENGTH_REGULAR NSLocalizedString(@"Regular", nil)
+#define BC_STRING_PASSWORD_STRENGTH_NORMAL NSLocalizedString(@"Normal", nil)
+#define BC_STRING_PASSWORD_STRENGTH_STRONG NSLocalizedString(@"Strong", nil)
 
 #define BC_STRING_UNCONFIRMED NSLocalizedString(@"Unconfirmed", nil)
 #define BC_STRING_COUNT_CONFIRMATIONS NSLocalizedString(@"%d Confirmations", nil)

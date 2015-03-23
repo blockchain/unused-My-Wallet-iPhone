@@ -26,8 +26,7 @@
     IBOutlet UITextField *emailTextField;
     IBOutlet UITextField *passwordTextField;
     IBOutlet UITextField *password2TextField;
-    
-    IBOutlet UIView *passwordStrengthView;
+    IBOutlet UILabel *passwordFeedbackLabel;
 }
 
 - (IBAction)termsOfServiceClicked:(id)sender;

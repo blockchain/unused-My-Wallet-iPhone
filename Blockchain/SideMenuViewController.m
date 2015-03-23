@@ -29,6 +29,8 @@
 
 ECSlidingViewController *sideMenu;
 
+UITapGestureRecognizer *tapToCloseGestureRecognizer;
+
 int menuEntries = 4;
 int balanceEntries = 0;
 int accountEntries = 0;
@@ -57,10 +59,12 @@ int accountEntries = 0;
     UIView* blueView = [[UIView alloc] initWithFrame:frame];
     blueView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
     [self.tableView addSubview:blueView];
-    // Make sure the refresh contorl is in front of the blue area
+    // Make sure the refresh control is in front of the blue area
     blueView.layer.zPosition -= 1;
     
     sideMenu.delegate = self;
+    
+    tapToCloseGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:app action:@selector(toggleSideMenu)];
 }
 
 // Reset the swipe gestures when view disappears - we have to wait until it's gone and can't do it in the delegate
@@ -74,16 +78,20 @@ int accountEntries = 0;
     // Show status bar again
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
     
-    // Reset Pan gestures
+    // Disable Pan and Tap gesture on main view
+    [app.tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
+    [app.tabViewController.activeViewController.view removeGestureRecognizer:tapToCloseGestureRecognizer];
+    
+    // Enable interation on main view
     for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
         [view setUserInteractionEnabled:YES];
     }
     
-    [app.tabViewController.activeViewController.view removeGestureRecognizer:sideMenu.panGesture];
-    
+    // Enable swipe to open side menu gesture on small bar on the left of main view
     [app.tabViewController.menuSwipeRecognizerView setUserInteractionEnabled:YES];
     [app.tabViewController.menuSwipeRecognizerView addGestureRecognizer:sideMenu.panGesture];
     
+    // Enable swipe to switch between views on main view
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeLeft)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:app action:@selector(swipeRight)];
@@ -127,18 +135,21 @@ int accountEntries = 0;
 {
     // SideMenu will slide in
     if (operation == ECSlidingViewControllerOperationAnchorRight) {
-        // No status bar
+        // Hide status bar
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
         
-        // Enable Pan gesture to close sideMenu on tabViewController and disable all other interactions
+        // Disable all interactions on main view
         for (UIView *view in app.tabViewController.activeViewController.view.subviews) {
             [view setUserInteractionEnabled:NO];
         }
         [app.tabViewController.menuSwipeRecognizerView setUserInteractionEnabled:NO];
         
+        // Enable Pan gesture and tap gesture to close sideMenu
         [app.tabViewController.activeViewController.view setUserInteractionEnabled:YES];
         ECSlidingViewController *sideMenu = app.slidingViewController;
         [app.tabViewController.activeViewController.view addGestureRecognizer:sideMenu.panGesture];
+        
+        [app.tabViewController.activeViewController.view addGestureRecognizer:tapToCloseGestureRecognizer];
         
         // Show shadow on current viewController in tabBarView
         UIView *castsShadowView = app.slidingViewController.topViewController.view;

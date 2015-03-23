@@ -22,6 +22,14 @@
 Boolean didClickAccount = NO;
 int clickedAccount;
 
+UILabel *mainAddressLabel;
+
+NSString *mainAddress;
+NSString *mainLabel;
+
+NSString *detailAddress;
+NSString *detailLabel;
+
 UIActionSheet *popupAccount;
 UIActionSheet *popupAddressUnArchive;
 UIActionSheet *popupAddressArchive;
@@ -41,6 +49,10 @@ UIActionSheet *popupAddressArchive;
     
     qrCodeMainImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - imageWidth) / 2, 25, imageWidth, imageWidth)];
     qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    UITapGestureRecognizer *tapMainQRGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainQRClicked:)];
+    [qrCodeMainImageView addGestureRecognizer:tapMainQRGestureRecognizer];
+    qrCodeMainImageView.userInteractionEnabled = YES;
     
     // The more actions button will be added to the top menu bar
     [moreActionsButton removeFromSuperview];
@@ -71,6 +83,10 @@ UIActionSheet *popupAddressArchive;
                                               qrCodeMainImageView.frame.origin.y,
                                               qrCodeMainImageView.frame.size.width,
                                               qrCodeMainImageView.frame.size.height);
+    
+    UITapGestureRecognizer *tapDetailQRGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(copyAddressClicked:)];
+    [qrCodePaymentImageView addGestureRecognizer:tapDetailQRGestureRecognizer];
+    qrCodePaymentImageView.userInteractionEnabled = YES;
     
     // iPhone4/4S
     if ([[UIScreen mainScreen] bounds].size.height < 568) {
@@ -140,16 +156,14 @@ UIActionSheet *popupAddressArchive;
     
     // Get an address: the first empty receive address for the default HD account
     // Or the first active legacy address if there are no HD accounts
-    NSString *defaultAddress;
-    
     if ([app.wallet getAccountsCount] > 0) {
         int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-        defaultAddress = [app.wallet getReceiveAddressForAccount:defaultAccountIndex];
+        mainAddress = [app.wallet getReceiveAddressForAccount:defaultAccountIndex];
     }
     else if (activeKeys.count > 0) {
         for (NSString *address in activeKeys) {
             if (![app.wallet isWatchOnlyLegacyAddress:address]) {
-                defaultAddress = address;
+                mainAddress = address;
                 break;
             }
         }
@@ -157,32 +171,35 @@ UIActionSheet *popupAddressArchive;
     
     if ([app.wallet getAccountsCount] > 0 || activeKeys.count > 0) {
 
-        qrCodeMainImageView.image = [self qrImageFromAddress:defaultAddress];
+        qrCodeMainImageView.image = [self qrImageFromAddress:mainAddress];
 
         [headerView addSubview:qrCodeMainImageView];
         
         // Label of the default HD account
-        UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 30, self.view.frame.size.width - 40, 18)];
+        mainAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, imageWidth + 30, self.view.frame.size.width - 40, 18)];
         if ([app.wallet getAccountsCount] > 0) {
             int defaultAccountIndex = [app.wallet getDefaultAccountIndex];
-            addressLabel.text = [app.wallet getLabelForAccount:defaultAccountIndex];
+            mainLabel = [app.wallet getLabelForAccount:defaultAccountIndex];
         }
         // Label of the default legacy address
         else {
-            NSString *label = [app.wallet labelForLegacyAddress:defaultAddress];
+            NSString *label = [app.wallet labelForLegacyAddress:mainAddress];
             if (label.length > 0) {
-                addressLabel.text = label;
+                mainLabel = label;
             }
             else {
-                addressLabel.text = defaultAddress;
+                mainLabel = mainAddress;
             }
         }
-        addressLabel.font = [UIFont systemFontOfSize:15];
-        addressLabel.textAlignment = NSTextAlignmentCenter;
-        addressLabel.textColor = [UIColor blackColor];
-        [addressLabel setMinimumScaleFactor:.5f];
-        [addressLabel setAdjustsFontSizeToFitWidth:YES];
-        [headerView addSubview:addressLabel];
+        
+        mainAddressLabel.text = mainLabel;
+        
+        mainAddressLabel.font = [UIFont systemFontOfSize:15];
+        mainAddressLabel.textAlignment = NSTextAlignmentCenter;
+        mainAddressLabel.textColor = [UIColor blackColor];
+        [mainAddressLabel setMinimumScaleFactor:.5f];
+        [mainAddressLabel setAdjustsFontSizeToFitWidth:YES];
+        [headerView addSubview:mainAddressLabel];
     }
     
     tableView.tableHeaderView = headerView;
@@ -466,36 +483,55 @@ UIActionSheet *popupAddressArchive;
     [app closeModalWithTransition:kCATransitionFade];
 }
 
+- (IBAction)mainQRClicked:(id)sender
+{
+    // Copy address to clipboard
+    [UIPasteboard generalPasteboard].string = mainAddress;
+
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        mainAddressLabel.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            mainAddressLabel.text = mainAddress;
+            mainAddressLabel.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                    mainAddressLabel.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                        mainAddressLabel.text = mainLabel;
+                        mainAddressLabel.alpha = 1.0;
+                    }];
+                }];
+            });
+        }];
+    }];
+}
+
 - (IBAction)copyAddressClicked:(id)sender
 {
-    NSString *addr = self.clickedAddress;
-    [UIPasteboard generalPasteboard].string = addr;
+    [UIPasteboard generalPasteboard].string = detailAddress;
     
-//    UIView *lastButtonView = archiveUnarchiveButton;
-//    
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
-//    [[lastButtonView superview] addSubview:label];
-//    
-//    label.textAlignment = NSTextAlignmentCenter;
-//    [label setFont:[UIFont systemFontOfSize:12.0f]];
-//    label.textColor = [UIColor darkGrayColor];
-//    label.numberOfLines = 2;
-//    label.minimumScaleFactor = .3f;
-//    label.adjustsFontSizeToFitWidth = YES;
-//    label.center = CGPointMake(lastButtonView.center.x, lastButtonView.center.y + 40);
-//    label.text = [NSString stringWithFormat:BC_STRING_COPIED_TO_CLIPBOARD, addr];
-//    
-//    label.alpha = 0;
-//    [UIView animateWithDuration:.1f animations:^{
-//        label.alpha = 1;
-//    } completion:^(BOOL finished) {
-//        [UIView animateWithDuration:5.0f animations:^{
-//            label.alpha = 0;
-//        } completion:^(BOOL finished) {
-//            [label removeFromSuperview];
-//        }];
-//    }];
-    
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        optionsTitleLabel.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            optionsTitleLabel.text = detailAddress;
+            optionsTitleLabel.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                    optionsTitleLabel.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                        optionsTitleLabel.text = detailLabel;
+                        optionsTitleLabel.alpha = 1.0;
+                    }];
+                }];
+            });
+        }];
+    }];
 }
 
 - (IBAction)shareByTwitter:(id)sender
@@ -753,22 +789,26 @@ UIActionSheet *popupAddressArchive;
     
     if (indexPath.section == 0) {
         int row = (int) indexPath.row;
-        self.clickedAddress = [app.wallet getReceiveAddressForAccount:row];
+        detailAddress = [app.wallet getReceiveAddressForAccount:row];
+        self.clickedAddress = detailAddress;
         clickedAccount = row;
         
-        optionsTitleLabel.text = [app.wallet getLabelForAccount:row];
+        detailLabel = [app.wallet getLabelForAccount:row];
     }
     else {
-        NSString *addr = [self getAddress:[_tableView indexPathForSelectedRow]];
+        detailAddress = [self getAddress:[_tableView indexPathForSelectedRow]];
+        NSString *addr = detailAddress;
         NSString *label = [app.wallet labelForLegacyAddress:addr];
         
         self.clickedAddress = addr;
         
         if (label.length > 0)
-            optionsTitleLabel.text = label;
-        else
-            optionsTitleLabel.text = addr;
+            detailLabel = label;
+        
+        else;
+            detailLabel = addr;
     }
+    optionsTitleLabel.text = detailLabel;
     
     [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose headerText:BC_STRING_REQUEST_AMOUNT onDismiss:^() {
         // Remove the extra menu item (more actions)
@@ -791,13 +831,6 @@ UIActionSheet *popupAddressArchive;
     
     requestAmountTextField.hidden = YES;
     [requestAmountTextField becomeFirstResponder];
-    
-    
-    // Put QR code in ImageView
-    UIImage *image = [self qrImageFromAddress:self.clickedAddress];
-    
-    qrCodeMainImageView.image = image;
-    qrCodeMainImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

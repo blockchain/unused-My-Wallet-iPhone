@@ -35,6 +35,7 @@
 #define BC_STRING_SEND_TO NSLocalizedString(@"Send to...", nil)
 
 #define BC_STRING_YOU_MUST_ENTER_A_LABEL NSLocalizedString(@"You must enter a label", nil)
+#define BC_STRING_LABEL_MUST_HAVE_LESS_THAN_18_CHAR NSLocalizedString(@"Label must have less than 18 characters", nil)
 #define BC_STRING_LABEL_MUST_BE_ALPHANUMERIC NSLocalizedString(@"Label must contain letters and numbers only", nil)
 #define BC_STRING_UNARCHIVE NSLocalizedString(@"Unarchive", nil)
 #define BC_STRING_ARCHIVE NSLocalizedString(@"Archive", nil)

@@ -63,6 +63,12 @@
         return;
     }
     
+    if (label.length > 17) {
+        // TODO i18n
+        [app standardNotify:BC_STRING_LABEL_MUST_HAVE_LESS_THAN_18_CHAR];
+        return;
+    }
+    
     NSMutableCharacterSet *allowedCharSet = [[NSCharacterSet alphanumericCharacterSet] mutableCopy];
     [allowedCharSet formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
     

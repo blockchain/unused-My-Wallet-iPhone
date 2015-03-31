@@ -432,7 +432,7 @@ Boolean isHdWalletInitialized;
         return [[NSDictionary alloc] init];
     }
     
-    NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAddressBook())"];
+    NSString * addressBookJSON = [self.webView executeJSSynchronous:@"JSON.stringify(WalletStore.getAddressBook())"];
     
     return [addressBookJSON getJSONObject];
 }

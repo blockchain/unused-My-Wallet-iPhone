@@ -137,7 +137,7 @@ Boolean isHdWalletInitialized;
 {
     // Initialized when the webView is loaded, the HD Wallet is set (async web worker) and the wallet is initialized (decrypted and in-memory wallet built)
     return ([self.webView isLoaded] &&
-            (![[self.webView executeJSSynchronous:@"MyWallet.didUpgradeToHd()"] boolValue] || isHdWalletInitialized) &&
+            (![[self.webView executeJSSynchronous:@"WalletStore.didUpgradeToHd()"] boolValue] || isHdWalletInitialized) &&
             [[self.webView executeJSSynchronous:@"MyWallet.getIsInitialized()"] boolValue]);
 }
 
@@ -700,7 +700,7 @@ Boolean isHdWalletInitialized;
         return nil;
     }
     
-    NSString *allTransactionsJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllTransactions())"];
+    NSString *allTransactionsJSON = [self.webView executeJSSynchronous:@"JSON.stringify(WalletStore.getAllTransactions())"];
     
     return [allTransactionsJSON getJSONObject];
 }
@@ -899,7 +899,7 @@ Boolean isHdWalletInitialized;
         return NO;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.didUpgradeToHd()"] boolValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.didUpgradeToHd()"] boolValue];
 }
 
 - (int)getAccountsCount

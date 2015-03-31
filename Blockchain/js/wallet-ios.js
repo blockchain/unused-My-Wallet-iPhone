@@ -582,7 +582,7 @@ MyWalletPhone.get_wallet_and_history = function() {
 MyWalletPhone.getMultiAddrResponse = function() {
     var obj = {};
 
-    obj.transactions = MyWallet.getTransactions();
+    obj.transactions = WalletStore.getTransactions();
     obj.total_received = MyWallet.getTotalReceived();
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
@@ -737,15 +737,15 @@ ImportExport.Crypto_scrypt = function(passwd, salt, N, r, p, dkLen, callback) {
     });
 };
 
-MyStore.get_old = MyStore.get;
-MyStore.get = function(key, callback) {
+WalletStore.get_old = WalletStore.get;
+WalletStore.get = function(key, callback) {
     // Disallow fetching of the guid
     if (key == 'guid') {
         callback();
         return;
     }
 
-    MyStore.get_old(key, callback);
+    WalletStore.get_old(key, callback);
 };
 
 // TODO what should this value be?

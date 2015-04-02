@@ -172,7 +172,7 @@ MyWalletPhone.fetchWalletJson = function(user_guid, shared_key, resend_code, inp
         
         device.execute('did_load_wallet');
         
-        BlockchainAPI.get_balances(MyWallet.getLegacyArchivedAddresses(), function(result) {}, function(error) {});
+        BlockchainAPI.get_balances(WalletStore.getLegacyArchivedAddresses(), function(result) {}, function(error) {});
     };
     
     var success = function() {
@@ -587,7 +587,7 @@ MyWalletPhone.getMultiAddrResponse = function() {
     obj.total_sent = MyWallet.getTotalSent();
     obj.final_balance = MyWallet.getFinalBalance();
     obj.n_transactions = MyWallet.getNTransactions();
-    obj.addresses = MyWallet.getAllLegacyAddresses();
+    obj.addresses = WalletStore.getAllLegacyAddresses();
 
     obj.symbol_local = symbol_local;
     obj.symbol_btc = symbol_btc;

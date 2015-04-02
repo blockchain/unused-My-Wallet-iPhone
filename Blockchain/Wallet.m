@@ -325,7 +325,7 @@ Boolean isHdWalletInitialized;
         return FALSE;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.isWatchOnlyLegacyAddress(\"%@\")", [address escapeStringForJS]] boolValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.isWatchOnlyLegacyAddress(\"%@\")", [address escapeStringForJS]] boolValue];
 }
 
 - (NSString*)labelForLegacyAddress:(NSString*)address
@@ -334,7 +334,7 @@ Boolean isHdWalletInitialized;
         return nil;
     }
     
-    return [self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressLabel(\"%@\")", [address escapeStringForJS]];
+    return [self.webView executeJSSynchronous:@"WalletStore.getLegacyAddressLabel(\"%@\")", [address escapeStringForJS]];
 }
 
 - (NSInteger)tagForLegacyAddress:(NSString*)address
@@ -343,7 +343,7 @@ Boolean isHdWalletInitialized;
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.getLegacyAddressTag(\"%@\")", [address escapeStringForJS]] intValue];
 }
 
 - (BOOL)isValidAddress:(NSString*)string
@@ -361,7 +361,7 @@ Boolean isHdWalletInitialized;
         return nil;
     }
     
-    NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getAllLegacyAddresses())"];
+    NSString * allAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(WalletStore.getAllLegacyAddresses())"];
     
     return [allAddressesJSON getJSONObject];        
 }
@@ -372,7 +372,7 @@ Boolean isHdWalletInitialized;
         return nil;
     }
     
-    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getLegacyActiveAddresses())"];
+    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(WalletStore.getLegacyActiveAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
 }
@@ -383,29 +383,29 @@ Boolean isHdWalletInitialized;
         return nil;
     }
     
-    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(MyWallet.getLegacyArchivedAddresses())"];
+    NSString *activeAddressesJSON = [self.webView executeJSSynchronous:@"JSON.stringify(WalletStore.getLegacyArchivedAddresses())"];
     
     return [activeAddressesJSON getJSONObject];
 }
 
 - (void)setLabel:(NSString*)label forLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.setLegacyAddressLabel(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
+    [self.webView executeJS:@"WalletStore.setLegacyAddressLabel(\"%@\", \"%@\")", [address escapeStringForJS], [label escapeStringForJS]];
 }
 
 - (void)archiveLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.archiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"WalletStore.archiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
 }
 
 - (void)unArchiveLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.unArchiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"WalletStore.unArchiveLegacyAddr(\"%@\")", [address escapeStringForJS]];
 }
 
 - (void)removeLegacyAddress:(NSString*)address
 {
-    [self.webView executeJS:@"MyWallet.deleteLegacyAddress(\"%@\")", [address escapeStringForJS]];
+    [self.webView executeJS:@"WalletStore.deleteLegacyAddress(\"%@\")", [address escapeStringForJS]];
 }
 
 - (uint64_t)getLegacyAddressBalance:(NSString*)address
@@ -414,7 +414,7 @@ Boolean isHdWalletInitialized;
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getLegacyAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.getLegacyAddressBalance(\"%@\")", [address escapeStringForJS]] longLongValue];
 }
 
 - (BOOL)addKey:(NSString*)privateKeyString
@@ -926,7 +926,7 @@ Boolean isHdWalletInitialized;
         return false;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.hasLegacyAddresses()"] boolValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.hasLegacyAddresses()"] boolValue];
 }
 
 - (uint64_t)getTotalBalanceForActiveLegacyAddresses
@@ -935,7 +935,7 @@ Boolean isHdWalletInitialized;
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getTotalBalanceForActiveLegacyAddresses()"] longLongValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.getTotalBalanceForActiveLegacyAddresses()"] longLongValue];
 }
 
 - (uint64_t)getBalanceForAccount:(int)account

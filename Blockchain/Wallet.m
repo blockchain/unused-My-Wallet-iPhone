@@ -1022,13 +1022,6 @@ Boolean isHdWalletInitialized;
     [app reload];
 }
 
-- (void)hd_wallet_balance_updated
-{
-    DLog(@"hd_wallet_balance_updated");
-    
-    [app reload];
-}
-
 - (void)logging_out
 {
     DLog(@"logging_out");

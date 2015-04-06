@@ -166,7 +166,7 @@ Boolean isHdWalletInitialized;
 
 - (NSString*)decrypt:(NSString*)data password:(NSString*)_password pbkdf2_iterations:(int)pbkdf2_iterations
 {
-    return [self.webView executeJSSynchronous:@"MyWallet.decryptPasswordWithProcessedPin(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
+    return [self.webView executeJSSynchronous:@"WalletCrypto.decryptPasswordWithProcessedPin(\"%@\", \"%@\", %d)", [data escapeStringForJS], [_password escapeStringForJS], pbkdf2_iterations];
 }
 
 - (void)getHistory
@@ -307,7 +307,7 @@ Boolean isHdWalletInitialized;
         
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:self.final_balance] forKey:@"final_balance"];
         
-    } command:@"MyWallet.getFinalBalance()"];
+    } command:@"WalletStore.getFinalBalance()"];
 }
 
 - (void)getTotalSent
@@ -316,7 +316,7 @@ Boolean isHdWalletInitialized;
         self.total_sent = [total_sent longLongValue];
         
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:self.total_sent] forKey:@"total_sent"];
-    } command:@"MyWallet.getTotalSent()"];
+    } command:@"WalletStore.getTotalSent()"];
 }
 
 - (BOOL)isWatchOnlyLegacyAddress:(NSString*)address
@@ -917,7 +917,7 @@ Boolean isHdWalletInitialized;
         return 0;
     }
     
-    return [[self.webView executeJSSynchronous:@"MyWallet.getDefaultAccountIndex()"] intValue];
+    return [[self.webView executeJSSynchronous:@"WalletStore.getDefaultAccountIndex()"] intValue];
 }
 
 - (BOOL)hasLegacyAddresses

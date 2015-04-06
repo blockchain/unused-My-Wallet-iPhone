@@ -223,7 +223,7 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
         delete pendingTransactions[id];
     };
 
-    var value = BigInteger.valueOf(valueString);
+    var value = parseInt(valueString);
 
     var fee = null;
     var note = null;
@@ -261,7 +261,7 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
         delete pendingTransactions[id];
     };
 
-    var value = BigInteger.valueOf(valueString);
+    var value = parseInt(valueString);
 
     var fee = null;
     var note = null;
@@ -583,10 +583,10 @@ MyWalletPhone.getMultiAddrResponse = function() {
     var obj = {};
 
     obj.transactions = WalletStore.getTransactions();
-    obj.total_received = MyWallet.getTotalReceived();
-    obj.total_sent = MyWallet.getTotalSent();
-    obj.final_balance = MyWallet.getFinalBalance();
-    obj.n_transactions = MyWallet.getNTransactions();
+    obj.total_received = WalletStore.getTotalReceived();
+    obj.total_sent = WalletStore.getTotalSent();
+    obj.final_balance = WalletStore.getFinalBalance();
+    obj.n_transactions = WalletStore.getNTransactions();
     obj.addresses = WalletStore.getAllLegacyAddresses();
 
     obj.symbol_local = symbol_local;

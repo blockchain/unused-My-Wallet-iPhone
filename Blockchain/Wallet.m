@@ -621,7 +621,7 @@ Boolean isHdWalletInitialized;
         
         [self parseLatestBlockJSON:latestBlockJSON];
         
-    } command:@"JSON.stringify(MyWallet.getLatestBlock())"];
+    } command:@"JSON.stringify(WalletStore.getLatestBlock())"];
 }
 
 - (void)parseLatestBlockJSON:(NSString*)latestBlockJSON
@@ -767,8 +767,8 @@ Boolean isHdWalletInitialized;
 {
     DLog(@"did_decrypt");
     
-    self.sharedKey = [self.webView executeJSSynchronous:@"MyWallet.getSharedKey()"];
-    self.guid = [self.webView executeJSSynchronous:@"MyWallet.getGuid()"];
+    self.sharedKey = [self.webView executeJSSynchronous:@"WalletStore.getSharedKey()"];
+    self.guid = [self.webView executeJSSynchronous:@"WalletStore.getGuid()"];
 
     if ([delegate respondsToSelector:@selector(walletDidDecrypt)])
         [delegate walletDidDecrypt];

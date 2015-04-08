@@ -5,7 +5,7 @@ API_CODE = '35e77459-723f-48b0-8c9e-6e9e8f54fbd3';
 min = false;
 
 // Set the API code for the iOS Wallet for the server calls
-MyWallet.setAPICode(API_CODE);
+WalletStore.setAPICode(API_CODE);
 
 var MyWalletPhone = {};
 var pendingTransactions = {};

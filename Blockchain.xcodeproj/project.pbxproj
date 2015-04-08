@@ -48,8 +48,9 @@
 		671C4E971AC5DE4B0010E1EB /* blockchain-api.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4E961AC5DE4B0010E1EB /* blockchain-api.js */; };
 		671C4E9B1ACADDA60010E1EB /* sjcl.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4E9A1ACADDA60010E1EB /* sjcl.js */; };
 		671C4E9D1ACADDB40010E1EB /* xregexp-all.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4E9C1ACADDB40010E1EB /* xregexp-all.js */; };
-		671C4E9F1ACF0E1B0010E1EB /* wallet-store.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4E9E1ACF0E1B0010E1EB /* wallet-store.js */; };
-		671C4EA11ACF0E5D0010E1EB /* wallet-crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4EA01ACF0E5D0010E1EB /* wallet-crypto.js */; };
+		671C4EA31AD5BA190010E1EB /* blockchain-settings-api.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4EA21AD5BA190010E1EB /* blockchain-settings-api.js */; };
+		671C4EA51AD5BAA50010E1EB /* wallet-crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4EA41AD5BAA50010E1EB /* wallet-crypto.js */; };
+		671C4EA71AD5BAB00010E1EB /* wallet-store.js in Resources */ = {isa = PBXBuildFile; fileRef = 671C4EA61AD5BAB00010E1EB /* wallet-store.js */; };
 		673107EF19F6BAF200BE6899 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */; };
 		673107F219F6D49F00BE6899 /* PrivateKeyReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 673107F119F6D49F00BE6899 /* PrivateKeyReader.m */; };
 		6734775B1AAE0A6A0090C514 /* browserify.js in Resources */ = {isa = PBXBuildFile; fileRef = 6734775A1AAE0A6A0090C514 /* browserify.js */; };
@@ -60,9 +61,7 @@
 		674709F819D2DA3800757D46 /* welcome_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 674709F519D2DA3800757D46 /* welcome_logo@3x.png */; };
 		67470A0819D43AFE00757D46 /* BCManualPairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67470A0719D43AFE00757D46 /* BCManualPairView.m */; };
 		675222B01AC32B3600868156 /* crypto-util-legacy.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222AF1AC32B3600868156 /* crypto-util-legacy.js */; };
-		675222B61AC32B5300868156 /* import-export.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222B51AC32B5300868156 /* import-export.js */; };
 		675222B81AC32B5E00868156 /* shared.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222B71AC32B5E00868156 /* shared.js */; };
-		675222BA1AC32B6600868156 /* signer.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222B91AC32B6600868156 /* signer.js */; };
 		675222BC1AC32B6F00868156 /* wallet-signup.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222BB1AC32B6F00868156 /* wallet-signup.js */; };
 		675222BE1AC32B7700868156 /* wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222BD1AC32B7700868156 /* wallet.js */; };
 		675222C01AC46E9200868156 /* hd-wallet.js in Resources */ = {isa = PBXBuildFile; fileRef = 675222BF1AC46E9200868156 /* hd-wallet.js */; };
@@ -463,8 +462,9 @@
 		671C4E961AC5DE4B0010E1EB /* blockchain-api.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "blockchain-api.js"; path = "Submodules/My-Wallet-HD/src/blockchain-api.js"; sourceTree = SOURCE_ROOT; };
 		671C4E9A1ACADDA60010E1EB /* sjcl.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sjcl.js; path = "Submodules/My-Wallet-HD/node_modules/sjcl/sjcl.js"; sourceTree = SOURCE_ROOT; };
 		671C4E9C1ACADDB40010E1EB /* xregexp-all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "xregexp-all.js"; path = "Submodules/My-Wallet-HD/node_modules/xregexp/xregexp-all.js"; sourceTree = SOURCE_ROOT; };
-		671C4E9E1ACF0E1B0010E1EB /* wallet-store.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-store.js"; path = "Submodules/My-Wallet-HD/build/wallet-store.js"; sourceTree = SOURCE_ROOT; };
-		671C4EA01ACF0E5D0010E1EB /* wallet-crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-crypto.js"; path = "Submodules/My-Wallet-HD/build/wallet-crypto.js"; sourceTree = SOURCE_ROOT; };
+		671C4EA21AD5BA190010E1EB /* blockchain-settings-api.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "blockchain-settings-api.js"; path = "Submodules/My-Wallet-HD/src/blockchain-settings-api.js"; sourceTree = SOURCE_ROOT; };
+		671C4EA41AD5BAA50010E1EB /* wallet-crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-crypto.js"; path = "Submodules/My-Wallet-HD/src/wallet-crypto.js"; sourceTree = SOURCE_ROOT; };
+		671C4EA61AD5BAB00010E1EB /* wallet-store.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-store.js"; path = "Submodules/My-Wallet-HD/src/wallet-store.js"; sourceTree = SOURCE_ROOT; };
 		673107F019F6D49F00BE6899 /* PrivateKeyReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateKeyReader.h; sourceTree = "<group>"; };
 		673107F119F6D49F00BE6899 /* PrivateKeyReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateKeyReader.m; sourceTree = "<group>"; };
 		6734775A1AAE0A6A0090C514 /* browserify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = browserify.js; path = "Submodules/My-Wallet-HD/build/browserify.js"; sourceTree = SOURCE_ROOT; };
@@ -478,9 +478,7 @@
 		67470A0619D43AFE00757D46 /* BCManualPairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCManualPairView.h; sourceTree = "<group>"; };
 		67470A0719D43AFE00757D46 /* BCManualPairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCManualPairView.m; sourceTree = "<group>"; };
 		675222AF1AC32B3600868156 /* crypto-util-legacy.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "crypto-util-legacy.js"; path = "Submodules/My-Wallet-HD/src/crypto-util-legacy.js"; sourceTree = SOURCE_ROOT; };
-		675222B51AC32B5300868156 /* import-export.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "import-export.js"; path = "Submodules/My-Wallet-HD/src/import-export.js"; sourceTree = SOURCE_ROOT; };
 		675222B71AC32B5E00868156 /* shared.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = shared.js; path = "Submodules/My-Wallet-HD/src/shared.js"; sourceTree = SOURCE_ROOT; };
-		675222B91AC32B6600868156 /* signer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = signer.js; path = "Submodules/My-Wallet-HD/src/signer.js"; sourceTree = SOURCE_ROOT; };
 		675222BB1AC32B6F00868156 /* wallet-signup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "wallet-signup.js"; path = "Submodules/My-Wallet-HD/src/wallet-signup.js"; sourceTree = SOURCE_ROOT; };
 		675222BD1AC32B7700868156 /* wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = wallet.js; path = "Submodules/My-Wallet-HD/src/wallet.js"; sourceTree = SOURCE_ROOT; };
 		675222BF1AC46E9200868156 /* hd-wallet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "hd-wallet.js"; path = "Submodules/My-Wallet-HD/src/hd-wallet.js"; sourceTree = SOURCE_ROOT; };
@@ -1196,12 +1194,12 @@
 			children = (
 				6762506B1A28E4480052B63F /* aes.js */,
 				671C4E961AC5DE4B0010E1EB /* blockchain-api.js */,
+				671C4EA21AD5BA190010E1EB /* blockchain-settings-api.js */,
 				6734775A1AAE0A6A0090C514 /* browserify.js */,
 				676250711A28E4720052B63F /* cipher-core.js */,
 				675222AF1AC32B3600868156 /* crypto-util-legacy.js */,
 				675222C11AC46E9800868156 /* hd-account.js */,
 				675222BF1AC46E9200868156 /* hd-wallet.js */,
-				675222B51AC32B5300868156 /* import-export.js */,
 				673477601AAE0A9E0090C514 /* jquery.min.js */,
 				676CD1A71A57654D000C76B5 /* mode-ecb.js */,
 				676250721A28E4720052B63F /* pad-iso10126.js */,
@@ -1209,11 +1207,10 @@
 				6762506C1A28E4480052B63F /* pbkdf2.js */,
 				6762506D1A28E4480052B63F /* sha256.js */,
 				675222B71AC32B5E00868156 /* shared.js */,
-				675222B91AC32B6600868156 /* signer.js */,
 				671C4E9A1ACADDA60010E1EB /* sjcl.js */,
-				671C4EA01ACF0E5D0010E1EB /* wallet-crypto.js */,
+				671C4EA41AD5BAA50010E1EB /* wallet-crypto.js */,
 				675222BB1AC32B6F00868156 /* wallet-signup.js */,
-				671C4E9E1ACF0E1B0010E1EB /* wallet-store.js */,
+				671C4EA61AD5BAB00010E1EB /* wallet-store.js */,
 				675222BD1AC32B7700868156 /* wallet.js */,
 				671C4E9C1ACADDB40010E1EB /* xregexp-all.js */,
 			);
@@ -1395,7 +1392,6 @@
 				67E9677119E31F9100305358 /* marker_eat_off@2x.png in Resources */,
 				678AD65219D5AA7500E9A778 /* contacts_icon@3x.png in Resources */,
 				844BC7B01949BD830024160B /* bridge.js in Resources */,
-				671C4E9F1ACF0E1B0010E1EB /* wallet-store.js in Resources */,
 				67E9676219DF46A900305358 /* news_icon@2x.png in Resources */,
 				ECD244F219A8AC45004B1F40 /* PEKeyboard-4-edit.png in Resources */,
 				6710DA451A9645E20089DDED /* blockchain_b.png in Resources */,
@@ -1447,7 +1443,6 @@
 				220E376019A3614F00E06996 /* MainWindow.xib in Resources */,
 				675222BE1AC32B7700868156 /* wallet.js in Resources */,
 				C9BE91851945D8F600FD516D /* PEKeyboard-2-dot.png in Resources */,
-				671C4EA11ACF0E5D0010E1EB /* wallet-crypto.js in Resources */,
 				67EEE75E1A8D05B700288753 /* send_icon_hi@2x.png in Resources */,
 				FA63233E1A433DEB00EB3974 /* MerchantMapView.xib in Resources */,
 				67EEE7631A8D079E00288753 /* home_icon_hi.png in Resources */,
@@ -1469,13 +1464,13 @@
 				6710DA2E1A93CF1D0089DDED /* menu_more@3x.png in Resources */,
 				678AD62119D56EEB00E9A778 /* receive_icon.png in Resources */,
 				C9BE91871945D8F600FD516D /* PEKeyboard-2-next.png in Resources */,
-				675222B61AC32B5300868156 /* import-export.js in Resources */,
 				676250701A28E4480052B63F /* sha256.js in Resources */,
 				6775569419E749CC0054699B /* back_chevron_icon@3x.png in Resources */,
 				6710DA261A92411C0089DDED /* new-grey@3x.png in Resources */,
 				678AD61C19D56EEB00E9A778 /* home_icon@2x.png in Resources */,
 				6710DA3C1A94F1F70089DDED /* tab_right@3x.png in Resources */,
 				67EE1DBB19E3309500DBBFC9 /* marker_drink_off.png in Resources */,
+				671C4EA31AD5BA190010E1EB /* blockchain-settings-api.js in Resources */,
 				678AD63619D5833A00E9A778 /* merchant_directory_icon@2x.png in Resources */,
 				ECD244F419A8AC45004B1F40 /* PEKeyboard-4.png in Resources */,
 				ECD244EB19A8AC45004B1F40 /* PEKeyboard-3-done.png in Resources */,
@@ -1496,11 +1491,13 @@
 				ECD244F019A8AC45004B1F40 /* PEKeyboard-4-done.png in Resources */,
 				6710DA1E1A8E9EC10089DDED /* new.png in Resources */,
 				220E375D19A3614900E06996 /* SendCoins.xib in Resources */,
+				671C4EA51AD5BAA50010E1EB /* wallet-crypto.js in Resources */,
 				C9BE91841945D8F600FD516D /* PEKeyboard-2-done.png in Resources */,
 				676250731A28E4720052B63F /* cipher-core.js in Resources */,
 				6710DA141A8E9AEB0089DDED /* wallet@3x.png in Resources */,
 				678AD62E19D57FAC00E9A778 /* menu_icon@3x.png in Resources */,
 				678AD62219D56EEB00E9A778 /* receive_icon@2x.png in Resources */,
+				671C4EA71AD5BAB00010E1EB /* wallet-store.js in Resources */,
 				67EEE75F1A8D05B700288753 /* send_icon_hi@3x.png in Resources */,
 				220E375719A3613600E06996 /* BCAddressSelectionView.xib in Resources */,
 				6710DA201A8E9EC10089DDED /* new@3x.png in Resources */,
@@ -1522,7 +1519,6 @@
 				678AD62D19D57FAC00E9A778 /* menu_icon@2x.png in Resources */,
 				67E9676019DF46A900305358 /* logout_icon@3x.png in Resources */,
 				67EEE7571A8D045700288753 /* receive_icon_hi.png in Resources */,
-				675222BA1AC32B6600868156 /* signer.js in Resources */,
 				ECD244EE19A8AC45004B1F40 /* PEKeyboard-3-next.png in Resources */,
 				67E9675E19DF46A900305358 /* logout_icon.png in Resources */,
 				ECD244F319A8AC45004B1F40 /* PEKeyboard-4-next.png in Resources */,

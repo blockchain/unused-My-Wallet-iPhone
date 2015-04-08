@@ -854,6 +854,11 @@ UIActionSheet *popupAddressArchive;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+#ifdef DISABLE_MULTIPLE_ACCOUNTS
+    if (section == 0) {
+        return 12;
+    }
+#endif
     return 45.0f;
 }
 
@@ -861,6 +866,12 @@ UIActionSheet *popupAddressArchive;
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45)];
     view.backgroundColor = [UIColor whiteColor];
+    
+#ifdef DISABLE_MULTIPLE_ACCOUNTS
+    if (section == 0) {
+        return view;
+    }
+#endif
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, self.view.frame.size.width, 14)];
     label.textColor = COLOR_FOREGROUND_GRAY;

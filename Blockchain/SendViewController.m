@@ -93,6 +93,16 @@ uint64_t availableAmount = 0.0;
         return;
     }
     
+#ifdef DISABLE_MULTIPLE_ACCOUNTS
+    // If we only have one account and no legacy addresses -> can't change from address
+    if ([app.wallet didUpgradeToHd] && ![app.wallet hasLegacyAddresses] && [app.wallet addressBook].count == 0) {
+        [addressBookButton setHidden:YES];
+    }
+    else {
+        [addressBookButton setHidden:NO];
+    }
+#endif
+    
     // Populate address field from URL handler if available.
     if (self.initialToAddressString && toField != nil) {
         self.sendToAddress = true;
@@ -577,6 +587,13 @@ uint64_t availableAmount = 0.0;
 {
     [toField resignFirstResponder];
     [amountField resignFirstResponder];
+    
+#ifdef DISABLE_MULTIPLE_ACCOUNTS
+    // If we only have one account and no legacy addresses -> can't change from address
+    if ([app.wallet didUpgradeToHd] && ![app.wallet hasLegacyAddresses]) {
+        return;
+    }
+#endif
     
     BCAddressSelectionView *addressSelectionView = [[BCAddressSelectionView alloc] initWithWallet:app.wallet showOwnAddresses:YES];
     addressSelectionView.delegate = self;

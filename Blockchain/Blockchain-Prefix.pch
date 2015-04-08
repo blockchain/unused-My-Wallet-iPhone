@@ -14,6 +14,8 @@
     #import "LocalizationConstants.h"
 #endif
 
+#define DISABLE_MULTIPLE_ACCOUNTS 1
+
 #define ANIMATION_DURATION .2f
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \

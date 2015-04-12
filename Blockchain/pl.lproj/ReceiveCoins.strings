@@ -2,34 +2,34 @@
 "48.normalTitle" = "Zapisz";
 
 /* Class = "IBUILabel"; text = "Label Address"; ObjectID = "56"; */
-"56.text" = "Adresy Etykiety";
+"56.text" = "Opisz adres";
 
 /* Class = "IBUILabel"; text = "Address:"; ObjectID = "57"; */
 "57.text" = "Adres:";
 
 /* Class = "IBUILabel"; text = "Label:"; ObjectID = "58"; */
-"58.text" = "Tagi:";
+"58.text" = "Opis:";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "60"; */
 "60.text" = "Adres";
 
 /* Class = "IBUILabel"; text = "No Addresses"; ObjectID = "68"; */
-"68.text" = "Nie Ma Adresu";
+"68.text" = "Brak adresów";
 
 /* Class = "IBUILabel"; text = "Your account is probably not paired correctly. Click the button in the top left of the screen and follow the instructions on screen."; ObjectID = "69"; */
-"69.text" = "Twój wynik, to chyba nie w parze prawidłowo. Kliknij przycisk w prawym górnym rogu ekranu i postępuj zgodnie z instrukcjami wyświetlanymi na ekranie.";
+"69.text" = "Twój portfel prawdopodobnie nie jest poprawnie sparowany. Kliknij przycisk w lewym górnym rogu ekranu i postępuj wg instrukcji.";
 
 /* Class = "IBUIButton"; normalTitle = "Archive"; ObjectID = "80"; */
-"80.normalTitle" = "ADRES ARCHIWUM";
+"80.normalTitle" = "ARCHIWIZUJ";
 
 /* Class = "IBUIButton"; normalTitle = "Set Label"; ObjectID = "81"; */
-"81.normalTitle" = "ETYKIETY ADRESOWEJ";
+"81.normalTitle" = "USTAW OPIS";
 
 /* Class = "IBUIButton"; normalTitle = "Request Payment"; ObjectID = "88"; */
-"88.normalTitle" = "ZŁÓŻ WNIOSEK O PŁATNOŚĆ";
+"88.normalTitle" = "WYŚLIJ ŻĄDANIE";
 
 /* Class = "IBUILabel"; text = "Bitcoin Address "; ObjectID = "90"; */
-"90.text" = "Bitcoin-Adres ";
+"90.text" = "Adres ";
 
 /* Class = "IBUILabel"; text = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5UH"; ObjectID = "91"; */
 "91.text" = "1PqtuSjPKDGqst5yadi3rF2XCxFsVDn5uh";
@@ -50,8 +50,8 @@
 "GwZ-6f-89z.normalTitle" = "BTC";
 
 /* Class = "IBUIButton"; normalTitle = "New Address"; ObjectID = "Yez-oe-AkH"; */
-"Yez-oe-AkH.normalTitle" = "Nowy Adres";
+"Yez-oe-AkH.normalTitle" = "Nowy adres";
 
 /* Class = "IBUIButton"; normalTitle = "Scan Private Key"; ObjectID = "i1j-pG-caF"; */
-"i1j-pG-caF.normalTitle" = "Skan Klucza Prywatnego";
+"i1j-pG-caF.normalTitle" = "Skanuj Klucz";
 

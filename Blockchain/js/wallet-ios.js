@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 // Register for JS event handlers and forward to Obj-C handlers
 
-MyWallet.addEventListener(function (event, obj) {
+WalletStore.addEventListener(function (event, obj) {
     var eventsWithObjCHandlers = ["did_fail_set_guid", "did_multiaddr", "did_set_latest_block", "error_restoring_wallet", "logging_out", "on_backup_wallet_start", "on_backup_wallet_error", "on_backup_wallet_success", "on_block", "on_tx", "ws_on_close", "ws_on_open", "hd_wallet_set", "did_load_wallet"];
 
     if (event == 'msg') {
@@ -225,10 +225,11 @@ MyWalletPhone.quickSendFromAddressToAddress = function(from, to, valueString) {
 
     var value = parseInt(valueString);
 
-    var fee = null;
+    var fee = MyWallet.recommendedTransactionFeeForAddress(from, value);
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAddress(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    var spender = new Spender(note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    spender.prepareFromAddress(from, value, fee, function(from) { from.toAddress(to) });
 
     return id;
 };
@@ -263,10 +264,11 @@ MyWalletPhone.quickSendFromAddressToAccount = function(from, to, valueString) {
 
     var value = parseInt(valueString);
 
-    var fee = null;
+    var fee = MyWallet.recommendedTransactionFeeForAddress(from, value);
     var note = null;
 
-    MyWallet.sendFromLegacyAddressToAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    var spender = new Spender(note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    spender.prepareFromAddress(from, value, fee, function(fromAddress) { fromAddress.toAccount(to) });
 
     return id;
 };
@@ -304,7 +306,8 @@ MyWalletPhone.quickSendFromAccountToAddress = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendBitcoinsForAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    var spender = new Spender(note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    spender.prepareFromAccount(from, value, fee, function(fromAccount) { fromAccount.toAddress(to) });
 
     return id;
 };
@@ -342,7 +345,8 @@ MyWalletPhone.quickSendFromAccountToAccount = function(from, to, valueString) {
     var fee = MyWallet.recommendedTransactionFeeForAccount(from, value);
     var note = null;
 
-    MyWallet.sendToAccount(from, to, value, fee, note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    var spender = new Spender(note, success, error, listener, MyWalletPhone.getSecondPassword(success, error));
+    spender.prepareFromAccount(from, value, fee, function(fromAccount) { fromAccount.toAccount(to) });
 
     return id;
 };
@@ -488,7 +492,7 @@ MyWalletPhone.parsePairingCode = function (raw_code) {
 
                     // Pairing code PBKDF2 iterations is set to 10 in My Wallet
                     var pairing_code_pbkdf2_iterations = 10;
-                    var decrypted = MyWallet.decrypt(encrypted_data, encryption_phrase, pairing_code_pbkdf2_iterations, function (decrypted) {
+                    var decrypted = WalletCrypto.decrypt(encrypted_data, encryption_phrase, pairing_code_pbkdf2_iterations, function (decrypted) {
                         return decrypted != null;
                     }, function () {
                         error('Decryption Error');

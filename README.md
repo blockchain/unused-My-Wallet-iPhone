@@ -10,7 +10,7 @@ _ssh pub key has to be registered with Github for this to work_
     git submodule update --init
     cd Submodules/My-Wallet-HD
     npm install
-    grunt
+    grunt build
     cd ../OpenSSL-for-iPhone  
     ./build-libssl.sh
 

@@ -457,8 +457,8 @@ uint64_t availableAmount = 0.0;
             return NO;
         
         // Only 1 leading zero
-        if (points.count == 1) {
-            if (range.location == 1 && ![string isEqualToString:@"."] && [textField.text isEqualToString:@"0"]) {
+        if (points.count == 1 || commas.count == 1) {
+            if (range.location == 1 && ![string isEqualToString:@"."] && ![string isEqualToString:@","] && [textField.text isEqualToString:@"0"]) {
                 return NO;
             }
         }

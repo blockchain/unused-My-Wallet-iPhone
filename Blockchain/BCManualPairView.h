@@ -15,5 +15,5 @@
 }
 
 - (IBAction)continueClicked:(id)sender;
-
+- (void)clearTextFields;
 @end

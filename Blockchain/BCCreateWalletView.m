@@ -44,10 +44,20 @@
     password2TextField.delegate = nil;
 }
 
+- (void)clearTextFields
+{
+    emailTextField.text = nil;
+    passwordTextField.text = nil;
+    password2TextField.text = nil;
+}
+
 - (void)modalWasDismissed {
     CGRect createButtonFrame = createButton.frame;
     createButtonFrame.origin.y = self.frame.size.height - createButtonFrame.size.height;
     createButton.frame = createButtonFrame;
+    
+    passwordTextField.text = nil;
+    password2TextField.text = nil;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -170,6 +180,9 @@
 }
 
 -(void)didCreateNewAccount:(NSString*)guid sharedKey:(NSString*)sharedKey password:(NSString*)password {
+    
+    [self clearTextFields];
+    
     [app forgetWallet];
     
     [app clearPin];

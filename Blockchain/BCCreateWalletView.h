@@ -32,7 +32,7 @@
 
 -(IBAction)termsOfServiceClicked:(id)sender;
 -(IBAction)createAccountClicked:(id)sender;
-
+- (void)clearTextFields;
 @property(nonatomic, strong) NSString * tmpPassword;
 
 @end

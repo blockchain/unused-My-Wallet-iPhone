@@ -31,6 +31,12 @@
     passwordTextField.text = nil;
 }
 
+- (void)clearTextFields
+{
+    walletIdentifierTextField.text = nil;
+    passwordTextField.text = nil;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == walletIdentifierTextField) {

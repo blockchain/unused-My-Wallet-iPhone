@@ -1030,12 +1030,9 @@ BOOL showSendCoins = NO;
     [welcomeView.createWalletButton addTarget:self action:@selector(showCreateWallet:) forControlEvents:UIControlEventTouchUpInside];
     [welcomeView.existingWalletButton addTarget:self action:@selector(showPairWallet:) forControlEvents:UIControlEventTouchUpInside];
     [app showModalWithContent:welcomeView closeType:ModalCloseTypeNone showHeader:NO onDismiss:^{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
-    } onResume:^{
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         modalView.backgroundColor = COLOR_BLOCKCHAIN_BLUE;
-    }];
+    } onResume:nil];
 }
 
 - (void)showCreateWallet:(id)sender

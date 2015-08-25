@@ -59,6 +59,15 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>merchant-directory.blockchain.info</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
 			<key>zeroblock.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
@@ -70,9 +79,5 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>zeroblock</string>
-	</array>
 </dict>
 </plist>

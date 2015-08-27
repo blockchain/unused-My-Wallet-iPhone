@@ -16,6 +16,10 @@
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
 
+@interface ReceiveCoinsViewController ()
+@property (nonatomic)  MFMailComposeViewController *mailController;
+@end
+
 @implementation ReceiveCoinsViewController
 
 @synthesize activeKeys;
@@ -426,13 +430,13 @@
 - (IBAction)shareByEmailClicked:(id)sender
 {
     if([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
-        [mailController setMailComposeDelegate:self];
+       self.mailController = [[MFMailComposeViewController alloc] init];
+        [self.mailController setMailComposeDelegate:self];
         NSData *jpegData = UIImageJPEGRepresentation(qrCodePaymentImageView.image, 1);
-        [mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
-        [mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
-        [mailController setMessageBody:[self formatPaymentRequestHTML:[self uriURL]] isHTML:YES];
-        [app.tabViewController presentViewController:mailController animated:YES completion:nil];
+        [self.mailController addAttachmentData:jpegData mimeType:@"image/jpeg" fileName:@"QR code image"];
+        [self.mailController setSubject:BC_STRING_PAYMENT_REQUEST_TITLE];
+        [self.mailController setMessageBody:[self formatPaymentRequestHTML:[self uriURL]] isHTML:YES];
+        [app.tabViewController presentViewController:self.mailController animated:YES completion:nil];
     }
     else {
         UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:BC_STRING_ERROR message:BC_STRING_DEVICE_NO_EMAIL delegate:nil cancelButtonTitle:BC_STRING_OK otherButtonTitles:nil];
@@ -466,6 +470,8 @@
     
     [app showModalWithContent:requestCoinsView closeType:ModalCloseTypeClose onDismiss:^() {
         self.clickedAddress = nil;
+        requestAmountTextField.text = @"";
+        [self doCurrencyConversion];
     } onResume:nil];
     
     [requestAmountTextField becomeFirstResponder];

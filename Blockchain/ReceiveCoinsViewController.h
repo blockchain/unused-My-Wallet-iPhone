@@ -71,7 +71,6 @@
 - (IBAction)labelSaveClicked:(id)sender;
 - (IBAction)shareByTwitter:(id)sender;
 - (IBAction)shareByFacebook:(id)sender;
-- (IBAction)shareByGooglePlus:(id)sender;
 - (IBAction)shareByEmailClicked:(id)sender;
 - (IBAction)shareByMessageClicked:(id)sender;
 - (IBAction)requestPaymentClicked:(id)sender;

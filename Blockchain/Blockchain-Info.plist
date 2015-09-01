@@ -59,20 +59,6 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>google.com</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>addthis.com</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
 			<key>merchant-directory.blockchain.info</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
